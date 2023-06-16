@@ -1,6 +1,7 @@
 package de.legoshi.lcpractice.manager;
 
 import de.legoshi.lcpractice.Linkcraft;
+import de.legoshi.lcpractice.util.ColorHelper;
 
 import java.io.File;
 
@@ -17,5 +18,7 @@ public class ConfigManager {
 
         File playerData = new File(plugin.getDataFolder(), "playerdata");
         if (!playerData.exists()) playerData.mkdir();
+
+        ColorHelper.load();
     }
 }
