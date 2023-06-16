@@ -3,3 +3,21 @@ version: '${project.version}'
 main: de.legoshi.lcpractice.LCPractice
 authors: [Leg0shi_]
 description: Practice Plugin for Linkcraft
+api-version: 1.8
+commands:
+  practice:
+    aliases: [prac]
+    permission: pkprac.practice
+  unpractice:
+    aliases: [unprac]
+    permission: pkprac.practice
+  pkpracreload:
+    permission: pkprac.reload
+permissions:
+  pkprac.practice:
+    description: Allows the use of the /practice and /unpractice commands.
+    default: op
+  pkprac.reload:
+    description: Allows the use of the /pkpracreload command. (You shouldn't give this out to all players)
+    default: op
+

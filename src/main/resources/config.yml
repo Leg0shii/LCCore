@@ -1,0 +1,40 @@
+# Message that is sent if player is not on the ground when using the /practice command.
+block-message: '&3&l&4You must be on a block to use the practice system!'
+
+# Message that is sent to remind player that they are practicing.
+practice-message: '&3&l&aYou are on a practice mode, Do /unprac to stop.'
+
+# Message that is sent to the player when they finish practicing.
+unpractice-message: '&3&l&4You have stopped practicing.'
+
+# Message that is sent if the player uses /practice when they are already practicing
+already-practicing-message: '&3&l&4You are already in practice mode!'
+
+# Message that is sent if the player uses /unpractice when they are not practicing.
+not-practicing-message: '&3&l&4You are not in a practice mode.'
+
+# Message that is sent if player has full inventory when using the /practice command.
+full-inventory-message: '&3&l&4Your inventory is full, Throw some items!'
+
+# ID:data of the return item. List of materials at https://helpch.at/docs/1.8/org/bukkit/Material.html
+return-item-id: 'SLIME_BALL:0'
+
+# The name of the return item.
+return-item-name: "&3&l
+
+# ------------------------------------- #
+# FOR THE NEXT OPTIONS DO IT LIKE THIS: #
+# ------------------------------------- #
+#             option:                   #
+#              - choice 1               #
+#              - choice 2               #
+#              - choice 3               #
+# ------------------------------------- #
+
+# Additional commands the console should run when a user uses /practice. Use [player] for the player name. #
+prac-run-commands:
+  -
+
+  # Additional commands the console should run when a user uses /unpractice. Use [player] for the player name. #
+unprac-run-commands:
+  -
