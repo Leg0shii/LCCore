@@ -3,6 +3,7 @@ package de.legoshi.lcpractice.command;
 import de.legoshi.lcpractice.Linkcraft;
 import de.legoshi.lcpractice.util.ConfigAccessor;
 import de.legoshi.lcpractice.util.Utils;
+import me.clip.deluxetags.DeluxeTag;
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.Statistic;

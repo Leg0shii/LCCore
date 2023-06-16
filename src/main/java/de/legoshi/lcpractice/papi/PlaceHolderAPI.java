@@ -1,7 +1,9 @@
 package de.legoshi.lcpractice.papi;
 
+import com.darkender.SecondPrefix.SecondPrefix;
 import de.legoshi.lcpractice.Linkcraft;
 import de.legoshi.lcpractice.util.ColorHelper;
+import me.clip.placeholderapi.expansion.PlaceholderExpansion;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
