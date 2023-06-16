@@ -20,7 +20,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-// PARTLY REFACTORED
+// PARTLY REFACTORED (WORKING)
 public class SavesUI {
 
     public static Inventory inv;
@@ -29,17 +29,17 @@ public class SavesUI {
     private static Linkcraft plugin;
     private static final Map<String, Integer> currentPage = new HashMap<>();
 
-    public SavesUI(Linkcraft plugin) {
-        SavesUI.plugin = plugin;
-        initialize();
-    }
-
     public static void initialize() {
+        plugin = Linkcraft.getInstance();
         inventory_name = Utils.chat("&8&lYour Saves&7");
         inv = Bukkit.createInventory(null, inv_rows);
     }
 
     public static Inventory GUI(Player p, int page) {
+        if(inv == null) {
+            initialize();
+        }
+
         inv.clear();
         currentPage.put(p.getUniqueId().toString(), Integer.valueOf(page));
         Inventory toReturn = Bukkit.createInventory(null, inv_rows, inventory_name + Utils.chat(" (page " + page + ")"));

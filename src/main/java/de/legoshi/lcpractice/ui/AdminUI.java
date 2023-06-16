@@ -23,17 +23,17 @@ public class AdminUI {
     private static Linkcraft plugin;
     public static Map<String, Integer> currentPage = new HashMap<>();
 
-    public AdminUI(Linkcraft plugin) {
-        AdminUI.plugin = plugin;
-        initialize();
-    }
-
     public static void initialize() {
+        plugin = Linkcraft.getInstance();
         inventory_name = Utils.chat("&8&lAdmin GUI&7");
         inv = Bukkit.createInventory(null, inv_rows);
     }
 
     public static Inventory GUI(Player p, int page) {
+        if(inv == null) {
+            initialize();
+        }
+
         OfflinePlayer target = (OfflinePlayer) plugin.playerMap.get(p.getName());
         inv.clear();
         currentPage.put(p.getUniqueId().toString(), Integer.valueOf(page));

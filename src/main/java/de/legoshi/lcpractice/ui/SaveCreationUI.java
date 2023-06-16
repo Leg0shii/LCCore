@@ -23,17 +23,17 @@ public class SaveCreationUI {
     public static int inv_rows = 27;
     private static Linkcraft plugin;
 
-    public SaveCreationUI(Linkcraft plugin) {
-        SaveCreationUI.plugin = plugin;
-        initialize();
-    }
-
     public static void initialize() {
+        plugin = Linkcraft.getInstance();
         inventory_name = Utils.chat("&8&lSave Creation");
         inv = Bukkit.createInventory(null, inv_rows);
     }
 
     public static Inventory GUI(Player p) {
+        if(inv == null) {
+            initialize();
+        }
+
         Inventory toReturn = Bukkit.createInventory(null, inv_rows, inventory_name);
         Utils.createItem(inv, 160, 0, 1, 1, " ", "");
         Utils.createItem(inv, 160, 0, 1, 2, " ", "");
