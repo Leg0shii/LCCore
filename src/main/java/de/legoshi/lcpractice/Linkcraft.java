@@ -1,12 +1,15 @@
 package de.legoshi.lcpractice;
 
-import de.legoshi.lcpractice.listener.PkPracListener;
+import de.legoshi.lcpractice.manager.ListenerManager;
+import de.legoshi.lcpractice.papi.PlaceHolderAPI;
 import de.legoshi.lcpractice.util.ConfigAccessor;
 import de.legoshi.lcpractice.manager.CommandManager;
 import de.legoshi.lcpractice.manager.ConfigManager;
 import de.legoshi.lcpractice.util.Constants;
 import net.luckperms.api.LuckPerms;
 import net.luckperms.api.LuckPermsProvider;
+import net.milkbowl.vault.chat.Chat;
+import net.milkbowl.vault.economy.Economy;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
@@ -14,6 +17,7 @@ import org.bukkit.OfflinePlayer;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
+import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.io.File;
@@ -37,12 +41,24 @@ public class Linkcraft extends JavaPlugin {
     public void onEnable() {
         instance = this;
 
-        loadLuckPerms();
-
+        loadDependencies();
         new ConfigManager(this).loadConfigs();
         new CommandManager(this).registerCommands();
+        new ListenerManager(this).registerEvents();
+    }
 
-        getServer().getPluginManager().registerEvents(new PkPracListener(this), this);
+    private void loadDependencies() {
+        loadLuckPerms();
+
+        if(Bukkit.getPluginManager().isPluginEnabled("PlaceholderAPI")) {
+            new PlaceHolderAPI().register();
+        }
+
+        if(!setupEconomy()) {
+            Bukkit.shutdown();
+        } else {
+            setupChat();
+        }
     }
 
     private void loadLuckPerms() {
@@ -96,7 +112,7 @@ public class Linkcraft extends JavaPlugin {
     private boolean setupEconomy() {
         RegisteredServiceProvider<Economy> economyProvider = getServer().getServicesManager().getRegistration(Economy.class);
         if (economyProvider != null)
-            economy = (Economy)economyProvider.getProvider();
+            economy = economyProvider.getProvider();
         return (economy != null);
     }
 
@@ -104,10 +120,9 @@ public class Linkcraft extends JavaPlugin {
         return economy;
     }
 
-    private boolean setupChat() {
+    private void setupChat() {
         RegisteredServiceProvider<Chat> rsp = getServer().getServicesManager().getRegistration(Chat.class);
-        chat = (Chat)rsp.getProvider();
-        return (chat != null);
+        chat = rsp.getProvider();
     }
 
     public Chat getChat() {
