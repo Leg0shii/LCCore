@@ -3,7 +3,6 @@ package de.legoshi.lcpractice.listener;
 import de.legoshi.lcpractice.Linkcraft;
 import de.legoshi.lcpractice.util.ConfigAccessor;
 import de.legoshi.lcpractice.util.Utils;
-import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
@@ -19,7 +18,6 @@ public class PlayerJoinListener implements Listener {
   
   public PlayerJoinListener(Linkcraft plugin) {
     this.plugin = plugin;
-    Bukkit.getPluginManager().registerEvents(this, plugin);
   }
   
   @EventHandler

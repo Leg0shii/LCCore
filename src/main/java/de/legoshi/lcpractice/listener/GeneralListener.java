@@ -1,9 +1,7 @@
 package de.legoshi.lcpractice.listener;
 
-import de.legoshi.lcpractice.Linkcraft;
 import de.legoshi.lcpractice.util.ColorHelper;
 import de.legoshi.lcpractice.util.Menu;
-import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
@@ -19,10 +17,6 @@ import org.bukkit.event.player.PlayerInteractEvent;
 
 // PARTLY REFACTORED
 public class GeneralListener implements Listener {
-
-    public GeneralListener(Linkcraft plugin) {
-        Bukkit.getPluginManager().registerEvents(this, plugin);
-    }
 
     @EventHandler
     public void onChat(AsyncPlayerChatEvent e) {
