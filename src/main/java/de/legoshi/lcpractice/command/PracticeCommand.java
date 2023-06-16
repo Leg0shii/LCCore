@@ -1,21 +1,16 @@
 package de.legoshi.lcpractice.command;
 
 import java.util.Arrays;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import de.legoshi.lcpractice.LCPractice;
 import de.legoshi.lcpractice.helper.LocationHelper;
-import org.apache.commons.lang.text.StrSubstitutor;
-import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
-import org.bukkit.inventory.ItemStack;
 
 public class PracticeCommand implements CommandExecutor {
 
@@ -38,8 +33,8 @@ public class PracticeCommand implements CommandExecutor {
             p.sendMessage(ChatColor.translateAlternateColorCodes('&', alreadyPracticingMessage));
             return true;
         }
-        Double[] possibleYValues = {Double.valueOf(0.9375D), Double.valueOf(0.875D), Double.valueOf(0.75D), Double.valueOf(0.625D), Double.valueOf(0.5625D), Double.valueOf(0.5D), Double.valueOf(0.375D), Double.valueOf(0.25D), Double.valueOf(0.1875D), Double.valueOf(0.125D), Double.valueOf(0.0625D), Double.valueOf(0.015625D), Double.valueOf(0.0D)};
-        if (p.getVelocity().getY() == -0.0784000015258789D && Arrays.<Double>asList(possibleYValues).contains(Double.valueOf(p.getLocation().getY() % 1.0D))) {
+        Double[] possibleYValues = {0.9375D, 0.875D, 0.75D, 0.625D, 0.5625D, 0.5D, 0.375D, 0.25D, 0.1875D, 0.125D, 0.0625D, 0.015625D, 0.0D};
+        if (p.getVelocity().getY() == -0.0784000015258789D && Arrays.asList(possibleYValues).contains(p.getLocation().getY() % 1.0D)) {
             if (p.getInventory().firstEmpty() == -1) {
                 String str = config.getString("full-inventory-message");
                 p.sendMessage(ChatColor.translateAlternateColorCodes('&', str));
@@ -47,16 +42,10 @@ public class PracticeCommand implements CommandExecutor {
             }
             String str1 = LocationHelper.getStringFromLocation(p.getLocation());
             this.playerdataConfig.set(uuid, str1);
-            p.getInventory().addItem(new ItemStack[]{this.plugin.getReturnItem()});
+            p.getInventory().addItem(this.plugin.getReturnItem());
             List<String> commandsToRun = config.getStringList("prac-run-commands");
             if (!commandsToRun.isEmpty()) {
-                Map<String, String> values = new HashMap<>();
-                values.put("player", p.getName());
-                StrSubstitutor sub = new StrSubstitutor(values, "[", "]");
-                for (int i = 0; i < commandsToRun.size(); i++) {
-                    String commandToRun = sub.replace(commandsToRun.toArray()[i]);
-                    Bukkit.dispatchCommand((CommandSender) Bukkit.getConsoleSender(), commandToRun);
-                }
+                UnpracticeCommand.runCommands(p, commandsToRun);
             }
             String practiceMessage = config.getString("practice-message");
             p.sendMessage(ChatColor.translateAlternateColorCodes('&', practiceMessage));

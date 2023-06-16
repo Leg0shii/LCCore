@@ -6,7 +6,6 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.logging.Level;
 
-import org.bukkit.configuration.Configuration;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -28,11 +27,11 @@ public class ConfigAccessor {
     }
 
     public void reloadConfig() {
-        this.fileConfiguration = (FileConfiguration) YamlConfiguration.loadConfiguration(this.configFile);
+        this.fileConfiguration = YamlConfiguration.loadConfiguration(this.configFile);
         InputStream defConfigStream = this.plugin.getResource(this.fileName);
         if (defConfigStream != null) {
             YamlConfiguration defConfig = YamlConfiguration.loadConfiguration(new InputStreamReader(defConfigStream));
-            this.fileConfiguration.setDefaults((Configuration) defConfig);
+            this.fileConfiguration.setDefaults(defConfig);
         }
     }
 

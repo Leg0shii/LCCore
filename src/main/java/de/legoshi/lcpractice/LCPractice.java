@@ -32,38 +32,38 @@ public class LCPractice extends JavaPlugin {
     }
 
     public ItemStack getReturnItem() {
-        Material mat;
+        Material material;
         String returnItemId = this.config.getString("return-item-id");
         String returnItemName = this.config.getString("return-item-name");
-        int data = 0;
+        int materialData = 0;
         String[] obj = returnItemId.split(":");
         if (obj.length == 2) {
             try {
-                mat = Material.matchMaterial(obj[0]);
-            } catch (Exception var10) {
+                material = Material.matchMaterial(obj[0]);
+            } catch (Exception e) {
                 Bukkit.getConsoleSender().sendMessage("The material you used in config.yml does not exist!");
                 return null;
             }
             try {
-                data = Integer.valueOf(obj[1]).intValue();
-            } catch (NumberFormatException var9) {
+                materialData = Integer.parseInt(obj[1]);
+            } catch (NumberFormatException e) {
                 Bukkit.getConsoleSender().sendMessage("The data of the material you used in config.yml is not a number!");
                 return null;
             }
         } else {
             try {
-                mat = Material.matchMaterial(returnItemId);
-            } catch (Exception var8) {
+                material = Material.matchMaterial(returnItemId);
+            } catch (Exception e) {
                 Bukkit.getConsoleSender().sendMessage("The material you used in config.yml does not exist!");
                 return null;
             }
         }
-        if (mat == null) {
+        if (material == null) {
             Bukkit.getConsoleSender().sendMessage("The material you used in config.yml does not exist!");
             return null;
         }
-        ItemStack item = new ItemStack(mat, 1);
-        item.setDurability((short) data);
+        ItemStack item = new ItemStack(material, 1);
+        item.setDurability((short) materialData);
         ItemMeta itemMeta = item.getItemMeta();
         itemMeta.setDisplayName(ChatColor.translateAlternateColorCodes('&', returnItemName));
         item.setItemMeta(itemMeta);

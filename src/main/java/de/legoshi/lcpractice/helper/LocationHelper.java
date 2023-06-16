@@ -7,11 +7,11 @@ import org.bukkit.World;
 public class LocationHelper {
 
     public static String getStringFromLocation(Location l) {
-        return (l == null) ? "" : (String.valueOf(l.getWorld().getName()) + ":" + l.getX() + ":" + l.getY() + ":" + l.getZ() + ":" + l.getYaw() + ":" + l.getPitch());
+        return (l == null) ? "" : (l.getWorld().getName() + ":" + l.getX() + ":" + l.getY() + ":" + l.getZ() + ":" + l.getYaw() + ":" + l.getPitch());
     }
 
     public static Location getLocationFromString(String s) {
-        if (s != null && s.trim() != "") {
+        if (s != null && !s.trim().equals("")) {
             String[] parts = s.split(":");
             if (parts.length == 6) {
                 World w = Bukkit.getServer().getWorld(parts[0]);

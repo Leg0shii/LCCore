@@ -46,21 +46,26 @@ public class UnpracticeCommand implements CommandExecutor {
         this.playerdataConfig.set(uuid, null);
         ItemStack returnItem = this.plugin.getReturnItem();
         while (p.getInventory().containsAtLeast(returnItem, 1)) {
-            p.getInventory().removeItem(new ItemStack[]{this.plugin.getReturnItem()});
+            p.getInventory().removeItem(this.plugin.getReturnItem());
         }
         List<String> commandsToRun = this.config.getStringList("unprac-run-commands");
-        if (commandsToRun.isEmpty())
-            return true;
+        if (commandsToRun.isEmpty()) return true;
+
+        runCommands(p, commandsToRun);
+
+        String unpracticeMessage = this.config.getString("unpractice-message");
+        p.sendMessage(ChatColor.translateAlternateColorCodes('&', unpracticeMessage));
+        return true;
+    }
+
+    protected static void runCommands(Player p, List<String> commandsToRun) {
         Map<String, String> values = new HashMap<>();
         values.put("player", p.getName());
         StrSubstitutor sub = new StrSubstitutor(values, "[", "]");
         for (int i = 0; i < commandsToRun.size(); i++) {
             String commandToRun = sub.replace(commandsToRun.toArray()[i]);
-            Bukkit.dispatchCommand((CommandSender) Bukkit.getConsoleSender(), commandToRun);
+            Bukkit.dispatchCommand(Bukkit.getConsoleSender(), commandToRun);
         }
-        String unpracticeMessage = this.config.getString("unpractice-message");
-        p.sendMessage(ChatColor.translateAlternateColorCodes('&', unpracticeMessage));
-        return true;
     }
 }
 
