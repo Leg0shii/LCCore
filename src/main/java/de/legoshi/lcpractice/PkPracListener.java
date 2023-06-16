@@ -1,6 +1,7 @@
 package de.legoshi.lcpractice;
 
-import de.legoshi.lcpractice.helper.LocationHelper;
+import de.legoshi.lcpractice.util.Constants;
+import de.legoshi.lcpractice.util.LocationHelper;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.configuration.file.FileConfiguration;
@@ -50,7 +51,7 @@ public class PkPracListener implements Listener {
         Player p = e.getPlayer();
         String uuid = p.getUniqueId().toString();
         if (this.playerdataConfig.getString(uuid) != null) {
-            String practiceMessage = config.getString("practice-message");
+            String practiceMessage = config.getString(Constants.PRACTICE_MESSAGE);
             p.sendMessage(ChatColor.translateAlternateColorCodes('&', practiceMessage));
         }
     }

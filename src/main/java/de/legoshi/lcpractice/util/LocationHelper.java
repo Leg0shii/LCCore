@@ -1,4 +1,4 @@
-package de.legoshi.lcpractice.helper;
+package de.legoshi.lcpractice.util;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Location;

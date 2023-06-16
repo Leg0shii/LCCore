@@ -1,7 +1,8 @@
 package de.legoshi.lcpractice.command;
 
+import de.legoshi.lcpractice.util.Constants;
 import de.legoshi.lcpractice.LCPractice;
-import de.legoshi.lcpractice.helper.LocationHelper;
+import de.legoshi.lcpractice.util.LocationHelper;
 import net.luckperms.api.LuckPerms;
 import net.luckperms.api.model.user.User;
 import net.luckperms.api.node.types.InheritanceNode;
@@ -35,7 +36,7 @@ public class UnpracticeCommand implements CommandExecutor {
         String uuid = p.getUniqueId().toString();
         String saved = this.playerdataConfig.getString(uuid);
         if (saved == null) {
-            String notPracticingMessage = this.config.getString("not-practicing-message");
+            String notPracticingMessage = this.config.getString(Constants.NOT_PRACTICING_MESSAGE);
             p.sendMessage(ChatColor.translateAlternateColorCodes('&', notPracticingMessage));
             return true;
         }
@@ -53,27 +54,27 @@ public class UnpracticeCommand implements CommandExecutor {
 
         if (user != null) {
             // Set permissions to true
-            user.data().add(PermissionNode.builder("serversigns.use.*").value(true).build());
-            user.data().add(PermissionNode.builder("ps.save").value(true).build());
-            user.data().add(PermissionNode.builder("ps.saves").value(true).build());
-            user.data().add(PermissionNode.builder("pkcp.signs").value(true).build());
-            user.data().add(PermissionNode.builder("chestcommands.open.bonus.yml").value(true).build());
-            user.data().add(PermissionNode.builder("essentials.warp").value(true).build());
-            user.data().add(PermissionNode.builder("essentials.spawn").value(true).build());
-            user.data().add(PermissionNode.builder("chestcommands.open.maze.yml").value(true).build());
-            user.data().add(PermissionNode.builder("chestcommands.open.challenge.yml").value(true).build());
+            user.data().add(PermissionNode.builder(Constants.SERVERSIGNS_USE_ALL).value(true).build());
+            user.data().add(PermissionNode.builder(Constants.PS_SAVE).value(true).build());
+            user.data().add(PermissionNode.builder(Constants.PS_SAVES).value(true).build());
+            user.data().add(PermissionNode.builder(Constants.PKCP_SIGNS).value(true).build());
+            user.data().add(PermissionNode.builder(Constants.CHESTCOMMANDS_OPEN_CHALLENGE_YML).value(true).build());
+            user.data().add(PermissionNode.builder(Constants.CHESTCOMMANDS_OPEN_MAZE_YML).value(true).build());
+            user.data().add(PermissionNode.builder(Constants.CHESTCOMMANDS_OPEN_BONUS_YML).value(true).build());
+            user.data().add(PermissionNode.builder(Constants.ESSENTIALS_WARP).value(true).build());
+            user.data().add(PermissionNode.builder(Constants.ESSENTIALS_SPAWN).value(true).build());
 
             // Unset permissions
-            user.data().remove(InheritanceNode.builder("prac").build()); // currently just sets the tag NO PERMS BECAUSE OF BONUS AND STUFF
-            user.data().remove(PermissionNode.builder("ps.save").withContext("world", "bonus").build());
-            user.data().remove(PermissionNode.builder("ps.saves").withContext("world", "bonus").build());
-            user.data().remove(PermissionNode.builder("pkcp.signs").withContext("world", "bonus").build());
+            user.data().remove(InheritanceNode.builder(Constants.PRAC).build()); // currently just sets the tag NO PERMS BECAUSE OF BONUS AND STUFF
+            user.data().remove(PermissionNode.builder(Constants.PS_SAVE).withContext("world", Constants.BONUS_WORLD).build());
+            user.data().remove(PermissionNode.builder(Constants.PS_SAVES).withContext("world", Constants.BONUS_WORLD).build());
+            user.data().remove(PermissionNode.builder(Constants.PKCP_SIGNS).withContext("world", Constants.BONUS_WORLD).build());
 
             // Save changes
             api.getUserManager().saveUser(user);
         }
 
-        String unpracticeMessage = this.config.getString("unpractice-message");
+        String unpracticeMessage = this.config.getString(Constants.UNPRACTICE_MESSAGE);
         p.sendMessage(ChatColor.translateAlternateColorCodes('&', unpracticeMessage));
         return true;
     }
