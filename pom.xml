@@ -89,5 +89,33 @@
             <version>5.4</version>
             <scope>provided</scope>
         </dependency>
+        <dependency>
+            <groupId>me.clip.deluxetags</groupId>
+            <artifactId>deluxetags</artifactId>
+            <version>1.7.1</version>
+            <scope>system</scope>
+            <systemPath>${project.basedir}/dependencies/DeluxeTags.jar</systemPath>
+        </dependency>
+        <dependency>
+            <groupId>net.milkbowl.vault</groupId>
+            <artifactId>vault</artifactId>
+            <version>1.0</version>
+            <scope>system</scope>
+            <systemPath>${project.basedir}/dependencies/Vault.jar</systemPath>
+        </dependency>
+        <dependency>
+            <groupId>com.darkender.SecondPrefix</groupId>
+            <artifactId>SecondPrefix</artifactId>
+            <version>1.0</version>
+            <scope>system</scope>
+            <systemPath>${project.basedir}/dependencies/SecondPrefix.jar</systemPath>
+        </dependency>
+        <dependency>
+            <groupId>me.clip.placeholderapi</groupId>
+            <artifactId>placeholderapi</artifactId>
+            <version>1.0</version>
+            <scope>system</scope>
+            <systemPath>${project.basedir}/dependencies/PlaceholderAPI-2.10.10.jar</systemPath>
+        </dependency>
     </dependencies>
 </project>
