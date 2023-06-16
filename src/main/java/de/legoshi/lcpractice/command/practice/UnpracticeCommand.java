@@ -1,7 +1,7 @@
-package de.legoshi.lcpractice.command;
+package de.legoshi.lcpractice.command.practice;
 
+import de.legoshi.lcpractice.Linkcraft;
 import de.legoshi.lcpractice.util.Constants;
-import de.legoshi.lcpractice.LCPractice;
 import de.legoshi.lcpractice.util.LocationHelper;
 import net.luckperms.api.LuckPerms;
 import net.luckperms.api.model.user.User;
@@ -16,13 +16,14 @@ import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
+// REFACTORED
 public class UnpracticeCommand implements CommandExecutor {
 
-    private final LCPractice plugin;
+    private final Linkcraft plugin;
     private final FileConfiguration playerdataConfig;
     private FileConfiguration config;
 
-    public UnpracticeCommand(LCPractice plugin) {
+    public UnpracticeCommand(Linkcraft plugin) {
         this.plugin = plugin;
         this.config = plugin.getConfig();
         this.playerdataConfig = plugin.playerdataConfigAccessor.getConfig();

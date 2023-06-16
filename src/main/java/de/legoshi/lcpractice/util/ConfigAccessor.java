@@ -10,6 +10,7 @@ import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.plugin.java.JavaPlugin;
 
+// REFACTORED
 public class ConfigAccessor {
 
     private final String fileName;
@@ -24,6 +25,14 @@ public class ConfigAccessor {
         File dataFolder = plugin.getDataFolder();
         if (dataFolder == null) throw new IllegalStateException();
         this.configFile = new File(plugin.getDataFolder(), fileName);
+    }
+
+    public ConfigAccessor(JavaPlugin plugin, File folder, String fileName) {
+        if (plugin == null) throw new IllegalArgumentException("plugin cannot be null");
+        this.plugin = plugin;
+        this.fileName = fileName;
+        if (folder == null) throw new IllegalStateException();
+        this.configFile = new File(folder, fileName);
     }
 
     public void reloadConfig() {

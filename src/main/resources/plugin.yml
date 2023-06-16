@@ -13,7 +13,34 @@ commands:
     permission: pkprac.practice
   pkpracreload:
     permission: pkprac.reload
-  test:
+  saves:
+  save:
+  psreload:
+  fakeup:
+  pingtp:
+  gg:
+  gl:
+  rip:
+  fail:
+  eggs:
+  ham:
+  sayall:
+  forcesay:
+  chungus:
+  ggall:
+  glall:
+  ripall:
+  failall:
+  eggsall:
+  hamall:
+  resetsaves:
+  checksaves:
+  chatcolor:
+  chatformat:
+  pex:
+  togglenotify:
+  statistics:
+    aliases: [ stat, statistic ]
 permissions:
   pkprac.practice:
     description: Allows the use of the /practice and /unpractice commands.

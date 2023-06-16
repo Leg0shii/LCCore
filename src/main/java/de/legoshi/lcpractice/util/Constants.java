@@ -1,5 +1,6 @@
 package de.legoshi.lcpractice.util;
 
+// REFACTORED
 public class Constants {
     // Configuration keys
     public static final String RETURN_ITEM_ID = "return-item-id";

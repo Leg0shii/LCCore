@@ -21,3 +21,29 @@ return-item-id: "SLIME_BALL:0"
 
 # The name of the return item.
 return-item-name: "&3&l\u3010&b&lLC&3&l\u3011-&4Return"
+
+# For the next options, use [player] as a place holder for player name.
+# Commands that are executed when a player makes a save. Use as a placeholder. (Send them to spawn)
+save-commands:
+  - mvtp [player] <worldname>
+
+# Commands that are executed in the teleport animation when a player teleports to a save. (Its important to disable any signs)
+save-teleport-commands:
+  - pex user [player] add -serversigns.use.*
+  - pex user [player] add -pk.signs
+  - pex user [player] remove serversigns.use.*
+  - pex user [player] remove pk.signs
+
+# Commands that are executed when the teleport animation for saves is finished. (Enable permissions here)
+save-teleport-finish-commands:
+  - pex user [player] remove -serversigns.use.*
+  - pex user [player] remove -pk.signs
+  - pex user [player] add serversigns.use.*
+  - pex user [player] add pk.signs
+
+ggmessage: '&6&lG&e&lG'
+glmessage: '&2&lG&a&lL'
+ripmessage: '&0&lR&8&lI&f&lP'
+hammessage: '&d&lha &c&lm'
+eggsmessage: '&6&lE&e&lG&6&lg&e&LS'
+failmessage: '&f&lFAIL'

@@ -1,5 +1,6 @@
-package de.legoshi.lcpractice;
+package de.legoshi.lcpractice.listener;
 
+import de.legoshi.lcpractice.Linkcraft;
 import de.legoshi.lcpractice.util.Constants;
 import de.legoshi.lcpractice.util.LocationHelper;
 import org.bukkit.ChatColor;
@@ -14,12 +15,14 @@ import org.bukkit.event.player.PlayerDropItemEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 
+
+// REFACTORED
 public class PkPracListener implements Listener {
 
-    private final LCPractice plugin;
+    private final Linkcraft plugin;
     private final FileConfiguration playerdataConfig;
 
-    public PkPracListener(LCPractice plugin) {
+    public PkPracListener(Linkcraft plugin) {
         this.plugin = plugin;
         this.playerdataConfig = plugin.playerdataConfigAccessor.getConfig();
     }

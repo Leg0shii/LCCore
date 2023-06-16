@@ -1,5 +1,6 @@
 package de.legoshi.lcpractice;
 
+import de.legoshi.lcpractice.listener.PkPracListener;
 import de.legoshi.lcpractice.util.ConfigAccessor;
 import de.legoshi.lcpractice.manager.CommandManager;
 import de.legoshi.lcpractice.manager.ConfigManager;
@@ -9,18 +10,33 @@ import net.luckperms.api.LuckPermsProvider;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
+import org.bukkit.OfflinePlayer;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.plugin.java.JavaPlugin;
 
-public class LCPractice extends JavaPlugin {
+import java.io.File;
+import java.util.HashMap;
+import java.util.Map;
+
+public class Linkcraft extends JavaPlugin {
+
+    public static Linkcraft instance;
+
+    public Map<String, String> saveCreations = new HashMap<>();
+    public Map<String, OfflinePlayer> playerMap = new HashMap<>();
+
+    public static Economy economy = null;
+    private static Chat chat = null;
 
     public LuckPerms luckPerms;
     public ConfigAccessor playerdataConfigAccessor = new ConfigAccessor(this, "playerdata.yml");
     private final FileConfiguration config = getConfig();
 
     public void onEnable() {
+        instance = this;
+
         loadLuckPerms();
 
         new ConfigManager(this).loadConfigs();
@@ -75,6 +91,35 @@ public class LCPractice extends JavaPlugin {
             }
         }
         return 0;
+    }
+
+    private boolean setupEconomy() {
+        RegisteredServiceProvider<Economy> economyProvider = getServer().getServicesManager().getRegistration(Economy.class);
+        if (economyProvider != null)
+            economy = (Economy)economyProvider.getProvider();
+        return (economy != null);
+    }
+
+    public Economy getEconomy() {
+        return economy;
+    }
+
+    private boolean setupChat() {
+        RegisteredServiceProvider<Chat> rsp = getServer().getServicesManager().getRegistration(Chat.class);
+        chat = (Chat)rsp.getProvider();
+        return (chat != null);
+    }
+
+    public Chat getChat() {
+        return chat;
+    }
+
+    public static Linkcraft getInstance() {
+        return instance;
+    }
+
+    public File getPlayerdataFolder() {
+        return new File(getDataFolder(), "playerdata");
     }
 }
 

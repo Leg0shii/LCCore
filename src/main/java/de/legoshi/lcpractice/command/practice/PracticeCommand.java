@@ -1,9 +1,9 @@
-package de.legoshi.lcpractice.command;
+package de.legoshi.lcpractice.command.practice;
 
 import java.util.Arrays;
 
 import de.legoshi.lcpractice.util.Constants;
-import de.legoshi.lcpractice.LCPractice;
+import de.legoshi.lcpractice.Linkcraft;
 import de.legoshi.lcpractice.util.LocationHelper;
 import net.luckperms.api.LuckPerms;
 import net.luckperms.api.model.user.User;
@@ -16,12 +16,13 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 
+// REFACTORED
 public class PracticeCommand implements CommandExecutor {
 
-    private final LCPractice plugin;
+    private final Linkcraft plugin;
     private final FileConfiguration playerdataConfig;
 
-    public PracticeCommand(LCPractice plugin) {
+    public PracticeCommand(Linkcraft plugin) {
         this.plugin = plugin;
         this.playerdataConfig = plugin.playerdataConfigAccessor.getConfig();
     }
