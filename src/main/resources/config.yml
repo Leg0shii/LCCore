@@ -1,26 +1,26 @@
 # Message that is sent if player is not on the ground when using the /practice command.
-block-message: '&3&l&4You must be on a block to use the practice system!'
+block-message: "&3&l\u3010&b&lLinkCraft&3&l\u3011- &4You must be on a block to use the practice system!"
 
 # Message that is sent to remind player that they are practicing.
-practice-message: '&3&l&aYou are on a practice mode, Do /unprac to stop.'
+practice-message: "&3&l\u3010&b&lLinkCraft&3&l\u3011- &aYou are on a practice mode, Do /unprac to stop."
 
 # Message that is sent to the player when they finish practicing.
-unpractice-message: '&3&l&4You have stopped practicing.'
+unpractice-message: "&3&l\u3010&b&lLinkCraft&3&l\u3011- &4You have stopped practicing."
 
 # Message that is sent if the player uses /practice when they are already practicing
-already-practicing-message: '&3&l&4You are already in practice mode!'
+already-practicing-message: "&3&l\u3010&b&lLinkCraft&3&l\u3011- &4You are already in practice mode!"
 
 # Message that is sent if the player uses /unpractice when they are not practicing.
-not-practicing-message: '&3&l&4You are not in a practice mode.'
+not-practicing-message: "&3&l\u3010&b&lLinkCraft&3&l\u3011- &4You are not in a practice mode."
 
 # Message that is sent if player has full inventory when using the /practice command.
-full-inventory-message: '&3&l&4Your inventory is full, Throw some items!'
+full-inventory-message: "&3&l\u3010&b&lLinkCraft&3&l\u3011- &4Your inventory is full, Throw some items!"
 
 # ID:data of the return item. List of materials at https://helpch.at/docs/1.8/org/bukkit/Material.html
-return-item-id: 'SLIME_BALL:0'
+return-item-id: "SLIME_BALL:0"
 
 # The name of the return item.
-return-item-name: "&3&l
+return-item-name: "&3&l\u3010&b&lLC&3&l\u3011-&4Return"
 
 # ------------------------------------- #
 # FOR THE NEXT OPTIONS DO IT LIKE THIS: #
@@ -32,9 +32,11 @@ return-item-name: "&3&l
 # ------------------------------------- #
 
 # Additional commands the console should run when a user uses /practice. Use [player] for the player name. #
+# DON'T ADD THE PERMS HERE, PUT THEM INTO THE PRAC GROUP!!!!
 prac-run-commands:
-  -
+  - lp user [player] parent set prac
 
-  # Additional commands the console should run when a user uses /unpractice. Use [player] for the player name. #
+# Additional commands the console should run when a user uses /unpractice. Use [player] for the player name. #
+# DON'T ADD THE PERMS HERE, PUT THEM INTO THE DEFAULT GROUP!!!!
 unprac-run-commands:
-  -
+  - lp user [player] parent remove prac
