@@ -21,22 +21,3 @@ return-item-id: "SLIME_BALL:0"
 
 # The name of the return item.
 return-item-name: "&3&l\u3010&b&lLC&3&l\u3011-&4Return"
-
-# ------------------------------------- #
-# FOR THE NEXT OPTIONS DO IT LIKE THIS: #
-# ------------------------------------- #
-#             option:                   #
-#              - choice 1               #
-#              - choice 2               #
-#              - choice 3               #
-# ------------------------------------- #
-
-# Additional commands the console should run when a user uses /practice. Use [player] for the player name. #
-# DON'T ADD THE PERMS HERE, PUT THEM INTO THE PRAC GROUP!!!!
-prac-run-commands:
-  - lp user [player] parent set prac
-
-# Additional commands the console should run when a user uses /unpractice. Use [player] for the player name. #
-# DON'T ADD THE PERMS HERE, PUT THEM INTO THE DEFAULT GROUP!!!!
-unprac-run-commands:
-  - lp user [player] parent remove prac

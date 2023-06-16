@@ -1,13 +1,11 @@
 package de.legoshi.lcpractice.command;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
 import de.legoshi.lcpractice.LCPractice;
 import de.legoshi.lcpractice.helper.LocationHelper;
-import org.apache.commons.lang.text.StrSubstitutor;
-import org.bukkit.Bukkit;
+import net.luckperms.api.LuckPerms;
+import net.luckperms.api.model.user.User;
+import net.luckperms.api.node.types.InheritanceNode;
+import net.luckperms.api.node.types.PermissionNode;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.command.Command;
@@ -48,24 +46,36 @@ public class UnpracticeCommand implements CommandExecutor {
         while (p.getInventory().containsAtLeast(returnItem, 1)) {
             p.getInventory().removeItem(this.plugin.getReturnItem());
         }
-        List<String> commandsToRun = this.config.getStringList("unprac-run-commands");
-        if (commandsToRun.isEmpty()) return true;
 
-        runCommands(p, commandsToRun);
+        // Set player from prac group
+        LuckPerms api = plugin.luckPerms;
+        User user = api.getUserManager().getUser(p.getUniqueId());
+
+        if (user != null) {
+            // Set permissions to true
+            user.data().add(PermissionNode.builder("serversigns.use.*").value(true).build());
+            user.data().add(PermissionNode.builder("ps.save").value(true).build());
+            user.data().add(PermissionNode.builder("ps.saves").value(true).build());
+            user.data().add(PermissionNode.builder("pkcp.signs").value(true).build());
+            user.data().add(PermissionNode.builder("chestcommands.open.bonus.yml").value(true).build());
+            user.data().add(PermissionNode.builder("essentials.warp").value(true).build());
+            user.data().add(PermissionNode.builder("essentials.spawn").value(true).build());
+            user.data().add(PermissionNode.builder("chestcommands.open.maze.yml").value(true).build());
+            user.data().add(PermissionNode.builder("chestcommands.open.challenge.yml").value(true).build());
+
+            // Unset permissions
+            user.data().remove(InheritanceNode.builder("prac").build()); // currently just sets the tag NO PERMS BECAUSE OF BONUS AND STUFF
+            user.data().remove(PermissionNode.builder("ps.save").withContext("world", "bonus").build());
+            user.data().remove(PermissionNode.builder("ps.saves").withContext("world", "bonus").build());
+            user.data().remove(PermissionNode.builder("pkcp.signs").withContext("world", "bonus").build());
+
+            // Save changes
+            api.getUserManager().saveUser(user);
+        }
 
         String unpracticeMessage = this.config.getString("unpractice-message");
         p.sendMessage(ChatColor.translateAlternateColorCodes('&', unpracticeMessage));
         return true;
-    }
-
-    protected static void runCommands(Player p, List<String> commandsToRun) {
-        Map<String, String> values = new HashMap<>();
-        values.put("player", p.getName());
-        StrSubstitutor sub = new StrSubstitutor(values, "[", "]");
-        for (int i = 0; i < commandsToRun.size(); i++) {
-            String commandToRun = sub.replace(commandsToRun.toArray()[i]);
-            Bukkit.dispatchCommand(Bukkit.getConsoleSender(), commandToRun);
-        }
     }
 }
 

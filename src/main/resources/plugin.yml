@@ -13,6 +13,7 @@ commands:
     permission: pkprac.practice
   pkpracreload:
     permission: pkprac.reload
+  test:
 permissions:
   pkprac.practice:
     description: Allows the use of the /practice and /unpractice commands.

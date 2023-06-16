@@ -1,10 +1,13 @@
 package de.legoshi.lcpractice.command;
 
 import java.util.Arrays;
-import java.util.List;
 
 import de.legoshi.lcpractice.LCPractice;
 import de.legoshi.lcpractice.helper.LocationHelper;
+import net.luckperms.api.LuckPerms;
+import net.luckperms.api.model.user.User;
+import net.luckperms.api.node.types.InheritanceNode;
+import net.luckperms.api.node.types.PermissionNode;
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -43,10 +46,26 @@ public class PracticeCommand implements CommandExecutor {
             String str1 = LocationHelper.getStringFromLocation(p.getLocation());
             this.playerdataConfig.set(uuid, str1);
             p.getInventory().addItem(this.plugin.getReturnItem());
-            List<String> commandsToRun = config.getStringList("prac-run-commands");
-            if (!commandsToRun.isEmpty()) {
-                UnpracticeCommand.runCommands(p, commandsToRun);
+
+            // Set player to prac group... WELL NOW INDIVIDUAL PERMS...
+            // atleast it doesnt spam anymore
+            LuckPerms api = plugin.luckPerms;
+            User user = api.getUserManager().getUser(p.getUniqueId());
+            if (user != null) {
+                user.data().add(InheritanceNode.builder("prac").build()); // currently just sets the tag NO PERMS BECAUSE OF BONUS AND STUFF
+                user.data().add(PermissionNode.builder("serversigns.use.*").value(false).build());
+                user.data().add(PermissionNode.builder("ps.save").value(false).build());
+                user.data().add(PermissionNode.builder("ps.saves").value(false).build());
+                user.data().add(PermissionNode.builder("pkcp.signs").value(false).build());
+                user.data().add(PermissionNode.builder("pkcp.signs").withContext("world", "bonus").value(false).build());
+                user.data().add(PermissionNode.builder("chestcommands.open.bonus.yml").value(false).build());
+                user.data().add(PermissionNode.builder("essentials.warp").value(false).build());
+                user.data().add(PermissionNode.builder("essentials.spawn").value(false).build());
+                user.data().add(PermissionNode.builder("chestcommands.open.challenge.yml").value(false).build());
+                user.data().add(PermissionNode.builder("chestcommands.open.maze.yml").value(false).build());
+                api.getUserManager().saveUser(user);
             }
+
             String practiceMessage = config.getString("practice-message");
             p.sendMessage(ChatColor.translateAlternateColorCodes('&', practiceMessage));
             return true;

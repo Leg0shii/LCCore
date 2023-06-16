@@ -2,8 +2,11 @@ package de.legoshi.lcpractice;
 
 import de.legoshi.lcpractice.command.PracticeCommand;
 import de.legoshi.lcpractice.command.ReloadCommand;
+import de.legoshi.lcpractice.command.TestCommand;
 import de.legoshi.lcpractice.command.UnpracticeCommand;
 import de.legoshi.lcpractice.helper.ConfigAccessor;
+import net.luckperms.api.LuckPerms;
+import net.luckperms.api.LuckPermsProvider;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
@@ -15,16 +18,28 @@ import org.bukkit.plugin.java.JavaPlugin;
 
 public class LCPractice extends JavaPlugin {
 
+    public LuckPerms luckPerms;
     public ConfigAccessor playerdataConfigAccessor = new ConfigAccessor(this, "playerdata.yml");
     private final FileConfiguration config = getConfig();
 
     public void onEnable() {
+        loadLuckPerms();
         saveDefaultConfig();
         this.playerdataConfigAccessor.saveDefaultConfig();
         getCommand("practice").setExecutor(new PracticeCommand(this));
         getCommand("unpractice").setExecutor(new UnpracticeCommand(this));
         getCommand("pkpracreload").setExecutor(new ReloadCommand(this));
+        getCommand("test").setExecutor(new TestCommand());
         getServer().getPluginManager().registerEvents(new PkPracListener(this), (Plugin) this);
+    }
+
+    private void loadLuckPerms() {
+        try {
+            this.luckPerms = LuckPermsProvider.get();
+        } catch (IllegalStateException e) {
+            Bukkit.getConsoleSender().sendMessage("Couldn't load LuckPerms API! Shutting down Practice Plugin");
+            Bukkit.shutdown();
+        }
     }
 
     public void onDisable() {
