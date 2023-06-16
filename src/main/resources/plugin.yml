@@ -1,0 +1,5 @@
+name: LCPractice
+version: '${project.version}'
+main: de.legoshi.lcpractice.LCPractice
+authors: [Leg0shi_]
+description: Practice Plugin for Linkcraft
