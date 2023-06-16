@@ -1,6 +1,6 @@
 name: LCPractice
 version: '${project.version}'
-main: de.legoshi.lcpractice.LCPractice
+main: de.legoshi.lcpractice.Linkcraft
 authors: [Leg0shi_]
 description: Practice Plugin for Linkcraft
 api-version: 1.8
