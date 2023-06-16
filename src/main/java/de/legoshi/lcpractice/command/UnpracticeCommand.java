@@ -30,8 +30,8 @@ public class UnpracticeCommand implements CommandExecutor {
     }
 
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
-        if (!(sender instanceof Player))
-            return true;
+        if (!(sender instanceof Player)) return true;
+
         this.config = this.plugin.getConfig();
         Player p = (Player) sender;
         String uuid = p.getUniqueId().toString();

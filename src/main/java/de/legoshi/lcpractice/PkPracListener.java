@@ -41,8 +41,7 @@ public class PkPracListener implements Listener {
     @EventHandler
     public void onPlayerDropItemEvent(PlayerDropItemEvent e) {
         Item i = e.getItemDrop();
-        if (i.getItemStack().isSimilar(this.plugin.getReturnItem()))
-            e.setCancelled(true);
+        if (i.getItemStack().isSimilar(this.plugin.getReturnItem())) e.setCancelled(true);
     }
 
     @EventHandler
