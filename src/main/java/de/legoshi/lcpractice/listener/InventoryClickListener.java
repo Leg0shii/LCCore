@@ -26,7 +26,6 @@ public class InventoryClickListener implements Listener {
 
     public InventoryClickListener(Linkcraft plugin) {
         this.plugin = plugin;
-        Bukkit.getPluginManager().registerEvents(this, plugin);
     }
 
     @EventHandler
