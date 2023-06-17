@@ -36,7 +36,7 @@ public class CommandManager {
         plugin.getCommand("chatcolor").setExecutor(new ChatColorCommand());
         plugin.getCommand("chatformat").setExecutor(new ChatFormatCommand());
         plugin.getCommand("togglenotify").setExecutor(new ToggleNotifyCommand());
-        //plugin.getCommand("stats").setExecutor(new StatsCommand());
+        plugin.getCommand("stats").setExecutor(new StatsCommand());
         plugin.getCommand("saves").setExecutor(new SavesCommand());
         plugin.getCommand("save").setExecutor(new SaveCommand(plugin));
         plugin.getCommand("resetsaves").setExecutor(new ResetSavesCommand(plugin));
