@@ -5,11 +5,11 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>de.legoshi</groupId>
-    <artifactId>LCPractice</artifactId>
+    <artifactId>LCCore</artifactId>
     <version>1.0-SNAPSHOT</version>
     <packaging>jar</packaging>
 
-    <name>LCPractice</name>
+    <name>LCCore</name>
 
     <description>Practice Plugin for Linkcraft</description>
     <properties>
@@ -94,28 +94,28 @@
             <artifactId>deluxetags</artifactId>
             <version>1.7.1</version>
             <scope>system</scope>
-            <systemPath>${project.basedir}/dependencies/DeluxeTags.jar</systemPath>
+            <systemPath>${project.basedir}/lib/DeluxeTags.jar</systemPath>
         </dependency>
         <dependency>
             <groupId>net.milkbowl.vault</groupId>
             <artifactId>vault</artifactId>
             <version>1.0</version>
             <scope>system</scope>
-            <systemPath>${project.basedir}/dependencies/Vault.jar</systemPath>
+            <systemPath>${project.basedir}/lib/Vault.jar</systemPath>
         </dependency>
         <dependency>
             <groupId>com.darkender.SecondPrefix</groupId>
             <artifactId>SecondPrefix</artifactId>
             <version>1.0</version>
             <scope>system</scope>
-            <systemPath>${project.basedir}/dependencies/SecondPrefix.jar</systemPath>
+            <systemPath>${project.basedir}/lib/SecondPrefix.jar</systemPath>
         </dependency>
         <dependency>
             <groupId>me.clip.placeholderapi</groupId>
             <artifactId>placeholderapi</artifactId>
             <version>1.0</version>
             <scope>system</scope>
-            <systemPath>${project.basedir}/dependencies/PlaceholderAPI-2.10.10.jar</systemPath>
+            <systemPath>${project.basedir}/lib/PlaceholderAPI-2.10.10.jar</systemPath>
         </dependency>
     </dependencies>
 </project>
