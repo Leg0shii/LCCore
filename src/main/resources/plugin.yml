@@ -15,6 +15,7 @@ commands:
     permission: pkprac.reload
   saves:
   stats:
+    aliases: [ stat, statistic, statistics ]
   save:
   psreload:
   fakeup:
@@ -40,8 +41,6 @@ commands:
   chatformat:
   pex:
   togglenotify:
-  statistics:
-    aliases: [ stat, statistic ]
 permissions:
   pkprac.practice:
     description: Allows the use of the /practice and /unpractice commands.
