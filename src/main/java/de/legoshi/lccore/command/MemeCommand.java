@@ -30,7 +30,7 @@ public class MemeCommand implements CommandExecutor {
 
             if (args.length == 0) {
                 Player p = (Player) sender;
-                Bukkit.broadcastMessage(Utils.chat(DeluxeTag.getPlayerDisplayTag(p) + " " + SecondPrefix.getPrefix(p) + p.getDisplayName() + " &7" + eggsmessage));
+                Bukkit.broadcastMessage(Utils.chat(DeluxeTag.getPlayerDisplayTag(p) + " " + SecondPrefix.getPrefix(p) + p.getDisplayName() + " &7» " + eggsmessage));
                 return true;
             }
 
@@ -46,7 +46,7 @@ public class MemeCommand implements CommandExecutor {
                     return true;
                 }
 
-                Bukkit.broadcastMessage(Utils.chat(DeluxeTag.getPlayerDisplayTag(p) + " " + SecondPrefix.getPrefix(p) + p.getDisplayName() + " &7" + eggsmessage));
+                Bukkit.broadcastMessage(Utils.chat(DeluxeTag.getPlayerDisplayTag(p) + " " + SecondPrefix.getPrefix(p) + p.getDisplayName() + " &7» " + eggsmessage));
                 return true;
             }
 
@@ -63,7 +63,7 @@ public class MemeCommand implements CommandExecutor {
             if (!(sender instanceof Player)) return true;
             if (args.length == 0) {
                 Player p = (Player) sender;
-                Bukkit.broadcastMessage(Utils.chat(DeluxeTag.getPlayerDisplayTag(p) + " " + SecondPrefix.getPrefix(p) + p.getDisplayName() + " &7" + failmessage));
+                Bukkit.broadcastMessage(Utils.chat(DeluxeTag.getPlayerDisplayTag(p) + " " + SecondPrefix.getPrefix(p) + p.getDisplayName() + " &7» " + failmessage));
                 return true;
             }
             if (args.length == 1) {
@@ -76,7 +76,7 @@ public class MemeCommand implements CommandExecutor {
                     sender.sendMessage(Utils.chat("&cNo player online with that name"));
                     return true;
                 }
-                Bukkit.broadcastMessage(Utils.chat(DeluxeTag.getPlayerDisplayTag(p) + " " + SecondPrefix.getPrefix(p) + p.getDisplayName() + " &7" + failmessage));
+                Bukkit.broadcastMessage(Utils.chat(DeluxeTag.getPlayerDisplayTag(p) + " " + SecondPrefix.getPrefix(p) + p.getDisplayName() + " &7» " + failmessage));
                 return true;
             }
             if (!sender.hasPermission("lc.others.fail")) {
@@ -90,7 +90,7 @@ public class MemeCommand implements CommandExecutor {
             if (!(sender instanceof Player)) return true;
             if (args.length == 0) {
                 Player p = (Player) sender;
-                Bukkit.broadcastMessage(Utils.chat(DeluxeTag.getPlayerDisplayTag(p) + " " + SecondPrefix.getPrefix(p) + p.getDisplayName() + " &7" + ggmessage + " &8"));
+                Bukkit.broadcastMessage(Utils.chat(DeluxeTag.getPlayerDisplayTag(p) + " " + SecondPrefix.getPrefix(p) + p.getDisplayName() + " &7» " + ggmessage + " &8"));
                 return true;
             } if (args.length == 1) {
                 if (!sender.hasPermission("lc.others.gg")) {
@@ -102,7 +102,7 @@ public class MemeCommand implements CommandExecutor {
                     sender.sendMessage(Utils.chat("&cNo player online with that name"));
                     return true;
                 }
-                Bukkit.broadcastMessage(Utils.chat(DeluxeTag.getPlayerDisplayTag(p) + " " + SecondPrefix.getPrefix(p) + p.getDisplayName() + " &7" + ggmessage + " &8"));
+                Bukkit.broadcastMessage(Utils.chat(DeluxeTag.getPlayerDisplayTag(p) + " " + SecondPrefix.getPrefix(p) + p.getDisplayName() + " &7» " + ggmessage + " &8"));
                 return true;
             } if (!sender.hasPermission("lc.others.gg")) {
                 sender.sendMessage(Utils.chat("&cInsufficient permissions"));
@@ -114,7 +114,7 @@ public class MemeCommand implements CommandExecutor {
             if (!(sender instanceof Player)) return true;
             if (args.length == 0) {
                 Player p = (Player) sender;
-                Bukkit.broadcastMessage(Utils.chat(DeluxeTag.getPlayerDisplayTag(p) + " " + SecondPrefix.getPrefix(p) + p.getDisplayName() + " &7" + glmessage + " &e"));
+                Bukkit.broadcastMessage(Utils.chat(DeluxeTag.getPlayerDisplayTag(p) + " " + SecondPrefix.getPrefix(p) + p.getDisplayName() + " &7» " + glmessage + " &e"));
                 return true;
             } if (args.length == 1) {
                 if (!sender.hasPermission("lc.others.gl")) {
@@ -126,7 +126,7 @@ public class MemeCommand implements CommandExecutor {
                     sender.sendMessage(Utils.chat("&cNo player online with that name"));
                     return true;
                 }
-                Bukkit.broadcastMessage(Utils.chat(DeluxeTag.getPlayerDisplayTag(p) + " " + SecondPrefix.getPrefix(p) + p.getDisplayName() + " &7" + glmessage + " &e"));
+                Bukkit.broadcastMessage(Utils.chat(DeluxeTag.getPlayerDisplayTag(p) + " " + SecondPrefix.getPrefix(p) + p.getDisplayName() + " &7» " + glmessage + " &e"));
                 return true;
             } if (!sender.hasPermission("lc.others.gl")) {
                 sender.sendMessage(Utils.chat("&cInsufficient permissions"));
@@ -139,7 +139,7 @@ public class MemeCommand implements CommandExecutor {
                 return true;
             if (args.length == 0) {
                 Player p = (Player) sender;
-                Bukkit.broadcastMessage(Utils.chat(DeluxeTag.getPlayerDisplayTag(p) + " " + SecondPrefix.getPrefix(p) + p.getDisplayName() + " &7" + hammessage));
+                Bukkit.broadcastMessage(Utils.chat(DeluxeTag.getPlayerDisplayTag(p) + " " + SecondPrefix.getPrefix(p) + p.getDisplayName() + " &7» " + hammessage));
                 return true;
             }
             if (args.length == 1) {
@@ -152,7 +152,7 @@ public class MemeCommand implements CommandExecutor {
                     sender.sendMessage(Utils.chat("&cNo player online with that name"));
                     return true;
                 }
-                Bukkit.broadcastMessage(Utils.chat(DeluxeTag.getPlayerDisplayTag(p) + " " + SecondPrefix.getPrefix(p) + p.getDisplayName() + " &7" + hammessage));
+                Bukkit.broadcastMessage(Utils.chat(DeluxeTag.getPlayerDisplayTag(p) + " " + SecondPrefix.getPrefix(p) + p.getDisplayName() + " &7» " + hammessage));
                 return true;
             }
             if (!sender.hasPermission("lc.others.ham")) {
@@ -167,7 +167,7 @@ public class MemeCommand implements CommandExecutor {
                 return true;
             if (args.length == 0) {
                 Player p = (Player) sender;
-                Bukkit.broadcastMessage(Utils.chat(DeluxeTag.getPlayerDisplayTag(p) + " " + SecondPrefix.getPrefix(p) + p.getDisplayName() + " &7" + ripmessage + " &8"));
+                Bukkit.broadcastMessage(Utils.chat(DeluxeTag.getPlayerDisplayTag(p) + " " + SecondPrefix.getPrefix(p) + p.getDisplayName() + " &7» " + ripmessage + " &8"));
                 return true;
             } if (args.length == 1) {
                 if (!sender.hasPermission("lc.others.rip")) {
@@ -179,7 +179,7 @@ public class MemeCommand implements CommandExecutor {
                     sender.sendMessage(Utils.chat("&cNo player online with that name"));
                     return true;
                 }
-                Bukkit.broadcastMessage(Utils.chat(DeluxeTag.getPlayerDisplayTag(p) + " " + SecondPrefix.getPrefix(p) + p.getDisplayName() + " &7" + ripmessage + " &8"));
+                Bukkit.broadcastMessage(Utils.chat(DeluxeTag.getPlayerDisplayTag(p) + " " + SecondPrefix.getPrefix(p) + p.getDisplayName() + " &7» " + ripmessage + " &8"));
                 return true;
             } if (!sender.hasPermission("lc.others.rip")) {
                 sender.sendMessage(Utils.chat("&cInsufficient permissions"));
