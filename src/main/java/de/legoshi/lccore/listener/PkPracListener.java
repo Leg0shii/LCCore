@@ -19,20 +19,14 @@ import org.bukkit.event.player.PlayerJoinEvent;
 // REFACTORED
 public class PkPracListener implements Listener {
 
-    private final Linkcraft plugin;
-    private final FileConfiguration playerdataConfig;
-
-    public PkPracListener(Linkcraft plugin) {
-        this.plugin = plugin;
-        this.playerdataConfig = plugin.playerdataConfigAccessor.getConfig();
-    }
+    private final FileConfiguration playerdataConfig = Linkcraft.getInstance().playerdataConfigAccessor.getConfig();
 
     @EventHandler
     public void onPlayerInteract(PlayerInteractEvent e) {
         Action a = e.getAction();
         Player p = e.getPlayer();
         String uuid = p.getUniqueId().toString();
-        if (a != Action.LEFT_CLICK_AIR && a != Action.LEFT_CLICK_BLOCK && a != Action.PHYSICAL && p.getItemInHand().isSimilar(this.plugin.getReturnItem())) {
+        if (a != Action.LEFT_CLICK_AIR && a != Action.LEFT_CLICK_BLOCK && a != Action.PHYSICAL && p.getItemInHand().isSimilar(Linkcraft.getInstance().getReturnItem())) {
             e.setCancelled(true);
             String saved = this.playerdataConfig.getString(uuid);
             if (saved != null) {
@@ -45,12 +39,12 @@ public class PkPracListener implements Listener {
     @EventHandler
     public void onPlayerDropItemEvent(PlayerDropItemEvent e) {
         Item i = e.getItemDrop();
-        if (i.getItemStack().isSimilar(this.plugin.getReturnItem())) e.setCancelled(true);
+        if (i.getItemStack().isSimilar(Linkcraft.getInstance().getReturnItem())) e.setCancelled(true);
     }
 
     @EventHandler
     public void onPlayerJoinEvent(PlayerJoinEvent e) {
-        FileConfiguration config = this.plugin.getConfig();
+        FileConfiguration config = Linkcraft.getInstance().getConfig();
         Player p = e.getPlayer();
         String uuid = p.getUniqueId().toString();
         if (this.playerdataConfig.getString(uuid) != null) {

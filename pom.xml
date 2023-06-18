@@ -74,6 +74,10 @@
             <id>luckperms</id>
             <url>https://nexus.lucko.me/repository/maven-public/</url>
         </repository>
+        <repository>
+            <id>unnamed-public</id>
+            <url>https://repo.unnamed.team/repository/unnamed-public/</url>
+        </repository>
     </repositories>
 
     <dependencies>
@@ -116,6 +120,11 @@
             <version>1.0</version>
             <scope>system</scope>
             <systemPath>${project.basedir}/lib/PlaceholderAPI-2.10.10.jar</systemPath>
+        </dependency>
+        <dependency>
+            <groupId>team.unnamed</groupId>
+            <artifactId>inject</artifactId>
+            <version>2.0.0</version>
         </dependency>
     </dependencies>
 </project>

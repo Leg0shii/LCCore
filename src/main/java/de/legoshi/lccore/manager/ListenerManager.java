@@ -3,22 +3,24 @@ package de.legoshi.lccore.manager;
 import de.legoshi.lccore.Linkcraft;
 import de.legoshi.lccore.listener.*;
 import org.bukkit.plugin.PluginManager;
+import team.unnamed.inject.Inject;
 
 // REFACTORED
 public class ListenerManager {
-    private final Linkcraft plugin;
-    private final PluginManager pluginManager;
 
-    public ListenerManager(Linkcraft plugin) {
-        this.plugin = plugin;
-        this.pluginManager = plugin.getServer().getPluginManager();
-    }
+    @Inject private Linkcraft plugin;
+    @Inject private PkPracListener pkPracListener;
+    @Inject private InventoryClickListener inventoryClickListener;
+    @Inject private GeneralListener generalListener;
+    @Inject private PlayerJoinListener playerJoinListener;
+    @Inject private PlayerLeaveListener playerLeaveListener;
 
     public void registerEvents() {
-        pluginManager.registerEvents(new PkPracListener(plugin), plugin);
-        pluginManager.registerEvents(new InventoryClickListener(plugin), plugin);
-        pluginManager.registerEvents(new GeneralListener(), plugin);
-        pluginManager.registerEvents(new PlayerJoinListener(plugin), plugin);
-        pluginManager.registerEvents(new PlayerLeaveListener(plugin), plugin);
+        PluginManager pluginManager = plugin.getServer().getPluginManager();
+        pluginManager.registerEvents(pkPracListener, plugin);
+        pluginManager.registerEvents(inventoryClickListener, plugin);
+        pluginManager.registerEvents(generalListener, plugin);
+        pluginManager.registerEvents(playerJoinListener, plugin);
+        pluginManager.registerEvents(playerLeaveListener, plugin);
     }
 }

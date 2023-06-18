@@ -172,4 +172,14 @@ public class Utils {
         }
         return new ItemStack(randomBlock, 1, (short) randomID);
     }
+
+    public static String format(String message, String format, Object... objects) {
+        for (int i = 0; i < objects.length; i++) {
+            String placeholder = String.format(format, i);
+            String o = String.valueOf(objects[i]);
+            message = message.replace(placeholder, o);
+        }
+
+        return message;
+    }
 }

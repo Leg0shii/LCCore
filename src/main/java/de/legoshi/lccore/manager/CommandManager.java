@@ -2,16 +2,23 @@ package de.legoshi.lccore.manager;
 
 import de.legoshi.lccore.Linkcraft;
 import de.legoshi.lccore.command.*;
+import de.legoshi.lccore.command.hide.Hide;
+import de.legoshi.lccore.command.hide.HideAll;
+import de.legoshi.lccore.command.hide.Show;
+import de.legoshi.lccore.command.hide.ShowAll;
 import de.legoshi.lccore.command.practice.PracticeCommand;
 import de.legoshi.lccore.command.practice.UnpracticeCommand;
+import team.unnamed.inject.Injector;
 
 // REFACTORED
 public class CommandManager {
 
     private final Linkcraft plugin;
+    private final Injector injector;
 
-    public CommandManager(Linkcraft plugin) {
+    public CommandManager(Linkcraft plugin, Injector injector) {
         this.plugin = plugin;
+        this.injector = injector;
     }
 
     public void registerCommands() {
@@ -43,6 +50,10 @@ public class CommandManager {
         plugin.getCommand("psreload").setExecutor(new ReloadCommand(plugin));
         plugin.getCommand("pingtp").setExecutor(new PingtpCommand());
         plugin.getCommand("pex").setExecutor(new PexCommand());
+        plugin.getCommand("hide").setExecutor(injector.getInstance(Hide.class));
+        plugin.getCommand("hideall").setExecutor(injector.getInstance(HideAll.class));
+        plugin.getCommand("show").setExecutor(injector.getInstance(Show.class));
+        plugin.getCommand("showall").setExecutor(injector.getInstance(ShowAll.class));
     }
 
 }

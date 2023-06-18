@@ -1,5 +1,6 @@
 package de.legoshi.lccore;
 
+import de.legoshi.lccore.inject.LinkcraftModule;
 import de.legoshi.lccore.manager.ListenerManager;
 import de.legoshi.lccore.papi.PlaceHolderAPI;
 import de.legoshi.lccore.util.ConfigAccessor;
@@ -19,6 +20,7 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.java.JavaPlugin;
+import team.unnamed.inject.Injector;
 
 import java.io.File;
 import java.util.HashMap;
@@ -42,9 +44,10 @@ public class Linkcraft extends JavaPlugin {
         instance = this;
 
         loadDependencies();
+        Injector injector = Injector.create(new LinkcraftModule(this));
         new ConfigManager(this).loadConfigs();
-        new CommandManager(this).registerCommands();
-        new ListenerManager(this).registerEvents();
+        new CommandManager(this, injector).registerCommands();
+        injector.getInstance(ListenerManager.class).registerEvents();
     }
 
     private void loadDependencies() {

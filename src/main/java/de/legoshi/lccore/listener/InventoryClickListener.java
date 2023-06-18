@@ -21,12 +21,6 @@ import java.util.Set;
 // PARTLY REFACTORED
 public class InventoryClickListener implements Listener {
 
-    private final Linkcraft plugin;
-
-    public InventoryClickListener(Linkcraft plugin) {
-        this.plugin = plugin;
-    }
-
     @EventHandler
     public void eggThrow(PlayerEggThrowEvent e) {
         Player p = e.getPlayer();
@@ -50,9 +44,9 @@ public class InventoryClickListener implements Listener {
             e.setCancelled(true);
             if (e.getCurrentItem() == null) return;
             if (e.getClick().isShiftClick() && e.getSlot() < 36) {
-                OfflinePlayer target = this.plugin.playerMap.get(e.getWhoClicked().getName());
+                OfflinePlayer target = Linkcraft.getInstance().playerMap.get(e.getWhoClicked().getName());
                 String uuid = target.getUniqueId().toString();
-                ConfigAccessor playerData = new ConfigAccessor((JavaPlugin)this.plugin, this.plugin.getPlayerdataFolder(), uuid + ".yml");
+                ConfigAccessor playerData = new ConfigAccessor((JavaPlugin)Linkcraft.getInstance(), Linkcraft.getInstance().getPlayerdataFolder(), uuid + ".yml");
                 FileConfiguration playerDataConfig = playerData.getConfig();
                 Set<String> keys = playerDataConfig.getConfigurationSection("Saves").getKeys(false);
                 playerDataConfig.set("Saves." + keys.toArray()[slot + (AdminUI.currentPage.get(e.getWhoClicked().getUniqueId().toString()) - 1) * 36], null);

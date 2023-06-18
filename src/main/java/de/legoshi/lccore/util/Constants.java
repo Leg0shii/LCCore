@@ -11,6 +11,12 @@ public class Constants {
     public static final String NOT_PRACTICING_MESSAGE = "not-practicing-message";
     public static final String BLOCK_MESSAGE = "block-message";
     public static final String FULL_INVENTORY_MESSAGE = "full-inventory-message";
+    public static final String NOT_A_PLAYER = "not-a-player";
+    public static final String HIDE_ALL = "hide-all-msg";
+    public static final String HIDE_ONE = "hide-one-msg";
+    public static final String SHOW_ALL = "show-all-msg";
+    public static final String SHOW_ONE = "show-one-msg";
+    public static final String IS_OFFLINE = "is-offline";
 
     // Permission nodes
     public static final String PRAC = "prac";

@@ -41,6 +41,10 @@ commands:
   chatformat:
   pex:
   togglenotify:
+  hide:
+  hideall:
+  showall:
+  show:
 permissions:
   pkprac.practice:
     description: Allows the use of the /practice and /unpractice commands.

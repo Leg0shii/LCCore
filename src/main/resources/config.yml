@@ -16,6 +16,24 @@ not-practicing-message: "&3&l\u3010&b&lLinkCraft&3&l\u3011- &4You are not in a p
 # Message that is sent if player has full inventory when using the /practice command.
 full-inventory-message: "&3&l\u3010&b&lLinkCraft&3&l\u3011- &4Your inventory is full, Throw some items!"
 
+# Message that is sent when a player uses /hideall
+hide-all-msg: "&fYou are now &bhiding &fall players."
+
+# Message that is sent when a player uses /hide
+hide-one-msg: "&fYou are now &bhiding {player}"
+
+# Message that is sent when a player uses /show
+show-one-msg: "&fYou are now &bshowing {player}"
+
+# Message that is sent when a player uses /showall
+show-all-msg: "&fYou are now &bshowing &fall players."
+
+# Message that is sent if a non player tries to execute a command
+not-a-player: "&cYou have to be a player to execute this command."
+
+# Message that is sent if a player executes a command that requires an online player, but they are offline
+is-offline: "&c{player} is currently offline."
+
 # ID:data of the return item. List of materials at https://helpch.at/docs/1.8/org/bukkit/Material.html
 return-item-id: "SLIME_BALL:0"
 
