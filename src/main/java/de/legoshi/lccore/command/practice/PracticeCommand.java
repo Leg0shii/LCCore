@@ -54,7 +54,7 @@ public class PracticeCommand implements CommandExecutor {
             LuckPerms api = plugin.luckPerms;
             User user = api.getUserManager().getUser(p.getUniqueId());
             if (user != null) {
-                user.data().add(InheritanceNode.builder(Constants.PRAC).build()); // currently just sets the tag NO PERMS BECAUSE OF BONUS AND STUFF
+                //user.data().add(InheritanceNode.builder(Constants.PRAC).build()); // currently just sets the tag NO PERMS BECAUSE OF BONUS AND STUFF
                 user.data().add(PermissionNode.builder(Constants.SERVERSIGNS_USE_ALL).value(false).build());
                 user.data().add(PermissionNode.builder(Constants.PS_SAVE).value(false).build());
                 user.data().add(PermissionNode.builder(Constants.PS_SAVES).value(false).build());
