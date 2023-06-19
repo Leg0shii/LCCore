@@ -1,10 +1,14 @@
 package de.legoshi.lccore.util;
 
+import com.google.gson.JsonParser;
+import de.legoshi.lccore.Linkcraft;
 import org.bukkit.*;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
+import java.io.FileReader;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
@@ -181,5 +185,19 @@ public class Utils {
         }
 
         return message;
+    }
+
+    public static int getStatistic(OfflinePlayer player, String key) {
+        String world = Linkcraft.getInstance().getConfig().getString(Constants.DEFAULT_WORLD);
+        if(world == null) {
+            return -1;
+        }
+
+        try(FileReader reader = new FileReader(world + "/stats/" + player.getUniqueId().toString() + ".json")) {
+            JsonParser parser = new JsonParser();
+            return parser.parse(reader).getAsJsonObject().get(key).getAsInt();
+        } catch (IOException e) {
+            return -1;
+        }
     }
 }

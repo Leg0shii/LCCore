@@ -17,6 +17,8 @@ public class Constants {
     public static final String SHOW_ALL = "show-all-msg";
     public static final String SHOW_ONE = "show-one-msg";
     public static final String IS_OFFLINE = "is-offline";
+    public static final String DEFAULT_WORLD = "default-world";
+    public static final String STAT_PLAY_ONE_TICK = "stat.playOneMinute";
 
     // Permission nodes
     public static final String PRAC = "prac";

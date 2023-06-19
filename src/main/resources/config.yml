@@ -1,3 +1,6 @@
+# Used to find player statistic files
+default-world: "<worldname>"
+
 # Message that is sent if player is not on the ground when using the /practice command.
 block-message: "&3&l\u3010&b&lLinkCraft&3&l\u3011- &4You must be on a block to use the practice system!"
 
