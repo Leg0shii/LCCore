@@ -45,11 +45,48 @@ commands:
   hideall:
   showall:
   show:
+  checkpoint:
+    description: Return to your checkpoint.
+    aliases: [cp]
+    usage: /checkpoint
+    permission: pkcp.checkpoint
+    permission-message: You do not have permission to use this command!
+  checkpointdelete:
+    description: Delete a checkpoint from a player.
+    aliases: [cpd, cpdelete]
+    usage: /checkpointdelete <player> <map>
+    permission: pkcp.checkpointdelete
+    permission-message: You do not have permission to use this command!
+  sendtomap:
+    description: Send a player to a specific map.
+    aliases: [stm]
+    usage: /sendtomap <player> <map>
+    permission: pkcp.sendto
+    permission-message: You do not have permission to use this command!
+  savecheckpoint:
+    description: Save a checkpoint right at the player's spot.
+    aliases: [savecp, scp]
+    usage: /savecheckpoint
+    permission: pkcp.savecheckpoint
+    permission-message: You do not have permission to use this command!
+
 permissions:
   pkprac.practice:
     description: Allows the use of the /practice and /unpractice commands.
     default: op
   pkprac.reload:
     description: Allows the use of the /pkpracreload command. (You shouldn't give this out to all players)
+    default: op
+  pkcp.checkpoint:
+    description: Allows the use of the command /checkpoint (true by default)
+    default: true
+  pkcp.sendto:
+    description: Allows the use of the command /sendto
+    default: op
+  pkcp.checkpointdelete:
+    description: Allows the use of the command /checkpoint delete
+    default: op
+  pkcp.savecheckpoint:
+    description: Allows the use of the command /savecheckpoint
     default: op
 

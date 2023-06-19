@@ -16,8 +16,16 @@ public class ConfigManager {
         plugin.saveDefaultConfig();
         plugin.playerdataConfigAccessor.saveDefaultConfig();
 
+        // prac
         File playerData = new File(plugin.getDataFolder(), "playerdata");
         if (!playerData.exists()) playerData.mkdir();
+
+        // checkpoints
+        File signs = new File(plugin.getDataFolder().getAbsolutePath() + File.separator + "signs");
+        if (!signs.exists()) signs.mkdir();
+
+        File players = new File(plugin.getDataFolder().getAbsolutePath() + File.separator + "players");
+        if (!players.exists()) players.mkdir();
 
         ColorHelper.load();
     }

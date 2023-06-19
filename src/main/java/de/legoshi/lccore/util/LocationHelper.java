@@ -6,11 +6,9 @@ import org.bukkit.World;
 
 // PARTLY REFACTORED
 public class LocationHelper {
-
     public static String getStringFromLocation(Location l) {
         return (l == null) ? "" : (l.getWorld().getName() + ":" + l.getX() + ":" + l.getY() + ":" + l.getZ() + ":" + l.getYaw() + ":" + l.getPitch());
     }
-
     public static Location getLocationFromString(String s) {
         if (s != null && !s.trim().equals("")) {
             String[] parts = s.split(":");

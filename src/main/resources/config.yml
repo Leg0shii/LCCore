@@ -68,3 +68,7 @@ ripmessage: '&0&lR&8&lI&f&lP'
 hammessage: '&d&lha &c&lm'
 eggsmessage: '&6&lE&e&lG&6&lg&e&LS'
 failmessage: '&f&lFAIL'
+
+# CHECKPOINTS
+message-name: '&c&lC&6&lo&e&ll&a&lo&9&lr&d&lCraft&5&lPk &8&l>' # The name that shows up when messaging the player.
+sign-name: '&c&lC&6&lo&e&ll&a&lo&9&lr&d&lCraft&5&lPk' # The name that shows up on the sign.

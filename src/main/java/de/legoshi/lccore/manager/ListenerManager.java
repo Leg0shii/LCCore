@@ -14,6 +14,7 @@ public class ListenerManager {
     @Inject private GeneralListener generalListener;
     @Inject private PlayerJoinListener playerJoinListener;
     @Inject private PlayerLeaveListener playerLeaveListener;
+    @Inject private CheckPointListener checkPointListener;
 
     public void registerEvents() {
         PluginManager pluginManager = plugin.getServer().getPluginManager();
@@ -22,5 +23,6 @@ public class ListenerManager {
         pluginManager.registerEvents(generalListener, plugin);
         pluginManager.registerEvents(playerJoinListener, plugin);
         pluginManager.registerEvents(playerLeaveListener, plugin);
+        pluginManager.registerEvents(checkPointListener, plugin);
     }
 }
