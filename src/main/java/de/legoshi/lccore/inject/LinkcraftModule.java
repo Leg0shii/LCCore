@@ -22,5 +22,6 @@ public class LinkcraftModule extends AbstractModule {
         bind(PkPracListener.class).singleton();
         bind(PlayerJoinListener.class).singleton();
         bind(PlayerLeaveListener.class).singleton();
+        bind(CheckPointListener.class).singleton();
     }
 }
