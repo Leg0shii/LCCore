@@ -37,12 +37,12 @@ public class StatsCommand implements CommandExecutor {
         if (sender instanceof Player && (args.length == 0 || !sender.hasPermission("lc.stats.others"))) {
             Player player = (Player) sender;
             String prefix = Linkcraft.getInstance().getChat().getPlayerPrefix(player);
-            float hours = player.getStatistic(Statistic.PLAY_ONE_TICK) / 72000.0F;
+            String hours = Utils.hoursToHoursAndMinutes(player.getStatistic(Statistic.PLAY_ONE_TICK) / 72000.0F);
             int jumps = player.getStatistic(Statistic.JUMP);
-            String pp = Linkcraft.getInstance().getEconomy().getBalance((OfflinePlayer) player) + "pp";
+            String pp = (int)Linkcraft.getInstance().getEconomy().getBalance((OfflinePlayer) player) + "pp";
             int tags = DeluxeTag.getAvailableTagIdentifiers(player).size();
             String joinDate = (new SimpleDateFormat("d MMMM y")).format(new Date(player.getFirstPlayed()));
-            sender.sendMessage(Utils.chat("&7Your LinkCraft Stats:\n&8&7Rank: " + prefix + "\n&8&7Hours: &b" + hours + "\n&8&7Jumps: &b" + jumps + "\n&8&7Performance Points: &b" + pp + "\n&8&7Tags: &b" + tags + "\n&8&7Join Date: &b" + joinDate));
+            sender.sendMessage(Utils.chat("&7Your LinkCraft Stats:\n&8&7Rank: " + prefix + "\n&8&7Time Played: &b" + hours + "\n&8&7Jumps: &b" + jumps + "\n&8&7Performance Points: &b" + pp + "\n&8&7Tags: &b" + tags + "\n&8&7Join Date: &b" + joinDate));
         } else {
             Player target = Bukkit.getPlayer(args[0]);
             if (target == null) {
@@ -56,7 +56,7 @@ public class StatsCommand implements CommandExecutor {
                     FileConfiguration playerDataConfig = playerData.getConfig();
                     String prefix = Linkcraft.getInstance().getChat().getPlayerPrefix(Utils.getLocationFromString(playerDataConfig.getString("lastlocation")).getWorld().getName(), offlinePlayer);
 
-                    float hours = Utils.getStatistic(offlinePlayer, Constants.STAT_PLAY_ONE_TICK) / 72000.0F;
+                    String hours = Utils.hoursToHoursAndMinutes(Utils.getStatistic(offlinePlayer, Constants.STAT_PLAY_ONE_TICK) / 72000.0F);
                     if (playerDataConfig.get("jumps") == null) {
                         playerDataConfig.set("jumps", Integer.valueOf(-1));
                         playerDataConfig.set("tags", Integer.valueOf(-1));
@@ -64,18 +64,18 @@ public class StatsCommand implements CommandExecutor {
                     }
                     String jumps = (playerDataConfig.getInt("jumps") != -1) ? String.valueOf(playerDataConfig.getInt("jumps")) : "No jumps recorded yet...";
                     String tags = (playerDataConfig.getInt("tags") != -1) ? String.valueOf(playerDataConfig.getInt("tags")) : "No tags recorded yet...";
-                    String pp = Linkcraft.getInstance().getEconomy().getBalance(offlinePlayer) + "pp";
+                    String pp = (int)Linkcraft.getInstance().getEconomy().getBalance(offlinePlayer) + "pp";
                     String joinDate = (new SimpleDateFormat("d MMMM y")).format(new Date(offlinePlayer.getFirstPlayed()));
-                    sender.sendMessage(Utils.chat("&7" + args[0] + "'s LinkCraft Stats:\n&8&7Rank: " + prefix + "\n&8&7Hours: &b" + hours + "\n&8&7Jumps: &b" + jumps + "\n&8&7Performance Points: &b" + pp + "\n&8&7Tags: &b" + tags + "\n&8&7Join Date: &b" + joinDate));
+                    sender.sendMessage(Utils.chat("&7" + args[0] + "'s LinkCraft Stats:\n&8&7Rank: " + prefix + "\n&8&7Time Played: &b" + hours + "\n&8&7Jumps: &b" + jumps + "\n&8&7Performance Points: &b" + pp + "\n&8&7Tags: &b" + tags + "\n&8&7Join Date: &b" + joinDate));
                 });
             } else {
                 String prefix = Linkcraft.getInstance().getChat().getPlayerPrefix(target);
-                float hours = target.getStatistic(Statistic.PLAY_ONE_TICK) / 72000.0F;
+                String hours =  Utils.hoursToHoursAndMinutes(target.getStatistic(Statistic.PLAY_ONE_TICK) / 72000.0F);
                 int jumps = target.getStatistic(Statistic.JUMP);
-                String pp = Linkcraft.getInstance().getEconomy().getBalance((OfflinePlayer) target) + "pp";
+                String pp = (int)Linkcraft.getInstance().getEconomy().getBalance((OfflinePlayer) target) + "pp";
                 int tags = DeluxeTag.getAvailableTagIdentifiers(target).size();
                 String joinDate = (new SimpleDateFormat("d MMMM y")).format(new Date(target.getFirstPlayed()));
-                sender.sendMessage(Utils.chat("&7" + target.getName() + "'s LinkCraft Stats:\n&8&7Rank: " + prefix + "\n&8&7Hours: &b" + hours + "\n&8&7Jumps: &b" + jumps + "\n&8&7Performance Points: &b" + pp + "\n&8&7Tags: &b" + tags + "\n&8&7Join Date: &b" + joinDate));
+                sender.sendMessage(Utils.chat("&7" + target.getName() + "'s LinkCraft Stats:\n&8&7Rank: " + prefix + "\n&8&7Time Played: &b" + hours + "\n&8&7Jumps: &b" + jumps + "\n&8&7Performance Points: &b" + pp + "\n&8&7Tags: &b" + tags + "\n&8&7Join Date: &b" + joinDate));
             }
         }
         return true;

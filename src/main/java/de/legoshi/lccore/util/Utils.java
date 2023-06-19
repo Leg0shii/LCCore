@@ -200,4 +200,14 @@ public class Utils {
             return -1;
         }
     }
+
+
+
+    public static String hoursToHoursAndMinutes(float hours) {
+        int totalMinutes = (int) (hours * 60); // Convert hours to minutes
+        int resultHours = totalMinutes / 60;
+        int resultMinutes = totalMinutes % 60;
+
+        return resultHours + "h " + resultMinutes + "m";
+    }
 }
