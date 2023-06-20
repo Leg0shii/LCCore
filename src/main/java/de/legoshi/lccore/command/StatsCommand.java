@@ -63,7 +63,7 @@ public class StatsCommand implements CommandExecutor {
                         playerData.saveConfig();
                     }
                     String jumps = (playerDataConfig.getInt("jumps") != -1) ? String.valueOf(playerDataConfig.getInt("jumps")) : "No jumps recorded yet...";
-                    String tags = (playerDataConfig.getInt("tags") != -1) ? String.valueOf(playerDataConfig.getInt("tags")) : "No tags recorded yet...";
+                    String tags = (playerDataConfig.getInt("tags") != -1) ? "" + playerDataConfig.getStringList("tags").size() : "No tags recorded yet...";
                     String pp = (int)Linkcraft.getInstance().getEconomy().getBalance(offlinePlayer) + "pp";
                     String joinDate = (new SimpleDateFormat("d MMMM y")).format(new Date(offlinePlayer.getFirstPlayed()));
                     sender.sendMessage(Utils.chat("&7" + args[0] + "'s LinkCraft Stats:\n&8&7Rank: " + prefix + "\n&8&7Time Played: &b" + hours + "\n&8&7Jumps: &b" + jumps + "\n&8&7Performance Points: &b" + pp + "\n&8&7Tags: &b" + tags + "\n&8&7Join Date: &b" + joinDate));
