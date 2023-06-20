@@ -2,12 +2,14 @@ package de.legoshi.lccore.ui;
 
 import de.legoshi.lccore.Linkcraft;
 import de.legoshi.lccore.util.ConfigAccessor;
+import de.legoshi.lccore.util.Constants;
 import de.legoshi.lccore.util.Utils;
-import org.apache.commons.lang.text.StrSubstitutor;
+import net.luckperms.api.LuckPerms;
+import net.luckperms.api.model.user.User;
+import net.luckperms.api.node.types.PermissionNode;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Sound;
-import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
@@ -94,36 +96,29 @@ public class SavesUI {
             }
             int page = currentPage.get(p.getUniqueId().toString());
             final FileConfiguration config = plugin.getConfig();
-            List<String> commandsToRun = config.getStringList("save-teleport-commands");
-            if (!commandsToRun.isEmpty()) {
-                Map<String, String> values = new HashMap<>();
-                values.put("player", p.getName());
-                StrSubstitutor sub = new StrSubstitutor(values, "[", "]");
-                for (int i = 0; i < commandsToRun.size(); i++) {
-                    String commandToRun = sub.replace(commandsToRun.toArray()[i]);
-                    Bukkit.dispatchCommand((CommandSender) Bukkit.getConsoleSender(), commandToRun);
-                }
+
+            LuckPerms api = plugin.luckPerms;
+            User user = api.getUserManager().getUser(p.getUniqueId());
+            if(user != null) {
+                user.data().add(PermissionNode.builder(Constants.SERVERSIGNS_USE_ALL).value(false).build());
+                user.data().add(PermissionNode.builder(Constants.PKCP_SIGNS).value(false).build());
             }
+
             String locationString = playerDataConfig.getString("Saves." + keys.toArray()[slot + (page - 1) * 36] + ".location");
             final Location loc = Utils.getLocationFromString(locationString);
             loc.setY(loc.getY());
             p.teleport(loc);
             p.addPotionEffect(new PotionEffect(PotionEffectType.BLINDNESS, 40, 1));
             p.addPotionEffect(new PotionEffect(PotionEffectType.SLOW, 20, 255));
-            Bukkit.getScheduler().scheduleSyncDelayedTask(plugin, (Runnable) () -> {
+            Bukkit.getScheduler().scheduleSyncDelayedTask(plugin, () -> {
                 p.teleport(loc);
                 p.sendMessage(Utils.chat("&aTeleported you to your save!"));
                 p.closeInventory();
                 p.playSound(p.getLocation(), Sound.ENDERMAN_TELEPORT, 1.0F, 1.7F);
-                List<String> commandsToRun1 = config.getStringList("save-teleport-finish-commands");
-                if (!commandsToRun1.isEmpty()) {
-                    Map<String, String> values = new HashMap<>();
-                    values.put("player", p.getName());
-                    StrSubstitutor sub = new StrSubstitutor(values, "[", "]");
-                    for (int i = 0; i < commandsToRun1.size(); i++) {
-                        String commandToRun = sub.replace(commandsToRun1.toArray()[i]);
-                        Bukkit.dispatchCommand((CommandSender) Bukkit.getConsoleSender(), commandToRun);
-                    }
+
+                if(user != null) {
+                    user.data().add(PermissionNode.builder(Constants.SERVERSIGNS_USE_ALL).value(true).build());
+                    user.data().add(PermissionNode.builder(Constants.PKCP_SIGNS).value(true).build());
                 }
             }, 20L);
             playerDataConfig.set("Saves." + keys.toArray()[slot + (page - 1) * 36], null);
