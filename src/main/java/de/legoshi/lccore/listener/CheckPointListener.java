@@ -4,7 +4,9 @@ import de.legoshi.lccore.Linkcraft;
 import de.legoshi.lccore.util.LocationHelper;
 import de.legoshi.lccore.util.MusicHelper;
 import de.legoshi.lccore.util.Utils;
-import org.bukkit.*;
+import org.bukkit.ChatColor;
+import org.bukkit.Location;
+import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
@@ -37,7 +39,7 @@ public class CheckPointListener implements Listener {
     @EventHandler
     public void onSignChange(SignChangeEvent e) {
         String[] validSignTypes = { "ground", "direct", "here" };
-        if (Arrays.<String>asList(validSignTypes).contains(e.getLine(0))) {
+        if (Arrays.asList(validSignTypes).contains(e.getLine(0))) {
             String signType = e.getLine(0).trim();
             createSign(e);
             switch (signType) {

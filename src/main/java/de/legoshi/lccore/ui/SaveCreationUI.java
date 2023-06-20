@@ -99,7 +99,7 @@ public class SaveCreationUI {
                 StrSubstitutor sub = new StrSubstitutor(values, "[", "]");
                 for (int i = 0; i < commandsToRun.size(); i++) {
                     String commandToRun = sub.replace(commandsToRun.toArray()[i]);
-                    Bukkit.dispatchCommand((CommandSender) Bukkit.getConsoleSender(), commandToRun);
+                    Bukkit.dispatchCommand(Bukkit.getConsoleSender(), commandToRun);
                 }
             }
             p.closeInventory();

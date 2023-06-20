@@ -34,11 +34,11 @@ public class AdminUI {
             initialize();
         }
 
-        OfflinePlayer target = (OfflinePlayer) plugin.playerMap.get(p.getName());
+        OfflinePlayer target = plugin.playerMap.get(p.getName());
         inv.clear();
         currentPage.put(p.getUniqueId().toString(), Integer.valueOf(page));
         Inventory toReturn = Bukkit.createInventory(null, inv_rows, inventory_name + Utils.chat(" (page " + page + ")"));
-        ConfigAccessor playerData = new ConfigAccessor((JavaPlugin) plugin, plugin.getPlayerdataFolder(), target.getUniqueId().toString() + ".yml");
+        ConfigAccessor playerData = new ConfigAccessor(plugin, plugin.getPlayerdataFolder(), target.getUniqueId().toString() + ".yml");
         FileConfiguration playerDataConfig = playerData.getConfig();
         if (playerDataConfig.isConfigurationSection("Saves")) {
             Set<String> keys = playerDataConfig.getConfigurationSection("Saves").getKeys(false);

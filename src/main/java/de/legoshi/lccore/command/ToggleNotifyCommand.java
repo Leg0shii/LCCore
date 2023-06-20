@@ -16,7 +16,7 @@ public class ToggleNotifyCommand implements CommandExecutor {
             Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "lp user " + sender.getName() + " permission set maxbans.notify false");
             sender.sendMessage(ChatColor.RED + "Turned off maxbans notify!");
         } else {
-            Bukkit.dispatchCommand((CommandSender) Bukkit.getConsoleSender(), "lp user " + sender.getName() + " permission set maxbans.notify true");
+            Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "lp user " + sender.getName() + " permission set maxbans.notify true");
             sender.sendMessage(ChatColor.GREEN + "Turned on maxbans notify!");
         }
         return true;

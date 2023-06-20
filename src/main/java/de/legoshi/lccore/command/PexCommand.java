@@ -23,11 +23,11 @@ public class PexCommand implements CommandExecutor {
         if (args.length != 4 && args.length > 3 && !args[2].equalsIgnoreCase("group") && args[4].contains("world=")) {
             OfflinePlayer player = Bukkit.getOfflinePlayer(args[1]);
             if (args[2].equalsIgnoreCase("prefix")) {
-                String[] moreArgs = String.join(" ", (CharSequence[]) args).split(" ", 4);
+                String[] moreArgs = String.join(" ", args).split(" ", 4);
                 Bukkit.dispatchCommand(sender, "lp user " + player.getName() + " meta setprefix " + moreArgs[3]);
                 sender.sendMessage(Utils.chat("&aAdded prefix!"));
             } else if (args[2].equalsIgnoreCase("suffix")) {
-                String[] moreArgs = String.join(" ", (CharSequence[]) args).split(" ", 4);
+                String[] moreArgs = String.join(" ", args).split(" ", 4);
                 Bukkit.dispatchCommand(sender, "lp user " + player.getName() + " meta setsuffix " + moreArgs[3]);
                 sender.sendMessage(Utils.chat("&aAdded suffix!"));
             } else {

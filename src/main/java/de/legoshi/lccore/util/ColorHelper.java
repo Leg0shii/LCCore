@@ -24,7 +24,7 @@ public class ColorHelper {
             } catch (IOException e) {
                 e.printStackTrace();
             }
-        config = (FileConfiguration) YamlConfiguration.loadConfiguration(file);
+        config = YamlConfiguration.loadConfiguration(file);
     }
 
     public static void save() {

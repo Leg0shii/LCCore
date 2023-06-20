@@ -49,7 +49,7 @@ public class SendToMapCommand implements CommandExecutor {
         }
         Location location = LocationHelper.getLocationFromString(locationString);
         player.teleport(location);
-        String world = player.getWorld().getName().toString();
+        String world = player.getWorld().getName();
         yamlConfiguration.set("Worlds." + world, map);
         try {
             yamlConfiguration.save(file);

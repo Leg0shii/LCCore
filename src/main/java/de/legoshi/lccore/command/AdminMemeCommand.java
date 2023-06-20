@@ -59,7 +59,7 @@ public class AdminMemeCommand implements CommandExecutor {
             } else {
                 for (Player p : Bukkit.getOnlinePlayers()) {
                     if (!p.hasPermission("sv.use")) {
-                        String str = String.join(" ", (CharSequence[]) args);
+                        String str = String.join(" ", args);
                         p.chat(Utils.chat(str));
                     }
                 }
@@ -86,7 +86,7 @@ public class AdminMemeCommand implements CommandExecutor {
                         sender.sendMessage(Utils.chat("&cPlayer not found!"));
                         return true;
                     }
-                    String[] msg = String.join(" ", (CharSequence[]) args).split(" ", 2);
+                    String[] msg = String.join(" ", args).split(" ", 2);
                     p.chat(Utils.chat(msg[1]));
                 }
             }
