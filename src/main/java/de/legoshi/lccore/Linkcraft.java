@@ -139,5 +139,9 @@ public class Linkcraft extends JavaPlugin {
     public File getPlayerdataFolder() {
         return new File(getDataFolder(), "playerdata");
     }
+
+    public File getPluginFolder() {
+        return getDataFolder();
+    }
 }
 

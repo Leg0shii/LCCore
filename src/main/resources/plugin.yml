@@ -13,6 +13,34 @@ commands:
     permission: pkprac.practice
   pkpracreload:
     permission: pkprac.reload
+  checkpoint:
+    description: Return to your checkpoint.
+    aliases: [ cp ]
+    usage: /checkpoint
+    default: false
+    permission: pkcp.checkpoint
+    permission-message: You do not have permission to use this command!
+  checkpointdelete:
+    description: Delete a checkpoint from a player.
+    aliases: [ cpd, cpdelete ]
+    usage: /checkpointdelete <player> <map>
+    default: false
+    permission: pkcp.checkpointdelete
+    permission-message: You do not have permission to use this command!
+  sendtomap:
+    description: Send a player to a specific map.
+    aliases: [ stm ]
+    usage: /sendtomap <player> <map>
+    default: false
+    permission: pkcp.sendto
+    permission-message: You do not have permission to use this command!
+  savecheckpoint:
+    description: Save a checkpoint right at the player's spot.
+    aliases: [ savecp, scp ]
+    usage: /savecheckpoint
+    default: false
+    permission: pkcp.savecheckpoint
+    permission-message: You do not have permission to use this command!
   saves:
   stats:
     aliases: [ stat, statistic, statistics ]
@@ -45,31 +73,6 @@ commands:
   hideall:
   showall:
   show:
-  checkpoint:
-    description: Return to your checkpoint.
-    aliases: [cp]
-    usage: /checkpoint
-    permission: pkcp.checkpoint
-    permission-message: You do not have permission to use this command!
-  checkpointdelete:
-    description: Delete a checkpoint from a player.
-    aliases: [cpd, cpdelete]
-    usage: /checkpointdelete <player> <map>
-    permission: pkcp.checkpointdelete
-    permission-message: You do not have permission to use this command!
-  sendtomap:
-    description: Send a player to a specific map.
-    aliases: [stm]
-    usage: /sendtomap <player> <map>
-    permission: pkcp.sendto
-    permission-message: You do not have permission to use this command!
-  savecheckpoint:
-    description: Save a checkpoint right at the player's spot.
-    aliases: [savecp, scp]
-    usage: /savecheckpoint
-    permission: pkcp.savecheckpoint
-    permission-message: You do not have permission to use this command!
-
 permissions:
   pkprac.practice:
     description: Allows the use of the /practice and /unpractice commands.

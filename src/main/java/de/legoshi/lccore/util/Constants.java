@@ -32,7 +32,4 @@ public class Constants {
     public static final String ESSENTIALS_SPAWN = "essentials.spawn";
     public static final String CHESTCOMMANDS_OPEN_MAZE_YML = "chestcommands.open.maze.yml";
     public static final String CHESTCOMMANDS_OPEN_CHALLENGE_YML = "chestcommands.open.challenge.yml";
-
-    // Other constants
-    public static final String UUID = "uuid";
 }

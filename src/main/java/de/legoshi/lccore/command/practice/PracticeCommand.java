@@ -5,9 +5,9 @@ import java.util.Arrays;
 import de.legoshi.lccore.util.Constants;
 import de.legoshi.lccore.Linkcraft;
 import de.legoshi.lccore.util.LocationHelper;
+import de.legoshi.lccore.util.Utils;
 import net.luckperms.api.LuckPerms;
 import net.luckperms.api.model.user.User;
-import net.luckperms.api.node.types.InheritanceNode;
 import net.luckperms.api.node.types.PermissionNode;
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
@@ -38,7 +38,7 @@ public class PracticeCommand implements CommandExecutor {
             p.sendMessage(ChatColor.translateAlternateColorCodes('&', alreadyPracticingMessage));
             return true;
         }
-        Double[] possibleYValues = {0.9375D, 0.875D, 0.75D, 0.625D, 0.5625D, 0.5D, 0.375D, 0.25D, 0.1875D, 0.125D, 0.0625D, 0.015625D, 0.0D, 0.8125D, 0.3125D};
+        Double[] possibleYValues = Utils.possBlockYValues();
         if ((p.getVelocity().getY() == -0.0784000015258789D || p.getVelocity().getY() == -0.02) && Arrays.asList(possibleYValues).contains(p.getLocation().getY() % 1.0D)) {
             if (p.getInventory().firstEmpty() == -1) {
                 String str = config.getString(Constants.FULL_INVENTORY_MESSAGE);

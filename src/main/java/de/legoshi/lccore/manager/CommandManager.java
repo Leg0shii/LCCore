@@ -59,9 +59,10 @@ public class CommandManager {
         plugin.getCommand("show").setExecutor(injector.getInstance(Show.class));
         plugin.getCommand("showall").setExecutor(injector.getInstance(ShowAll.class));
         plugin.getCommand("checkpoint").setExecutor(new CheckpointCommand(plugin));
-        plugin.getCommand("sendtomap").setExecutor(new SendToMapCommand(plugin.getDataFolder().getAbsolutePath()));
+        plugin.getCommand("sendtomap").setExecutor(new SendToMapCommand(plugin.getPluginFolder().getAbsolutePath()));
         plugin.getCommand("checkpointdelete").setExecutor(new CheckpointDeleteCommand(plugin));
         plugin.getCommand("savecheckpoint").setExecutor(new SaveCheckpointCommand(plugin));
+        plugin.getCommand("fakeup").setExecutor(new FakeupCommand());
     }
 
 }

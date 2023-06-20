@@ -19,14 +19,14 @@ public class CheckpointCommand implements CommandExecutor {
 
     public CheckpointCommand(Linkcraft plugin) {
         this.plugin = plugin;
-        this.pluginFolder = plugin.getDataFolder();
+        this.pluginFolder = plugin.getPluginFolder();
     }
 
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
         if (sender instanceof Player) {
             Player player = (Player) sender;
             String uuid = player.getUniqueId().toString();
-            File file = new File(this.pluginFolder.getAbsolutePath() + File.separator + "players" + File.separator + uuid + ".yml");
+            File file = new File(this.pluginFolder.getAbsolutePath() + File.separator + "player_checkpoint_data" + File.separator + uuid + ".yml");
             if (!file.exists()) {
                 player.sendRawMessage(ChatColor.translateAlternateColorCodes('&', "&cYou do not have a checkpoint to go to! (You don't have a player file)"));
                 return true;

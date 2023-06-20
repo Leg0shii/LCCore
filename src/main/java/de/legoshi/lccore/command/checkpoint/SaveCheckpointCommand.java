@@ -21,14 +21,14 @@ public class SaveCheckpointCommand implements CommandExecutor {
 
     public SaveCheckpointCommand(Linkcraft plugin) {
         this.plugin = plugin;
-        this.pluginFolder = plugin.getDataFolder();
+        this.pluginFolder = plugin.getPluginFolder();
     }
 
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
         if (sender instanceof Player) {
             Player player = (Player) sender;
             String playerFileName = player.getUniqueId().toString() + ".yml";
-            File playerFile = new File(this.pluginFolder.getAbsolutePath() + File.separator + "players", playerFileName);
+            File playerFile = new File(this.pluginFolder.getAbsolutePath() + File.separator + "player_checkpoint_data", playerFileName);
             if (!playerFile.exists())
                 try {
                     playerFile.createNewFile();

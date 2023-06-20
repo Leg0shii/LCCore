@@ -70,5 +70,5 @@ eggsmessage: '&6&lE&e&lG&6&lg&e&LS'
 failmessage: '&f&lFAIL'
 
 # CHECKPOINTS
-message-name: '&c&lC&6&lo&e&ll&a&lo&9&lr&d&lCraft&5&lPk &8&l>' # The name that shows up when messaging the player.
-sign-name: '&c&lC&6&lo&e&ll&a&lo&9&lr&d&lCraft&5&lPk' # The name that shows up on the sign.
+message-name: '&e« &4&lLink&c&lCraft &e»' # The name that shows up when messaging the player.
+sign-name: '&5&lꕤ ꕤ ꕤ ꕤ ꕤ ꕤ ꕤ ꕤ' # The name that shows up on the sign.

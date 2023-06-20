@@ -21,10 +21,10 @@ public class ConfigManager {
         if (!playerData.exists()) playerData.mkdir();
 
         // checkpoints
-        File signs = new File(plugin.getDataFolder().getAbsolutePath() + File.separator + "signs");
+        File signs = new File(plugin.getDataFolder().getAbsolutePath() + File.separator + "checkpoint_signs");
         if (!signs.exists()) signs.mkdir();
 
-        File players = new File(plugin.getDataFolder().getAbsolutePath() + File.separator + "players");
+        File players = new File(plugin.getDataFolder().getAbsolutePath() + File.separator + "player_checkpoint_data");
         if (!players.exists()) players.mkdir();
 
         ColorHelper.load();

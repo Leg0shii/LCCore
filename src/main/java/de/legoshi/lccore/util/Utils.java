@@ -210,4 +210,8 @@ public class Utils {
 
         return resultHours + "h " + resultMinutes + "m";
     }
+
+    public static Double[] possBlockYValues() {
+        return new Double[]{0.9375D, 0.875D, 0.75D, 0.625D, 0.5625D, 0.5D, 0.375D, 0.25D, 0.1875D, 0.125D, 0.0625D, 0.015625D, 0.0D, 0.8125D, 0.3125D};
+    }
 }

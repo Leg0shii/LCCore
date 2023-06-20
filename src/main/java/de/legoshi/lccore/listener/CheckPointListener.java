@@ -3,6 +3,7 @@ package de.legoshi.lccore.listener;
 import de.legoshi.lccore.Linkcraft;
 import de.legoshi.lccore.util.LocationHelper;
 import de.legoshi.lccore.util.MusicHelper;
+import de.legoshi.lccore.util.Utils;
 import org.bukkit.*;
 import org.bukkit.block.Block;
 import org.bukkit.configuration.file.FileConfiguration;
@@ -23,7 +24,7 @@ import java.util.Arrays;
 public class CheckPointListener implements Listener {
 
     private final FileConfiguration config = Linkcraft.getInstance().getConfig();
-    private final File pluginFolder = Linkcraft.getInstance().getPlayerdataFolder();
+    private final File pluginFolder = Linkcraft.getInstance().getPluginFolder();
 
     public ItemStack getCPItem() {
         ItemStack item = new ItemStack(Material.DIAMOND, 1);
@@ -75,10 +76,10 @@ public class CheckPointListener implements Listener {
                 return;
             }
             String fileName = e.getClickedBlock().getWorld().getName() + "_" + e.getClickedBlock().getX() + "_" + e.getClickedBlock().getY() + "_" + e.getClickedBlock().getZ() + ".yml";
-            File file = new File(this.pluginFolder.getAbsolutePath() + File.separator + "signs", fileName);
+            File file = new File(this.pluginFolder.getAbsolutePath() + File.separator + "checkpoint_signs", fileName);
             YamlConfiguration yamlConfiguration1 = YamlConfiguration.loadConfiguration(file);
             String playerFileName = e.getPlayer().getUniqueId().toString() + ".yml";
-            File playerFile = new File(this.pluginFolder.getAbsolutePath() + File.separator + "players", playerFileName);
+            File playerFile = new File(this.pluginFolder.getAbsolutePath() + File.separator + "player_checkpoint_data", playerFileName);
             if (!playerFile.exists())
                 try {
                     playerFile.createNewFile();
@@ -90,7 +91,7 @@ public class CheckPointListener implements Listener {
             String type = yamlConfiguration1.getString("Type");
             switch (type) {
                 case "ground":
-                    possibleYValues = new Double[] {0.9375D, 0.875D, 0.75D, 0.625D, 0.5625D, 0.5D, 0.375D, 0.25D, 0.125D, 0.0625D, 0.015625D, 0.0D};
+                    possibleYValues = Utils.possBlockYValues();
                     if (e.getPlayer().getVelocity().getY() == -0.0784000015258789D && Arrays.asList(possibleYValues).contains(e.getPlayer().getLocation().getY() % 1.0D)) {
                         yamlConfiguration2.set("Checkpoints." + name + ".Location", LocationHelper.getStringFromLocation(e.getPlayer().getLocation()));
                         break;
@@ -122,7 +123,7 @@ public class CheckPointListener implements Listener {
     public void onBlockBreak(BlockBreakEvent e) {
         if (e.getBlock().getType() == Material.WALL_SIGN || e.getBlock().getType() == Material.SIGN_POST) {
             String fileName = e.getBlock().getWorld().getName() + "_" + e.getBlock().getX() + "_" + e.getBlock().getY() + "_" + e.getBlock().getZ() + ".yml";
-            String filePath = this.pluginFolder.getAbsolutePath() + File.separator + "signs" + File.separator + fileName;
+            String filePath = this.pluginFolder.getAbsolutePath() + File.separator + "checkpoint_signs" + File.separator + fileName;
             File file = new File(filePath);
             if (file.exists()) {
                 boolean deleted = file.delete();
@@ -137,20 +138,20 @@ public class CheckPointListener implements Listener {
 
     public void createSign(SignChangeEvent e) {
         String fileName = e.getBlock().getWorld().getName() + "_" + e.getBlock().getX() + "_" + e.getBlock().getY() + "_" + e.getBlock().getZ() + ".yml";
-        File file = new File(this.pluginFolder.getAbsolutePath() + File.separator + "signs", fileName);
+        File file = new File(this.pluginFolder.getAbsolutePath() + File.separator + "checkpoint_signs", fileName);
         if (!file.exists())
             try {
                 file.createNewFile();
             } catch (IOException ex) {
                 ex.printStackTrace();
             }
-        YamlConfiguration yamlConfiguration = YamlConfiguration.loadConfiguration(new File(this.pluginFolder.getAbsolutePath() + File.separator + "signs", fileName));
+        YamlConfiguration yamlConfiguration = YamlConfiguration.loadConfiguration(new File(this.pluginFolder.getAbsolutePath() + File.separator + "checkpoint_signs", fileName));
         yamlConfiguration.addDefault("Name", e.getLine(1));
         yamlConfiguration.addDefault("Location", LocationHelper.getStringFromLocation(e.getBlock().getLocation()));
         yamlConfiguration.addDefault("Type", e.getLine(0));
         yamlConfiguration.options().copyDefaults(true);
         try {
-            yamlConfiguration.save(this.pluginFolder.getAbsolutePath() + File.separator + "signs" + File.separator + fileName);
+            yamlConfiguration.save(this.pluginFolder.getAbsolutePath() + File.separator + "checkpoint_signs" + File.separator + fileName);
         } catch (IOException ex) {
             ex.printStackTrace();
         }
@@ -159,7 +160,7 @@ public class CheckPointListener implements Listener {
     public boolean isAParkourSign(Block block) {
         if (block.getType() == Material.WALL_SIGN || block.getType() == Material.SIGN_POST) {
             String fileName = block.getWorld().getName() + "_" + block.getX() + "_" + block.getY() + "_" + block.getZ() + ".yml";
-            String filePath = this.pluginFolder.getAbsolutePath() + File.separator + "signs" + File.separator + fileName;
+            String filePath = this.pluginFolder.getAbsolutePath() + File.separator + "checkpoint_signs" + File.separator + fileName;
             File file = new File(filePath);
             return file.exists();
         }

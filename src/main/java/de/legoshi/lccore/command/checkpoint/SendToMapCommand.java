@@ -36,7 +36,7 @@ public class SendToMapCommand implements CommandExecutor {
             return true;
         }
         String uuid = player.getUniqueId().toString();
-        File file = new File(this.pluginFolderPath + File.separator + "players" + File.separator + uuid + ".yml");
+        File file = new File(this.pluginFolderPath + File.separator + "player_checkpoint_data" + File.separator + uuid + ".yml");
         if (!file.exists()) {
             senderPlayer.sendRawMessage(ChatColor.translateAlternateColorCodes('&', "&cThis player cannot go to that map! (player file dne)"));
             return true;

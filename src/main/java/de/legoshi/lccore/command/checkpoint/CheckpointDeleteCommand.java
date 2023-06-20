@@ -21,7 +21,7 @@ public class CheckpointDeleteCommand implements CommandExecutor {
 
     public CheckpointDeleteCommand(Linkcraft plugin) {
         this.plugin = plugin;
-        this.pluginFolderPath = plugin.getDataFolder().getAbsolutePath();
+        this.pluginFolderPath = plugin.getPluginFolder().getAbsolutePath();
     }
 
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
@@ -37,7 +37,7 @@ public class CheckpointDeleteCommand implements CommandExecutor {
             return true;
         }
         String uuid = player.getUniqueId().toString();
-        File file = new File(this.pluginFolderPath + File.separator + "players" + File.separator + uuid + ".yml");
+        File file = new File(this.pluginFolderPath + File.separator + "player_checkpoint_data" + File.separator + uuid + ".yml");
         if (!file.exists()) {
             sender.sendMessage(ChatColor.translateAlternateColorCodes('&', "&cThis player's checkpoint can't be removed! (file dne)"));
             return true;
