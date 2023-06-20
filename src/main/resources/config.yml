@@ -63,8 +63,8 @@ save-teleport-finish-commands:
   - pex user [player] add pk.signs
 
 ggmessage: '&6&lG&e&lG'
-glmessage: '&2&lG&a&lL'
-ripmessage: '&0&lR&8&lI&f&lP'
+glmessage: '&2&lG&a&lL ☺'
+ripmessage: '&0&lR&8&lI&f&lP ☹'
 hammessage: '&d&lha &c&lm'
 eggsmessage: '&6&lE&e&lG&6&lg&e&LS'
 failmessage: '&f&lFAIL'
