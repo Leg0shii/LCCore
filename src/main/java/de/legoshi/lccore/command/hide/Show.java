@@ -4,6 +4,7 @@ import de.legoshi.lccore.Linkcraft;
 import de.legoshi.lccore.manager.VisibilityManager;
 import de.legoshi.lccore.util.Constants;
 import de.legoshi.lccore.util.Utils;
+import de.myzelyam.api.vanish.VanishAPI;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
@@ -33,10 +34,9 @@ public class Show implements CommandExecutor {
         Player toShow = Bukkit.getPlayer(args[0]);
         Player player = (Player)sender;
 
-        if(toShow == null) {
+        if(toShow == null || VanishAPI.isInvisible(toShow)) {
             String offlineMessage = config.getString(Constants.IS_OFFLINE);
-            sender.sendMessage(ChatColor.translateAlternateColorCodes('&', offlineMessage));
-            player.sendMessage(Utils.format(offlineMessage, "{player}", args[0]));
+            player.sendMessage(ChatColor.translateAlternateColorCodes('&', Utils.format(offlineMessage, "{player}", args[0])));
             return true;
         }
 
