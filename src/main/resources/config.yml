@@ -86,3 +86,7 @@ banned-items:
   - FIREWORK
   - MONSTER_EGG
   - MONSTER_EGGS
+
+# Lockdown with message
+lockdown-mode: false
+lockdown-message: An update is in progress. Please join back in a little bit

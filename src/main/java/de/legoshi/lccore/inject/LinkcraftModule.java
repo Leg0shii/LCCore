@@ -26,5 +26,6 @@ public class LinkcraftModule extends AbstractModule {
         bind(VanishListener.class).singleton();
         bind(ItemConsumeListener.class).singleton();
         bind(InteractEntityListener.class).singleton();
+        bind(PreJoinListener.class).singleton();
     }
 }

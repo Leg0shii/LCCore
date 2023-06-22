@@ -5,6 +5,10 @@ authors: [Leg0shi_, dklink750]
 description: Practice Plugin for Linkcraft
 api-version: 1.8
 commands:
+  ld:
+    permission: lc.lockdown
+  ldmsg:
+    permission: lc.lockdownmsg
   practice:
     aliases: [prac]
     permission: pkprac.practice

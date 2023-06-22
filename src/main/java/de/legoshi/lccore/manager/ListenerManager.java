@@ -18,6 +18,7 @@ public class ListenerManager {
     @Inject private VanishListener vanishListener;
     @Inject private ItemConsumeListener itemConsumeListener;
     @Inject private InteractEntityListener interactEntityListener;
+    @Inject private PreJoinListener preJoinListener;
 
     public void registerEvents() {
         PluginManager pluginManager = plugin.getServer().getPluginManager();
@@ -30,5 +31,6 @@ public class ListenerManager {
         pluginManager.registerEvents(vanishListener, plugin);
         pluginManager.registerEvents(itemConsumeListener, plugin);
         pluginManager.registerEvents(interactEntityListener, plugin);
+        pluginManager.registerEvents(preJoinListener, plugin);
     }
 }

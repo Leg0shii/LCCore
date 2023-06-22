@@ -63,6 +63,8 @@ public class CommandManager {
         plugin.getCommand("checkpointdelete").setExecutor(new CheckpointDeleteCommand(plugin));
         plugin.getCommand("savecheckpoint").setExecutor(new SaveCheckpointCommand(plugin));
         plugin.getCommand("fakeup").setExecutor(new FakeupCommand());
+        plugin.getCommand("ld").setExecutor(injector.getInstance(LockdownCommand.class));
+        plugin.getCommand("ldmsg").setExecutor(injector.getInstance(SetLockdownMessageCommand.class));
     }
 
 }
