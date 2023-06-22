@@ -1,7 +1,11 @@
 package de.legoshi.lccore.manager;
 
 import de.legoshi.lccore.Linkcraft;
+import de.myzelyam.api.vanish.PlayerVanishStateChangeEvent;
+import de.myzelyam.api.vanish.VanishAPI;
+import net.minecraft.server.v1_8_R3.PacketPlayOutPlayerInfo;
 import org.bukkit.Bukkit;
+import org.bukkit.craftbukkit.v1_8_R3.entity.CraftPlayer;
 import org.bukkit.entity.Player;
 
 import java.util.HashMap;
@@ -12,11 +16,25 @@ public class VisibilityManager {
     private final HashMap<String, HashSet<String>> shownPlayers = new HashMap<>();
     private final HashMap<String, HashSet<String>> hiddenPlayers = new HashMap<>();
 
+    private void addToTabList(Player player, Player toAdd) {
+        PacketPlayOutPlayerInfo packet = new PacketPlayOutPlayerInfo(PacketPlayOutPlayerInfo.EnumPlayerInfoAction.ADD_PLAYER, ((CraftPlayer)toAdd).getHandle());
+        ((CraftPlayer)player).getHandle().playerConnection.sendPacket(packet);
+    }
+
+    public void removeFromTabList(Player player, Player toRemove) {
+        PacketPlayOutPlayerInfo packet = new PacketPlayOutPlayerInfo(PacketPlayOutPlayerInfo.EnumPlayerInfoAction.REMOVE_PLAYER, ((CraftPlayer)toRemove).getHandle());
+        ((CraftPlayer)player).getHandle().playerConnection.sendPacket(packet);
+    }
+
     public void onLeave(Player player) {
         String uuid = player.getUniqueId().toString();
         hiding.remove(uuid);
         shownPlayers.remove(uuid);
         hiddenPlayers.remove(uuid);
+
+        for(Player p : Bukkit.getOnlinePlayers()) {
+            removeFromTabList(p, player);
+        }
     }
 
     public void hideAll(Player player) {
@@ -27,6 +45,9 @@ public class VisibilityManager {
 
         for(Player p : Bukkit.getOnlinePlayers()) {
             player.hidePlayer(p);
+            if(!VanishAPI.isInvisible(p)) {
+                addToTabList(player, p);
+            }
         }
     }
 
@@ -50,6 +71,10 @@ public class VisibilityManager {
         hiddenPlayers.computeIfAbsent(uuid, k -> new HashSet<>());
         hiddenPlayers.get(uuid).add(toHide.getUniqueId().toString());
         player.hidePlayer(toHide);
+
+        if(!VanishAPI.isInvisible(toHide)) {
+            addToTabList(player, toHide);
+        }
     }
 
     public void showOne(Player player, Player toShow) {
@@ -82,6 +107,9 @@ public class VisibilityManager {
             if(isHiding(player, toHide)) {
                 Bukkit.getScheduler().runTask(Linkcraft.getInstance(), () -> {
                     player.hidePlayer(toHide);
+                    if(!VanishAPI.isInvisible(toHide)) {
+                        addToTabList(player, toHide);
+                    }
                 });
             }
         }
