@@ -24,5 +24,7 @@ public class LinkcraftModule extends AbstractModule {
         bind(PlayerLeaveListener.class).singleton();
         bind(CheckPointListener.class).singleton();
         bind(VanishListener.class).singleton();
+        bind(ItemConsumeListener.class).singleton();
+        bind(InteractEntityListener.class).singleton();
     }
 }

@@ -72,3 +72,17 @@ failmessage: '&f&lFAIL'
 # CHECKPOINTS
 message-name: '&e« &4&lLink&c&lCraft &e»' # The name that shows up when messaging the player.
 sign-name: '&5&lꕤ ꕤ ꕤ ꕤ ꕤ ꕤ ꕤ ꕤ' # The name that shows up on the sign.
+
+# Banned interact items (perm: lc.banneditems)
+banned-items:
+  - POTION
+  - BOAT
+  - MINECART
+  - COMMAND_MINECART
+  - EXPLOSIVE_MINECART
+  - HOPPER_MINECART
+  - POWERED_MINECART
+  - STORAGE_MINECART
+  - FIREWORK
+  - MONSTER_EGG
+  - MONSTER_EGGS
