@@ -1,5 +1,6 @@
 package de.legoshi.lccore.listener;
 
+import de.legoshi.lccore.Linkcraft;
 import de.legoshi.lccore.util.ColorHelper;
 import de.legoshi.lccore.util.Menu;
 import org.bukkit.ChatColor;
@@ -7,16 +8,28 @@ import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
-import org.bukkit.event.block.Action;
 import org.bukkit.event.block.BlockFromToEvent;
 import org.bukkit.event.entity.ProjectileLaunchEvent;
 import org.bukkit.event.inventory.BrewEvent;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
+import org.bukkit.inventory.ItemStack;
+
+import java.util.ArrayList;
+import java.util.List;
 
 // PARTLY REFACTORED
 public class GeneralListener implements Listener {
+
+    private List<Material> bannedItems = null;
+
+    private void initBannedItems() {
+        bannedItems = new ArrayList<>();
+        for(String item : Linkcraft.getInstance().getConfig().getStringList("banned-items")) {
+            bannedItems.add(Material.matchMaterial(item));
+        }
+    }
 
     @EventHandler
     public void onChat(AsyncPlayerChatEvent e) {
@@ -51,9 +64,18 @@ public class GeneralListener implements Listener {
 
     @EventHandler
     public void onPlayerInteract(PlayerInteractEvent event) {
+        if(bannedItems == null) {
+            initBannedItems();
+        }
+
         Player player = event.getPlayer();
-        if (!player.isOp() && event.getAction() == Action.RIGHT_CLICK_BLOCK && player.getItemInHand().getType() == Material.FIREWORK) {
-            event.setCancelled(true);
+        ItemStack item = event.getItem();
+
+        if(item != null) {
+            Material mat = item.getType();
+            if(!player.hasPermission("lc.banneditems") && bannedItems.contains(mat)) {
+                event.setCancelled(true);
+            }
         }
     }
 
