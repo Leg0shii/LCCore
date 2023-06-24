@@ -48,6 +48,8 @@ commands:
   saves:
   stats:
     aliases: [ stat, statistic, statistics ]
+  nv:
+    aliases: [ nightvision, nvn, vision ]
   save:
   psreload:
   fakeup:
