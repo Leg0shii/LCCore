@@ -1,7 +1,6 @@
 package de.legoshi.lccore.manager;
 
 import de.legoshi.lccore.Linkcraft;
-import de.myzelyam.api.vanish.PlayerVanishStateChangeEvent;
 import de.myzelyam.api.vanish.VanishAPI;
 import net.minecraft.server.v1_8_R3.PacketPlayOutPlayerInfo;
 import org.bukkit.Bukkit;

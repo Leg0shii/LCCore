@@ -15,6 +15,7 @@ public class ConfigManager {
     public void loadConfigs() {
         plugin.saveDefaultConfig();
         plugin.playerdataConfigAccessor.saveDefaultConfig();
+        plugin.lockdownConfig.saveDefaultConfig();
 
         // prac
         File playerData = new File(plugin.getDataFolder(), "playerdata");

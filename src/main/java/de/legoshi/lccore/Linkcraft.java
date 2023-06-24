@@ -38,6 +38,7 @@ public class Linkcraft extends JavaPlugin {
 
     public LuckPerms luckPerms;
     public ConfigAccessor playerdataConfigAccessor = new ConfigAccessor(this, "playerdata.yml");
+    public ConfigAccessor lockdownConfig = new ConfigAccessor(this, "lockdown.yml");
     private final FileConfiguration config = getConfig();
 
     public void onEnable() {
@@ -75,6 +76,7 @@ public class Linkcraft extends JavaPlugin {
 
     public void onDisable() {
         this.playerdataConfigAccessor.saveConfig();
+        this.lockdownConfig.saveConfig();
     }
 
     public ItemStack getReturnItem() {
