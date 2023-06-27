@@ -17,7 +17,9 @@ public class VanishListener implements Listener {
         Player player = Bukkit.getPlayer(event.getName());
         if(event.isVanishing()) {
             for(Player p : Bukkit.getOnlinePlayers()) {
-                visibilityManager.removeFromTabList(p, player);
+                if(!p.getUniqueId().equals(player.getUniqueId())) {
+                    visibilityManager.removeFromTabList(p, player);
+                }
             }
         } else {
             visibilityManager.hideIfHiding(player);
