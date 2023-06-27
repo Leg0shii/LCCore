@@ -44,7 +44,7 @@ public class VisibilityManager {
 
         for(Player p : Bukkit.getOnlinePlayers()) {
             player.hidePlayer(p);
-            if(!VanishAPI.isInvisible(p)) {
+            if(VanishAPI.canSee(player, p)) {
                 addToTabList(player, p);
             }
         }
@@ -57,7 +57,9 @@ public class VisibilityManager {
         hiding.remove(uuid);
 
         for(Player p : Bukkit.getOnlinePlayers()) {
-            player.showPlayer(p);
+            if(VanishAPI.canSee(player, p)) {
+                player.showPlayer(p);
+            }
         }
     }
 
