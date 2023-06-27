@@ -3,6 +3,7 @@ package de.legoshi.lccore.inject;
 import de.legoshi.lccore.Linkcraft;
 import de.legoshi.lccore.listener.*;
 import de.legoshi.lccore.manager.VisibilityManager;
+import org.bukkit.event.player.PlayerKickEvent;
 import team.unnamed.inject.AbstractModule;
 
 public class LinkcraftModule extends AbstractModule {
@@ -27,5 +28,6 @@ public class LinkcraftModule extends AbstractModule {
         bind(ItemConsumeListener.class).singleton();
         bind(InteractEntityListener.class).singleton();
         bind(PreJoinListener.class).singleton();
+        bind(PlayerKickEvent.class).singleton();
     }
 }

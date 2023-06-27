@@ -27,13 +27,14 @@ public class PlayerJoinListener implements Listener {
     final Player p = event.getPlayer();
     ConfigAccessor playerData = new ConfigAccessor(Linkcraft.getInstance(), Linkcraft.getInstance().getPlayerdataFolder(), p.getUniqueId() + ".yml");
     FileConfiguration playerDataConfig = playerData.getConfig();
+
     if (playerDataConfig.getString("lastlocation") != null) {
       final Location loc = Utils.getLocationFromString(playerDataConfig.getString("lastlocation"));
       (new BukkitRunnable() {
           public void run() {
             p.teleport(loc);
           }
-        }).runTaskLater(Linkcraft.getInstance(), 5L);
+        }).runTaskLater(Linkcraft.getInstance(), 20L);
     }
 
     visibilityManager.hideIfHiding(p);

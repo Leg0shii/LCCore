@@ -7,15 +7,15 @@ import de.legoshi.lccore.util.ConfigAccessor;
 import de.legoshi.lccore.manager.CommandManager;
 import de.legoshi.lccore.manager.ConfigManager;
 import de.legoshi.lccore.util.Constants;
+import de.legoshi.lccore.util.Utils;
+import me.clip.deluxetags.DeluxeTag;
 import net.luckperms.api.LuckPerms;
 import net.luckperms.api.LuckPermsProvider;
 import net.milkbowl.vault.chat.Chat;
 import net.milkbowl.vault.economy.Economy;
-import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
-import org.bukkit.Material;
-import org.bukkit.OfflinePlayer;
+import org.bukkit.*;
 import org.bukkit.configuration.file.FileConfiguration;
+import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.plugin.RegisteredServiceProvider;
@@ -75,6 +75,15 @@ public class Linkcraft extends JavaPlugin {
     }
 
     public void onDisable() {
+        for(Player p : Bukkit.getOnlinePlayers()) {
+            ConfigAccessor playerData = new ConfigAccessor(this, getPlayerdataFolder(), p.getUniqueId() + ".yml");
+            FileConfiguration playerDataConfig = playerData.getConfig();
+            playerDataConfig.set("lastlocation", Utils.getStringFromLocation(p.getLocation()));
+            playerDataConfig.set("jumps", p.getStatistic(Statistic.JUMP));
+            playerDataConfig.set("tags", DeluxeTag.getAvailableTagIdentifiers(p));
+            playerData.saveConfig();
+        }
+
         this.playerdataConfigAccessor.saveConfig();
         this.lockdownConfig.saveConfig();
     }
