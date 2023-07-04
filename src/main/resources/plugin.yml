@@ -4,6 +4,8 @@ main: de.legoshi.lccore.Linkcraft
 authors: [Leg0shi_, dklink750]
 description: Practice Plugin for Linkcraft
 api-version: 1.8
+loadbefore:
+  - Essentials
 commands:
   ld:
     permission: lc.lockdown
@@ -79,6 +81,7 @@ commands:
   hideall:
   showall:
   show:
+  otphere:
 permissions:
   pkprac.practice:
     description: Allows the use of the /practice and /unpractice commands.

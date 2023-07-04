@@ -34,7 +34,7 @@ public class PlayerJoinListener implements Listener {
           public void run() {
             p.teleport(loc);
           }
-        }).runTaskLater(Linkcraft.getInstance(), 20L);
+        }).runTaskLater(Linkcraft.getInstance(), 10L);
     }
 
     visibilityManager.hideIfHiding(p);
