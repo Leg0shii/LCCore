@@ -67,6 +67,7 @@ public class CommandManager {
         plugin.getCommand("ldmsg").setExecutor(injector.getInstance(SetLockdownMessageCommand.class));
         plugin.getCommand("nv").setExecutor(new NightVisionCommand());
         plugin.getCommand("otphere").setExecutor(new OfflineTpHereCommand());
+        plugin.getCommand("otp").setExecutor(new OfflineTpCommand());
     }
 
 }

@@ -82,6 +82,7 @@ commands:
   showall:
   show:
   otphere:
+  otp:
 permissions:
   pkprac.practice:
     description: Allows the use of the /practice and /unpractice commands.
