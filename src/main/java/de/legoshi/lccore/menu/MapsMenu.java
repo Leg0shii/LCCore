@@ -27,11 +27,11 @@ public class MapsMenu implements InventoryProvider {
         ch.createBarLine(0);
         ch.createBarLine(4);
 
-        ch.addClickable(1, 2,  Material.GOLD_INGOT, "&e&lBonus Rankups", e -> Bukkit.dispatchCommand(e.getWhoClicked(), "bonus"));
+        ch.addClickable(1, 2,  Material.GOLD_INGOT, "&e&lBonus Rankups", e -> Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "cc open bonus " + player.getName()));
         ch.addClickable(3, 2,  Material.EMERALD, "&a&lSegmented Challenges", e -> ChallengeConfirmMenu.INVENTORY.open(player));
         ch.addClickable(2, 4,  Material.DIAMOND, "&b&lMain Rankups", e -> MainRankupConfirmMenu.INVENTORY.open(player));
         ch.addClickable(1, 6,  Material.IRON_INGOT, "&f&lSide Courses", e -> SideCoursesMenu.INVENTORY.open(player));
-        ch.addClickable(3, 6,  Material.REDSTONE, "&c&lMaze Rankups", e -> Bukkit.dispatchCommand(e.getWhoClicked(), "maze"));
+        ch.addClickable(3, 6,  Material.REDSTONE, "&c&lMaze Rankups", e -> Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "cc open maze " + player.getName()));
     }
 
     @Override
