@@ -16,6 +16,7 @@ public class ConfigManager {
         plugin.saveDefaultConfig();
         plugin.playerdataConfigAccessor.saveDefaultConfig();
         plugin.lockdownConfig.saveDefaultConfig();
+        plugin.mapsConfig.saveDefaultConfig();
 
         // prac
         File playerData = new File(plugin.getDataFolder(), "playerdata");
@@ -27,6 +28,9 @@ public class ConfigManager {
 
         File players = new File(plugin.getDataFolder().getAbsolutePath() + File.separator + "player_checkpoint_data");
         if (!players.exists()) players.mkdir();
+
+        File maps = new File(plugin.getDataFolder().getAbsolutePath() + File.separator + "maps");
+        if (!maps.exists()) players.mkdir();
 
         ColorHelper.load();
     }

@@ -2,12 +2,15 @@ package de.legoshi.lccore;
 
 import de.legoshi.lccore.inject.LinkcraftModule;
 import de.legoshi.lccore.manager.ListenerManager;
+import de.legoshi.lccore.manager.MapManager;
 import de.legoshi.lccore.papi.PlaceHolderAPI;
 import de.legoshi.lccore.util.ConfigAccessor;
 import de.legoshi.lccore.manager.CommandManager;
 import de.legoshi.lccore.manager.ConfigManager;
 import de.legoshi.lccore.util.Constants;
 import de.legoshi.lccore.util.Utils;
+import fr.minuskube.inv.InventoryManager;
+import fr.minuskube.inv.content.InventoryProvider;
 import me.clip.deluxetags.DeluxeTag;
 import net.luckperms.api.LuckPerms;
 import net.luckperms.api.LuckPermsProvider;
@@ -39,6 +42,8 @@ public class Linkcraft extends JavaPlugin {
     public LuckPerms luckPerms;
     public ConfigAccessor playerdataConfigAccessor = new ConfigAccessor(this, "playerdata.yml");
     public ConfigAccessor lockdownConfig = new ConfigAccessor(this, "lockdown.yml");
+    public ConfigAccessor mapsConfig = new ConfigAccessor(this, "maps.yml");
+    public InventoryManager im;
     private final FileConfiguration config = getConfig();
 
     public void onEnable() {
@@ -48,6 +53,9 @@ public class Linkcraft extends JavaPlugin {
         Injector injector = Injector.create(new LinkcraftModule(this));
         new ConfigManager(this).loadConfigs();
         new CommandManager(this, injector).registerCommands();
+        new MapManager(this);
+        im = new InventoryManager(this);
+        im.init();
         injector.getInstance(ListenerManager.class).registerEvents();
     }
 

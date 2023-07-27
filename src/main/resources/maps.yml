@@ -1,0 +1,876 @@
+maps:
+    10jumps:
+        name: '10 Jumps'
+        creator: '_XM_'
+        star_rating: 3
+        pp: 375
+        length: 'Very Short'
+        item: [35, 12]
+    5floors:
+        name: '5 Floors'
+        creator: 'Athesus'
+        star_rating: 4.5
+        pp: 2550
+        length: 'Medium'
+        item: [95, 14]
+    abandonedvillage:
+        name: 'Abandoned Village'
+        creator: 'LammyCZ'
+        star_rating: 2
+        pp: 125
+        length: 'Short'
+        item: [98, 1]
+    aquaticcorridor:
+        name: 'Aquatic Corridor'
+        creator: 'Librations'
+        star_rating: 4.5
+        pp: 3500
+        length: 'Short'
+        item: [168, 2]
+    arcade:
+        name: 'Arcade'
+        creator: 'Fuzzbearplush'
+        star_rating: 4
+        pp: 1050
+        length: 'Long'
+        item: [159, 0]
+    arcade2:
+        name: 'Arcade 2'
+        creator: 'Fuzzbearplush'
+        star_rating: 4
+        pp: 1050
+        length: 'Long'
+        item: [159, 12]
+    arcade3:
+        name: 'Arcade 3'
+        creator: '_XM_ & Kratos'
+        star_rating: 7
+        pp: 75000
+        length: 'Insanely Long'
+        item: [133, 0]
+    atlantis:
+        name: 'Atlantis'
+        creator: 'CupStackingKid'
+        star_rating: 5
+        pp: 10000
+        length: 'Very Long'
+        item: [168, 0]
+    beauclair:
+        name: 'Beauclair'
+        creator: 'abax27'
+        star_rating: 5
+        pp: 10000
+        length: 'Very Long'
+        item: [45, 0]
+    castle:
+        name: 'Castle'
+        creator: 'BramVeen'
+        star_rating: 5
+        pp: 7500
+        length: 'Long'
+        item: [98, 3]
+    gray:
+        name: 'CCPK Gray'
+        creator: 'jasmine476'
+        star_rating: 4
+        pp: 1300
+        length: 'Long'
+        item: [35, 8]
+    center:
+        name: 'Center'
+        creator: 'ISawUVent'
+        star_rating: 1
+        pp: 8
+        length: 'Short'
+        item: [20, 0]
+    center2:
+        name: 'Center2'
+        creator: 'lavalaph'
+        star_rating: 2
+        pp: 100
+        length: 'Short'
+        item: [159, 11]
+    christmasroom:
+        name: 'Christmas Room'
+        creator: 'Mugi_Craft and Nurino'
+        star_rating: 5
+        pp: 7000
+        length: 'Long'
+        item: [35, 13]
+    city:
+        name: 'City'
+        creator: 'oThoron'
+        star_rating: 4
+        pp: 1650
+        length: 'Medium'
+        item: [98, 0]
+    classroom:
+        name: 'Classroom'
+        creator: '_XM_'
+        star_rating: 6
+        pp: 24000
+        length: 'Long'
+        item: [5, 1]
+    cosmos:
+        name: 'Cosmos'
+        creator: 'BramVeen'
+        star_rating: 5
+        pp: 5000
+        length: 'Very Long'
+        item: [22, 0]
+    deluxe:
+        name: 'Deluxe'
+        creator: 'xenobiology'
+        star_rating: 3
+        pp: 400
+        length: 'Very Short'
+        item: [95, 8]
+    demonland:
+        name: 'Demonland'
+        creator: 'Normally1'
+        star_rating: 4.5
+        pp: 3500
+        length: 'Medium'
+        item: [35, 14]
+    deviltown:
+        name: 'Devil Town'
+        creator: 'xSamuu'
+        star_rating: 5
+        pp: 8500
+        length: 'Very Long'
+        item: [173, 0]
+    eiffel:
+        name: 'Eiffel'
+        creator: 'Alice'
+        star_rating: 3.5
+        pp: 975
+        length: 'Short'
+        item: [5, 5]
+    elements:
+        name: 'Elements'
+        creator: 'Fuzzbearplush'
+        star_rating: 2
+        pp: 125
+        length: 'Short'
+        item: [2, 0]
+    endurancehall:
+        name: 'Endurance Hall'
+        creator: 'EntityWolf'
+        star_rating: 8
+        pp: 750000
+        length: 'Long'
+        item: [7, 0]
+    evilxiv:
+        name: 'EvilXIV'
+        creator: '_XM_ & Fuzzbearplush'
+        star_rating: 6
+        pp: 30000
+        length: 'Very Long'
+        item: [399, 0]
+    extra:
+        name: 'Extra'
+        creator: 'Fuzzbearplush'
+        star_rating: 4
+        pp: 1024
+        length: 'Long'
+        item: [1, 6]
+    facility:
+        name: 'Facility'
+        creator: 'slusset'
+        star_rating: 5
+        pp: 6500
+        length: 'Medium'
+        item: [1, 3]
+    farwest:
+        name: 'Far West'
+        creator: 'Lolorob11'
+        star_rating: 5
+        pp: 7200
+        length: 'Long'
+        item: [179, 1]
+    farm:
+        name: 'Farm'
+        creator: 'BramVeen'
+        star_rating: 1.5
+        pp: 50
+        length: 'Medium'
+        item: [159, 14]
+    fencecorridor:
+        name: 'Fence Corridor'
+        creator: 'Fuzzbearplush'
+        star_rating: 1
+        pp: 5
+        length: 'Very Short'
+        item: [188, 0]
+    forest:
+        name: 'Forest'
+        creator: 'BramVeen'
+        star_rating: 1
+        pp: 5
+        length: 'Short'
+        item: [18, 0]
+    frogcorridor:
+        name: 'Frog Corridor'
+        creator: 'An02maSS'
+        star_rating: 2
+        pp: 69
+        length: 'Very Short'
+        item: [351, 10]
+    frostflame:
+        name: 'Frostflame'
+        creator: 'Zeltrix54'
+        star_rating: 3
+        pp: 270
+        length: 'Medium'
+        item: [385, 0]
+    frozencave:
+        name: 'Frozen Cave'
+        creator: 'Lester_Star & TNTeamC4'
+        star_rating: 2.5
+        pp: 456
+        length: 'Medium'
+        item: [174, 0]
+    frozenlab:
+        name: 'Frozen Lab'
+        creator: 'BramVeen'
+        star_rating: 1
+        pp: 10
+        length: 'Short'
+        item: [79, 0]
+    gcxv:
+        name: 'GCXV'
+        creator: '_XM_, Kratos & Hulk1050'
+        star_rating: 6
+        pp: 40000
+        length: 'Insanely Long'
+        item: [41, 0]
+    geometrics:
+        name: 'Geometrics'
+        creator: 'Fuzzbearplush'
+        star_rating: 2.5
+        pp: 225
+        length: 'Short'
+        item: [159, 13]
+    geometrics2:
+        name: 'Geometrics 2'
+        creator: '_XM_'
+        star_rating: 6
+        pp: 52500
+        length: 'Medium'
+        item: [35, 3]
+    geometrics3:
+        name: 'Geometrics 3'
+        creator: 'blubbajubba & carterbear06'
+        star_rating: 6
+        pp: 37500
+        length: 'Long'
+        item: [35, 9]
+    hell:
+        name: 'Hell'
+        creator: 'EntityWolf'
+        star_rating: 3.5
+        pp: 800
+        length: 'Short'
+        item: [95, 14]
+    hell2:
+        name: 'Hell 2'
+        creator: 'EntityWolf'
+        star_rating: 3.5
+        pp: 800
+        length: 'Short'
+        item: [152, 0]
+    hell3:
+        name: 'Hell 3'
+        creator: 'EntityWolf'
+        star_rating: 7
+        pp: 60000
+        length: 'Short'
+        item: [88, 0]
+    hogwarts:
+        name: 'Hogwarts'
+        creator: 'BramVeen'
+        star_rating: 4.5
+        pp: 3200
+        length: 'Very Long'
+        item: [35, 12]
+    house:
+        name: 'House'
+        creator: 'KingBranBran'
+        star_rating: 5
+        pp: 5678
+        length: 'Very Short'
+        item: [5, 0]
+    ipad:
+        name: 'IPad'
+        creator: 'BramVeen'
+        star_rating: 4
+        pp: 1200
+        length: 'Medium'
+        item: [95, 15]
+    islands:
+        name: 'Islands'
+        creator: 'DoorNeo'
+        star_rating: 2.5
+        pp: 240
+        length: 'Short'
+        item: [3, 2]
+    kindgcxv:
+        name: 'KindGCXV'
+        creator: 'Jeysunn, juwku, _Kk_kaku_ & more'
+        star_rating: 5
+        pp: 5555
+        length: 'Insanely Long'
+        item: [42, 0]
+    lava:
+        name: 'Lava'
+        creator: 'DenKuleGutt'
+        star_rating: 1.5
+        pp: 12
+        length: 'Very Short'
+        item: [327, 0]
+    magicmountain:
+        name: 'Magic Mountain'
+        creator: 'KingBranBran'
+        star_rating: 3
+        pp: 450
+        length: 'Medium'
+        item: [99, 0]
+    mall:
+        name: 'Mall'
+        creator: 'BramVeen'
+        star_rating: 1.5
+        pp: 47
+        length: 'Short'
+        item: [35, 2]
+    mansion:
+        name: 'Mansion'
+        creator: 'blubbajubba'
+        star_rating: 3
+        pp: 720
+        length: 'Medium'
+        item: [162, 1]
+    mario:
+        name: 'Mario'
+        creator: 'Athesus'
+        star_rating: 5
+        pp: 7350
+        length: 'Long'
+        item: [100, 0]
+    mars:
+        name: 'Mars'
+        creator: 'Biscuitzz_'
+        star_rating: 5
+        pp: 12500
+        length: 'Medium'
+        item: [12, 1]
+    menagerie:
+        name: 'Menagerie'
+        creator: 'abax27'
+        star_rating: 5
+        pp: 11000
+        length: 'Long'
+        item: [95, 11]
+    menagerie2:
+        name: 'Menagerie 2'
+        creator: 'abax27'
+        star_rating: 6
+        pp: 50000
+        length: 'Very Long'
+        item: [35, 15]
+    minibedroom:
+        name: 'Mini Bedroom'
+        creator: 'Kratos'
+        star_rating: 5
+        pp: 5400
+        length: 'Medium'
+        item: [35, 0]
+    minigerie:
+        name: 'Minigerie'
+        creator: 'abax27 & Tiago_Skorpion'
+        star_rating: 4
+        pp: 1000
+        length: 'Medium'
+        item: [95, 5]
+    mountain:
+        name: 'Mountain'
+        creator: 'BramVeen'
+        star_rating: 1
+        pp: 2
+        length: 'Very Short'
+        item: [3, 1]
+    museum:
+        name: 'Museum'
+        creator: 'abax27'
+        star_rating: 4.5
+        pp: 2700
+        length: 'Medium'
+        item: [95, 8]
+    natural:
+        name: 'Natural'
+        creator: 'Aurora_Eternity'
+        star_rating: 3.5
+        pp: 750
+        length: 'Short'
+        item: [161, 1]
+    nostalgia:
+        name: 'Nostalgia'
+        creator: '_XM_'
+        star_rating: 6
+        pp: 20000
+        length: 'Very Long'
+        item: [35, 10]
+    orientalnether:
+        name: 'Oriental Nether'
+        creator: 'Lester_Star'
+        star_rating: 4
+        pp: 1212
+        length: 'Long'
+        item: [98, 3]
+    osiris:
+        name: 'Osiris'
+        creator: 'Khaliio_'
+        star_rating: 5
+        pp: 12750
+        length: 'Long'
+        item: [12, 0]
+    pandorasbox:
+        name: 'Pandora''s Box'
+        creator: '_XM_ & Kratos'
+        star_rating: 8
+        pp: 1000000
+        length: 'Insanely Long'
+        item: [122, 0]
+    pharaohstemple:
+        name: 'Pharaoh''s Temple'
+        creator: 'TNTeamC4'
+        star_rating: 5
+        pp: 17500
+        length: 'Very Long'
+        item: [24, 1]
+    pizzeria:
+        name: 'Pizzeria'
+        creator: 'MomazosDiego'
+        star_rating: 7
+        pp: 160000
+        length: 'Insanely Long'
+        item: [400, 0]
+    playroom:
+        name: 'Playroom'
+        creator: 'Sharpen24, Tiago_Skorpion & Normally1'
+        star_rating: 7
+        pp: 100000
+        length: 'Insanely Long'
+        item: [5, 3]
+    prehistoric:
+        name: 'Prehistoric'
+        creator: 'Khaliio_'
+        star_rating: 3.5
+        pp: 975
+        length: 'Medium'
+        item: [106, 0]
+    prophecy:
+        name: 'Prophecy'
+        creator: 'Khaliio_'
+        star_rating: 4
+        pp: 2375
+        length: 'Medium'
+        item: [35, 1]
+    reiteration:
+        name: 'Reiteration'
+        creator: 'Ziten142857'
+        star_rating: 5
+        pp: 5850
+        length: 'Long'
+        item: [159, 8]
+    rewind:
+        name: 'Rewind'
+        creator: 'MomazosDiego & Sicaro'
+        star_rating: 6
+        pp: 20000
+        length: 'Long'
+        item: [159, 4]
+    rune:
+        name: 'Rune'
+        creator: 'blubbajubba'
+        star_rating: 5
+        pp: 5500
+        length: 'Long'
+        item: [35, 4]
+    sans:
+        name: 'Sans'
+        creator: 'Fuzzbearplush'
+        star_rating: 2
+        pp: 100
+        length: 'Very Short'
+        item: [397, 0]
+    school:
+        name: 'School'
+        creator: 'Fuzzbearplush'
+        star_rating: 3.5
+        pp: 900
+        length: 'Long'
+        item: [340, 0]
+    shroomlight:
+        name: 'Shroomlight'
+        creator: 'Morpheye'
+        star_rating: 2.5
+        pp: 160
+        length: 'Short'
+        item: [99, 0]
+    shroomlight2:
+        name: 'Shroomlight 2'
+        creator: 'Cocasse'
+        star_rating: 3.5
+        pp: 825
+        length: 'Medium'
+        item: [100, 0]
+    sidewayskitchen:
+        name: 'Sideways Kitchen'
+        creator: 'lavalaph'
+        star_rating: 4.5
+        pp: 3200
+        length: 'Very Long'
+        item: [35, 6]
+    skydomain:
+        name: 'SkyDomain'
+        creator: 'BanMePls'
+        star_rating: 5
+        pp: 9600
+        length: 'Very Long'
+        item: [159, 13]
+    smile:
+        name: 'Smile'
+        creator: 'iboba'
+        star_rating: 4.5
+        pp: 2500
+        length: 'Short'
+        item: [3, 0]
+    spacestation:
+        name: 'Space Station'
+        creator: 'KingBranBran'
+        star_rating: 4.5
+        pp: 4200
+        length: 'Long'
+        item: [138, 0]
+    station:
+        name: 'Station'
+        creator: 'Khaliio_'
+        star_rating: 4.5
+        pp: 3150
+        length: 'Medium'
+        item: [1, 5]
+    stinna:
+        name: 'Stinna'
+        creator: 'BramVeen'
+        star_rating: 2.5
+        pp: 222
+        length: 'Long'
+        item: [351, 4]
+    strangelab:
+        name: 'Strange Lab'
+        creator: 'Khaliio_'
+        star_rating: 5
+        pp: 6000
+        length: 'Very Long'
+        item: [61, 0]
+    strangelab2:
+        name: 'Strange Lab 2'
+        creator: 'Khaliio_'
+        star_rating: 6
+        pp: 21500
+        length: 'Very Long'
+        item: [116, 0]
+    sureiya:
+        name: 'Sureiya'
+        creator: 'Raaph'
+        star_rating: 3
+        pp: 650
+        length: 'Short'
+        item: [170, 0]
+    suspiciousbarn:
+        name: 'Suspicious Barn'
+        creator: 'Khaliio_'
+        star_rating: 3.5
+        pp: 1100
+        length: 'Medium'
+        item: [103, 0]
+    tbnr:
+        name: 'TBNR'
+        creator: 'Bourkupine'
+        star_rating: 3.5
+        pp: 800
+        length: 'Very Short'
+        item: [49, 0]
+    temple:
+        name: 'Temple'
+        creator: 'BramVeen'
+        star_rating: 3.5
+        pp: 850
+        length: 'Long'
+        item: [4, 0]
+    tianxia:
+        name: 'TianXia'
+        creator: 'BanMePls'
+        star_rating: 4.5
+        pp: 2400
+        length: 'Medium'
+        item: [80, 0]
+    tundra:
+        name: 'Tundra'
+        creator: 'Fuzzbearplush'
+        star_rating: 1
+        pp: 2
+        length: 'Very Short'
+        item: [332, 0]
+    underground:
+        name: 'Underground'
+        creator: 'Zeltrix54'
+        star_rating: 2.5
+        pp: 175
+        length: 'Short'
+        item: [16, 0]
+    underground2:
+        name: 'Underground 2'
+        creator: 'KyrohIsTaken'
+        star_rating: 4
+        pp: 1500
+        length: 'Medium'
+        item: [56, 0]
+    underwater:
+        name: 'Underwater'
+        creator: 'BramVeen'
+        star_rating: 2
+        pp: 105
+        length: 'Medium'
+        item: [373, 0]
+    unknown:
+        name: 'Unknown'
+        creator: 'xenobiology'
+        star_rating: 3
+        pp: 600
+        length: 'Very Short'
+        item: [14, 0]
+    unknown2:
+        name: 'Unknown 2'
+        creator: 'xenobiology'
+        star_rating: 4
+        pp: 2200
+        length: 'Short'
+        item: [89, 0]
+    village:
+        name: 'Village'
+        creator: 'Fuzzbearplush'
+        star_rating: 1
+        pp: 1
+        length: 'Very Short'
+        item: [17, 0]
+    village2:
+        name: 'Village 2'
+        creator: 'Fuzzbearplush'
+        star_rating: 1
+        pp: 1
+        length: 'Very Short'
+        item: [17, 1]
+    village3:
+        name: 'Village 3'
+        creator: 'KyrohPaneUp'
+        star_rating: 1
+        pp: 3
+        length: 'Very Short'
+        item: [17, 2]
+    wetwood:
+        name: 'Wet Wood'
+        creator: 'Fuzzbearplush'
+        star_rating: 1.5
+        pp: 8
+        length: 'Very Short'
+        item: [19, 0]
+    oceantemple:
+        name: 'Ocean Temple'
+        creator: 'EPK Team'
+        star_rating: 4
+        pp: 3000
+        length: 'Long'
+        item: [ 169, 0 ]
+    steampunk:
+        name: 'Steampunk'
+        creator: 'EPK Team'
+        star_rating: 3.5
+        pp: 900
+        length: 'Long'
+        item: [ 30, 0 ]
+    illusion:
+        name: 'Illusion'
+        creator: 'EPK Team'
+        star_rating: 3
+        pp: 400
+        length: 'Long'
+        item: [ 38, 2 ]
+    colorcaves:
+        name: 'Color Caves'
+        creator: 'EPK Team'
+        star_rating: 5
+        pp: 7400
+        length: 'Long'
+        item: [ 159, 2 ]
+    clashofclans:
+        name: 'Clash Of Clans'
+        creator: 'EPK Team'
+        star_rating: 6
+        pp: 25000
+        length: 'Very Long'
+        item: [ 173, 0 ]
+    terraqueous:
+        name: 'Terraqueous'
+        creator: 'EPK Team'
+        star_rating: 5
+        pp: 5900
+        length: 'Long'
+        item: [ 18, 3 ]
+    breakingbad:
+        name: 'Breaking Bad'
+        creator: 'Tado'
+        star_rating: 3.5
+        pp: 888
+        length: 'Long'
+        item: [ 39, 0 ]
+    tianxia2:
+        name: 'TianXia 2'
+        creator: 'Tado'
+        star_rating: 6
+        pp: 43210
+        length: 'Very Long'
+        item: [ 57, 0 ]
+    spacecity:
+        name: 'Space City'
+        creator: 'Tado'
+        star_rating: 2.5
+        pp: 240
+        length: 'Medium'
+        item: [ 138, 0 ]
+    xmasxv:
+        name: 'Xmas XV'
+        creator: 'lavalaph, baleron420'
+        star_rating: 4.5
+        pp: 4000
+        length: 'Very Long'
+        item: [ 175, 4 ]
+    hospital:
+        name: 'Hospital'
+        creator: 'hifwiend'
+        star_rating: 5
+        pp: 5675
+        length: 'Long'
+        item: [ 152, 0 ]
+    cliffside:
+        name: 'Cliffside'
+        creator: 'ProBuilder05'
+        star_rating: 1
+        pp: 8
+        length: 'Short'
+        item: [ 2, 0 ]
+    magiclibrary:
+        name: 'Magic Library'
+        creator: 'ProBuilder05'
+        star_rating: 2
+        pp: 63
+        length: 'Medium'
+        item: [ 47, 0 ]
+    ascent:
+        name: 'Ascent'
+        creator: 'abax27'
+        star_rating: 7
+        pp: 123456
+        length: 'Long'
+        item: [ 114, 0 ]
+    pisa:
+        name: 'Pisa'
+        creator: 'BaxdieMox'
+        star_rating: 3.5
+        pp: 825
+        length: 'Long'
+        item: [ 189, 0 ]
+    venice:
+        name: 'Venice'
+        creator: 'ProBuilder05'
+        star_rating: 3.5
+        pp: 950
+        length: 'Long'
+        item: [ 79, 0 ]
+    hotel:
+        name: 'Hotel'
+        creator: 'ProBuilder05'
+        star_rating: 3
+        pp: 275
+        length: 'Long'
+        item: [ 35, 9 ]
+    minireactor:
+        name: 'Mini Reactor'
+        creator: 'ProBuilder05'
+        star_rating: 3
+        pp: 325
+        length: 'Medium'
+        item: [ 32, 0 ]
+    house2:
+        name: 'House 2'
+        creator: 'KingBranBran'
+        star_rating: 7
+        pp: 200000
+        length: 'Very Long'
+        item: [ 95, 2 ]
+    space:
+        name: 'Space'
+        creator: 'Whythough'
+        star_rating: 6
+        pp: 20001
+        length: 'Very Long'
+        item: [ 138, 0 ]
+    roc:
+        name: 'Realm of Champions'
+        creator: 'Abax'
+        star_rating: 8
+        pp: 1000000
+        length: 'Insanely Long'
+        item: [ 116, 0 ]
+    elvenation:
+        name: 'Elvenation'
+        creator: 'WolfAndRyan'
+        star_rating: 6
+        pp: 100000
+        length: 'Very Long'
+        item: [ 288, 0 ]
+    planets:
+        name: 'Planets'
+        creator: 'BramVeen'
+        star_rating: 1
+        pp: 9
+        length: 'Very Short'
+        item: [ 20, 0 ]
+    nethercastle:
+        name: 'Nether Castle'
+        creator: 'BramVeen'
+        star_rating: 1.5
+        pp: 13
+        length: 'Short'
+        item: [ 87, 0 ]
+    deepsea:
+        name: 'Deep Sea'
+        creator: 'BramVeen'
+        star_rating: 1.5
+        pp: 45
+        length: 'Short'
+        item: [ 24, 2 ]
+    lunar:
+        name: 'Lunar'
+        creator: 'kamilord248, kamor248 and andre248'
+        star_rating: 6
+        pp: 28250
+        length: 'Very Long'
+        item: [ 76, 0 ]
+    oddbathroom:
+        name: 'Odd Bathroom'
+        creator: 'BanMePls'
+        star_rating: 5
+        pp: 8765
+        length: 'Very Long'
+        item: [ 1, 4 ]

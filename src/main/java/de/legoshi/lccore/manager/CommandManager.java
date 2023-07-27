@@ -10,6 +10,8 @@ import de.legoshi.lccore.command.hide.Hide;
 import de.legoshi.lccore.command.hide.HideAll;
 import de.legoshi.lccore.command.hide.Show;
 import de.legoshi.lccore.command.hide.ShowAll;
+import de.legoshi.lccore.command.maps.MapsCommand;
+import de.legoshi.lccore.command.maps.MapsReloadCommand;
 import de.legoshi.lccore.command.practice.PracticeCommand;
 import de.legoshi.lccore.command.practice.UnpracticeCommand;
 import team.unnamed.inject.Injector;
@@ -68,6 +70,9 @@ public class CommandManager {
         plugin.getCommand("nv").setExecutor(new NightVisionCommand());
         plugin.getCommand("otphere").setExecutor(new OfflineTpHereCommand());
         plugin.getCommand("otp").setExecutor(new OfflineTpCommand());
+        plugin.getCommand("maps").setExecutor(new MapsCommand());
+        plugin.getCommand("mapsreload").setExecutor(new MapsReloadCommand());
+        plugin.getCommand("menu").setExecutor(new MapsCommand());
     }
 
 }
