@@ -3,6 +3,7 @@ package de.legoshi.lccore.util;
 import com.google.gson.JsonParser;
 import de.legoshi.lccore.Linkcraft;
 import org.bukkit.*;
+import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
@@ -41,6 +42,18 @@ public class Utils {
 
     public static String chat(String message) {
         return ChatColor.translateAlternateColorCodes('&', message);
+    }
+
+    public static String chat(Player p, String message) {
+        String chat = "";
+        if (ColorHelper.getChatColor(p) != null) {
+            chat = chat + "&" + ColorHelper.getChatColor(p).getCode();
+        }
+        for (ColorHelper.ChatFormat formats : ColorHelper.getChatFormats(p)) {
+            chat = chat + "&" + formats.getCode();
+        }
+
+        return ChatColor.translateAlternateColorCodes('&', chat) + message;
     }
 
     public static List<String> chat(String... message) {

@@ -3,6 +3,7 @@ package de.legoshi.lccore.listener;
 import de.legoshi.lccore.Linkcraft;
 import de.legoshi.lccore.util.ColorHelper;
 import de.legoshi.lccore.util.Menu;
+import de.legoshi.lccore.util.Utils;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
@@ -33,15 +34,7 @@ public class GeneralListener implements Listener {
 
     @EventHandler
     public void onChat(AsyncPlayerChatEvent e) {
-        Player p = e.getPlayer();
-        String chat = "";
-        if (ColorHelper.getChatColor(p) != null) {
-            chat = chat + "&" + ColorHelper.getChatColor(p).getCode();
-        }
-        for (ColorHelper.ChatFormat formats : ColorHelper.getChatFormats(p)) {
-            chat = chat + "&" + formats.getCode();
-        }
-        e.setMessage(ChatColor.translateAlternateColorCodes('&', chat) + e.getMessage());
+        e.setMessage(Utils.chat(e.getPlayer(), e.getMessage()));
     }
 
     @EventHandler

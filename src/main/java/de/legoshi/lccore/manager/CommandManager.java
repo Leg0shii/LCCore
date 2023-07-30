@@ -73,6 +73,7 @@ public class CommandManager {
         plugin.getCommand("maps").setExecutor(new MapsCommand());
         plugin.getCommand("mapsreload").setExecutor(new MapsReloadCommand());
         plugin.getCommand("menu").setExecutor(new MapsCommand());
+        plugin.getCommand("selfmsg").setExecutor(new SelfMessageCommand());
     }
 
 }
