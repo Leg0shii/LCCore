@@ -2,10 +2,7 @@ package de.legoshi.lccore.manager;
 
 import de.legoshi.lccore.Linkcraft;
 import de.legoshi.lccore.command.*;
-import de.legoshi.lccore.command.checkpoint.CheckpointCommand;
-import de.legoshi.lccore.command.checkpoint.CheckpointDeleteCommand;
-import de.legoshi.lccore.command.checkpoint.SaveCheckpointCommand;
-import de.legoshi.lccore.command.checkpoint.SendToMapCommand;
+import de.legoshi.lccore.command.checkpoint.*;
 import de.legoshi.lccore.command.hide.Hide;
 import de.legoshi.lccore.command.hide.HideAll;
 import de.legoshi.lccore.command.hide.Show;
@@ -62,6 +59,7 @@ public class CommandManager {
         plugin.getCommand("showall").setExecutor(injector.getInstance(ShowAll.class));
         plugin.getCommand("checkpoint").setExecutor(new CheckpointCommand(plugin));
         plugin.getCommand("sendtomap").setExecutor(new SendToMapCommand(plugin.getPluginFolder().getAbsolutePath()));
+        plugin.getCommand("sendtomapworld").setExecutor(new SendToMapWorldCommand(plugin.getPluginFolder().getAbsolutePath()));
         plugin.getCommand("checkpointdelete").setExecutor(new CheckpointDeleteCommand(plugin));
         plugin.getCommand("savecheckpoint").setExecutor(new SaveCheckpointCommand(plugin));
         plugin.getCommand("fakeup").setExecutor(new FakeupCommand());

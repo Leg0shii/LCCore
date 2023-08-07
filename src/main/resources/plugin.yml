@@ -38,7 +38,14 @@ commands:
     aliases: [ stm ]
     usage: /sendtomap <player> <map>
     default: false
-    permission: pkcp.sendto
+    permission: pkcp.sendtomap
+    permission-message: You do not have permission to use this command!
+  sendtomapworld:
+    description: Send a player to a specific map world.
+    aliases: [ stmw ]
+    usage: /sendtomapworld <player> <map>
+    default: false
+    permission: pkcp.sendtomapworld
     permission-message: You do not have permission to use this command!
   savecheckpoint:
     description: Save a checkpoint right at the player's spot.
