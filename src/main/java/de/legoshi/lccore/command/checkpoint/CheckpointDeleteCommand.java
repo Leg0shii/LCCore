@@ -11,6 +11,7 @@ import org.bukkit.entity.Player;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.List;
 import java.util.Objects;
 import java.util.Set;
 
@@ -46,6 +47,22 @@ public class CheckpointDeleteCommand implements CommandExecutor {
         if (map.equals("***")) {
             sender.sendMessage(ChatColor.translateAlternateColorCodes('&', "&aDeleted all of their saves!"));
             file.delete();
+            return true;
+        }
+
+        if (map.equals("*bonus*")) {
+            sender.sendMessage(ChatColor.translateAlternateColorCodes('&', "&aDeleted all of their bonus checkpoints!"));
+            Set<String> cps = yamlConfiguration.getConfigurationSection("Checkpoints").getKeys(false);
+            for (String cp : cps) {
+                if (cp.contains("CP#")) {
+                    yamlConfiguration.set("Checkpoints." + cp, null);
+                }
+            }
+            try {
+                yamlConfiguration.save(file);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
             return true;
         }
         String locationString = yamlConfiguration.getString("Checkpoints." + map + ".Location");
