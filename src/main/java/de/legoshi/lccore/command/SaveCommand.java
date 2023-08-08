@@ -20,7 +20,7 @@ public class SaveCommand implements CommandExecutor {
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
         if (sender instanceof Player) {
             Player p = (Player) sender;
-            if (!p.hasPermission("ps.save") || (p.hasPermission("lc.normal") && p.getWorld().getName().equals("bonus")) || (p.hasPermission("lc.cpmode") && p.getWorld().getName().equals("bonus"))) {
+            if (!p.hasPermission("ps.save") || (p.hasPermission("lc.normal") && p.getWorld().getName().equals("bonus")) || (p.hasPermission("lc.checkpoint") && p.getWorld().getName().equals("bonus"))) {
                 p.sendMessage(Utils.chat("&cYou don't have permission to do this command! (ps.save)"));
                 return true;
             }
