@@ -9,7 +9,9 @@ import de.legoshi.lccore.util.Utils;
 import net.luckperms.api.LuckPerms;
 import net.luckperms.api.model.user.User;
 import net.luckperms.api.node.types.PermissionNode;
+import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
+import org.bukkit.Location;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -45,7 +47,8 @@ public class PracticeCommand implements CommandExecutor {
                 p.sendMessage(ChatColor.translateAlternateColorCodes('&', str));
                 return true;
             }
-            String str1 = LocationHelper.getStringFromLocation(p.getLocation());
+            Location current = p.getLocation();
+            String str1 = LocationHelper.getStringFromLocation(current);
             this.playerdataConfig.set(uuid, str1);
             p.getInventory().addItem(this.plugin.getReturnItem());
 
@@ -67,6 +70,12 @@ public class PracticeCommand implements CommandExecutor {
                 user.data().add(PermissionNode.builder(Constants.ESSENTIALS_SPAWN).value(false).build());
                 api.getUserManager().saveUser(user);
             }
+
+            Bukkit.getScheduler().runTaskLater(Linkcraft.getInstance(), () -> {
+                if(p.isOnline()) {
+                    p.teleport(current);
+                }
+            }, 3L);
 
             String practiceMessage = config.getString(Constants.PRACTICE_MESSAGE);
             p.sendMessage(ChatColor.translateAlternateColorCodes('&', practiceMessage));

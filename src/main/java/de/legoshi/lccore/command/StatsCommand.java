@@ -49,7 +49,11 @@ public class StatsCommand implements CommandExecutor {
             String pp = (int)Linkcraft.getInstance().getEconomy().getBalance(player) + "pp";
             int tags = DeluxeTag.getAvailableTagIdentifiers(player).size();
             String joinDate = (new SimpleDateFormat("d MMMM y")).format(new Date(player.getFirstPlayed()));
-            sender.sendMessage(Utils.chat("&7Your LinkCraft Stats:\n&8&7Rank: " + prefix + "\n&8&7Time Played: &b" + hours + "\n&8&7Jumps: &b" + jumps + "\n&8&7Performance Points: &b" + pp + "\n&8&7Tags: &b" + tags + "\n&8&7Join Date: &b" + joinDate));
+            String bonus = SecondPrefix.getPrefix(player);
+            if(bonus.isEmpty()) {
+                bonus = "&e#1";
+            }
+            sender.sendMessage(Utils.chat("&7Your LinkCraft Stats:\n&8&7Rank: " + prefix + "\n&8&7Bonus: &b" + bonus + "\n&8&7Time Played: &b" + hours + "\n&8&7Jumps: &b" + jumps + "\n&8&7Performance Points: &b" + pp + "\n&8&7Tags: &b" + tags + "\n&8&7Join Date: &b" + joinDate));
         } else {
             Player target = Bukkit.getPlayer(args[0]);
             if (target == null) {
