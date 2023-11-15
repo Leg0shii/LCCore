@@ -23,6 +23,10 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.java.JavaPlugin;
+
+import com.comphenix.protocol.ProtocolLibrary;
+import com.comphenix.protocol.ProtocolManager;
+
 import team.unnamed.inject.Injector;
 
 import java.io.File;
@@ -45,6 +49,7 @@ public class Linkcraft extends JavaPlugin {
     public ConfigAccessor mapsConfig = new ConfigAccessor(this, "maps.yml");
     public InventoryManager im;
     private final FileConfiguration config = getConfig();
+    public ProtocolManager protocolManager;
 
     public void onEnable() {
         instance = this;
@@ -71,6 +76,8 @@ public class Linkcraft extends JavaPlugin {
         } else {
             setupChat();
         }
+
+        protocolManager = ProtocolLibrary.getProtocolManager();
     }
 
     private void loadLuckPerms() {
