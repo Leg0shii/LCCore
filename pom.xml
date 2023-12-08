@@ -78,6 +78,10 @@
             <id>unnamed-public</id>
             <url>https://repo.unnamed.team/repository/unnamed-public/</url>
         </repository>
+        <repository>
+        <id>dmulloy2-repo</id>
+        <url>https://repo.dmulloy2.net/repository/public/</url>
+  </repository>
     </repositories>
 
     <dependencies>
@@ -142,6 +146,12 @@
             <groupId>fr.minuskube.inv</groupId>
             <artifactId>smart-invs</artifactId>
             <version>1.2.7</version>
+        </dependency>
+        <dependency>
+            <groupId>com.comphenix.protocol</groupId>
+            <artifactId>ProtocolLib</artifactId>
+            <version>5.0.0</version>
+            <scope>provided</scope>
         </dependency>
     </dependencies>
 </project>

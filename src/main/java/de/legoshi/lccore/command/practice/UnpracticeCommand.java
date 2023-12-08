@@ -16,17 +16,27 @@ import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
+import com.comphenix.protocol.PacketType;
+import com.comphenix.protocol.ProtocolManager;
+import com.comphenix.protocol.events.PacketContainer;
+import com.comphenix.protocol.wrappers.WrappedChatComponent;
+
 // REFACTORED
 public class UnpracticeCommand implements CommandExecutor {
 
     private final Linkcraft plugin;
     private final FileConfiguration playerdataConfig;
+    private final PacketContainer ActionBarOffPacket;
     private FileConfiguration config;
 
     public UnpracticeCommand(Linkcraft plugin) {
         this.plugin = plugin;
         this.config = plugin.getConfig();
         this.playerdataConfig = plugin.playerdataConfigAccessor.getConfig();
+
+        ActionBarOffPacket = new PacketContainer(PacketType.Play.Server.CHAT);
+        ActionBarOffPacket.getChatComponents().write(0, WrappedChatComponent.fromText(""));
+        ActionBarOffPacket.getBytes().write(0, (byte) 2);
     }
 
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
@@ -77,6 +87,16 @@ public class UnpracticeCommand implements CommandExecutor {
 
         String unpracticeMessage = this.config.getString(Constants.UNPRACTICE_MESSAGE);
         p.sendMessage(ChatColor.translateAlternateColorCodes('&', unpracticeMessage));
+
+        PracticeCommand.getPracticingPlayers().remove(p);
+
+
+        ProtocolManager pm = Linkcraft.getInstance().protocolManager;
+
+        if (pm != null) {
+            pm.sendServerPacket(p, ActionBarOffPacket);
+        }
+
         return true;
     }
 }
