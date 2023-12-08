@@ -8,6 +8,6 @@ public class MapStarComparator implements Comparator<LCMap> {
 
     @Override
     public int compare(LCMap lcMap1, LCMap lcMap2) {
-        return (int) ((lcMap1.star_rating - lcMap2.star_rating) * 100);
+        return Double.compare(lcMap1.pp, lcMap2.pp);
     }
 }
