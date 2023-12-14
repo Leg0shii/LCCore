@@ -33,6 +33,7 @@ public class MapManager {
 
     public static void loadMaps() {
         Linkcraft.getInstance().mapsConfig.reloadConfig();
+        mapsConfig = Linkcraft.getInstance().mapsConfig.getConfig();
         maps = new ArrayList<>();
 
         Set<String> keys = mapsConfig.getConfigurationSection("maps").getKeys(false);
