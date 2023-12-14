@@ -2,6 +2,7 @@ package de.legoshi.lccore.command.maps;
 
 import de.legoshi.lccore.manager.MapManager;
 import de.legoshi.lccore.menu.MapsMenu;
+import de.legoshi.lccore.util.MapUpdater;
 import de.legoshi.lccore.util.Utils;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -20,7 +21,14 @@ public class MapsReloadCommand implements CommandExecutor {
                 return true;
             }
 
-            MapManager.loadMaps();
+            try {
+                MapUpdater.update();
+            } catch (Exception e) {
+                e.printStackTrace();
+                // Fallback to local file reload if API is down for some reason...
+                MapManager.loadMaps();
+            }
+
             sender.sendMessage(Utils.chat("&aReloaded!"));
         }
 
