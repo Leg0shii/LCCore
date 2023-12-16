@@ -68,7 +68,7 @@ public class MapManager {
             ArrayList<String> lore = new ArrayList<>();
             lore.add(Utils.chat("&7/warp " + map.id));
             lore.add(Utils.chat(String.format("&e&lStars: &e%.1f", map.star_rating)));
-            lore.add(Utils.chat(String.format("&d&lPP: &d%.2f", map.pp)));
+            lore.add(Utils.chat(String.format("&d&lPP: &d" + (int)map.pp)));
             lore.add(Utils.chat("&c&lLength: &c" + map.length));
             lore.add(Utils.chat("&a&aCreator: &a" + map.creator));
             im.setLore(lore);
