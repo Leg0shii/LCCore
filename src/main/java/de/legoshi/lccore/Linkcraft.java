@@ -41,7 +41,7 @@ public class Linkcraft extends JavaPlugin {
     private static Chat chat = null;
 
     public LuckPerms luckPerms;
-    public ConfigAccessor playerdataConfigAccessor = new ConfigAccessor(this, "playerdata.yml");
+    public ConfigAccessor playerConfig = new ConfigAccessor(this, "playerdata.yml");
     public ConfigAccessor lockdownConfig = new ConfigAccessor(this, "lockdown.yml");
     public ConfigAccessor mapsConfig = new ConfigAccessor(this, "maps.yml");
     public InventoryManager im;
@@ -65,6 +65,12 @@ public class Linkcraft extends JavaPlugin {
         im = new InventoryManager(this);
         im.init();
         injector.getInstance(ListenerManager.class).registerEvents();
+
+
+    }
+
+    private void addCompletions() {
+
     }
 
     private void loadDependencies() {
@@ -102,7 +108,7 @@ public class Linkcraft extends JavaPlugin {
             playerData.saveConfig();
         }
 
-        this.playerdataConfigAccessor.saveConfig();
+        this.playerConfig.saveConfig();
         this.lockdownConfig.saveConfig();
     }
 

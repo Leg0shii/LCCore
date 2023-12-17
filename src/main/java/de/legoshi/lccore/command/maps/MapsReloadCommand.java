@@ -12,10 +12,6 @@ import org.bukkit.entity.Player;
 public class MapsReloadCommand implements CommandExecutor {
     @Override
     public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
-        if (sender instanceof Player) {
-
-            Player player = (Player) sender;
-
             if (!sender.hasPermission("lc.mapsreload")) {
                 sender.sendMessage(Utils.chat("&cInsufficient permission!"));
                 return true;
@@ -30,7 +26,6 @@ public class MapsReloadCommand implements CommandExecutor {
             }
 
             sender.sendMessage(Utils.chat("&aReloaded!"));
-        }
 
         return true;
     }

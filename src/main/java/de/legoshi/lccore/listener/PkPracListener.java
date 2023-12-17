@@ -19,7 +19,7 @@ import org.bukkit.event.player.PlayerJoinEvent;
 // REFACTORED
 public class PkPracListener implements Listener {
 
-    private final FileConfiguration playerdataConfig = Linkcraft.getInstance().playerdataConfigAccessor.getConfig();
+    private final FileConfiguration playerdataConfig = Linkcraft.getInstance().playerConfig.getConfig();
 
     @EventHandler
     public void onPlayerInteract(PlayerInteractEvent e) {

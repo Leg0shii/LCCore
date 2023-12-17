@@ -14,7 +14,7 @@ public class ConfigManager {
 
     public void loadConfigs() {
         plugin.saveDefaultConfig();
-        plugin.playerdataConfigAccessor.saveDefaultConfig();
+        plugin.playerConfig.saveDefaultConfig();
         plugin.lockdownConfig.saveDefaultConfig();
         plugin.mapsConfig.saveDefaultConfig();
 

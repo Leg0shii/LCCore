@@ -2,26 +2,17 @@ package de.legoshi.lccore.command.practice;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
-import java.util.UUID;
 
 import de.legoshi.lccore.util.Constants;
 import de.legoshi.lccore.Linkcraft;
-import de.legoshi.lccore.inject.LinkcraftModule;
 import de.legoshi.lccore.util.LocationHelper;
 import de.legoshi.lccore.util.Utils;
 import net.luckperms.api.LuckPerms;
 import net.luckperms.api.model.user.User;
 import net.luckperms.api.node.types.PermissionNode;
 import org.bukkit.Bukkit;
-import net.md_5.bungee.api.ChatMessageType;
-import net.md_5.bungee.api.chat.TextComponent;
-import net.minecraft.server.v1_8_R3.ChatComponentText;
-import net.minecraft.server.v1_8_R3.IChatBaseComponent;
 
-import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.command.Command;
@@ -33,7 +24,6 @@ import org.bukkit.entity.Player;
 import com.comphenix.protocol.PacketType;
 import com.comphenix.protocol.ProtocolManager;
 import com.comphenix.protocol.events.PacketContainer;
-import com.comphenix.protocol.injector.netty.WirePacket;
 import com.comphenix.protocol.wrappers.WrappedChatComponent;
 
 // REFACTORED
@@ -46,7 +36,7 @@ public class PracticeCommand implements CommandExecutor {
 
     public PracticeCommand(Linkcraft plugin) {
         this.plugin = plugin;
-        this.playerdataConfig = plugin.playerdataConfigAccessor.getConfig();
+        this.playerdataConfig = plugin.playerConfig.getConfig();
         practicingPlayers = new ArrayList<>();
 
         // Action bar packet

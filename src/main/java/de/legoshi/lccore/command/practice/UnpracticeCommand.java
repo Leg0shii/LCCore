@@ -32,7 +32,7 @@ public class UnpracticeCommand implements CommandExecutor {
     public UnpracticeCommand(Linkcraft plugin) {
         this.plugin = plugin;
         this.config = plugin.getConfig();
-        this.playerdataConfig = plugin.playerdataConfigAccessor.getConfig();
+        this.playerdataConfig = plugin.playerConfig.getConfig();
 
         ActionBarOffPacket = new PacketContainer(PacketType.Play.Server.CHAT);
         ActionBarOffPacket.getChatComponents().write(0, WrappedChatComponent.fromText(""));

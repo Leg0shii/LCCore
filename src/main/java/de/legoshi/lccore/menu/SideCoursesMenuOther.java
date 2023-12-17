@@ -9,19 +9,22 @@ import fr.minuskube.inv.SmartInventory;
 import fr.minuskube.inv.content.InventoryContents;
 import fr.minuskube.inv.content.InventoryProvider;
 import fr.minuskube.inv.content.Pagination;
-import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 
-public class SideCoursesMenu implements InventoryProvider {
+public class SideCoursesMenuOther implements InventoryProvider {
 
-    public static final SmartInventory INVENTORY = SmartInventory.builder()
-            .id("main")
-            .provider(new SideCoursesMenu())
-            .size(6, 9)
-            .title(Utils.chat("&lSide Courses"))
-            .manager(Linkcraft.getInstance().im)
-            .build();
+
+    private String otherPlayerUUID;
+    private SmartInventory inv;
+
+    public SideCoursesMenuOther(String otherPlayerUUID) {
+        this.otherPlayerUUID = otherPlayerUUID;
+    }
+
+    public void setInv(SmartInventory inv) {
+        this.inv = inv;
+    }
 
     @Override
     public void init(Player player, InventoryContents inventoryContents) {
@@ -32,7 +35,7 @@ public class SideCoursesMenu implements InventoryProvider {
         ch.createBarLine(4);
 
         Pagination pagination = inventoryContents.pagination();
-        ClickableItem[] items = MapManager.getMapItems(player.getUniqueId().toString(), player, false);
+        ClickableItem[] items = MapManager.getMapItems(otherPlayerUUID, player, true);
 
         // I guess we just repeatedly run this everytime
         pagination.setItems(items);
@@ -45,9 +48,9 @@ public class SideCoursesMenu implements InventoryProvider {
             inventoryContents.set(i / 7 + 1, i % 7 + 1, pageItems[i]);
         }
 
-        ch.addClickable(5, 0, Material.ARROW, "Previous Page", e -> INVENTORY.open(player, pagination.previous().getPage()));
-        ch.addClickable(5, 8, Material.ARROW, "Next Page", e -> INVENTORY.open(player, pagination.next().getPage()));
-        ch.addClickable(5, 4, Material.IRON_INGOT, "&cBack", e -> MapsMenu.INVENTORY.open(player));
+        ch.addClickable(5, 0, Material.ARROW, "Previous Page", e -> inv.open(player, pagination.previous().getPage()));
+        ch.addClickable(5, 8, Material.ARROW, "Next Page", e -> inv.open(player, pagination.next().getPage()));
+        //ch.addClickable(5, 4, Material.IRON_INGOT, "&cBack", e -> MapsMenu.INVENTORY.open(player));
     }
 
     @Override

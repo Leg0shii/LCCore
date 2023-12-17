@@ -3,14 +3,21 @@ package de.legoshi.lccore.util;
 import com.google.gson.JsonParser;
 import de.legoshi.lccore.Linkcraft;
 import org.bukkit.*;
+import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
+import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
 import java.io.FileReader;
 import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Random;
 import java.util.stream.IntStream;
@@ -18,10 +25,42 @@ import java.util.stream.IntStream;
 // PARTLY REFACTORED
 public class Utils {
 
+    public static String stringToISO(String dateStr) {
+        DateTimeFormatter inputFormatter = DateTimeFormatter.ofPattern("EEE MMM dd HH:mm:ss z yyyy");
+        try {
+            LocalDate localDate = LocalDate.parse(dateStr, inputFormatter);
+            return localDate.toString();
+        } catch (Exception e) {
+            return dateStr;
+        }
+
+    }
+
+
     public static String getStringFromLocation(Location l) {
         if (l == null)
             return "";
         return l.getWorld().getName() + ":" + l.getX() + ":" + l.getY() + ":" + l.getZ() + ":" + l.getYaw() + ":" + l.getPitch();
+    }
+
+    public static ConfigAccessor getPlayerConfig(Player player) {
+        return new ConfigAccessor(Linkcraft.getInstance(), Linkcraft.getInstance().getPlayerdataFolder(), player.getUniqueId().toString() + ".yml");
+    }
+
+    public static void addGlow(ItemStack item) {
+        ItemMeta im = item.getItemMeta();
+        im.addItemFlags(ItemFlag.HIDE_ENCHANTS);
+        im.addEnchant(Enchantment.DURABILITY, 1, true);
+        item.setItemMeta(im);
+    }
+
+
+    public static ConfigAccessor getPlayerConfig(OfflinePlayer player) {
+        return new ConfigAccessor(Linkcraft.getInstance(), Linkcraft.getInstance().getPlayerdataFolder(), player.getUniqueId().toString() + ".yml");
+    }
+
+    public static ConfigAccessor getPlayerConfig(String uuid) {
+        return new ConfigAccessor(Linkcraft.getInstance(), Linkcraft.getInstance().getPlayerdataFolder(), uuid + ".yml");
     }
 
     public static Location getLocationFromString(String s) {
