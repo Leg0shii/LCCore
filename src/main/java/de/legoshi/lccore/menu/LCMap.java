@@ -1,5 +1,7 @@
 package de.legoshi.lccore.menu;
 
+import de.legoshi.lccore.util.MapType;
+
 import java.util.List;
 
 public class LCMap {
@@ -10,4 +12,5 @@ public class LCMap {
     public double pp;
     public String length;
     public List<Integer> item;
+    public MapType mapType;
 }

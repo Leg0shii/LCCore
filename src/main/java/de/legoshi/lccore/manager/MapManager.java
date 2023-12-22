@@ -2,8 +2,9 @@ package de.legoshi.lccore.manager;
 
 import de.legoshi.lccore.Linkcraft;
 import de.legoshi.lccore.menu.LCMap;
-import de.legoshi.lccore.menu.MapStarComparator;
+import de.legoshi.lccore.menu.MapComparator;
 import de.legoshi.lccore.util.ConfigAccessor;
+import de.legoshi.lccore.util.MapType;
 import de.legoshi.lccore.util.Utils;
 import fr.minuskube.inv.ClickableItem;
 import fr.minuskube.inv.InventoryManager;
@@ -12,7 +13,6 @@ import org.bukkit.Material;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
-import org.bukkit.event.inventory.InventoryAction;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
@@ -23,6 +23,7 @@ public class MapManager {
     Linkcraft plugin;
     InventoryManager im;
     static List<LCMap> maps;
+    public static HashMap<String, LCMap> mapMap;
     static ClickableItem[] mapItems;
     static FileConfiguration mapsConfig;
 
@@ -35,18 +36,14 @@ public class MapManager {
     }
 
     public static boolean mapExists(String mapName) {
-        for(LCMap map : maps) {
-            if(map.id.equals(mapName)) {
-                return true;
-            }
-        }
-        return false;
+        return mapMap.containsKey(mapName);
     }
 
     public static void loadMaps() {
         Linkcraft.getInstance().mapsConfig.reloadConfig();
         mapsConfig = Linkcraft.getInstance().mapsConfig.getConfig();
         maps = new ArrayList<>();
+        mapMap = new HashMap<>();
 
         Set<String> keys = mapsConfig.getConfigurationSection("maps").getKeys(false);
 
@@ -59,21 +56,24 @@ public class MapManager {
             map.pp = mapsConfig.getDouble(String.format("maps.%s.pp", key));
             map.length = mapsConfig.getString(String.format("maps.%s.length", key));
             map.item = mapsConfig.getIntegerList(String.format("maps.%s.item", key));
+            map.mapType = MapType.valueOf(mapsConfig.getString(String.format("maps.%s.type", key)));
 
             maps.add(map);
+            mapMap.put(key, map);
         }
 
-        maps.sort(new MapStarComparator());
+        maps.sort(new MapComparator());
     }
 
     public static ClickableItem[] getMapItems(String uuid, Player holder, boolean admin) {
-        int amt = maps.size();
-        ClickableItem[] ciArr = new ClickableItem[amt];
+        List<ClickableItem> clickableItems = new ArrayList<>();
         ConfigAccessor playerConfigAccessor = Utils.getPlayerConfig(uuid);
         FileConfiguration playerConfig = playerConfigAccessor.getConfig();
 
-        int i = 0;
         for (LCMap map : maps) {
+            if(!map.mapType.equals(MapType.SIDE)) {
+                continue;
+            }
             ConfigurationSection mapsSection = playerConfig.getConfigurationSection("maps");
             if(mapsSection == null) {
                 playerConfig.createSection("maps");
@@ -116,7 +116,7 @@ public class MapManager {
 
             ConfigurationSection finalMapsSection = mapsSection;
 
-            ciArr[i] = ClickableItem.of(
+            clickableItems.add(ClickableItem.of(
                     is,
                     e -> {
                         if(admin) {
@@ -144,12 +144,10 @@ public class MapManager {
                             Bukkit.dispatchCommand(e.getWhoClicked(), "warp " + map.id);
                         }
                     }
-            );
-
-            i++;
+            ));
         }
 
-        return ciArr;
+        return clickableItems.toArray(new ClickableItem[0]);
     }
 
 }

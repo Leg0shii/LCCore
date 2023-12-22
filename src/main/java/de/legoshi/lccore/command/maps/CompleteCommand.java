@@ -2,6 +2,7 @@ package de.legoshi.lccore.command.maps;
 
 import de.legoshi.lccore.Linkcraft;
 import de.legoshi.lccore.manager.MapManager;
+import de.legoshi.lccore.menu.LCMap;
 import de.legoshi.lccore.util.ConfigAccessor;
 import de.legoshi.lccore.util.Constants;
 import de.legoshi.lccore.util.Utils;
@@ -60,6 +61,11 @@ public class CompleteCommand implements CommandExecutor {
 
         if(args.length > 2) {
             obj = "N/A";
+        } else {
+            LCMap lcMap = MapManager.mapMap.get(map);
+//            if(lcMap.pp > 0) {
+//                Bukkit.getServer().dispatchCommand(Bukkit.getServer().getConsoleSender(), "eco give " + offlinePlayer.getName() + " " + lcMap.pp);
+//            }
         }
 
         if(mapSection == null) {
@@ -74,6 +80,7 @@ public class CompleteCommand implements CommandExecutor {
             mapSection.set("lastcompletion", obj);
             sender.sendMessage(ChatColor.GREEN + "Added new completion of " + map + " for " + args[1]);
         }
+
 
         playerConfigAccessor.saveConfig();
 

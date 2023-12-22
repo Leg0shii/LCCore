@@ -1,8 +1,6 @@
 package de.legoshi.lccore.command.maps;
 
 import de.legoshi.lccore.Linkcraft;
-import de.legoshi.lccore.menu.MapsMenu;
-import de.legoshi.lccore.menu.SideCoursesMenu;
 import de.legoshi.lccore.menu.SideCoursesMenuOther;
 import de.legoshi.lccore.util.Utils;
 import fr.minuskube.inv.SmartInventory;

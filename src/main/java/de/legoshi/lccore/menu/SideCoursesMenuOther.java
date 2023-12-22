@@ -30,12 +30,14 @@ public class SideCoursesMenuOther implements InventoryProvider {
     public void init(Player player, InventoryContents inventoryContents) {
         ContentsHelper ch = new ContentsHelper(inventoryContents);
 
+        boolean admin = player.hasPermission("lc.complete");
+
         ch.createBlackSides();
         ch.createBarLine(0);
         ch.createBarLine(4);
 
         Pagination pagination = inventoryContents.pagination();
-        ClickableItem[] items = MapManager.getMapItems(otherPlayerUUID, player, true);
+        ClickableItem[] items = MapManager.getMapItems(otherPlayerUUID, player, admin);
 
         // I guess we just repeatedly run this everytime
         pagination.setItems(items);
