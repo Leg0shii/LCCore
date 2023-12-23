@@ -1,3 +1,5 @@
 # Project exclude paths
 /target/
 /server
+/.idea
+launch.json
