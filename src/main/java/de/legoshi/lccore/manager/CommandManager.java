@@ -8,6 +8,7 @@ import de.legoshi.lccore.command.hide.HideAll;
 import de.legoshi.lccore.command.hide.Show;
 import de.legoshi.lccore.command.hide.ShowAll;
 import de.legoshi.lccore.command.maps.*;
+import de.legoshi.lccore.command.misc.MeowRaviCommand;
 import de.legoshi.lccore.command.practice.PracticeCommand;
 import de.legoshi.lccore.command.practice.UnpracticeCommand;
 import team.unnamed.inject.Injector;
@@ -75,6 +76,7 @@ public class CommandManager {
         plugin.getCommand("addcompletions").setExecutor(new AddCompletionsCommand());
         plugin.getCommand("giveunlocks").setExecutor(new GiveUnlocksCommand());
         plugin.getCommand("checkcompletions").setExecutor(new CheckCompletionsCommand());
+        plugin.getCommand("meow").setExecutor(new MeowRaviCommand());
     }
 
 }
