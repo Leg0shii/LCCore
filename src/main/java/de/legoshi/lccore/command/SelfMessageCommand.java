@@ -3,7 +3,6 @@ package de.legoshi.lccore.command;
 import com.darkender.SecondPrefix.SecondPrefix;
 import de.legoshi.lccore.util.Utils;
 import me.clip.deluxetags.DeluxeTag;
-import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;

@@ -1,18 +1,17 @@
 package de.legoshi.lccore.command.practice;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-
-import de.legoshi.lccore.util.Constants;
+import com.comphenix.protocol.PacketType;
+import com.comphenix.protocol.ProtocolManager;
+import com.comphenix.protocol.events.PacketContainer;
+import com.comphenix.protocol.wrappers.WrappedChatComponent;
 import de.legoshi.lccore.Linkcraft;
+import de.legoshi.lccore.util.Constants;
 import de.legoshi.lccore.util.LocationHelper;
 import de.legoshi.lccore.util.Utils;
 import net.luckperms.api.LuckPerms;
 import net.luckperms.api.model.user.User;
 import net.luckperms.api.node.types.PermissionNode;
 import org.bukkit.Bukkit;
-
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.command.Command;
@@ -21,10 +20,9 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 
-import com.comphenix.protocol.PacketType;
-import com.comphenix.protocol.ProtocolManager;
-import com.comphenix.protocol.events.PacketContainer;
-import com.comphenix.protocol.wrappers.WrappedChatComponent;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 // REFACTORED
 public class PracticeCommand implements CommandExecutor {
@@ -80,7 +78,7 @@ public class PracticeCommand implements CommandExecutor {
             p.getInventory().addItem(this.plugin.getReturnItem());
 
             // Set player to prac group... WELL NOW INDIVIDUAL PERMS...
-            // atleast it doesnt spam anymore
+            // at least it doesn't spam anymore
             LuckPerms api = plugin.luckPerms;
             User user = api.getUserManager().getUser(p.getUniqueId());
             if (user != null) {

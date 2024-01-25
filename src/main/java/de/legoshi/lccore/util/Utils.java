@@ -12,12 +12,9 @@ import org.bukkit.inventory.meta.ItemMeta;
 
 import java.io.FileReader;
 import java.io.IOException;
-import java.text.SimpleDateFormat;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 import java.util.Random;
 import java.util.stream.IntStream;
@@ -84,15 +81,15 @@ public class Utils {
     }
 
     public static String chat(Player p, String message) {
-        String chat = "";
+        StringBuilder chat = new StringBuilder();
         if (ColorHelper.getChatColor(p) != null) {
-            chat = chat + "&" + ColorHelper.getChatColor(p).getCode();
+            chat.append("&").append(ColorHelper.getChatColor(p).getCode());
         }
         for (ColorHelper.ChatFormat formats : ColorHelper.getChatFormats(p)) {
-            chat = chat + "&" + formats.getCode();
+            chat.append("&").append(formats.getCode());
         }
 
-        return ChatColor.translateAlternateColorCodes('&', chat) + message;
+        return ChatColor.translateAlternateColorCodes('&', chat.toString()) + message;
     }
 
     public static List<String> chat(String... message) {
@@ -111,7 +108,7 @@ public class Utils {
         for (String s : loreString) {
             lore.add(chat(s));
         }
-        if (lore.size() > 0) meta.setLore(lore);
+        if (!lore.isEmpty()) meta.setLore(lore);
         item.setItemMeta(meta);
         inv.setItem(invSlot, item);
         return item;

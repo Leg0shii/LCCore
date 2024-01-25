@@ -1,12 +1,17 @@
 package de.legoshi.lccore;
 
+import com.comphenix.protocol.ProtocolLibrary;
+import com.comphenix.protocol.ProtocolManager;
 import de.legoshi.lccore.inject.LinkcraftModule;
+import de.legoshi.lccore.manager.CommandManager;
+import de.legoshi.lccore.manager.ConfigManager;
 import de.legoshi.lccore.manager.ListenerManager;
 import de.legoshi.lccore.manager.MapManager;
 import de.legoshi.lccore.papi.PlaceHolderAPI;
-import de.legoshi.lccore.util.*;
-import de.legoshi.lccore.manager.CommandManager;
-import de.legoshi.lccore.manager.ConfigManager;
+import de.legoshi.lccore.util.ConfigAccessor;
+import de.legoshi.lccore.util.Constants;
+import de.legoshi.lccore.util.MapUpdater;
+import de.legoshi.lccore.util.Utils;
 import fr.minuskube.inv.InventoryManager;
 import me.clip.deluxetags.DeluxeTag;
 import net.luckperms.api.LuckPerms;
@@ -20,10 +25,6 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.java.JavaPlugin;
-
-import com.comphenix.protocol.ProtocolLibrary;
-import com.comphenix.protocol.ProtocolManager;
-
 import team.unnamed.inject.Injector;
 
 import java.io.File;
@@ -34,16 +35,16 @@ public class Linkcraft extends JavaPlugin {
 
     public static Linkcraft instance;
 
-    public Map<String, String> saveCreations = new HashMap<>();
-    public Map<String, OfflinePlayer> playerMap = new HashMap<>();
+    public final Map<String, String> saveCreations = new HashMap<>();
+    public final Map<String, OfflinePlayer> playerMap = new HashMap<>();
 
     public static Economy economy = null;
     private static Chat chat = null;
 
     public LuckPerms luckPerms;
-    public ConfigAccessor playerConfig = new ConfigAccessor(this, "playerdata.yml");
-    public ConfigAccessor lockdownConfig = new ConfigAccessor(this, "lockdown.yml");
-    public ConfigAccessor mapsConfig = new ConfigAccessor(this, "maps.yml");
+    public final ConfigAccessor playerConfig = new ConfigAccessor(this, "playerdata.yml");
+    public final ConfigAccessor lockdownConfig = new ConfigAccessor(this, "lockdown.yml");
+    public final ConfigAccessor mapsConfig = new ConfigAccessor(this, "maps.yml");
     public InventoryManager im;
     private final FileConfiguration config = getConfig();
     public ProtocolManager protocolManager;
@@ -66,10 +67,6 @@ public class Linkcraft extends JavaPlugin {
         im.init();
         injector.getInstance(ListenerManager.class).registerEvents();
 
-
-    }
-
-    private void addCompletions() {
 
     }
 

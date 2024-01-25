@@ -6,7 +6,6 @@ import de.legoshi.lccore.util.Utils;
 import org.apache.commons.lang.text.StrSubstitutor;
 import org.bukkit.Bukkit;
 import org.bukkit.Sound;
-import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
@@ -20,7 +19,7 @@ public class SaveCreationUI {
 
     public static Inventory inv;
     public static String inventory_name;
-    public static int inv_rows = 27;
+    public final static int inv_rows = 27;
     private static Linkcraft plugin;
 
     public static void initialize() {
@@ -76,7 +75,7 @@ public class SaveCreationUI {
             String saveName = plugin.saveCreations.get(uuid);
             if (playerDataConfig.isConfigurationSection("Saves")) {
                 Set<String> saves = playerDataConfig.getConfigurationSection("Saves").getKeys(false);
-                if (saves.size() > 0) {
+                if (!saves.isEmpty()) {
                     saveNumber = Integer.parseInt((String) saves.toArray()[saves.size() - 1]) + 1;
                 } else {
                     saveNumber = 1;

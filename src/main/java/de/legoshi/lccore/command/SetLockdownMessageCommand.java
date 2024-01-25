@@ -1,7 +1,6 @@
 package de.legoshi.lccore.command;
 
 import de.legoshi.lccore.Linkcraft;
-import de.legoshi.lccore.listener.PlayerJoinListener;
 import de.legoshi.lccore.listener.PreJoinListener;
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;

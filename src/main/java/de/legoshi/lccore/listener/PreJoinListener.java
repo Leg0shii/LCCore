@@ -1,8 +1,6 @@
 package de.legoshi.lccore.listener;
 
 import de.legoshi.lccore.Linkcraft;
-import net.luckperms.api.LuckPerms;
-import net.luckperms.api.model.user.User;
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.configuration.file.FileConfiguration;

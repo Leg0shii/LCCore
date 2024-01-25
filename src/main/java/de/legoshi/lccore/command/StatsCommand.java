@@ -8,7 +8,6 @@ import de.legoshi.lccore.util.Constants;
 import de.legoshi.lccore.util.Utils;
 import me.clip.deluxetags.DeluxeTag;
 import net.luckperms.api.model.user.User;
-import net.milkbowl.vault.Vault;
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.Statistic;
@@ -17,7 +16,6 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
-import org.bukkit.plugin.java.JavaPlugin;
 
 import java.lang.reflect.Field;
 import java.text.SimpleDateFormat;
@@ -26,7 +24,6 @@ import java.util.List;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
-import java.util.concurrent.TimeUnit;
 
 public class StatsCommand implements CommandExecutor {
 

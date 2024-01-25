@@ -23,16 +23,6 @@ public class ItemBuilder {
         this.meta = this.item.getItemMeta();
     }
 
-    public ItemBuilder(Material type, int id, int amount) {
-        this.item = new ItemStack(type, amount, (short) id);
-        this.meta = this.item.getItemMeta();
-    }
-
-    public ItemBuilder(ItemStack item) {
-        this.item = item;
-        this.meta = this.item.getItemMeta();
-    }
-
     public ItemBuilder addEnchant(Enchantment enchant, int level) {
         this.meta.addEnchant(enchant, level, true);
         return this;

@@ -1,10 +1,8 @@
 package de.legoshi.lccore.listener;
 
 import de.legoshi.lccore.Linkcraft;
-import de.legoshi.lccore.util.ColorHelper;
 import de.legoshi.lccore.util.Menu;
 import de.legoshi.lccore.util.Utils;
-import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;

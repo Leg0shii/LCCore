@@ -38,12 +38,12 @@ public class PlaceHolderAPI extends PlaceholderExpansion {
 
     public String onPlaceholderRequest(Player p, String id) {
         if (id.equalsIgnoreCase("theheheehthej")) {
-            String chat = "";
+            StringBuilder chat = new StringBuilder();
             if (ColorHelper.getChatColor(p) != null) {
-                chat = chat + "&" + ColorHelper.getChatColor(p).getCode();
+                chat.append("&").append(ColorHelper.getChatColor(p).getCode());
             }
-            for (ColorHelper.ChatFormat formats : ColorHelper.getChatFormats(p)) chat = chat + "&" + formats.getCode();
-            return chat;
+            for (ColorHelper.ChatFormat formats : ColorHelper.getChatFormats(p)) chat.append("&").append(formats.getCode());
+            return chat.toString();
         }
         if (id.equalsIgnoreCase("secondprefix")) return SecondPrefix.getPrefix(p);
         return null;

@@ -8,7 +8,6 @@ import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.plugin.java.JavaPlugin;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -19,9 +18,9 @@ public class AdminUI {
 
     public static Inventory inv;
     public static String inventory_name;
-    public static int inv_rows = 54;
+    public static final int inv_rows = 54;
     private static Linkcraft plugin;
-    public static Map<String, Integer> currentPage = new HashMap<>();
+    public static final Map<String, Integer> currentPage = new HashMap<>();
 
     public static void initialize() {
         plugin = Linkcraft.getInstance();

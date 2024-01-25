@@ -16,12 +16,15 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Set;
 
 public class MapManager {
 
-    Linkcraft plugin;
-    InventoryManager im;
+    public final Linkcraft plugin;
+    public final InventoryManager im;
     static List<LCMap> maps;
     public static HashMap<String, LCMap> mapMap;
     static ClickableItem[] mapItems;
@@ -31,7 +34,7 @@ public class MapManager {
         this.plugin = plugin;
         im = new InventoryManager(plugin);
         im.init();
-        this.mapsConfig = plugin.mapsConfig.getConfig();
+        mapsConfig = plugin.mapsConfig.getConfig();
         loadMaps();
     }
 

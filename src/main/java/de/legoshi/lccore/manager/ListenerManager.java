@@ -2,7 +2,6 @@ package de.legoshi.lccore.manager;
 
 import de.legoshi.lccore.Linkcraft;
 import de.legoshi.lccore.listener.*;
-import org.bukkit.event.player.PlayerKickEvent;
 import org.bukkit.plugin.PluginManager;
 import team.unnamed.inject.Inject;
 

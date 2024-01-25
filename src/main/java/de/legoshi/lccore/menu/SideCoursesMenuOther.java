@@ -1,9 +1,7 @@
 package de.legoshi.lccore.menu;
 
-import de.legoshi.lccore.Linkcraft;
 import de.legoshi.lccore.manager.MapManager;
 import de.legoshi.lccore.util.ContentsHelper;
-import de.legoshi.lccore.util.Utils;
 import fr.minuskube.inv.ClickableItem;
 import fr.minuskube.inv.SmartInventory;
 import fr.minuskube.inv.content.InventoryContents;
@@ -15,7 +13,7 @@ import org.bukkit.entity.Player;
 public class SideCoursesMenuOther implements InventoryProvider {
 
 
-    private String otherPlayerUUID;
+    private final String otherPlayerUUID;
     private SmartInventory inv;
 
     public SideCoursesMenuOther(String otherPlayerUUID) {

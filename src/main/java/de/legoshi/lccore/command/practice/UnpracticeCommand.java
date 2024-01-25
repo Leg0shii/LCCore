@@ -1,5 +1,9 @@
 package de.legoshi.lccore.command.practice;
 
+import com.comphenix.protocol.PacketType;
+import com.comphenix.protocol.ProtocolManager;
+import com.comphenix.protocol.events.PacketContainer;
+import com.comphenix.protocol.wrappers.WrappedChatComponent;
 import de.legoshi.lccore.Linkcraft;
 import de.legoshi.lccore.util.Constants;
 import de.legoshi.lccore.util.LocationHelper;
@@ -15,11 +19,6 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
-
-import com.comphenix.protocol.PacketType;
-import com.comphenix.protocol.ProtocolManager;
-import com.comphenix.protocol.events.PacketContainer;
-import com.comphenix.protocol.wrappers.WrappedChatComponent;
 
 // REFACTORED
 public class UnpracticeCommand implements CommandExecutor {

@@ -27,9 +27,9 @@ public class SendToMapWorldCommand implements CommandExecutor {
             return false;
         Player senderPlayer = (Player) sender;
         String playerName = args[0];
-        String worldName = args[1];
+        StringBuilder worldName = new StringBuilder(args[1]);
         for (int i = 2; i < args.length; i++)
-            worldName = worldName + " " + args[i];
+            worldName.append(" ").append(args[i]);
         Player player = Bukkit.getPlayer(playerName);
         if (player == null) {
             senderPlayer.sendRawMessage(ChatColor.translateAlternateColorCodes('&', "&cThat player cannot be found!"));

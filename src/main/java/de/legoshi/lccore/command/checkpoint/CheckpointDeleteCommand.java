@@ -11,7 +11,6 @@ import org.bukkit.entity.Player;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.List;
 import java.util.Objects;
 import java.util.Set;
 
@@ -29,9 +28,9 @@ public class CheckpointDeleteCommand implements CommandExecutor {
         if (args.length < 2)
             return false;
         String playerName = args[0];
-        String map = args[1];
+        StringBuilder map = new StringBuilder(args[1]);
         for (int i = 2; i < args.length; i++)
-            map = map + " " + args[i];
+            map.append(" ").append(args[i]);
         Player player = Bukkit.getPlayer(playerName);
         if (player == null) {
             sender.sendMessage(ChatColor.translateAlternateColorCodes('&', "&cThat player cannot be found!"));
@@ -44,13 +43,13 @@ public class CheckpointDeleteCommand implements CommandExecutor {
             return true;
         }
         YamlConfiguration yamlConfiguration = YamlConfiguration.loadConfiguration(file);
-        if (map.equals("***")) {
+        if (map.toString().equals("***")) {
             sender.sendMessage(ChatColor.translateAlternateColorCodes('&', "&aDeleted all of their saves!"));
             file.delete();
             return true;
         }
 
-        if (map.equals("*bonus*")) {
+        if (map.toString().equals("*bonus*")) {
             sender.sendMessage(ChatColor.translateAlternateColorCodes('&', "&aDeleted all of their bonus checkpoints!"));
             Set<String> cps = yamlConfiguration.getConfigurationSection("Checkpoints").getKeys(false);
             for (String cp : cps) {
@@ -80,7 +79,7 @@ public class CheckpointDeleteCommand implements CommandExecutor {
         Set<String> worlds = yamlConfiguration.getConfigurationSection("Worlds").getKeys(false);
         Object[] worldArray = worlds.toArray();
         for (int j = 0; j < (worlds.toArray()).length; j++) {
-            if (Objects.equals(yamlConfiguration.getString("Worlds." + worldArray[j]), map))
+            if (Objects.equals(yamlConfiguration.getString("Worlds." + worldArray[j]), map.toString()))
                 yamlConfiguration.set("Worlds." + worldArray[j], null);
         }
         return true;

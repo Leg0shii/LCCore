@@ -24,7 +24,7 @@ public class ResetSavesCommand implements CommandExecutor {
             return true;
         }
 
-        if (args.length == 0 || args.length >= 2) {
+        if (args.length != 1) {
             sender.sendMessage(Utils.chat("&cInvalid syntax!"));
             return true;
         }

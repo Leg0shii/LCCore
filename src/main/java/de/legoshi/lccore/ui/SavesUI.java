@@ -18,7 +18,6 @@ import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
@@ -27,7 +26,7 @@ public class SavesUI {
 
     public static Inventory inv;
     public static String inventory_name;
-    public static int inv_rows = 54;
+    public final static int inv_rows = 54;
     private static Linkcraft plugin;
     private static final Map<String, Integer> currentPage = new HashMap<>();
 

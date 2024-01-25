@@ -1,13 +1,11 @@
 package de.legoshi.lccore.command.maps;
 
 import de.legoshi.lccore.manager.MapManager;
-import de.legoshi.lccore.menu.MapsMenu;
 import de.legoshi.lccore.util.MapUpdater;
 import de.legoshi.lccore.util.Utils;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
-import org.bukkit.entity.Player;
 
 public class MapsReloadCommand implements CommandExecutor {
     @Override

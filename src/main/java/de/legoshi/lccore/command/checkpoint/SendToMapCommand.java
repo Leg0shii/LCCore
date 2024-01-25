@@ -1,6 +1,5 @@
 package de.legoshi.lccore.command.checkpoint;
 
-import de.legoshi.lccore.Linkcraft;
 import de.legoshi.lccore.util.LocationHelper;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -27,9 +26,9 @@ public class SendToMapCommand implements CommandExecutor {
             return false;
         Player senderPlayer = (Player) sender;
         String playerName = args[0];
-        String map = args[1];
+        StringBuilder map = new StringBuilder(args[1]);
         for (int i = 2; i < args.length; i++)
-            map = map + " " + args[i];
+            map.append(" ").append(args[i]);
         Player player = Bukkit.getPlayer(playerName);
         if (player == null) {
             senderPlayer.sendRawMessage(ChatColor.translateAlternateColorCodes('&', "&cThat player cannot be found!"));
@@ -50,7 +49,7 @@ public class SendToMapCommand implements CommandExecutor {
         Location location = LocationHelper.getLocationFromString(locationString);
         player.teleport(location);
         String world = player.getWorld().getName();
-        yamlConfiguration.set("Worlds." + world, map);
+        yamlConfiguration.set("Worlds." + world, map.toString());
         try {
             yamlConfiguration.save(file);
         } catch (IOException e) {
