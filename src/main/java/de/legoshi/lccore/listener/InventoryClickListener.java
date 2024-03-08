@@ -43,9 +43,9 @@ public class InventoryClickListener implements Listener {
             e.setCancelled(true);
             if (e.getCurrentItem() == null) return;
             if (e.getClick().isShiftClick() && e.getSlot() < 36) {
-                OfflinePlayer target = Linkcraft.getInstance().playerMap.get(e.getWhoClicked().getName());
+                OfflinePlayer target = Linkcraft.getPlugin().playerMap.get(e.getWhoClicked().getName());
                 String uuid = target.getUniqueId().toString();
-                ConfigAccessor playerData = new ConfigAccessor(Linkcraft.getInstance(), Linkcraft.getInstance().getPlayerdataFolder(), uuid + ".yml");
+                ConfigAccessor playerData = new ConfigAccessor(Linkcraft.getPlugin(), Linkcraft.getPlugin().getPlayerdataFolder(), uuid + ".yml");
                 FileConfiguration playerDataConfig = playerData.getConfig();
                 Set<String> keys = playerDataConfig.getConfigurationSection("Saves").getKeys(false);
                 playerDataConfig.set("Saves." + keys.toArray()[slot + (AdminUI.currentPage.get(e.getWhoClicked().getUniqueId().toString()) - 1) * 36], null);

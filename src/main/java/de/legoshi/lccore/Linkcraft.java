@@ -3,17 +3,13 @@ package de.legoshi.lccore;
 import com.comphenix.protocol.ProtocolLibrary;
 import com.comphenix.protocol.ProtocolManager;
 import de.legoshi.lccore.inject.LinkcraftModule;
-import de.legoshi.lccore.manager.CommandManager;
-import de.legoshi.lccore.manager.ConfigManager;
-import de.legoshi.lccore.manager.ListenerManager;
-import de.legoshi.lccore.manager.MapManager;
+import de.legoshi.lccore.manager.*;
 import de.legoshi.lccore.papi.PlaceHolderAPI;
+import de.legoshi.lccore.service.Service;
 import de.legoshi.lccore.util.ConfigAccessor;
 import de.legoshi.lccore.util.Constants;
-import de.legoshi.lccore.util.MapUpdater;
-import de.legoshi.lccore.util.Utils;
 import fr.minuskube.inv.InventoryManager;
-import me.clip.deluxetags.DeluxeTag;
+import lombok.Getter;
 import net.luckperms.api.LuckPerms;
 import net.luckperms.api.LuckPermsProvider;
 import net.milkbowl.vault.chat.Chat;
@@ -25,6 +21,8 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.java.JavaPlugin;
+import org.bukkit.scheduler.BukkitTask;
+import team.unnamed.inject.Inject;
 import team.unnamed.inject.Injector;
 
 import java.io.File;
@@ -33,41 +31,46 @@ import java.util.Map;
 
 public class Linkcraft extends JavaPlugin {
 
-    public static Linkcraft instance;
+    @Getter
+    public static Linkcraft plugin;
 
     public final Map<String, String> saveCreations = new HashMap<>();
     public final Map<String, OfflinePlayer> playerMap = new HashMap<>();
 
     public static Economy economy = null;
     private static Chat chat = null;
+    private Injector injector;
 
     public LuckPerms luckPerms;
     public final ConfigAccessor playerConfig = new ConfigAccessor(this, "playerdata.yml");
     public final ConfigAccessor lockdownConfig = new ConfigAccessor(this, "lockdown.yml");
     public final ConfigAccessor mapsConfig = new ConfigAccessor(this, "maps.yml");
+    public final ConfigAccessor rankConfig = new ConfigAccessor(this, "rankdata.yml");
     public InventoryManager im;
     private final FileConfiguration config = getConfig();
     public ProtocolManager protocolManager;
+    public ConfigManager configManager;
+
+    @Inject private PlayerManager playerManager;
+    @Inject private Service service;
 
     public void onEnable() {
-        instance = this;
+        plugin = this;
 
         loadDependencies();
-        Injector injector = Injector.create(new LinkcraftModule(this));
-        new ConfigManager(this).loadConfigs();
+        injector = Injector.create(new LinkcraftModule(this));
+        configManager = new ConfigManager(this);
+        configManager.loadConfigs();
         new CommandManager(this, injector).registerCommands();
         new MapManager(this);
-        try {
-            MapUpdater.update();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
 
+        // TODO: refactor inventory library
         im = new InventoryManager(this);
         im.init();
+
+        injector.injectMembers(this);
         injector.getInstance(ListenerManager.class).registerEvents();
-
-
+        service.start();
     }
 
     private void loadDependencies() {
@@ -96,13 +99,9 @@ public class Linkcraft extends JavaPlugin {
     }
 
     public void onDisable() {
+        PlayerManager playerManager = injector.getInstance(PlayerManager.class);
         for(Player p : Bukkit.getOnlinePlayers()) {
-            ConfigAccessor playerData = new ConfigAccessor(this, getPlayerdataFolder(), p.getUniqueId() + ".yml");
-            FileConfiguration playerDataConfig = playerData.getConfig();
-            playerDataConfig.set("lastlocation", Utils.getStringFromLocation(p.getLocation()));
-            playerDataConfig.set("jumps", p.getStatistic(Statistic.JUMP));
-            playerDataConfig.set("tags", DeluxeTag.getAvailableTagIdentifiers(p));
-            playerData.saveConfig();
+            playerManager.playerLeave(p);
         }
 
         this.playerConfig.saveConfig();
@@ -164,16 +163,28 @@ public class Linkcraft extends JavaPlugin {
         return chat;
     }
 
-    public static Linkcraft getInstance() {
-        return instance;
-    }
-
     public File getPlayerdataFolder() {
         return new File(getDataFolder(), "playerdata");
     }
 
     public File getPluginFolder() {
         return getDataFolder();
+    }
+
+    public static void async(Runnable runnable) {
+        Bukkit.getScheduler().runTaskAsynchronously(plugin, runnable);
+    }
+
+    public static BukkitTask asyncLater(Runnable runnable, Long ticks) {
+        return Bukkit.getScheduler().runTaskLaterAsynchronously(plugin, runnable, ticks);
+    }
+
+    public static void sync(Runnable runnable) {
+        Bukkit.getScheduler().runTask(plugin, runnable);
+    }
+
+    public static void syncLater(Runnable runnable, Long ticks) {
+        Bukkit.getScheduler().runTaskLater(plugin, runnable, ticks);
     }
 }
 

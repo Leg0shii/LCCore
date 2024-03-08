@@ -170,7 +170,7 @@ public class AddCompletionsCommand implements CommandExecutor {
         hashMap.put("deluxetags.tag.nethercastle_win", "nethercastle");
         hashMap.put("deluxetags.tag.planets_win", "planets");
 
-        LuckPerms api = Linkcraft.getInstance().luckPerms;
+        LuckPerms api = Linkcraft.getPlugin().luckPerms;
         api.getUserManager().getUniqueUsers().thenAcceptAsync((list) -> {
             list.forEach((uuid) -> {
                 api.getUserManager().loadUser(uuid).thenAcceptAsync((user ->  {

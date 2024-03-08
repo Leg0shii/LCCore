@@ -14,7 +14,7 @@ public class PreJoinListener implements Listener {
     private String lockdownMessage = null;
 
     public void reloadLockdownData() {
-        FileConfiguration config = Linkcraft.getInstance().lockdownConfig.getConfig();
+        FileConfiguration config = Linkcraft.getPlugin().lockdownConfig.getConfig();
         lockdownMode = config.getBoolean("lockdown-mode");
         lockdownMessage = config.getString("lockdown-message");
     }

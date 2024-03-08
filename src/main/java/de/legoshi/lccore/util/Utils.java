@@ -2,6 +2,7 @@ package de.legoshi.lccore.util;
 
 import com.google.gson.JsonParser;
 import de.legoshi.lccore.Linkcraft;
+import me.fixeddev.commandflow.stack.ArgumentStack;
 import org.bukkit.*;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
@@ -41,7 +42,7 @@ public class Utils {
     }
 
     public static ConfigAccessor getPlayerConfig(Player player) {
-        return new ConfigAccessor(Linkcraft.getInstance(), Linkcraft.getInstance().getPlayerdataFolder(), player.getUniqueId().toString() + ".yml");
+        return new ConfigAccessor(Linkcraft.getPlugin(), Linkcraft.getPlugin().getPlayerdataFolder(), player.getUniqueId().toString() + ".yml");
     }
 
     public static void addGlow(ItemStack item) {
@@ -53,11 +54,11 @@ public class Utils {
 
 
     public static ConfigAccessor getPlayerConfig(OfflinePlayer player) {
-        return new ConfigAccessor(Linkcraft.getInstance(), Linkcraft.getInstance().getPlayerdataFolder(), player.getUniqueId().toString() + ".yml");
+        return new ConfigAccessor(Linkcraft.getPlugin(), Linkcraft.getPlugin().getPlayerdataFolder(), player.getUniqueId().toString() + ".yml");
     }
 
     public static ConfigAccessor getPlayerConfig(String uuid) {
-        return new ConfigAccessor(Linkcraft.getInstance(), Linkcraft.getInstance().getPlayerdataFolder(), uuid + ".yml");
+        return new ConfigAccessor(Linkcraft.getPlugin(), Linkcraft.getPlugin().getPlayerdataFolder(), uuid + ".yml");
     }
 
     public static Location getLocationFromString(String s) {
@@ -237,7 +238,7 @@ public class Utils {
     }
 
     public static int getStatistic(OfflinePlayer player, String key) {
-        String world = Linkcraft.getInstance().getConfig().getString(Constants.DEFAULT_WORLD);
+        String world = Linkcraft.getPlugin().getConfig().getString(Constants.DEFAULT_WORLD);
         if(world == null) {
             return -1;
         }
@@ -262,5 +263,28 @@ public class Utils {
 
     public static Double[] possBlockYValues() {
         return new Double[]{0.9375D, 0.875D, 0.75D, 0.625D, 0.5625D, 0.5D, 0.375D, 0.25D, 0.1875D, 0.125D, 0.0625D, 0.015625D, 0.0D, 0.8125D, 0.3125D};
+    }
+
+    public static String joinArguments(ArgumentStack as) {
+        StringBuilder sb = new StringBuilder();
+        if(as.hasNext()) {
+            sb.append(as.next());
+            while (as.hasNext()) {
+                sb.append(" ").append(as.next());
+            }
+        }
+        return sb.toString();
+    }
+
+    public static String joinArguments(String first, ArgumentStack as) {
+        StringBuilder sb = new StringBuilder();
+        sb.append(first);
+        if(as.hasNext()) {
+            sb.append(" ").append(as.next());
+            while (as.hasNext()) {
+                sb.append(" ").append(as.next());
+            }
+        }
+        return sb.toString();
     }
 }

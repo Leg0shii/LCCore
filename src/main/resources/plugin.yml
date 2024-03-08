@@ -55,8 +55,6 @@ commands:
     permission: pkcp.savecheckpoint
     permission-message: You do not have permission to use this command!
   saves:
-  stats:
-    aliases: [ stat, statistic, statistics ]
   nv:
     aliases: [ nightvision, nvn, vision ]
   selfmsg:
@@ -65,25 +63,11 @@ commands:
   psreload:
   fakeup:
   pingtp:
-  gg:
-  gl:
-  rip:
-  fail:
-  eggs:
-  ham:
   sayall:
   forcesay:
   chungus:
-  ggall:
-  glall:
-  ripall:
-  failall:
-  eggsall:
-  hamall:
   resetsaves:
   checksaves:
-  chatcolor:
-  chatformat:
   pex:
   togglenotify:
   hide:
@@ -99,7 +83,6 @@ commands:
   addcompletions:
   giveunlocks:
   checkcompletions:
-  meow:
 permissions:
   pkprac.practice:
     description: Allows the use of the /practice and /unpractice commands.

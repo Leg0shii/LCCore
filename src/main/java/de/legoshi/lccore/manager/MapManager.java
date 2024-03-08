@@ -43,8 +43,8 @@ public class MapManager {
     }
 
     public static void loadMaps() {
-        Linkcraft.getInstance().mapsConfig.reloadConfig();
-        mapsConfig = Linkcraft.getInstance().mapsConfig.getConfig();
+        Linkcraft.getPlugin().mapsConfig.reloadConfig();
+        mapsConfig = Linkcraft.getPlugin().mapsConfig.getConfig();
         maps = new ArrayList<>();
         mapMap = new HashMap<>();
 

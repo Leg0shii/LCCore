@@ -1,0 +1,302 @@
+ranks:
+  'I':
+    display: §1«§fI§1»
+    tabDisplay: §1«I»
+    colorCode: 1
+    position: 0
+  'II':
+    display: §c«§fII§c»
+    tabDisplay: '&c«II»'
+    colorCode: c
+    position: 1
+  'III':
+    display: §d«§fIII§d»
+    tabDisplay: '&d«III»'
+    colorCode: d
+    position: 2
+  'IV':
+    display: §e«§fIV§e»
+    tabDisplay: '&e«IV»'
+    colorCode: e
+    position: 3
+  'V':
+    display: §6«§fV§6»
+    tabDisplay: '&6«V»'
+    colorCode: 6
+    position: 4
+  'VI':
+    display: §f«VI»
+    tabDisplay: '&f«VI»'
+    colorCode: f
+    position: 5
+  'VII':
+    display: §2«§fVII§2»
+    tabDisplay: '&2«VII»'
+    colorCode: 2
+    position: 6
+  'VIII':
+    display: §a«§fVIII§a»
+    tabDisplay: '&a«VIII»'
+    colorCode: a
+    position: 7
+  'IX':
+    display: §5«§fIX§5»
+    tabDisplay: '&5«IX»'
+    colorCode: 5
+    position: 8
+  'X':
+    display: §0«§f§lX§0»
+    tabDisplay: '&0«X»'
+    colorCode: 0
+    position: 9
+  'XI':
+    display: §4«§f§lXI§4»
+    tabDisplay: '&4«XI»'
+    colorCode: 4
+    position: 10
+  'XII':
+    display: §8«§7«§f§lXII§7»§8»
+    tabDisplay: '&8«XII»'
+    colorCode: 8
+    position: 11
+  'XIII':
+    display: §9«§3«§f§lXIII§3»§9»
+    tabDisplay: '&9«XIII»'
+    colorCode: 9
+    position: 12
+  'XIV':
+    display: §3«§b«§f§lXIV§b»§3»
+    tabDisplay: '&3«XIV»'
+    colorCode: 3
+    position: 13
+  'XV':
+    display: §7«§1«§f§lXV§1»§7»
+    tabDisplay: '&7«XV»'
+    colorCode: 7
+    position: 14
+  'XVI':
+    display: §b«§3«§2«§a§lXVI§2»§3»§b»
+    tabDisplay: '&b«XVI»'
+    colorCode: b
+    position: 15
+  'XVII':
+    display: §0«§5«§d«§r§lXVII§d»§5»§0»§d
+    tabDisplay: '&d«XVII»'
+    colorCode: d
+    position: 16
+  'XVIII':
+    display: §9§l«§3§l«§a§l«§e§lXVIII§a§l»§3§l»§9§l»§9
+    tabDisplay: '&9«XVIII»'
+    colorCode: 9
+    position: 17
+  'XIX':
+    display: §e§l«§7§l«§3§l«§6§lXIX§3§l»§7§l»§e§l»§3
+    tabDisplay: '&3«XIX»'
+    colorCode: 3
+    position: 18
+  'XX':
+    display: §0§l«§8§l«§4§l«§f§l§mXX§4§l»§8§l»§0§l»§4
+    tabDisplay: '&4«&r&lXX&r&4»'
+    colorCode: 4
+    position: 19
+bonus:
+  1:
+    display: §e#1
+    position: 0
+  1pro:
+    display: §e✫1
+    position: 1
+  2:
+    display: §e#2
+    position: 2
+  2pro:
+    display: §e✫2
+    position: 3
+  3:
+    display: §6#3
+    position: 4
+  3pro:
+    display: §6✫3
+    position: 5
+  4:
+    display: §6#4
+    position: 6
+  4pro:
+    display: §6✫4
+    position: 7
+  5:
+    display: §c#5
+    position: 8
+  5pro:
+    display: §c✫5
+    position: 9
+  6:
+    display: §c#6
+    position: 10
+  6pro:
+    display: §c✫6
+    position: 11
+  7:
+    display: §9#7
+    position: 12
+  7pro:
+    display: §9✫7
+    position: 13
+  8:
+    display: §9#8
+    position: 14
+  8pro:
+    display: §9✫8
+    position: 15
+  9:
+    display: §d#9
+    position: 16
+  9pro:
+    display: §d✫9
+    position: 17
+  10:
+    display: §a§l#10
+    position: 18
+  10pro:
+    display: §a§l✫10
+    position: 19
+  11:
+    display: §4§l#11
+    position: 20
+  11pro:
+    display: §4§l✫11
+    position: 21
+  12:
+    display: §3§l#12
+    position: 22
+  12pro:
+    display: §3§l✫12
+    position: 23
+wolf:
+  wolf_i:
+    display: §a①
+    position: 0
+  wolf_ii:
+    display: §7②
+    position: 1
+  wolf_iii:
+    display: §b③
+    position: 2
+  wolf_iv:
+    display: §e④
+    position: 3
+  wolf_v:
+    display: §d⑤
+    position: 4
+  wolf_vi:
+    display: §5⑥
+    position: 5
+  wolf_vii:
+    display: §c⑦
+    position: 6
+  wolf_viii:
+    display: §2⑧
+    position: 7
+  wolf_ix:
+    display: §9⑨
+    position: 8
+  wolf_x:
+    display: §6&l⑩
+    position: 9
+  wolf_xi:
+    display: §4&l⑪
+    position: 10
+  wolf_xii:
+    display: §f&l⑫
+    position: 11
+  wolf_xiii:
+    display: §3&l⑬
+    position: 12
+maze:
+  i:
+    tabDisplay: ""
+    position: 0
+  ii:
+    tabDisplay: ""
+    position: 1
+  iii:
+    tabDisplay: ""
+    position: 2
+  iv:
+    tabDisplay: ""
+    position: 3
+  v:
+    tabDisplay: ""
+    position: 4
+  vi:
+    tabDisplay: ""
+    position: 5
+  vii:
+    tabDisplay: ""
+    position: 6
+  viii:
+    tabDisplay: ""
+    position: 7
+  ix:
+    tabDisplay: ""
+    position: 8
+  x:
+    tabDisplay: ""
+    position: 9
+  xi:
+    tabDisplay: ""
+    position: 10
+  xii:
+    tabDisplay: ""
+    position: 11
+  xiii:
+    tabDisplay: ""
+    position: 12
+  xiv:
+    tabDisplay: ""
+    position: 13
+  xv:
+    tabDisplay: "§c§nXV"
+    position: 14
+star:
+  bronze:
+    display: §c§l⚝
+    cost: 250
+    position: 1
+  silver:
+    display: §f§l⚝
+    cost: 1000
+    position: 2
+  gold:
+    display: §6§l⚝
+    cost: 2400
+    position: 3
+  diamond:
+    display: §b§l⚝
+    cost: 4200
+    position: 4
+  obsidian:
+    display: §1§l⚝
+    cost: 6800
+    position: 5
+  calcite:
+    display: §d§l⚝
+    cost: 8200
+    position: 6
+  aquamarine:
+    display: §a§l⚝
+    cost: 22000
+    position: 7
+  red_diamond:
+    display: §4§l⚝
+    cost: 100000
+    position: 8
+  black_quartz:
+    display: §0§l⚝
+    cost: 250000
+    position: 9
+  sugilite:
+    display: §5§l⚝
+    cost: 1000000
+    position: 10
+

@@ -10,7 +10,7 @@ import org.bukkit.inventory.ItemStack;
 // PARTLY REFACTORED
 public abstract class Menu implements InventoryHolder {
 
-  protected final Inventory inv;
+  protected Inventory inv;
   public static final ItemStack SPACE = (new ItemBuilder(Material.STAINED_GLASS_PANE, 15)).setName(Utils.chat("&r")).build();
   
   public Menu(String title, int rows) {
@@ -21,6 +21,12 @@ public abstract class Menu implements InventoryHolder {
     this.inv = Bukkit.createInventory(this, rows * 9, Utils.chat(title));
     for (int i = space; i < rows * 9; i++)
       this.inv.setItem(i, SPACE); 
+  }
+
+  public void init(String title, int rows, int space) {
+    this.inv = Bukkit.createInventory(this, rows * 9, Utils.chat(title));
+    for (int i = space; i < rows * 9; i++)
+      this.inv.setItem(i, SPACE);
   }
   
   public abstract void onClick(InventoryClickEvent paramInventoryClickEvent);

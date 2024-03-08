@@ -17,7 +17,7 @@ public class ChallengeConfirmMenu implements InventoryProvider {
             .provider(new ChallengeConfirmMenu())
             .size(1, 9)
             .title(Utils.chat("&a&lConfirm"))
-            .manager(Linkcraft.getInstance().im)
+            .manager(Linkcraft.getPlugin().im)
             .build();
 
     @Override

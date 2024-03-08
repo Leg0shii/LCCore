@@ -57,7 +57,7 @@ public class GiveUnlocksCommand implements CommandExecutor {
         hashSet.add("deluxetags.tag.pandorasbox_victorytag");
         hashSet.add("deluxetags.tag.roc_win");
 
-        LuckPerms api = Linkcraft.getInstance().luckPerms;
+        LuckPerms api = Linkcraft.getPlugin().luckPerms;
         api.getUserManager().getUniqueUsers().thenAcceptAsync((list) -> {
             list.forEach((uuid) -> {
                 api.getUserManager().loadUser(uuid).thenAcceptAsync((user ->  {

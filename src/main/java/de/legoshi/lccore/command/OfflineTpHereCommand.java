@@ -45,7 +45,7 @@ public class OfflineTpHereCommand implements CommandExecutor {
         String locString = Utils.getStringFromLocation(player.getLocation());
         playerDataConfig.set("lastlocation", locString);
         playerData.saveConfig();
-        Linkcraft.getInstance().playerConfig.getConfig().set(toTp.getUniqueId().toString(), null);
+        Linkcraft.getPlugin().playerConfig.getConfig().set(toTp.getUniqueId().toString(), null);
 
         player.sendMessage(ChatColor.GREEN + "Updated " + args[0] + "'s location to: " + locString);
 

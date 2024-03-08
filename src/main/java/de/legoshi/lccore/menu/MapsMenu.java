@@ -16,7 +16,7 @@ public class MapsMenu implements InventoryProvider {
             .provider(new MapsMenu())
             .size(5, 9)
             .title("Menu")
-            .manager(Linkcraft.getInstance().im)
+            .manager(Linkcraft.getPlugin().im)
             .build();
 
     @Override

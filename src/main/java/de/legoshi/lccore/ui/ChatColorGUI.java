@@ -1,5 +1,6 @@
 package de.legoshi.lccore.ui;
 
+import de.legoshi.lccore.manager.PlayerManager;
 import de.legoshi.lccore.util.ColorHelper;
 import de.legoshi.lccore.util.ItemBuilder;
 import de.legoshi.lccore.util.Menu;
@@ -10,6 +11,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
+import team.unnamed.inject.Injector;
 
 // PARTLY REFACTORED
 public class ChatColorGUI extends Menu {
@@ -17,13 +19,14 @@ public class ChatColorGUI extends Menu {
     private static final int[] COLORIDS = new int[]{15, 11, 13, 9, 14, 10, 1, 8, 7, 11, 5, 3, 2, 6, 4, 0};
     private static final String[] COLORS = "0123456789abcdef".split("");
     private static final String[] COLORNAMES = new String[]{"Black", "Dark Blue", "Green", "Cyan", "Red", "Purple", "Orange", "Light Gray", "Gray", "Blue", "Light Green", "Light Blue", "Light Red", "Pink", "Yellow", "White"};
-
-    public ChatColorGUI(Player p) {
-        this(p, 0);
+    private PlayerManager playerManager;
+    public ChatColorGUI(Player p, Injector injector) {
+        this(p, 0, injector);
     }
 
-    public ChatColorGUI(Player p, int page) {
+    public ChatColorGUI(Player p, int page, Injector injector) {
         super("&8Chat Color", 5, 0);
+        this.playerManager = injector.getInstance(PlayerManager.class);
         for (int i = 0; i < 7; i++) {
             for (int j = 0; j < 3; j++) {
                 int slot = i + j * 9 + 10;
@@ -48,6 +51,7 @@ public class ChatColorGUI extends Menu {
             if (p.hasPermission("lc.chat." + type) && p.hasPermission("lc.chatcolor")) {
                 ColorHelper.setChatColor(p, ColorHelper.ChatColor.fromCode(type));
                 p.sendMessage(Utils.chat("&aYour chatcolor has been set to: &" + type + "this"));
+                playerManager.updatePlayer(p);
                 p.closeInventory();
             } else {
                 p.sendMessage(Utils.chat("&cYou don't have permission for &" + type + "this &cchatcolor."));

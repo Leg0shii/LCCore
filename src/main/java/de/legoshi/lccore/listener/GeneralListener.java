@@ -2,7 +2,6 @@ package de.legoshi.lccore.listener;
 
 import de.legoshi.lccore.Linkcraft;
 import de.legoshi.lccore.util.Menu;
-import de.legoshi.lccore.util.Utils;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -11,7 +10,6 @@ import org.bukkit.event.block.BlockFromToEvent;
 import org.bukkit.event.entity.ProjectileLaunchEvent;
 import org.bukkit.event.inventory.BrewEvent;
 import org.bukkit.event.inventory.InventoryClickEvent;
-import org.bukkit.event.player.AsyncPlayerChatEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.ItemStack;
 
@@ -25,14 +23,9 @@ public class GeneralListener implements Listener {
 
     private void initBannedItems() {
         bannedItems = new ArrayList<>();
-        for(String item : Linkcraft.getInstance().getConfig().getStringList("banned-items")) {
+        for(String item : Linkcraft.getPlugin().getConfig().getStringList("banned-items")) {
             bannedItems.add(Material.matchMaterial(item));
         }
-    }
-
-    @EventHandler
-    public void onChat(AsyncPlayerChatEvent e) {
-        e.setMessage(Utils.chat(e.getPlayer(), e.getMessage()));
     }
 
     @EventHandler

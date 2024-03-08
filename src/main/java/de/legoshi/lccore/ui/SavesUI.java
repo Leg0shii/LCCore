@@ -31,7 +31,7 @@ public class SavesUI {
     private static final Map<String, Integer> currentPage = new HashMap<>();
 
     public static void initialize() {
-        plugin = Linkcraft.getInstance();
+        plugin = Linkcraft.getPlugin();
         inventory_name = Utils.chat("&8&lYour Saves&7");
         inv = Bukkit.createInventory(null, inv_rows);
     }

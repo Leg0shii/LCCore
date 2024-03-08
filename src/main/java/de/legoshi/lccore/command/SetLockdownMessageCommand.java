@@ -26,9 +26,9 @@ public class SetLockdownMessageCommand implements CommandExecutor {
         }
         message.deleteCharAt(message.length() - 1);
 
-        FileConfiguration config = Linkcraft.getInstance().lockdownConfig.getConfig();
+        FileConfiguration config = Linkcraft.getPlugin().lockdownConfig.getConfig();
         config.set("lockdown-message", message.toString());
-        Linkcraft.getInstance().lockdownConfig.saveConfig();
+        Linkcraft.getPlugin().lockdownConfig.saveConfig();
         preJoinListener.reloadLockdownData();
         sender.sendMessage(ChatColor.GREEN + "Locked message has been set to: " + message);
         return true;

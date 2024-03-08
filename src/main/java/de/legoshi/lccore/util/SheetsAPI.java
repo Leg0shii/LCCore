@@ -23,9 +23,9 @@ import java.util.List;
 public class SheetsAPI {
     private static final String APPLICATION_NAME = "LinkCraft Map Menu Updater";
     private static final JsonFactory JSON_FACTORY = GsonFactory.getDefaultInstance();
-    private static final String TOKENS_DIRECTORY_PATH = Linkcraft.getInstance().getDataFolder().getAbsolutePath() + File.separator + "tokens";
+    private static final String TOKENS_DIRECTORY_PATH = Linkcraft.getPlugin().getDataFolder().getAbsolutePath() + File.separator + "tokens";
     private static final List<String> SCOPES = Collections.singletonList(SheetsScopes.SPREADSHEETS_READONLY);
-    private static final String CREDENTIALS_FILE_PATH = Linkcraft.getInstance().getDataFolder().getAbsolutePath() + File.separator + "credentials.json";
+    private static final String CREDENTIALS_FILE_PATH = Linkcraft.getPlugin().getDataFolder().getAbsolutePath() + File.separator + "credentials.json";
 
     private static Credential getCredentials(final NetHttpTransport HTTP_TRANSPORT)
             throws IOException {

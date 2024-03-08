@@ -17,7 +17,7 @@ public class MainRankupConfirmMenu implements InventoryProvider {
             .provider(new MainRankupConfirmMenu())
             .size(1, 9)
             .title(Utils.chat("&a&lConfirm"))
-            .manager(Linkcraft.getInstance().im)
+            .manager(Linkcraft.getPlugin().im)
             .build();
 
     @Override

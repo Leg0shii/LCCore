@@ -14,10 +14,10 @@ public class LockdownCommand implements CommandExecutor {
     @Inject private PreJoinListener preJoinListener;
 
     public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
-        FileConfiguration config = Linkcraft.getInstance().lockdownConfig.getConfig();
+        FileConfiguration config = Linkcraft.getPlugin().lockdownConfig.getConfig();
         boolean state = config.getBoolean("lockdown-mode");
         config.set("lockdown-mode", !state);
-        Linkcraft.getInstance().lockdownConfig.saveConfig();
+        Linkcraft.getPlugin().lockdownConfig.saveConfig();
         preJoinListener.reloadLockdownData();
 
         if(state) {

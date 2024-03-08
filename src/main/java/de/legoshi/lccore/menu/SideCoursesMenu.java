@@ -19,7 +19,7 @@ public class SideCoursesMenu implements InventoryProvider {
             .provider(new SideCoursesMenu())
             .size(6, 9)
             .title(Utils.chat("&lSide Courses"))
-            .manager(Linkcraft.getInstance().im)
+            .manager(Linkcraft.getPlugin().im)
             .build();
 
     @Override

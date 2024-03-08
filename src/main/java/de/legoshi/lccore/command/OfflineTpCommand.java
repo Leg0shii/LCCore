@@ -35,7 +35,7 @@ public class OfflineTpCommand implements CommandExecutor {
         }
 
         Player player = (Player)sender;
-        ConfigAccessor playerData = new ConfigAccessor(Linkcraft.getInstance(), Linkcraft.getInstance().getPlayerdataFolder(), toTpTo.getUniqueId().toString() + ".yml");
+        ConfigAccessor playerData = new ConfigAccessor(Linkcraft.getPlugin(), Linkcraft.getPlugin().getPlayerdataFolder(), toTpTo.getUniqueId().toString() + ".yml");
         FileConfiguration playerDataConfig = playerData.getConfig();
 
         Location location =  Utils.getLocationFromString(playerDataConfig.getString("lastlocation"));

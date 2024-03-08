@@ -25,8 +25,8 @@ import java.util.Arrays;
 
 public class CheckPointListener implements Listener {
 
-    private final FileConfiguration config = Linkcraft.getInstance().getConfig();
-    private final File pluginFolder = Linkcraft.getInstance().getPluginFolder();
+    private final FileConfiguration config = Linkcraft.getPlugin().getConfig();
+    private final File pluginFolder = Linkcraft.getPlugin().getPluginFolder();
 
     public ItemStack getCPItem() {
         ItemStack item = new ItemStack(Material.DIAMOND, 1);

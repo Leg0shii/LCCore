@@ -42,7 +42,7 @@ public class CheckCompletionsCommand implements CommandExecutor {
                 .provider(temp)
                 .size(6, 9)
                 .title(Utils.chat("&l" + offlinePlayer.getName() + "'s Side Courses"))
-                .manager(Linkcraft.getInstance().im)
+                .manager(Linkcraft.getPlugin().im)
                 .build();
         temp.setInv(inv);
         inv.open(player);

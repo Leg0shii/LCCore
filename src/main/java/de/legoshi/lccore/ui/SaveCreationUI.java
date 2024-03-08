@@ -23,7 +23,7 @@ public class SaveCreationUI {
     private static Linkcraft plugin;
 
     public static void initialize() {
-        plugin = Linkcraft.getInstance();
+        plugin = Linkcraft.getPlugin();
         inventory_name = Utils.chat("&8&lSave Creation");
         inv = Bukkit.createInventory(null, inv_rows);
     }

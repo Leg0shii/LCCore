@@ -14,7 +14,7 @@ import team.unnamed.inject.Inject;
 public class HideAll implements CommandExecutor {
     @Inject private VisibilityManager visibilityManager;
     public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
-        FileConfiguration config = Linkcraft.getInstance().getConfig();
+        FileConfiguration config = Linkcraft.getPlugin().getConfig();
 
         if(!(sender instanceof Player)) {
             String notAPlayerMessage = config.getString(Constants.NOT_A_PLAYER);

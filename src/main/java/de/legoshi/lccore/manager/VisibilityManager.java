@@ -7,8 +7,10 @@ import org.bukkit.Bukkit;
 import org.bukkit.craftbukkit.v1_8_R3.entity.CraftPlayer;
 import org.bukkit.entity.Player;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.List;
 
 public class VisibilityManager {
     private final HashSet<String> hiding = new HashSet<>();
@@ -106,7 +108,7 @@ public class VisibilityManager {
     public void hideIfHiding(Player toHide) {
         for(Player player : Bukkit.getOnlinePlayers()) {
             if(isHiding(player, toHide)) {
-                Bukkit.getScheduler().runTask(Linkcraft.getInstance(), () -> {
+                Bukkit.getScheduler().runTask(Linkcraft.getPlugin(), () -> {
                     player.hidePlayer(toHide);
                     if(!VanishAPI.isInvisible(toHide)) {
                         addToTabList(player, toHide);
@@ -114,5 +116,9 @@ public class VisibilityManager {
                 });
             }
         }
+    }
+
+    public boolean canSee(Player viewer, Player other) {
+        return VanishAPI.canSee(viewer, other);
     }
 }

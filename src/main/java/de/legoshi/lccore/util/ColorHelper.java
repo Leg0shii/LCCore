@@ -17,7 +17,7 @@ public class ColorHelper {
     private static FileConfiguration config;
 
     public static void load() {
-        file = new File(Linkcraft.getInstance().getDataFolder(), "chatcolors.yml");
+        file = new File(Linkcraft.getPlugin().getDataFolder(), "chatcolors.yml");
         if (!file.exists())
             try {
                 file.createNewFile();
@@ -41,14 +41,70 @@ public class ColorHelper {
         return ChatColor.fromCode(config.getString(p.getUniqueId().toString() + ".color"));
     }
 
+    public static ChatColor getChatColor(String p) {
+        if (config.getString(p + ".color") == null)
+            config.set(p + ".color", ChatColor.WHITE.getCode());
+        return ChatColor.fromCode(config.getString(p + ".color"));
+    }
+
+
     public static void setChatColor(Player p, ChatColor color) {
         config.set(p.getUniqueId().toString() + ".color", color.getCode());
+        save();
+    }
+
+    public static List<ChatFormat> getNameFormats(Player p) {
+        return getNameFormats(p.getUniqueId().toString());
+    }
+
+    public static List<ChatFormat> getNameFormats(String p) {
+        if (config.getStringList(p + ".name") == null)
+            return null;
+
+        List<String> nameFormats = config.getStringList(p + ".name");
+        String oldFormat = config.getString(p + ".name");
+        if(nameFormats.isEmpty() && oldFormat != null) {
+            addNameFormat(p, ChatFormat.fromCode(oldFormat));
+            nameFormats = config.getStringList(p + ".name");
+        }
+
+        List<ChatFormat> formatList = new ArrayList<>();
+        for(String s : nameFormats) {
+            formatList.add(ChatFormat.fromCode(s));
+        }
+        return formatList;
+    }
+
+    public static void addNameFormat(Player p, ChatFormat format) {
+        addNameFormat(p.getUniqueId().toString(), format);
+    }
+
+    public static void addNameFormat(String p, ChatFormat format) {
+        if(format != null) {
+            List<String> formatList = config.getStringList(p + ".name");
+            formatList.add(format.getCode());
+            config.set(p + ".name", formatList);
+            save();
+        }
+    }
+
+    public static void removeNameFormat(Player p, ChatFormat format) {
+        List<String> formatList = config.getStringList(p.getUniqueId().toString() + ".name");
+        formatList.remove(format.getCode());
+        config.set(p.getUniqueId().toString() + ".name", formatList);
         save();
     }
 
     public static List<ChatFormat> getChatFormats(Player p) {
         List<ChatFormat> formatList = new ArrayList<>();
         for (String s : config.getStringList(p.getUniqueId().toString() + ".format"))
+            formatList.add(ChatFormat.fromCode(s));
+        return formatList;
+    }
+
+    public static List<ChatFormat> getChatFormats(String p) {
+        List<ChatFormat> formatList = new ArrayList<>();
+        for (String s : config.getStringList(p + ".format"))
             formatList.add(ChatFormat.fromCode(s));
         return formatList;
     }

@@ -1,12 +1,30 @@
 package de.legoshi.lccore.manager;
 
 import de.legoshi.lccore.Linkcraft;
+import de.legoshi.lccore.player.display.*;
 import de.legoshi.lccore.util.ColorHelper;
+import de.legoshi.lccore.util.ConfigWriter;
+import de.legoshi.lccore.util.MapUpdater;
+import de.legoshi.lccore.util.message.Message;
+import de.legoshi.lccore.util.message.MessageType;
+import de.legoshi.lccore.util.message.MessageUtil;
+import org.bukkit.configuration.ConfigurationSection;
+import org.bukkit.configuration.file.FileConfiguration;
 
 import java.io.File;
+import java.io.IOException;
+import java.util.*;
 
 public class ConfigManager {
     private final Linkcraft plugin;
+
+    public static final Map<String, RankDTO> ranksDisplay = new HashMap<>();
+    public static final Map<String, BonusDTO> bonusDisplay = new HashMap<>();
+    public static final Map<String, WolfDTO> wolfDisplay = new HashMap<>();
+    public static final Map<String, MazeDTO> mazeDisplay = new HashMap<>();
+    public static final Map<String, StarDTO> starDisplay = new HashMap<>();
+    public static final Map<Message, String> messages = new HashMap<>();
+    public static final HashSet<String> keys = new HashSet<>();
 
     public ConfigManager(Linkcraft plugin) {
         this.plugin = plugin;
@@ -17,21 +35,154 @@ public class ConfigManager {
         plugin.playerConfig.saveDefaultConfig();
         plugin.lockdownConfig.saveDefaultConfig();
         plugin.mapsConfig.saveDefaultConfig();
+        plugin.rankConfig.saveDefaultConfig();
 
-        // prac
         File playerData = new File(plugin.getDataFolder(), "playerdata");
         if (!playerData.exists()) playerData.mkdir();
 
-        // checkpoints
         File signs = new File(plugin.getDataFolder().getAbsolutePath() + File.separator + "checkpoint_signs");
         if (!signs.exists()) signs.mkdir();
 
         File players = new File(plugin.getDataFolder().getAbsolutePath() + File.separator + "player_checkpoint_data");
         if (!players.exists()) players.mkdir();
 
-        File maps = new File(plugin.getDataFolder().getAbsolutePath() + File.separator + "maps");
-        if (!maps.exists()) players.mkdir();
-
         ColorHelper.load();
+        loadRankDataIntoMemory();
+
+        try {
+            MapUpdater.update();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        loadMessages();
+    }
+
+    private void loadMessages() {
+        File file = new File("./plugins/LCCore/" + "messages.yml");
+        boolean valid = true;
+
+        file.delete();
+
+        ConfigWriter lcMessagesConfig = new ConfigWriter("./plugins/LCCore/", "messages.yml");
+
+        try {
+            if (!file.exists()) {
+                valid = file.createNewFile();
+            }
+        } catch (IOException e) {
+            MessageUtil.log(Message.CONFIG_LOADING_ERR, true, "messages config file");
+        }
+
+        if (valid) {
+            HashMap<MessageType, HashSet<Message>> toAdd = new HashMap<>();
+
+            for(Message message : Message.values()) {
+                toAdd.computeIfAbsent(message.type, (m) -> toAdd.put(m, new HashSet<>()));
+                toAdd.get(message.type).add(message);
+            }
+
+            for(Map.Entry<MessageType, HashSet<Message>> entries : toAdd.entrySet()) {
+                String parent = entries.getKey().name().toLowerCase() + ".";
+                for(Message message : entries.getValue()) {
+                    String msgName = message.name().toLowerCase();
+                    if(lcMessagesConfig.getString(parent + msgName) == null || lcMessagesConfig.getString(parent + msgName).isEmpty()) {
+                        lcMessagesConfig.setValue(parent + message.name().toLowerCase(), message.getMessage());
+                    }
+                }
+            }
+            lcMessagesConfig.save();
+            cacheMessages(lcMessagesConfig);
+        }
+    }
+
+    private void cacheMessages(ConfigWriter configWriter) {
+        for(Message message : Message.values()) {
+            String path = message.type.name().toLowerCase() + "." + message.name().toLowerCase();
+            messages.put(message, configWriter.getString(path));
+        }
+    }
+
+    private void loadRankDataIntoMemory() {
+        FileConfiguration rankData = plugin.rankConfig.getConfig();
+        loadRankSection(rankData.getConfigurationSection("ranks"));
+        loadBonusSection(rankData.getConfigurationSection("bonus"));
+        loadWolfSection(rankData.getConfigurationSection("wolf"));
+        loadMazeSection(rankData.getConfigurationSection("maze"));
+        loadStarSection(rankData.getConfigurationSection("star"));
+
+        addToSet(ranksDisplay, "group.");
+        addToSet(bonusDisplay);
+        addToSet(wolfDisplay, "group.");
+        addToSet(mazeDisplay);
+        addToSet(starDisplay);
+    }
+
+    private void addToSet(Map<String, ?> map, String toAdd) {
+        for(String key : map.keySet()) {
+            keys.add(toAdd + key.toLowerCase());
+        }
+    }
+
+    private void addToSet(Map<String, ?> map) {
+        addToSet(map, "");
+    }
+
+    private void loadRankSection(ConfigurationSection ranks) {
+        if(ranks != null) {
+            for(String key : ranks.getKeys(false)) {
+                ConfigurationSection rank = ranks.getConfigurationSection(key);
+                String display = rank.getString("display");
+                String tabDisplay = rank.getString("tabDisplay");
+                String colorCode = rank.getString("colorCode");
+                int position = rank.getInt("position");
+                ranksDisplay.put(key, new RankDTO(key, display, tabDisplay, colorCode, position));
+            }
+        }
+    }
+
+    private void loadBonusSection(ConfigurationSection bonuses) {
+        if(bonuses != null) {
+            for(String key : bonuses.getKeys(false)) {
+                ConfigurationSection bonus = bonuses.getConfigurationSection(key);
+                String display = bonus.getString("display");
+                int position = bonus.getInt("position");
+                bonusDisplay.put("prefix." + key, new BonusDTO("prefix." + key, display, position));
+            }
+        }
+    }
+
+    private void loadWolfSection(ConfigurationSection wolfs) {
+        if(wolfs != null) {
+            for(String key : wolfs.getKeys(false)) {
+                ConfigurationSection wolf = wolfs.getConfigurationSection(key);
+                String display = wolf.getString("display");
+                int position = wolf.getInt("position");
+                wolfDisplay.put(key, new WolfDTO(key, display, position));
+            }
+        }
+    }
+
+    private void loadMazeSection(ConfigurationSection mazes) {
+        if(mazes != null) {
+            for(String key : mazes.getKeys(false)) {
+                ConfigurationSection wolf = mazes.getConfigurationSection(key);
+                String tabDisplay = wolf.getString("tabDisplay");
+                int position = wolf.getInt("position");
+                mazeDisplay.put("maze." + key, new MazeDTO("maze." + key, tabDisplay, position));
+            }
+        }
+    }
+
+    private void loadStarSection(ConfigurationSection stars) {
+        if(stars != null) {
+            for(String key : stars.getKeys(false)) {
+                ConfigurationSection star = stars.getConfigurationSection(key);
+                String display = star.getString("display");
+                int cost = star.getInt("cost");
+                int position = star.getInt("position");
+                starDisplay.put(key, new StarDTO(key, display, cost, position));
+            }
+        }
     }
 }

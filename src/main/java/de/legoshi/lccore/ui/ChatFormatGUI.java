@@ -1,5 +1,6 @@
 package de.legoshi.lccore.ui;
 
+import de.legoshi.lccore.manager.PlayerManager;
 import de.legoshi.lccore.util.ColorHelper;
 import de.legoshi.lccore.util.ItemBuilder;
 import de.legoshi.lccore.util.Menu;
@@ -8,6 +9,7 @@ import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.ItemStack;
+import team.unnamed.inject.Injector;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -20,9 +22,13 @@ public class ChatFormatGUI extends Menu {
     private static final ItemStack RESET = (new ItemBuilder(Material.BARRIER)).setName("&cReset Formats").build();
     private static final String[] FORMATS = "klmno".split("");
     private static final String[] FORMATNAMES = new String[]{"Random", "Bold", "Strikethrough", "Underline", "Italic"};
+    private PlayerManager playerManager;
+    private Injector injector;
 
-    public ChatFormatGUI(Player p) {
+    public ChatFormatGUI(Player p, Injector injector) {
         super("&8Chat Format", 3);
+        this.injector = injector;
+        this.playerManager = injector.getInstance(PlayerManager.class);
         List<String> formatList = new ArrayList<>();
         for (ColorHelper.ChatFormat formats : ColorHelper.getChatFormats(p))
             formatList.add(formats.getCode());
@@ -49,12 +55,14 @@ public class ChatFormatGUI extends Menu {
             if (p.hasPermission("lc.chat." + type) && p.hasPermission("lc.chatformat")) {
                 if (item.getDurability() == 8) {
                     ColorHelper.addChatFormat(p, ColorHelper.ChatFormat.fromCode(type));
+                    playerManager.updatePlayer(p);
                     p.sendMessage(Utils.chat("&aYour chat format has added: &" + type + "this"));
-                    p.openInventory((new ChatFormatGUI(p)).getInventory());
+                    p.openInventory((new ChatFormatGUI(p, injector)).getInventory());
                 } else if (item.getDurability() == 10) {
                     ColorHelper.removeChatFormat(p, ColorHelper.ChatFormat.fromCode(type));
+                    playerManager.updatePlayer(p);
                     p.sendMessage(Utils.chat("&cYour chat format has removed: &" + type + "this"));
-                    p.openInventory((new ChatFormatGUI(p)).getInventory());
+                    p.openInventory((new ChatFormatGUI(p, injector)).getInventory());
                 }
             } else {
                 p.sendMessage(Utils.chat("&cYou don't have permission for &" + type + "this&c chatformat"));

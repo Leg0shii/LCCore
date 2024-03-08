@@ -28,7 +28,7 @@ public class CheckSavesCommand implements CommandExecutor {
         }
 
         OfflinePlayer target = Bukkit.getOfflinePlayer(args[0]);
-        Linkcraft.getInstance().playerMap.put(p.getName(), target);
+        Linkcraft.getPlugin().playerMap.put(p.getName(), target);
         p.openInventory(AdminUI.GUI(p, 1));
         p.sendMessage(Utils.chat("&aLooking at " + target.getName() + "'s saves!"));
         return true;

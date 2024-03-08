@@ -43,10 +43,10 @@ public class MusicHelper {
         p.playNote(p.getLocation(), Instrument.BASS_DRUM, Note.natural(0, Note.Tone.C));
         p.playNote(p.getLocation(), Instrument.BASS_GUITAR, Note.natural(0, Note.Tone.D));
         int delay = 2;
-        music1.runTaskLater(Linkcraft.getInstance(), delay);
-        music2.runTaskLater(Linkcraft.getInstance(), (delay * 2));
-        music3.runTaskLater(Linkcraft.getInstance(), (delay * 3));
-        music4.runTaskLater(Linkcraft.getInstance(), (delay * 4));
+        music1.runTaskLater(Linkcraft.getPlugin(), delay);
+        music2.runTaskLater(Linkcraft.getPlugin(), (delay * 2));
+        music3.runTaskLater(Linkcraft.getPlugin(), (delay * 3));
+        music4.runTaskLater(Linkcraft.getPlugin(), (delay * 4));
     }
 
 }

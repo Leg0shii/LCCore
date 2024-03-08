@@ -23,7 +23,7 @@ public class AdminUI {
     public static final Map<String, Integer> currentPage = new HashMap<>();
 
     public static void initialize() {
-        plugin = Linkcraft.getInstance();
+        plugin = Linkcraft.getPlugin();
         inventory_name = Utils.chat("&8&lAdmin GUI&7");
         inv = Bukkit.createInventory(null, inv_rows);
     }

@@ -15,7 +15,7 @@ public class PlaceHolderAPI extends PlaceholderExpansion {
     public boolean register() {
         if (!canRegister())
             return false;
-        if (Linkcraft.getInstance() == null)
+        if (Linkcraft.getPlugin() == null)
             return false;
         return super.register();
     }

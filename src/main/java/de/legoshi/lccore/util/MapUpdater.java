@@ -48,7 +48,7 @@ public class MapUpdater {
         Map<String, Object> yamlResult = new HashMap<>();
         yamlResult.put("maps", yamlData);
 
-        try (FileWriter writer = new FileWriter(Linkcraft.getInstance().getDataFolder().getPath() + File.separator + fileName)) {
+        try (FileWriter writer = new FileWriter(Linkcraft.getPlugin().getDataFolder().getPath() + File.separator + fileName)) {
             new Yaml().dump(yamlResult, writer);
         } catch (IOException e) {
             e.printStackTrace();

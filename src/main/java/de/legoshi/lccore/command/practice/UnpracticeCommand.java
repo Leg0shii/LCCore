@@ -90,7 +90,7 @@ public class UnpracticeCommand implements CommandExecutor {
         PracticeCommand.getPracticingPlayers().remove(p);
 
 
-        ProtocolManager pm = Linkcraft.getInstance().protocolManager;
+        ProtocolManager pm = Linkcraft.getPlugin().protocolManager;
 
         if (pm != null) {
             pm.sendServerPacket(p, ActionBarOffPacket);

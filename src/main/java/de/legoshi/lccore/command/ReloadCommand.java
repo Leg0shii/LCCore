@@ -18,20 +18,12 @@ public class ReloadCommand implements CommandExecutor {
     }
 
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
-        if (sender instanceof Player) {
-            Player p = (Player) sender;
-
-            if (!p.hasPermission("ps.reload")) {
-                p.sendMessage(Utils.chat("&cYou don't have permission to do this command! (ps.reload)"));
-                return true;
-            }
-
-            this.plugin.reloadConfig();
-            p.sendMessage(ChatColor.translateAlternateColorCodes('&', "&3&lParkour&b&lSaves &8&aReloaded the config!"));
-        } else {
-            this.plugin.reloadConfig();
-            sender.sendMessage(ChatColor.translateAlternateColorCodes('&', "&3&lParkour&b&lSaves &8\\u00BB &aReloaded the config"));
+        if(!sender.hasPermission("lc.reload")) {
+            sender.sendMessage(ChatColor.RED + "Insufficient permission");
+            return true;
         }
+        plugin.configManager.loadConfigs();
+        sender.sendMessage(ChatColor.GREEN + "[LC] Reload complete!");
         return true;
     }
 

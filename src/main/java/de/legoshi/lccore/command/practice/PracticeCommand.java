@@ -45,7 +45,7 @@ public class PracticeCommand implements CommandExecutor {
         // Every few seconds update the packet
         Bukkit.getScheduler().scheduleSyncRepeatingTask(plugin, () -> {
             practicingPlayers.forEach(p -> {
-                ProtocolManager pm = Linkcraft.getInstance().protocolManager;
+                ProtocolManager pm = Linkcraft.getPlugin().protocolManager;
 
                 if (pm != null) {
                     pm.sendServerPacket(p, ActionBarPacket);
@@ -96,7 +96,7 @@ public class PracticeCommand implements CommandExecutor {
                 api.getUserManager().saveUser(user);
             }
 
-            Bukkit.getScheduler().runTaskLater(Linkcraft.getInstance(), () -> {
+            Bukkit.getScheduler().runTaskLater(Linkcraft.getPlugin(), () -> {
                 if(p.isOnline()) {
                     p.teleport(current);
                 }
@@ -107,7 +107,7 @@ public class PracticeCommand implements CommandExecutor {
 
             practicingPlayers.add(p);  
             
-            ProtocolManager pm = Linkcraft.getInstance().protocolManager;
+            ProtocolManager pm = Linkcraft.getPlugin().protocolManager;
             
             if (pm != null) {
                 pm.sendServerPacket(p, ActionBarPacket);
