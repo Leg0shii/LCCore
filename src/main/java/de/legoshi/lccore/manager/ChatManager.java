@@ -4,6 +4,7 @@ import de.legoshi.lccore.player.chat.ChatChannel;
 import de.legoshi.lccore.player.display.*;
 import de.legoshi.lccore.util.ColorHelper;
 import de.legoshi.lccore.util.PlayerDisplayBuilder;
+import de.legoshi.lccore.util.Utils;
 import de.legoshi.lccore.util.message.Message;
 import de.legoshi.lccore.util.message.MessageUtil;
 import org.bukkit.Bukkit;
@@ -306,6 +307,7 @@ public class ChatManager {
         String globalMessage = globalChat(player, message);
         MessageUtil.broadcast(getGlobalChatFromRecipients(player), globalMessage, false);
         MessageUtil.log("[" + player.getName() + "] " + globalMessage, false);
+        Utils.sendDiscordChat(player, globalMessage);
     }
 
     public boolean chatToggled(Player player) {

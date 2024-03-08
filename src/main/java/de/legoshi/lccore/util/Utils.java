@@ -2,6 +2,7 @@ package de.legoshi.lccore.util;
 
 import com.google.gson.JsonParser;
 import de.legoshi.lccore.Linkcraft;
+import github.scarsz.discordsrv.DiscordSRV;
 import me.fixeddev.commandflow.stack.ArgumentStack;
 import org.bukkit.*;
 import org.bukkit.enchantments.Enchantment;
@@ -34,6 +35,20 @@ public class Utils {
 
     }
 
+    public static void sendDiscordChat(Player player, String message) {
+        if(Linkcraft.getPlugin().getServer().getPluginManager().getPlugin("DiscordSRV") == null) {
+            return;
+        }
+
+        Linkcraft.async(() -> {
+            DiscordSRV.getPlugin().processChatMessage(
+                    player,
+                    message,
+                    DiscordSRV.getPlugin().getOptionalChannel("global"),
+                    false
+            );
+        });
+    }
 
     public static String getStringFromLocation(Location l) {
         if (l == null)
