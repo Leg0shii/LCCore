@@ -65,12 +65,14 @@ public class CompleteCommand implements CommandExecutor {
         }
 
 
-        LCMap lcMap = MapManager.mapMap.get(map);
+        //LCMap lcMap = MapManager.mapMap.get(map);
 
-        if(requiresBan(mapSection, lcMap)) {
-            ban(offlinePlayer);
-            preCompletion(mapsSection, lcMap);
-        } else if(mapSection == null) {
+//        if(requiresBan(mapSection, lcMap)) {
+//            ban(offlinePlayer);
+//            preCompletion(mapsSection, lcMap);
+//        }
+//        else
+        if(mapSection == null) {
             mapSection = mapsSection.createSection(map);
             mapSection.set("firstcompletion", obj);
             mapSection.set("completions", 1);
@@ -90,7 +92,7 @@ public class CompleteCommand implements CommandExecutor {
         Player player = Bukkit.getPlayer(offlinePlayer.getName());
 
         if(player != null && mapSection != null && args.length == 2) {
-            giveRewards(player, lcMap);
+            //giveRewards(player, lcMap);
         }
 
         playerConfigAccessor.saveConfig();
