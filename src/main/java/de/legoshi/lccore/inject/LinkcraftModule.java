@@ -1,6 +1,5 @@
 package de.legoshi.lccore.inject;
 
-import de.legoshi.lccore.Linkcraft;
 import de.legoshi.lccore.listener.*;
 import de.legoshi.lccore.manager.*;
 import de.legoshi.lccore.service.command.CommandFlowModule;

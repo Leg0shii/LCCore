@@ -4,7 +4,6 @@ import de.legoshi.lccore.Linkcraft;
 import de.legoshi.lccore.manager.ConfigManager;
 import de.legoshi.lccore.manager.LuckPermsManager;
 import de.legoshi.lccore.manager.PlayerManager;
-import de.legoshi.lccore.util.message.MessageUtil;
 import net.luckperms.api.event.EventBus;
 import net.luckperms.api.event.node.NodeAddEvent;
 import net.luckperms.api.event.node.NodeClearEvent;

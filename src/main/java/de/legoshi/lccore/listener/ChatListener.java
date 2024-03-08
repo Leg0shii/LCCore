@@ -1,9 +1,6 @@
 package de.legoshi.lccore.listener;
 
 import de.legoshi.lccore.manager.ChatManager;
-import de.legoshi.lccore.manager.ConfigManager;
-import de.legoshi.lccore.util.Utils;
-import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;

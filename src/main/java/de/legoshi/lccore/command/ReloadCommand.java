@@ -1,12 +1,10 @@
 package de.legoshi.lccore.command;
 
 import de.legoshi.lccore.Linkcraft;
-import de.legoshi.lccore.util.Utils;
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
-import org.bukkit.entity.Player;
 
 // PARTLY REFACTORED
 public class ReloadCommand implements CommandExecutor {
