@@ -37,6 +37,21 @@ public class MeowRaviCommand implements CommandClass {
             ChatColor.WHITE + "" + ChatColor.BOLD + "You've got mail! " + "{0}" + ChatColor.WHITE + ChatColor.BOLD + " carefully crafted a " + ChatColor.LIGHT_PURPLE + ChatColor.BOLD + "meow " + ChatColor.WHITE + ChatColor.BOLD + "to brighten your day like a ray of sunshine! :3"
     };
 
+    private String[] denied = {
+            ChatColor.RED + "Yeah nice try, wannabe",
+            ChatColor.RED + "Hold your horses, cowboy...",
+            ChatColor.RED + "Not today man :/",
+            ChatColor.RED + "Nope, not on the guest list",
+            ChatColor.RED + "Ah ah ah! You didn't say the magic word!!!",
+            ChatColor.RED + "Meow, meow, really? Someone's got their kitty ears on today it seems...",
+            ChatColor.RED + "You've got to be kitten me right now",
+            ChatColor.RED + "Would your parents be proud of you if they saw you doing this",
+            ChatColor.RED + "Not on my watch bro",
+            ChatColor.RED + "I don't think you should be here",
+            ChatColor.RED + "Do you not have better things to do",
+            ChatColor.RED + "Let's stick to human language maybe",
+    };
+
     @Command(names = "")
     public void ravi(CommandSender sender, @ReflectiveTabComplete(clazz = PlayerManager.class, method = "getPlayers", player = true) String name) {
         if (!(sender instanceof Player)) {
@@ -45,7 +60,7 @@ public class MeowRaviCommand implements CommandClass {
         }
 
         if((!sender.getName().equalsIgnoreCase("raviolimood") && !sender.getName().equalsIgnoreCase("dkayee"))) {
-            MessageUtil.send(ChatColor.RED + "yeah you think you're that guy do you", sender, false);
+            MessageUtil.send(denied[(int) (Math.random() * denied.length)], sender, false);
             return;
         }
 
