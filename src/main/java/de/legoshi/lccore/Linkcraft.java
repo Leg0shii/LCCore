@@ -62,7 +62,7 @@ public class Linkcraft extends JavaPlugin {
 
         loadDependencies();
         injector = Injector.create(new LinkcraftModule(this));
-        configManager = new ConfigManager(this);
+        configManager = new ConfigManager(this, injector);
         configManager.loadConfigs();
         new CommandManager(this, injector).registerCommands();
         new MapManager(this);

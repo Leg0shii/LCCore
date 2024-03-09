@@ -15,6 +15,7 @@ public class LCPlayer {
     private WolfDTO wolf;
     private MazeDTO maze;
     private StarDTO star;
+    private StaffDTO staff;
     private List<ColorHelper.ChatFormat> chatFormats;
     private ColorHelper.ChatColor chatColor;
     private List<ColorHelper.ChatFormat> nameFormats;

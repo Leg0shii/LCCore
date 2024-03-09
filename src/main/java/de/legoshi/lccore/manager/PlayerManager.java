@@ -60,6 +60,7 @@ public class PlayerManager {
         lcPlayer.setWolf(chatManager.determineWolf(player));
         lcPlayer.setMaze(chatManager.determineMaze(player));
         lcPlayer.setStar(chatManager.determineStar(player));
+        lcPlayer.setStaff(chatManager.determineStaff(player));
         lcPlayer.setChatFormats(chatManager.determineChatFormats(player));
         lcPlayer.setChatColor(chatManager.determineChatColor(player));
         lcPlayer.setNameFormats(chatManager.determineNameFormat(player));

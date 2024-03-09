@@ -43,6 +43,7 @@ public class ChatManager {
         papiMap.put("jumps", player -> String.valueOf(player.getStatistic(Statistic.JUMP)));
         papiMap.put("tab", this::tabRank);
         papiMap.put("star", this::star);
+        papiMap.put("staff", this::staff);
     }
 
     public String getPlaceholder(String id, Player player) {
@@ -78,6 +79,11 @@ public class ChatManager {
     private String star(Player player) {
         StarDTO starDTO = playerManager.getPlayer(player).getStar();
         return starDTO == null ? "" : starDTO.getDisplay();
+    }
+
+    private String staff(Player player) {
+        StaffDTO staffDTO = playerManager.getPlayer(player).getStaff();
+        return staffDTO == null ? "" : staffDTO.getDisplay() + " ";
     }
 
     private String maze(Player player) {
@@ -426,6 +432,18 @@ public class ChatManager {
             if(highest == null || star.getPosition() > highest.getPosition()) {
                 if(luckPermsManager.hasPermission(player, star.getKey())) {
                     highest = star;
+                }
+            }
+        }
+        return highest;
+    }
+
+    public StaffDTO determineStaff(String player) {
+        StaffDTO highest = null;
+        for(StaffDTO staff : ConfigManager.staffDisplay.values()) {
+            if(highest == null || staff.getPosition() > highest.getPosition()) {
+                if(luckPermsManager.hasGroup(player, staff.getKey())) {
+                    highest = staff;
                 }
             }
         }

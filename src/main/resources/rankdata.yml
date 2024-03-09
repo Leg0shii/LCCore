@@ -299,4 +299,16 @@ star:
     display: §5§l⚝
     cost: 1000000
     position: 10
-
+staff:
+  builder:
+    display: §5[§dBuilder§5]
+    position: 0
+  staf:
+    display: §3[§bStaff§3]
+    position: 1
+  staff:
+    display: §3[§bStaff§3]
+    position: 2
+  admin:
+    display: §3[§bStaff§3]
+    position: 3

@@ -3,13 +3,17 @@ package de.legoshi.lccore.manager;
 import de.legoshi.lccore.Linkcraft;
 import de.legoshi.lccore.player.display.*;
 import de.legoshi.lccore.util.ColorHelper;
+import de.legoshi.lccore.util.ConfigAccessor;
 import de.legoshi.lccore.util.ConfigWriter;
 import de.legoshi.lccore.util.MapUpdater;
 import de.legoshi.lccore.util.message.Message;
 import de.legoshi.lccore.util.message.MessageType;
 import de.legoshi.lccore.util.message.MessageUtil;
+import org.bukkit.Bukkit;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
+import org.bukkit.entity.Player;
+import team.unnamed.inject.Injector;
 
 import java.io.File;
 import java.io.IOException;
@@ -19,17 +23,20 @@ import java.util.Map;
 
 public class ConfigManager {
     private final Linkcraft plugin;
+    private final Injector injector;
 
-    public static final Map<String, RankDTO> ranksDisplay = new HashMap<>();
-    public static final Map<String, BonusDTO> bonusDisplay = new HashMap<>();
-    public static final Map<String, WolfDTO> wolfDisplay = new HashMap<>();
-    public static final Map<String, MazeDTO> mazeDisplay = new HashMap<>();
-    public static final Map<String, StarDTO> starDisplay = new HashMap<>();
+    public static Map<String, RankDTO> ranksDisplay = new HashMap<>();
+    public static Map<String, BonusDTO> bonusDisplay = new HashMap<>();
+    public static Map<String, WolfDTO> wolfDisplay = new HashMap<>();
+    public static Map<String, MazeDTO> mazeDisplay = new HashMap<>();
+    public static Map<String, StarDTO> starDisplay = new HashMap<>();
+    public static Map<String, StaffDTO> staffDisplay = new HashMap<>();
     public static final Map<Message, String> messages = new HashMap<>();
     public static final HashSet<String> keys = new HashSet<>();
 
-    public ConfigManager(Linkcraft plugin) {
+    public ConfigManager(Linkcraft plugin, Injector injector) {
         this.plugin = plugin;
+        this.injector = injector;
     }
 
     public void loadConfigs() {
@@ -58,6 +65,14 @@ public class ConfigManager {
         }
 
         loadMessages();
+        reloadPlayerCosmetics();
+    }
+
+    private void reloadPlayerCosmetics() {
+        PlayerManager playerManager = injector.getInstance(PlayerManager.class);
+        for(Player player : Bukkit.getOnlinePlayers()) {
+            playerManager.updatePlayer(player);
+        }
     }
 
     private void loadMessages() {
@@ -106,18 +121,26 @@ public class ConfigManager {
     }
 
     private void loadRankDataIntoMemory() {
-        FileConfiguration rankData = plugin.rankConfig.getConfig();
+        ranksDisplay = new HashMap<>();
+        bonusDisplay = new HashMap<>();
+        wolfDisplay = new HashMap<>();
+        starDisplay = new HashMap<>();
+        mazeDisplay = new HashMap<>();
+        staffDisplay = new HashMap<>();
+        FileConfiguration rankData = new ConfigAccessor(Linkcraft.getPlugin(), "rankdata.yml").getConfig();
         loadRankSection(rankData.getConfigurationSection("ranks"));
         loadBonusSection(rankData.getConfigurationSection("bonus"));
         loadWolfSection(rankData.getConfigurationSection("wolf"));
         loadMazeSection(rankData.getConfigurationSection("maze"));
         loadStarSection(rankData.getConfigurationSection("star"));
+        loadStaffSection(rankData.getConfigurationSection("staff"));
 
         addToSet(ranksDisplay, "group.");
         addToSet(bonusDisplay);
         addToSet(wolfDisplay, "group.");
         addToSet(mazeDisplay);
         addToSet(starDisplay);
+        addToSet(staffDisplay, "group.");
     }
 
     private void addToSet(Map<String, ?> map, String toAdd) {
@@ -184,6 +207,17 @@ public class ConfigManager {
                 int cost = star.getInt("cost");
                 int position = star.getInt("position");
                 starDisplay.put(key, new StarDTO(key, display, cost, position));
+            }
+        }
+    }
+
+    private void loadStaffSection(ConfigurationSection staffs) {
+        if(staffs != null) {
+            for(String key : staffs.getKeys(false)) {
+                ConfigurationSection staff = staffs.getConfigurationSection(key);
+                String display = staff.getString("display");
+                int position = staff.getInt("position");
+                staffDisplay.put(key, new StaffDTO(key, display, position));
             }
         }
     }
