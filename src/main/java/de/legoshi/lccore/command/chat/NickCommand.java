@@ -26,13 +26,25 @@ public class NickCommand implements CommandClass {
     @Inject private ChatManager chatManager;
 
     @Command(names = "")
-    public void nick(CommandSender sender, @TabComplete(suggestions = "off") String nick, @OptArg @ReflectiveTabComplete(clazz = PlayerManager.class, method = "getPlayers") String toNick) {
+    public void nick(CommandSender sender, @TabComplete(suggestions = "off") String nick, @ReflectiveTabComplete(clazz = PlayerManager.class, method = "getPlayers", player = true) @OptArg String toNick) {
 
         Player toNickPlayer = toNick != null ? Bukkit.getPlayer(toNick) : null;
         Bukkit.getScheduler().runTaskAsynchronously(Linkcraft.getPlugin(), () -> {
+            boolean disable = nick.equalsIgnoreCase("off");
+
             if (!(sender instanceof Player)) {
-                MessageUtil.send(Message.NOT_A_PLAYER, sender);
-                return;
+                if(toNick != null) {
+                    if(disable) {
+                        playerManager.updateNick(toNickPlayer, "");
+                        MessageUtil.send(Message.NICK_OFF, toNickPlayer);
+                        MessageUtil.send(Message.NICK_CHANGE_OTHER, sender);
+                    } else {
+                        playerManager.updateNick(toNickPlayer, nick);
+                        MessageUtil.send(Message.NICK_SET_TO, toNickPlayer, chatManager.nickPreview(toNickPlayer));
+                        MessageUtil.send(Message.NICK_CHANGE_OTHER, sender);
+                    }
+                }
+
             }
 
             Player player = (Player)sender;
@@ -42,7 +54,7 @@ public class NickCommand implements CommandClass {
                 return;
             }
 
-            boolean disable = nick.equalsIgnoreCase("off");
+
 
             if(toNick == null) {
                 if(disable) {

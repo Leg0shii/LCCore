@@ -1,9 +1,11 @@
 package de.legoshi.lccore.service.command;
 
 import de.legoshi.lccore.command.flow.ReflectiveTabCompleteModifierPart;
+import de.legoshi.lccore.command.flow.TabCompleteModifierPart;
 import me.fixeddev.commandflow.*;
 import me.fixeddev.commandflow.command.Command;
 import me.fixeddev.commandflow.part.CommandPart;
+import me.fixeddev.commandflow.part.defaults.OptionalPart;
 import me.fixeddev.commandflow.part.defaults.SequentialCommandPart;
 import me.fixeddev.commandflow.part.defaults.SubCommandPart;
 import me.fixeddev.commandflow.stack.ArgumentStack;
@@ -67,9 +69,19 @@ public class LinkcraftCommandManager extends SimpleCommandManager {
                 suggestions = getSubCommandSuggestions((SubCommandPart)part, context, stack, player);
             } else if(part instanceof ReflectiveTabCompleteModifierPart) {
                 suggestions = ((ReflectiveTabCompleteModifierPart) part).getSuggestions(context, stack, player);
-            } else {
+            } else if(part instanceof OptionalPart) {
+                OptionalPart op = (OptionalPart)part;
+                CommandPart subpart = op.getPart();
+                if(subpart instanceof ReflectiveTabCompleteModifierPart) {
+                    suggestions = ((ReflectiveTabCompleteModifierPart) subpart).getSuggestions(context, stack, player);
+                } else {
+                    suggestions = null;
+                }
+            }
+            else {
                 suggestions = part.getSuggestions(context, stack);
             }
+
         } while(suggestions == null || stack.hasNext());
 
         return suggestions;

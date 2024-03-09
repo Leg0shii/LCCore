@@ -1,6 +1,7 @@
 package de.legoshi.lccore.command;
 
 import de.legoshi.lccore.Linkcraft;
+import de.legoshi.lccore.command.flow.annotated.annotation.ReflectiveTabComplete;
 import de.legoshi.lccore.manager.PlayerManager;
 import de.legoshi.lccore.player.display.LCPlayer;
 import de.legoshi.lccore.util.ConfigAccessor;
@@ -30,7 +31,7 @@ public class StatsCommand implements CommandClass {
     @Inject private PlayerManager playerManager;
 
     @Command(names = "")
-    public void stats(CommandSender sender, @OptArg String name) {
+    public void stats(CommandSender sender, @ReflectiveTabComplete(clazz = PlayerManager.class, method = "getPlayers", player = true) @OptArg String name) {
         Bukkit.getScheduler().runTaskAsynchronously(Linkcraft.getPlugin(), () -> {
             if (!(sender instanceof Player)) {
                 MessageUtil.send(Message.NOT_A_PLAYER, sender);
