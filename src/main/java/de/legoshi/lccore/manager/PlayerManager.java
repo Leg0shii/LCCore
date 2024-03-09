@@ -28,12 +28,11 @@ public class PlayerManager {
     public void playerJoin(Player player) {
         updateName(player);
         players.put(player.getUniqueId().toString(), loadPlayer(player));
+        player.setDisplayName(chatManager.rankNickStar(player));
         visibilityManager.hideIfHiding(player);
         chatManager.onJoin(player);
         clearTitle(player);
     }
-
-
 
     public void playerLeave(Player player) {
         players.remove(player.getUniqueId().toString());
@@ -42,10 +41,9 @@ public class PlayerManager {
         saveConfigDataTemp(player);
     }
 
-
-    // TODO: ON MAP COMPLETE
     public void updatePlayer(Player player) {
         players.put(player.getUniqueId().toString(), loadPlayer(player));
+        player.setDisplayName(chatManager.rankNickStar(player));
     }
 
     private LCPlayer loadPlayer(Player player) {
