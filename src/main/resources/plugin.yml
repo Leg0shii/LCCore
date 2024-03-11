@@ -2,7 +2,7 @@ name: LCCore
 version: '${project.version}'
 main: de.legoshi.lccore.Linkcraft
 authors: [Leg0shi_, dklink750]
-description: Practice Plugin for Linkcraft
+description: Core Plugin for Linkcraft
 api-version: 1.8
 loadbefore:
   - Essentials
