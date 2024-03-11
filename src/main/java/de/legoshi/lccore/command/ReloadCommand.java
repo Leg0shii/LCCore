@@ -20,7 +20,7 @@ public class ReloadCommand implements CommandExecutor {
             sender.sendMessage(ChatColor.RED + "Insufficient permission");
             return true;
         }
-        plugin.configManager.loadConfigs();
+        plugin.configManager.loadConfigs(false);
         sender.sendMessage(ChatColor.GREEN + "[LC] Reload complete!");
         return true;
     }

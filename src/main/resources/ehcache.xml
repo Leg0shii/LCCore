@@ -1,0 +1,17 @@
+<ehcache updateCheck="true"
+         monitoring="autodetect"
+         dynamicConfig="true">
+
+
+    <defaultCache name="entityCache"
+                  eternal="false"
+                  maxEntriesLocalHeap="10000"
+                  timeToIdleSeconds="30"
+                  memoryStoreEvictionPolicy="LFU"/>
+
+<!--    Players remain cached indefinitely unless removed from cache explicitly (upon logout)-->
+<!--    <cache name="ca.dklink750.linkcraft.database.models.LCPlayer"-->
+<!--           maxEntriesLocalHeap="1000"-->
+<!--           memoryStoreEvictionPolicy="LFU"-->
+<!--           eternal="true"/>-->
+</ehcache>

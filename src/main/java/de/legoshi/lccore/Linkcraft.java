@@ -49,6 +49,7 @@ public class Linkcraft extends JavaPlugin {
     public final ConfigAccessor lockdownConfig = new ConfigAccessor(this, "lockdown.yml");
     public final ConfigAccessor mapsConfig = new ConfigAccessor(this, "maps.yml");
     public final ConfigAccessor rankConfig = new ConfigAccessor(this, "rankdata.yml");
+    public final ConfigAccessor dbConfig = new ConfigAccessor(this, "database.yml");
     public InventoryManager im;
     private final FileConfiguration config = getConfig();
     public ProtocolManager protocolManager;
@@ -61,9 +62,10 @@ public class Linkcraft extends JavaPlugin {
         plugin = this;
 
         loadDependencies();
-        injector = Injector.create(new LinkcraftModule(this));
         configManager = new ConfigManager(this, injector);
-        configManager.loadConfigs();
+        configManager.loadConfigs(true);
+        injector = Injector.create(new LinkcraftModule(this));
+
         new CommandManager(this, injector).registerCommands();
         new MapManager(this);
 

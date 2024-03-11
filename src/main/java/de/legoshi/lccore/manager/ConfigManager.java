@@ -33,18 +33,24 @@ public class ConfigManager {
     public static Map<String, StaffDTO> staffDisplay = new HashMap<>();
     public static final Map<Message, String> messages = new HashMap<>();
     public static final HashSet<String> keys = new HashSet<>();
+    public static String host;
+    public static String username;
+    public static String password;
+    public static int port;
+    public static String database;
 
     public ConfigManager(Linkcraft plugin, Injector injector) {
         this.plugin = plugin;
         this.injector = injector;
     }
 
-    public void loadConfigs() {
+    public void loadConfigs(boolean first) {
         plugin.saveDefaultConfig();
         plugin.playerConfig.saveDefaultConfig();
         plugin.lockdownConfig.saveDefaultConfig();
         plugin.mapsConfig.saveDefaultConfig();
         plugin.rankConfig.saveDefaultConfig();
+        plugin.dbConfig.saveDefaultConfig();
 
         File playerData = new File(plugin.getDataFolder(), "playerdata");
         if (!playerData.exists()) playerData.mkdir();
@@ -56,6 +62,7 @@ public class ConfigManager {
         if (!players.exists()) players.mkdir();
 
         ColorHelper.load();
+        loadDbConfig();
         loadRankDataIntoMemory();
 
         try {
@@ -65,7 +72,19 @@ public class ConfigManager {
         }
 
         loadMessages();
-        reloadPlayerCosmetics();
+        if(!first) {
+            reloadPlayerCosmetics();
+        }
+    }
+
+    private void loadDbConfig() {
+        FileConfiguration dbData = new ConfigAccessor(Linkcraft.getPlugin(), "database.yml").getConfig();
+
+        host = dbData.getString("host");
+        database = dbData.getString("database");
+        port = dbData.getInt("port");
+        username = dbData.getString("username");
+        password = dbData.getString("password");
     }
 
     private void reloadPlayerCosmetics() {

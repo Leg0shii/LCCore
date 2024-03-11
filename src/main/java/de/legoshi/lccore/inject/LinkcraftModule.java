@@ -1,5 +1,6 @@
 package de.legoshi.lccore.inject;
 
+import de.legoshi.lccore.database.DBModule;
 import de.legoshi.lccore.listener.*;
 import de.legoshi.lccore.manager.*;
 import de.legoshi.lccore.service.command.CommandFlowModule;
@@ -19,6 +20,9 @@ public class LinkcraftModule extends AbstractModule {
     @Override
     protected void configure() {
         bind(Plugin.class).toInstance(plugin);
+
+        // Database
+        install(new DBModule(plugin));
 
         // Flow
         install(new CommandFlowModule());

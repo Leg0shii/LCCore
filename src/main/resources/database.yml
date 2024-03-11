@@ -1,0 +1,5 @@
+host: server-pro-ip
+database: serverpro_db
+port: 3306
+username: root
+password: server-pro-sql-password
