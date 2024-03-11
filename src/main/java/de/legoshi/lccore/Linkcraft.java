@@ -4,7 +4,6 @@ import com.comphenix.protocol.ProtocolLibrary;
 import com.comphenix.protocol.ProtocolManager;
 import de.legoshi.lccore.inject.LinkcraftModule;
 import de.legoshi.lccore.manager.*;
-import de.legoshi.lccore.papi.PlaceHolderAPI;
 import de.legoshi.lccore.service.Service;
 import de.legoshi.lccore.util.ConfigAccessor;
 import de.legoshi.lccore.util.Constants;
@@ -80,10 +79,6 @@ public class Linkcraft extends JavaPlugin {
 
     private void loadDependencies() {
         loadLuckPerms();
-
-        if(Bukkit.getPluginManager().isPluginEnabled("PlaceholderAPI")) {
-            new PlaceHolderAPI().register();
-        }
 
         if(!setupEconomy()) {
             Bukkit.shutdown();

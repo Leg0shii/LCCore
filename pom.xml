@@ -187,13 +187,6 @@
             <systemPath>${project.basedir}/lib/Vault.jar</systemPath>
         </dependency>
         <dependency>
-            <groupId>com.darkender.SecondPrefix</groupId>
-            <artifactId>SecondPrefix</artifactId>
-            <version>1.0</version>
-            <scope>system</scope>
-            <systemPath>${project.basedir}/lib/SecondPrefix.jar</systemPath>
-        </dependency>
-        <dependency>
             <groupId>me.clip.placeholderapi</groupId>
             <artifactId>placeholderapi</artifactId>
             <version>1.0</version>

@@ -63,8 +63,6 @@ commands:
   psreload:
   fakeup:
   pingtp:
-  sayall:
-  forcesay:
   chungus:
   resetsaves:
   checksaves:

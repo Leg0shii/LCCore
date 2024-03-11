@@ -26,26 +26,8 @@ public class CommandManager {
     public void registerCommands() {
         plugin.getCommand("practice").setExecutor(new PracticeCommand(plugin));
         plugin.getCommand("unpractice").setExecutor(new UnpracticeCommand(plugin));
-//        plugin.getCommand("ggall").setExecutor(new AdminMemeCommand(plugin));
-//        plugin.getCommand("glall").setExecutor(new AdminMemeCommand(plugin));
-//        plugin.getCommand("ripall").setExecutor(new AdminMemeCommand(plugin));
-//        plugin.getCommand("failall").setExecutor(new AdminMemeCommand(plugin));
-//        plugin.getCommand("eggsall").setExecutor(new AdminMemeCommand(plugin));
-//        plugin.getCommand("hamall").setExecutor(new AdminMemeCommand(plugin));
-        plugin.getCommand("forcesay").setExecutor(new AdminMemeCommand(plugin));
-        plugin.getCommand("sayall").setExecutor(new AdminMemeCommand(plugin));
-        //plugin.getCommand("gg").setExecutor(new MemeCommand(plugin));
-//        plugin.getCommand("gl").setExecutor(new MemeCommand(plugin));
-//        plugin.getCommand("rip").setExecutor(new MemeCommand(plugin));
-//        plugin.getCommand("fail").setExecutor(new MemeCommand(plugin));
-//        plugin.getCommand("eggs").setExecutor(new MemeCommand(plugin));
-//        plugin.getCommand("ham").setExecutor(new MemeCommand(plugin));
-//        plugin.getCommand("chungus").setExecutor(new MemeCommand(plugin));
         plugin.getCommand("checksaves").setExecutor(new CheckSavesCommand());
-        //plugin.getCommand("chatcolor").setExecutor(new ChatColorCommand());
-        //plugin.getCommand("chatformat").setExecutor(new ChatFormatCommand());
         plugin.getCommand("togglenotify").setExecutor(new ToggleNotifyCommand());
-        //plugin.getCommand("stats").setExecutor(new StatsCommandOld());
         plugin.getCommand("saves").setExecutor(new SavesCommand());
         plugin.getCommand("save").setExecutor(new SaveCommand(plugin));
         plugin.getCommand("resetsaves").setExecutor(new ResetSavesCommand(plugin));
@@ -70,12 +52,10 @@ public class CommandManager {
         plugin.getCommand("maps").setExecutor(new MapsCommand());
         plugin.getCommand("mapsreload").setExecutor(new MapsReloadCommand());
         plugin.getCommand("menu").setExecutor(new MapsCommand());
-        plugin.getCommand("selfmsg").setExecutor(new SelfMessageCommand());
         plugin.getCommand("complete").setExecutor(new CompleteCommand());
         plugin.getCommand("addcompletions").setExecutor(new AddCompletionsCommand());
         plugin.getCommand("giveunlocks").setExecutor(new GiveUnlocksCommand());
         plugin.getCommand("checkcompletions").setExecutor(new CheckCompletionsCommand());
-        //plugin.getCommand("meow").setExecutor(new MeowRaviCommandOld());
     }
 
 }
