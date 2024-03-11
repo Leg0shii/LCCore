@@ -59,8 +59,6 @@ commands:
   saves:
   nv:
     aliases: [ nightvision, nvn, vision ]
-  selfmsg:
-    aliases: [ sm ]
   save:
   psreload:
   fakeup:
