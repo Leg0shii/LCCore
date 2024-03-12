@@ -79,7 +79,9 @@ public enum Message {
     PARTY_PLAYER_NOT_IN("§cThat player is not in your party!", MessageType.PLAYER_ERROR),
     IGNORE_SELF("§cYou cannot ignore yourself!", MessageType.PLAYER_ERROR),
     IGNORES_YOU("§cYou cannot message this player", MessageType.PLAYER_ERROR),
-    INVALID_NICKNAME("§cInvalid nick, only a-z A-Z 0-9 and _'s are allowed!", MessageType.PLAYER),
+    INVALID_NICKNAME_FORMAT("§cInvalid nick, only a-z A-Z 0-9 and _'s are allowed!", MessageType.PLAYER_ERROR),
+    INVALID_NICKNAME_LENGTH("§cInvalid nick, only up to 16 characters are allowed!", MessageType.PLAYER_ERROR),
+    INVALID_NICKNAME_ALREADY_TAKEN("§cInvalid nick, someone who has played LC already has that name!", MessageType.PLAYER_ERROR),
 
     // Practice
     PRAC_SUCCESS("§aYou are now in practice mode, do /unprac to stop.", MessageType.PRACTICE),

@@ -12,6 +12,7 @@ import me.fixeddev.commandflow.annotated.CommandClass;
 import me.fixeddev.commandflow.annotated.annotation.Command;
 import me.fixeddev.commandflow.annotated.annotation.OptArg;
 import org.bukkit.Bukkit;
+import org.bukkit.OfflinePlayer;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import team.unnamed.inject.Inject;
@@ -19,7 +20,7 @@ import team.unnamed.inject.Inject;
 import java.util.regex.Pattern;
 
 @Register
-@Command(names = {"nick"}, permission = "nick", desc = "<nickname|off> [player]`")
+@Command(names = {"nick"}, permission = "nick", desc = "<nickname|off> [player]")
 public class NickCommand implements CommandClass {
 
     @Inject private PlayerManager playerManager;
@@ -44,13 +45,23 @@ public class NickCommand implements CommandClass {
                         MessageUtil.send(Message.NICK_CHANGE_OTHER, sender);
                     }
                 }
-
+                return;
             }
 
             Player player = (Player)sender;
 
-            if(!checkNick(nick) && !player.hasPermission("linkcraft.nick.unsafe")) {
-                MessageUtil.send(Message.INVALID_NICKNAME, player);
+            if(!checkNickFormat(nick) && !player.hasPermission("linkcraft.nick.unsafe")) {
+                MessageUtil.send(Message.INVALID_NICKNAME_FORMAT, player);
+                return;
+            }
+
+            if(!checkNickLength(nick) && !player.hasPermission("linkcraft.nick.unsafe")) {
+                MessageUtil.send(Message.INVALID_NICKNAME_FORMAT, player);
+                return;
+            }
+
+            if(!checkNickTaken(nick) && !player.hasPermission("linkcraft.nick.unsafe")) {
+                MessageUtil.send(Message.INVALID_NICKNAME_ALREADY_TAKEN, player);
                 return;
             }
 
@@ -82,8 +93,17 @@ public class NickCommand implements CommandClass {
         });
     }
 
-    private boolean checkNick(String nick) {
+    private boolean checkNickFormat(String nick) {
         Pattern pattern = Pattern.compile("^[a-zA-Z0-9_]*$");
         return pattern.matcher(nick).matches();
+    }
+
+    private boolean checkNickLength(String nick) {
+        return nick.length() <= 16;
+    }
+
+    private boolean checkNickTaken(String nick) {
+        OfflinePlayer offlinePlayer = Bukkit.getOfflinePlayer(nick);
+        return (offlinePlayer == null || !offlinePlayer.hasPlayedBefore());
     }
 }
