@@ -116,6 +116,19 @@ public class ColorHelper {
         save();
     }
 
+    public static String getStar(String p) {
+        return config.getString(p + ".star");
+    }
+
+    public static void setStar(Player p, String star) {
+        setStar(p.getUniqueId().toString(), star);
+    }
+
+    public static void setStar(String p, String star) {
+        config.set(p + ".star", star);
+        save();
+    }
+
     public static void removeChatFormat(Player p, ChatFormat format) {
         List<String> formatList = config.getStringList(p.getUniqueId().toString() + ".format");
         formatList.remove(format.getCode());

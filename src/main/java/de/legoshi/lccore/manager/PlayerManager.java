@@ -242,4 +242,9 @@ public class PlayerManager {
 
         return nicks;
     }
+
+    @SuppressWarnings("unused")
+    public List<String> getStars() {
+        return new ArrayList<>(ConfigManager.starDisplay.keySet());
+    }
 }

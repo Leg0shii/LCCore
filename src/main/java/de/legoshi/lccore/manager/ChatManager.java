@@ -427,15 +427,27 @@ public class ChatManager {
     }
 
     public StarDTO determineStar(String player) {
-        StarDTO highest = null;
-        for(StarDTO star : ConfigManager.starDisplay.values()) {
-            if(highest == null || star.getPosition() > highest.getPosition()) {
-                if(luckPermsManager.hasPermission(player, star.getKey())) {
-                    highest = star;
+        String starName = ColorHelper.getStar(player);
+        StarDTO determinedStar = null;
+        if(starName == null) {
+            StarDTO highest = null;
+            for(StarDTO star : ConfigManager.starDisplay.values()) {
+                if(highest == null || star.getPosition() > highest.getPosition()) {
+                    if(luckPermsManager.hasPermission(player, star.getKey())) {
+                        highest = star;
+                    }
                 }
             }
+            if(highest != null) {
+                determinedStar = highest;
+                ColorHelper.setStar(player, highest.getKey());
+            }
+        } else {
+            determinedStar = ConfigManager.starDisplay.get(starName);
         }
-        return highest;
+
+
+        return determinedStar;
     }
 
     public StaffDTO determineStaff(String player) {
