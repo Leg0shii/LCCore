@@ -28,7 +28,7 @@ public class RealnameCommand implements CommandClass {
     @Inject private PlayerManager playerManager;
 
     @Command(names = "")
-    public void realname(CommandSender sender, @ReflectiveTabComplete(clazz = PlayerManager.class, method = "getNicks") String toCheck) {
+    public void realname(CommandSender sender, @ReflectiveTabComplete(clazz = PlayerManager.class, method = "getNicks", player = true) String toCheck) {
         Bukkit.getScheduler().runTaskAsynchronously(Linkcraft.getPlugin(), () -> {
             if (!(sender instanceof Player)) {
                 MessageUtil.send(Message.NOT_A_PLAYER, sender);
@@ -42,7 +42,7 @@ public class RealnameCommand implements CommandClass {
                     continue;
                 }
                 LCPlayer lcPlayer = playerManager.getPlayer(player);
-                if(chatManager.removeChatColour(lcPlayer.getNick()).toLowerCase().contains(toCheck.toLowerCase())) {
+                if(chatManager.removeChatColour(lcPlayer.getNick()).toLowerCase().contains(toCheck.toLowerCase()) || player.getName().toLowerCase().contains(toCheck.toLowerCase())) {
                     selected.put(chatManager.rankNickStar(player), player.getName());
                 }
 

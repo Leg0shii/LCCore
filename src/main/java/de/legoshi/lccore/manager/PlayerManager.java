@@ -11,6 +11,7 @@ import net.minecraft.server.v1_8_R3.PlayerConnection;
 import org.bukkit.Bukkit;
 import org.bukkit.Statistic;
 import org.bukkit.configuration.file.FileConfiguration;
+import org.bukkit.craftbukkit.v1_8_R3.CraftServer;
 import org.bukkit.craftbukkit.v1_8_R3.entity.CraftPlayer;
 import org.bukkit.entity.Player;
 import team.unnamed.inject.Inject;
@@ -150,6 +151,42 @@ public class PlayerManager {
         return ((CraftPlayer)player).getHandle().ping;
     }
 
+    public Player playerByName(String name) {
+        CraftServer server = (CraftServer)Bukkit.getServer();
+        Player found = server.getPlayerExact(name);
+        if (found != null) {
+            return found;
+        }
+
+        String lowerName = name.toLowerCase();
+        Player bestMatch = null;
+        int delta = Integer.MAX_VALUE;
+
+        for(Player player : Bukkit.getOnlinePlayers()) {
+            String username = player.getName();
+            String nickname = getPlayer(player).getNick();
+
+            int usernameDelta = Math.abs(username.length() - lowerName.length());
+            int nicknameDelta = Math.abs(nickname.length() - lowerName.length());
+
+            if (username.toLowerCase().startsWith(lowerName) && usernameDelta < delta) {
+                bestMatch = player;
+                delta = usernameDelta;
+            }
+
+            if (nickname.toLowerCase().startsWith(lowerName) && nicknameDelta < delta) {
+                bestMatch = player;
+                delta = nicknameDelta;
+            }
+
+            if (username.equalsIgnoreCase(name) || nickname.equalsIgnoreCase(name)) {
+                return player;
+            }
+        }
+        return bestMatch;
+    }
+
+    @SuppressWarnings("unused")
     public List<String> getPlayers(Player p) {
         List<String> players = new ArrayList<>();
         Bukkit.getOnlinePlayers().forEach((player) -> {
@@ -162,12 +199,44 @@ public class PlayerManager {
     }
 
     @SuppressWarnings("unused")
-    public List<String> getNicks() {
+    public List<String> getPossibleNames(Player p) {
+        List<String> names = new ArrayList<>();
+        Bukkit.getOnlinePlayers().forEach((player) -> {
+            if(visibilityManager.canSee(p, player)) {
+                String nick = getPlayer(player).getNick();
+                if (!nick.isEmpty()) {
+                    names.add(chatManager.removeChatColour(nick));
+                }
+                names.add(player.getName());
+            }
+        });
+        return names;
+    }
+
+    @SuppressWarnings("unused")
+    public List<String> getNicks(Player p) {
         List<String> nicks = new ArrayList<>();
         Bukkit.getOnlinePlayers().forEach((player) -> {
-            String nick = getPlayer(player).getNick();
-            if(!nick.isEmpty()) {
-                nicks.add(chatManager.removeChatColour(nick));
+            if(visibilityManager.canSee(p, player)) {
+                String nick = getPlayer(player).getNick();
+                if (!nick.isEmpty()) {
+                    nicks.add(chatManager.removeChatColour(nick));
+                }
+            }
+        });
+
+        return nicks;
+    }
+
+    @SuppressWarnings("unused")
+    public List<String> getNicksLower(Player p) {
+        List<String> nicks = new ArrayList<>();
+        Bukkit.getOnlinePlayers().forEach((player) -> {
+            if(visibilityManager.canSee(p, player)) {
+                String nick = getPlayer(player).getNick();
+                if (!nick.isEmpty()) {
+                    nicks.add(chatManager.removeChatColour(nick).toLowerCase());
+                }
             }
         });
 

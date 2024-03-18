@@ -29,7 +29,7 @@ public class NickCommand implements CommandClass {
     @Command(names = "")
     public void nick(CommandSender sender, @TabComplete(suggestions = "off") String nick, @ReflectiveTabComplete(clazz = PlayerManager.class, method = "getPlayers", player = true) @OptArg String toNick) {
 
-        Player toNickPlayer = toNick != null ? Bukkit.getPlayer(toNick) : null;
+        Player toNickPlayer = toNick != null ? playerManager.playerByName(toNick) : null;
         Bukkit.getScheduler().runTaskAsynchronously(Linkcraft.getPlugin(), () -> {
             boolean disable = nick.equalsIgnoreCase("off");
 
@@ -60,12 +60,12 @@ public class NickCommand implements CommandClass {
                 return;
             }
 
-            if(!checkNickTaken(nick) && !player.hasPermission("linkcraft.nick.unsafe")) {
+            if(!checkNickTaken(nick, player) && !player.hasPermission("linkcraft.nick.unsafe")) {
                 MessageUtil.send(Message.INVALID_NICKNAME_ALREADY_TAKEN, player);
                 return;
+            } else if(!checkNickTaken(nick, player) && player.hasPermission("linkcraft.nick.unsafe")) {
+                MessageUtil.send(Message.INVALID_NICKNAME_ALREADY_TAKEN_WARN, player);
             }
-
-
 
             if(toNick == null) {
                 if(disable) {
@@ -102,8 +102,9 @@ public class NickCommand implements CommandClass {
         return nick.length() <= 16;
     }
 
-    private boolean checkNickTaken(String nick) {
+    private boolean checkNickTaken(String nick, Player player) {
         OfflinePlayer offlinePlayer = Bukkit.getOfflinePlayer(nick);
-        return (offlinePlayer == null || !offlinePlayer.hasPlayedBefore());
+
+        return (offlinePlayer == null || !offlinePlayer.hasPlayedBefore()) && !playerManager.getNicksLower(player).contains(nick.toLowerCase());
     }
 }

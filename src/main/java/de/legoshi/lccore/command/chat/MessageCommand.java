@@ -26,11 +26,12 @@ public class MessageCommand implements CommandClass {
 
     @Inject private ChatManager chatManager;
     @Inject private VisibilityManager visibilityManager;
+    @Inject private PlayerManager playerManager;
 
     @Command(names = "")
-    public void message(CommandSender sender, @ReflectiveTabComplete(clazz = PlayerManager.class, method = "getPlayers", player = true) String toMessage,
+    public void message(CommandSender sender, @ReflectiveTabComplete(clazz = PlayerManager.class, method = "getPossibleNames", player = true) String toMessage,
                         @OptArg String message,  @OptArg ArgumentStack as) {
-        Player recipient = Bukkit.getPlayer(toMessage);
+        Player recipient = playerManager.playerByName(toMessage);
         Bukkit.getScheduler().runTaskAsynchronously(Linkcraft.getPlugin(), () -> {
             if (!(sender instanceof Player)) {
                 MessageUtil.send(Message.NOT_A_PLAYER, sender);
