@@ -26,6 +26,10 @@ public class SelfMessageCommand implements CommandClass {
             return;
         }
 
+        if(first == null) {
+            first = "";
+        }
+
         Player p = (Player) sender;
         p.sendMessage("* " + chatManager.globalChat(p, Utils.joinArguments(first, as)));
     }
