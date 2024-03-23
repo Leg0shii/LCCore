@@ -164,7 +164,8 @@ public class PlayerManager {
 
         for(Player player : Bukkit.getOnlinePlayers()) {
             String username = player.getName();
-            String nickname = getPlayer(player).getNick();
+            LCPlayer lcPlayer = getPlayer(player);
+            String nickname = lcPlayer != null ? lcPlayer.getNick() : "";
 
             int usernameDelta = Math.abs(username.length() - lowerName.length());
             int nicknameDelta = Math.abs(nickname.length() - lowerName.length());

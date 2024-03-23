@@ -8,6 +8,10 @@ loadbefore:
   - Essentials
 softdepend:
   - DiscordSRV
+  - LuckPerms
+  - DeluxeTags
+  - TAB
+  - PlaceholderAPI
 commands:
   ld:
     permission: lc.lockdown

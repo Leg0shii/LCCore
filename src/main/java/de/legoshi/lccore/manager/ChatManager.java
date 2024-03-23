@@ -243,7 +243,8 @@ public class ChatManager {
     }
 
     public boolean ignores(Player player, Player other) {
-        return ignores.get(player.getUniqueId().toString()).contains(other.getUniqueId().toString());
+        List<String> ignoredPlayers = ignores.get(player.getUniqueId().toString());
+        return ignoredPlayers != null && ignoredPlayers.contains(other.getUniqueId().toString());
     }
 
     public void sendDirectChat(Player sender, Player recipient, String message) {
