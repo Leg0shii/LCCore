@@ -10,8 +10,8 @@
                   memoryStoreEvictionPolicy="LFU"/>
 
 <!--    Players remain cached indefinitely unless removed from cache explicitly (upon logout)-->
-<!--    <cache name="ca.dklink750.linkcraft.database.models.LCPlayer"-->
-<!--           maxEntriesLocalHeap="1000"-->
-<!--           memoryStoreEvictionPolicy="LFU"-->
-<!--           eternal="true"/>-->
+    <cache name="de.legoshi.lccore.database.models.LCPlayerDB"
+           maxEntriesLocalHeap="1000"
+           memoryStoreEvictionPolicy="LFU"
+           eternal="true"/>
 </ehcache>

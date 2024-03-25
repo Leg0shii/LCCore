@@ -1,4 +1,4 @@
-package de.legoshi.lccore.menu;
+package de.legoshi.lccore.menu.maps;
 
 import de.legoshi.lccore.Linkcraft;
 import de.legoshi.lccore.util.ContentsHelper;

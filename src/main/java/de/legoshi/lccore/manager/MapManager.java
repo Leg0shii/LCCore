@@ -1,8 +1,8 @@
 package de.legoshi.lccore.manager;
 
 import de.legoshi.lccore.Linkcraft;
-import de.legoshi.lccore.menu.LCMap;
-import de.legoshi.lccore.menu.MapComparator;
+import de.legoshi.lccore.menu.maps.LCMap;
+import de.legoshi.lccore.menu.maps.MapComparator;
 import de.legoshi.lccore.util.ConfigAccessor;
 import de.legoshi.lccore.util.MapType;
 import de.legoshi.lccore.util.Utils;

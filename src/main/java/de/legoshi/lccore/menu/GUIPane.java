@@ -45,6 +45,7 @@ public abstract class GUIPane {
         this.outside = GUIUtil.createPaneGuiElement(outside, 'd');
         this.between = GUIUtil.createPaneGuiElement(between, 'm');
         this.middle = GUIUtil.createPaneGuiElement(middle, 'c');
+        current.addElements(this.outside, this.between, this.middle, this.sides);
     }
 
     protected void fullCloseOnEsc() {
@@ -55,7 +56,7 @@ public abstract class GUIPane {
         this.onReturn = onReturn;
     }
 
-    public void receiveChatMessage(String message) {}
+    public void onReceiveGuiMessage() {}
 
     protected void back() {
         if (parent != null) {

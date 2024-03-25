@@ -1,5 +1,9 @@
 package de.legoshi.lccore.util;
 
+import de.legoshi.lccore.database.models.Tag;
+import de.legoshi.lccore.tag.TagDTO;
+import de.legoshi.lccore.tag.TagRarity;
+import de.legoshi.lccore.tag.TagType;
 import de.themoep.inventorygui.GuiElement;
 import de.themoep.inventorygui.GuiStateElement;
 import de.themoep.inventorygui.StaticGuiElement;
@@ -47,30 +51,31 @@ public interface GUIUtil {
         return options.toArray(new GuiStateElement.State[0]);
     }
 
-//    static GUIDescriptionBuilder getTagBaseDisplayBuilder(Tag tag) {
-//        return getTagBaseDisplayBuilder(tag, false);
-//    }
-//
-//    static GUIDescriptionBuilder getTagBaseDisplayBuilder(Tag tag, boolean hideDesc) {
-//        int tagId = tag.getId();
-//        String name = colorize(tag.getName());
-//        String finalName = "§r" + name + ChatColor.WHITE + " (" + tagId + ")";
-//        String desc = tag.getDescription() != null && !tag.getDescription().isEmpty() ? tag.getDescription() : "N/A";
-//        TagRarity rarity = tag.getRarity();
-//        TagType type = tag.getType();
-//
+    static GUIDescriptionBuilder getTagBaseDisplayBuilder(Tag tag) {
+        return getTagBaseDisplayBuilder(tag, false);
+    }
+
+    static GUIDescriptionBuilder getTagBaseDisplayBuilder(Tag tag, boolean hideDesc) {
+        String tagId = tag.getId();
+        String name = colorize(tag.getDisplay());
+        String finalName = "§r" + name; //+ //ChatColor.WHITE + " (" + tagId + ")";
+        //String desc = tag.getDescription() != null && !tag.getDescription().isEmpty() ? tag.getDescription() : "N/A";
+        TagRarity rarity = tag.getRarity();
+        TagType type = tag.getType();
+
 //        if(hideDesc) {
 //            desc = ChatColor.MAGIC + desc;
 //        }
 //        desc = ChatColor.GRAY + desc;
-//
-//        return new GUIDescriptionBuilder()
-//                .raw(finalName)
-//                .header("Tag Info")
-//                .pair("Type", TagType.toColor(type) + type.name)
-//                .pair("Rarity", rarity.color + rarity.name)
-//                .pair("Description", GUIUtil.wrap(desc, 17, 30));
-//    }
+
+        return new GUIDescriptionBuilder()
+                .raw(finalName)
+                .header("Tag Info")
+                .pair("Type", TagType.toColor(type) + type.name)
+                .pair("Rarity", rarity.color + rarity.name)
+                .pair("Identifier", tag.getId());
+                //.pair("Description", GUIUtil.wrap(desc, 17, 30));
+    }
 
 //    static GUIDescriptionBuilder getTagBaseWithExampleBuilder(Tag tag, String example) {
 //        return getTagBaseDisplayBuilder(tag)
@@ -79,19 +84,19 @@ public interface GUIUtil {
 //                .blank();
 //    }
 //
-//    static GUIDescriptionBuilder getFullTagDisplayBuilder(TagDTO tagData, String example, boolean owned) {
-//        String date = tagData.getUnlocked() != null ? GUIUtil.ISOString(tagData.getUnlocked()) : "Not collected";
-//        String plural = tagData.getOwnedCount() == 1 ? "player" : "players";
-//
-//        return getTagBaseDisplayBuilder(tagData.getTag(), !owned)
-//                .blank()
-//                .header("Tag Stats")
-//                .pair("Collected", date)
-//                .pair("Owned by", GUIUtil.getTagColour(tagData.getOwnedCount()) + "" + tagData.getOwnedCount() + " " + plural)
-//                .blank()
-//                .raw(example)
-//                .blank();
-//    }
+    static GUIDescriptionBuilder getFullTagDisplayBuilder(TagDTO tagData, String example, boolean owned) {
+        String date = tagData.getUnlocked() != null ? !tagData.getUnlocked().equals(new Date(1970, 1, 1)) ? GUIUtil.ISOString(tagData.getUnlocked()) : "N/A" : "Not collected";
+        String plural = tagData.getOwnedCount() == 1 ? "player" : "players";
+
+        return getTagBaseDisplayBuilder(tagData.getTag(), !owned)
+                .blank()
+                .header("Tag Stats")
+                .pair("Collected", date)
+                .pair("Owned by", GUIUtil.getTagColour(tagData.getOwnedCount()) + "" + tagData.getOwnedCount() + " " + plural)
+                .blank()
+                .raw(example)
+                .blank();
+    }
 
     static String[] getDescription(String name, int position, List<String> options, String... after) {
         List<String> result = new ArrayList<>();
@@ -159,6 +164,10 @@ public interface GUIUtil {
 
     // I'm sure there is a much better word wrapping implementation..
     static String wrap(String desc, int start, int increment) {
+        if(desc == null) {
+            return null;
+        }
+
         if (desc.length() > start) {
             StringBuilder sb = new StringBuilder(desc);
             for (int i = start; i < desc.length(); i += increment) {
@@ -170,6 +179,10 @@ public interface GUIUtil {
             desc = sb.toString();
         }
         return desc;
+    }
+
+    static String wrap(String desc) {
+        return wrap(desc, 50, 50);
     }
 
     static String getStarColour(int stars) {

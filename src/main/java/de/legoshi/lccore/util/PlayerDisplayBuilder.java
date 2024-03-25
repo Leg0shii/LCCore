@@ -1,5 +1,6 @@
 package de.legoshi.lccore.util;
 
+import de.legoshi.lccore.database.models.Tag;
 import de.legoshi.lccore.manager.ChatManager;
 import de.legoshi.lccore.manager.PlayerManager;
 import de.legoshi.lccore.player.chat.ChatChannel;
@@ -51,7 +52,8 @@ public class PlayerDisplayBuilder {
     }
 
     public void init() {
-        this.tag = player != null ? DeluxeTag.getPlayerDisplayTag(player) : DeluxeTag.getPlayerDisplayTag(playerId);
+        Tag tag = player != null ? playerManager.getPlayerPrefs(player.getUniqueId().toString()).getTag() : playerManager.getPlayerPrefs(playerId).getTag();
+        this.tag = tag != null ? tag.getDisplay() : "";
         this.rankDTO = lcPlayer.getRank();
         this.bonusDTO = lcPlayer.getBonus();
         this.starDTO = lcPlayer.getStar();

@@ -1,6 +1,9 @@
 package de.legoshi.lccore.manager;
 
 import de.legoshi.lccore.Linkcraft;
+import de.legoshi.lccore.database.DBManager;
+import de.legoshi.lccore.database.models.LCPlayerDB;
+import de.legoshi.lccore.database.models.PlayerPreferences;
 import de.legoshi.lccore.player.display.LCPlayer;
 import de.legoshi.lccore.util.ConfigAccessor;
 import de.legoshi.lccore.util.Utils;
@@ -23,16 +26,34 @@ import java.util.List;
 public class PlayerManager {
     @Inject private ChatManager chatManager;
     @Inject private VisibilityManager visibilityManager;
+    @Inject private DBManager db;
 
     private final HashMap<String, LCPlayer> players = new HashMap<>();
 
     public void playerJoin(Player player) {
+        initDbData(player);
         updateName(player);
         players.put(player.getUniqueId().toString(), loadPlayer(player));
         player.setDisplayName(chatManager.rankNickStar(player));
         visibilityManager.hideIfHiding(player);
         chatManager.onJoin(player);
         clearTitle(player);
+    }
+
+    private void initDbData(Player player) {
+        LCPlayerDB lcPlayerDB = getPlayerDB(player);
+        if(lcPlayerDB == null) {
+            db.persist(new LCPlayerDB(player.getUniqueId().toString(), player.getName()));
+        }
+
+        PlayerPreferences prefs = getPlayerPrefs(player);
+        if(prefs == null) {
+            db.persist(new PlayerPreferences(player));
+        }
+    }
+
+    public LCPlayerDB getPlayerDB(Player player) {
+        return db.find(player.getUniqueId().toString(), LCPlayerDB.class);
     }
 
     public void playerLeave(Player player) {
@@ -70,6 +91,18 @@ public class PlayerManager {
         return lcPlayer;
     }
 
+    public PlayerPreferences getPlayerPrefs(Player player) {
+        return getPlayerPrefs(player.getUniqueId().toString());
+    }
+
+    public PlayerPreferences getPlayerPrefs(String player) {
+        return db.find(player, PlayerPreferences.class);
+    }
+
+    public boolean isStaff(Player player) {
+        return getPlayer(player).getStaff() != null;
+    }
+
     public void clearTitle(Player player) {
         PacketPlayOutTitle title = new PacketPlayOutTitle(PacketPlayOutTitle.EnumTitleAction.TITLE, new ChatMessage(""));
         PacketPlayOutTitle subtitle = new PacketPlayOutTitle(PacketPlayOutTitle.EnumTitleAction.SUBTITLE, new ChatMessage(""));
@@ -79,10 +112,19 @@ public class PlayerManager {
     }
 
     private void updateName(Player player) {
+        updateNameDB(player);
         ConfigAccessor playerData = new ConfigAccessor(Linkcraft.getPlugin(), Linkcraft.getPlugin().getPlayerdataFolder(), player.getUniqueId().toString() + ".yml");
         FileConfiguration config = playerData.getConfig();
         config.set("username", player.getName());
         playerData.saveConfig();
+    }
+
+    private void updateNameDB(Player player) {
+        LCPlayerDB lcPlayerDB = getPlayerDB(player);
+        if(!lcPlayerDB.getName().equals(player.getName())) {
+            lcPlayerDB.setName(player.getName());
+            db.update(lcPlayerDB);
+        }
     }
 
     public void updateNick(Player player, String nick) {

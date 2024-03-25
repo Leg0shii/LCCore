@@ -1,7 +1,7 @@
 package de.legoshi.lccore.command.maps;
 
 import de.legoshi.lccore.manager.MapManager;
-import de.legoshi.lccore.menu.LCMap;
+import de.legoshi.lccore.menu.maps.LCMap;
 import de.legoshi.lccore.util.ConfigAccessor;
 import de.legoshi.lccore.util.Utils;
 import org.bukkit.BanList;

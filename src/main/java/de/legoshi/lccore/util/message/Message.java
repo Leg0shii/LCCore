@@ -31,7 +31,6 @@ public enum Message {
     COMMAND_LIST_PAGE_FOOTER("§0§m--------------------------------", MessageType.PLAYER),
     PLAYER_JOIN("§8§l§m--* * *--§r §b§l{0} §3Has joined §8§l§m--* * *--", MessageType.PLAYER),
     PLAYER_LEAVE("§8§l§m--* * *--§r §4§l{0} §cHas left §8§l§m--* * *--", MessageType.PLAYER),
-    CAPTURE_MESSAGE("§aType a message in chat to set the {0}", MessageType.PLAYER),
     JOIN_CHANNEL("§aYou are now in the §6{0}§a channel", MessageType.PLAYER),
     OPEN_DIRECT_CHANNEL("§aOpened a chat conversation with §r{0}§a. You can use §b/chat a §ato leave", MessageType.PLAYER),
     PARTY_INVITED("{0}§r§e invited {1}§r§e to the party! They have §c60§e seconds to accept.", MessageType.PLAYER),
@@ -49,6 +48,7 @@ public enum Message {
     CHAT_TOGGLED_ON("§aGlobal chat is no longer toggled off for you!", MessageType.PLAYER),
     SET_STAR("§aYour star has been set to: §r{0}", MessageType.PLAYER),
     UNSET_STAR("§aYour star has been unset!", MessageType.PLAYER),
+    CAPTURE_MSG("§aYour next message in chat will be captured!", MessageType.PLAYER),
 
     // Player Error
     USAGE("§cUsage: /{0} {1}", MessageType.PLAYER_ERROR),
@@ -133,6 +133,33 @@ public enum Message {
     NICK_OFF("§aYou no longer have a nickname.", MessageType.NICKNAME),
     NICK_CHANGE_OTHER("§aNickname changed.", MessageType.NICKNAME),
     NICK_REALNAME("{0} §6is§r {1}", MessageType.NICKNAME),
+
+    // Tag
+    TAGS_DELETE_TAG("§aSuccessfully deleted tag: §r{0} §r({1}/{2})", MessageType.TAGS),
+    TAGS_ADD_SUCCESS("§aSuccessfully added tag §r({0}/{1})§a: §r{2}", MessageType.TAGS),
+    TAGS_SELECT("§aYour tag has been set to: §r{0}", MessageType.TAGS),
+
+    // Tag Errors
+    TAGS_INVALID_RARITY("§cInvalid tag rarity!", MessageType.TAGS_ERROR),
+    TAGS_INVALID_TYPE("§cInvalid tag type!", MessageType.TAGS_ERROR),
+    TAGS_REMOVE_ERROR("§cError when deleting tag.", MessageType.TAGS_ERROR),
+    TAGS_HASNT_UNLOCKED("§cPlayer does not have a tag with the id {0}", MessageType.TAGS_ERROR),
+    TAGS_HASNT_UNLOCKED_SELF("§cYou do not own the tag: {0}", MessageType.TAGS_ERROR),
+    TAGS_HAS_TAG("§c{0} already has the tag with id {1}.", MessageType.TAGS_ERROR),
+    TAGS_ALREADY_HAVE("§cYou already have the tag: {0}", MessageType.TAGS_ERROR),
+    TAGS_HAS_TAG_SET("§cYou already have that tag selected!", MessageType.TAGS_ERROR),
+    TAGS_NOT_UNLOCKED("§cYou have not unlocked §r{0}", MessageType.TAGS_ERROR),
+    TAGS_REMOVE_TAG_ERROR("§cCouldn't remove {0}'s tag: §r{1}", MessageType.TAGS_ERROR),
+    TAGS_SELECT_OTHER_ERROR("§c{0}'s tag couldn't be set to: §r{1}", MessageType.TAGS_ERROR),
+    TAGS_UNSET_TAG_ERROR("§cYour tag couldn't be unset", MessageType.TAGS_ERROR),
+    TAGS_UNSET_NONE("§cYou have no tag equipped!", MessageType.TAGS_ERROR),
+    TAGS_ADD_ERROR("§cCouldn't add tag.", MessageType.TAGS_ERROR),
+    TAGS_NO_TAG("§cThe tag with id or name {0} doesn't exist.", MessageType.TAGS_ERROR),
+    TAGS_MUST_BE_SIGN("§cYou must look at a sign to create a tag sign!", MessageType.TAGS_ERROR),
+    TAGS_CANT_BE_IN_PRAC("§cYou cant unlock tags in practice mode!", MessageType.TAGS_ERROR),
+    TAGS_ALREADY_EXISTS("§cThere is already a tag with the name: {0}", MessageType.TAGS_ERROR),
+    TAGS_MUST_HAVE_NAME("§cThe tag must have a name set!", MessageType.TAGS_ERROR),
+    TAGS_MUST_HAVE_DISPLAY("§cThe tag must have a display set!", MessageType.TAGS_ERROR),
 
     FILLER("", MessageType.SYSTEM);
 

@@ -1,8 +1,12 @@
 package de.legoshi.lccore.manager;
 
+import de.legoshi.lccore.Linkcraft;
+import de.legoshi.lccore.database.models.Tag;
+import de.legoshi.lccore.menu.GuiMessage;
 import de.legoshi.lccore.player.chat.ChatChannel;
 import de.legoshi.lccore.player.display.*;
 import de.legoshi.lccore.util.ColorHelper;
+import de.legoshi.lccore.util.LCSound;
 import de.legoshi.lccore.util.PlayerDisplayBuilder;
 import de.legoshi.lccore.util.Utils;
 import de.legoshi.lccore.util.message.Message;
@@ -33,6 +37,8 @@ public class ChatManager {
     private final Map<String, String> directChannels = new HashMap<>();
     private final Map<String, Function<Player, String>> papiMap = new HashMap<>();
     private final Map<String, List<String>> ignores = new HashMap<>();
+    private final Map<String, GuiMessage> captureGuiMessages = new HashMap<>();
+
 
     public void initPapiMap() {
         papiMap.put("rank", this::rank);
@@ -202,6 +208,11 @@ public class ChatManager {
     }
 
     public void sendMessageToCurrentChannel(Player player, String message) {
+        if(isNextMessageGuiMessage(player)) {
+            sendMessageToGui(player, message);
+            return;
+        }
+
         switch (getChannel(player)) {
             case GLOBAL:
                 sendGlobalMessage(player, message);
@@ -308,6 +319,11 @@ public class ChatManager {
     public String directChatFrom(Player sender, String message) {
         PlayerDisplayBuilder builder = injector.getInstance(PlayerDisplayBuilder.class);
         return builder.setPlayer(sender).rank().nick().star().from().arrow(ChatColor.YELLOW).messageColoured(message, ChatColor.YELLOW).build();
+    }
+
+    public String globalChatTagExample(Player player, String message, Tag tag) {
+        PlayerDisplayBuilder builder = injector.getInstance(PlayerDisplayBuilder.class);
+        return builder.setPlayer(player).setTag(tag.getDisplay()).tag().bonus().wolf().rank().nick().star().arrow().message(message).build();
     }
 
     public void sendGlobalMessage(Player player, String message) {
@@ -526,5 +542,40 @@ public class ChatManager {
             }
         }
         return sb.toString();
+    }
+
+    public boolean isNextMessageGuiMessage(Player player) {
+        return captureGuiMessages.get(player.getUniqueId().toString()) != null;
+    }
+
+    public void listenForGuiMessage(Player player, GuiMessage message, int delay) {
+        MessageUtil.send(Message.CAPTURE_MSG, player);
+        captureGuiMessages.put(player.getUniqueId().toString(), message);
+        removeGuiMessageListenerAfterDelay(player, delay);
+    }
+
+    public void listenForGuiMessage(Player player, GuiMessage message) {
+        listenForGuiMessage(player, message, 60);
+    }
+
+    public void sendMessageToGui(Player player, String string) {
+        GuiMessage gui = captureGuiMessages.get(player.getUniqueId().toString());
+        if(gui != null) {
+            LCSound.SUCCESS.playLater(player);
+            gui.getGui().onReceiveGuiMessage();
+            gui.getCallback().accept(string);
+        }
+        captureGuiMessages.remove(player.getUniqueId().toString());
+    }
+
+    public void removeGuiMessageListenerAfterDelay(Player player, int seconds) {
+        Bukkit.getScheduler().runTaskLater(Linkcraft.getPlugin(), () -> {
+            if(isNextMessageGuiMessage(player)) {
+                captureGuiMessages.remove(player.getUniqueId().toString());
+                if (player.isOnline()) {
+                    MessageUtil.send(Message.CAPTURE_TIMED_OUT, player);
+                }
+            }
+        }, seconds * 20L);
     }
 }

@@ -113,6 +113,10 @@
             <name>m2-dv8tion</name>
             <url>https://m2.dv8tion.net/releases</url>
         </repository>
+        <repository>
+            <id>codemc-snapshots</id>
+            <url>https://repo.codemc.io/repository/maven-snapshots/</url>
+        </repository>
     </repositories>
 
     <dependencies>
@@ -260,6 +264,11 @@
             <artifactId>discordsrv</artifactId>
             <version>1.26.0</version>
             <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>net.wesjd</groupId>
+            <artifactId>anvilgui</artifactId>
+            <version>1.6.3-SNAPSHOT</version>
         </dependency>
     </dependencies>
 </project>

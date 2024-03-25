@@ -25,14 +25,17 @@ public abstract class GUIScrollable extends GUIPane {
     private void registerPageElements() {
         this.page = 0;
         this.pageLeft = new StaticGuiElement('l', new ItemStack(Material.ARROW, page + 1), (click -> {
-            if(page > 0) {
-                page--;
-                pageRight.setNumber(page + 2);
-                pageLeft.setNumber(page + 1);
-                getPage();
-                click.getGui().setPageNumber(click.getGui().getPageNumber(holder));
-                click.getGui().playClickSound();
+            if(click.getType().isLeftClick()) {
+                if(page > 0) {
+                    page--;
+                    pageRight.setNumber(page + 2);
+                    pageLeft.setNumber(page + 1);
+                    getPage();
+                    click.getGui().setPageNumber(click.getGui().getPageNumber(holder));
+                    click.getGui().playClickSound();
+                }
             }
+
             return true;
         }), "Previous Page");
 

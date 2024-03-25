@@ -1,7 +1,7 @@
 package de.legoshi.lccore.command.maps;
 
 import de.legoshi.lccore.Linkcraft;
-import de.legoshi.lccore.menu.SideCoursesMenuOther;
+import de.legoshi.lccore.menu.maps.SideCoursesMenuOther;
 import de.legoshi.lccore.util.Utils;
 import fr.minuskube.inv.SmartInventory;
 import org.bukkit.Bukkit;

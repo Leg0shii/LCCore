@@ -2,7 +2,7 @@ package de.legoshi.lccore.util;
 
 import de.legoshi.lccore.Linkcraft;
 import de.legoshi.lccore.manager.MapManager;
-import de.legoshi.lccore.menu.LCMap;
+import de.legoshi.lccore.menu.maps.LCMap;
 import org.yaml.snakeyaml.Yaml;
 
 import java.io.File;

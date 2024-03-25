@@ -1,6 +1,6 @@
 package de.legoshi.lccore.command.maps;
 
-import de.legoshi.lccore.menu.MapsMenu;
+import de.legoshi.lccore.menu.maps.MapsMenu;
 import de.legoshi.lccore.util.Utils;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;

@@ -33,6 +33,7 @@ public class LinkcraftModule extends AbstractModule {
         bind(PlayerManager.class).singleton();
         bind(ChatManager.class).singleton();
         bind(PartyManager.class).singleton();
+        bind(TagManager.class).singleton();
 
         // Listeners
         bind(GeneralListener.class).singleton();
