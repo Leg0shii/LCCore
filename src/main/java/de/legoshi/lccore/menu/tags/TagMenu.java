@@ -1,8 +1,10 @@
 package de.legoshi.lccore.menu.tags;
 
 import de.legoshi.lccore.Linkcraft;
+import de.legoshi.lccore.database.models.Tag;
 import de.legoshi.lccore.manager.TagManager;
 import de.legoshi.lccore.menu.GUIPane;
+import de.legoshi.lccore.tag.TagMenuData;
 import de.legoshi.lccore.tag.TagType;
 import de.legoshi.lccore.util.Dye;
 import de.legoshi.lccore.util.HeadUtil;
@@ -14,11 +16,11 @@ import de.themoep.inventorygui.StaticGuiElement;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.plugin.java.JavaPlugin;
 import team.unnamed.inject.Inject;
 import team.unnamed.inject.Injector;
 
 import java.util.HashMap;
+import java.util.List;
 
 public class TagMenu extends GUIPane {
 
@@ -26,6 +28,7 @@ public class TagMenu extends GUIPane {
     @Inject private TagManager tagManager;
     private HashMap<TagType, Integer> tagCount;
     private HashMap<TagType, Integer> playerTagCount;
+    private TagMenuData tagMenuData;
     private int tagCountTotal;
     private int playerTagCountTotal;
 
@@ -43,6 +46,7 @@ public class TagMenu extends GUIPane {
         super.openGui(player, parent);
         this.tagCount = tagManager.tagCounts();
         this.playerTagCount = tagManager.tagCountPlayer(player);
+        this.tagMenuData = tagManager.getTagMenuData(player);
         this.tagCountTotal = tagCount.values().stream().mapToInt(Integer::intValue).sum();
         this.playerTagCountTotal = playerTagCount.values().stream().mapToInt(Integer::intValue).sum();
 
@@ -58,22 +62,22 @@ public class TagMenu extends GUIPane {
     @Override
     protected void registerGuiElements() {
         StaticGuiElement hiddenElement = new StaticGuiElement('v', HeadUtil.hiddenHead, click -> {
-            injector.getInstance(TagHolder.class).openGui(this.holder, this.current, TagType.HIDDEN, playerTagCount.get(TagType.HIDDEN));
+            injector.getInstance(TagHolder.class).openGui(this.holder, this.current, TagType.HIDDEN, playerTagCount.get(TagType.HIDDEN), tagMenuData);
             return true;
         }, "&d&lHidden Tags" + getMenuTitle(TagType.HIDDEN));
 
         StaticGuiElement victorElement = new StaticGuiElement('w', HeadUtil.victorHead, click -> {
-            injector.getInstance(TagHolder.class).openGui(this.holder, this.current, TagType.VICTOR, playerTagCount.get(TagType.VICTOR));
+            injector.getInstance(TagHolder.class).openGui(this.holder, this.current, TagType.VICTOR, playerTagCount.get(TagType.VICTOR), tagMenuData);
             return true;
         }, "&6&lVictor Tags" + getMenuTitle(TagType.VICTOR));
 
         StaticGuiElement eventElement = new StaticGuiElement('x', HeadUtil.getSeasonalHead(), click -> {
-            injector.getInstance(TagHolder.class).openGui(this.holder, this.current, TagType.EVENT, playerTagCount.get(TagType.EVENT));
+            injector.getInstance(TagHolder.class).openGui(this.holder, this.current, TagType.EVENT, playerTagCount.get(TagType.EVENT), tagMenuData);
             return true;
         }, "&c&lEvent Tags" + getMenuTitle(TagType.EVENT));
 
         StaticGuiElement specialElement = new StaticGuiElement('y', HeadUtil.specialHead, click -> {
-            injector.getInstance(TagHolder.class).openGui(this.holder, this.current, TagType.SPECIAL, playerTagCount.get(TagType.SPECIAL));
+            injector.getInstance(TagHolder.class).openGui(this.holder, this.current, TagType.SPECIAL, playerTagCount.get(TagType.SPECIAL), tagMenuData);
             return true;
         }, "&3&lSpecial Tags" + getMenuTitle(TagType.SPECIAL));
 
@@ -84,7 +88,7 @@ public class TagMenu extends GUIPane {
         }
 
         StaticGuiElement allElement = new StaticGuiElement('z', allTagsItem, click -> {
-            injector.getInstance(TagHolder.class).openGui(this.holder, this.current, null, playerTagCountTotal);
+            injector.getInstance(TagHolder.class).openGui(this.holder, this.current, null, playerTagCountTotal, tagMenuData);
             return true;
         }, "&7&lAll Tags" + " (" + playerTagCountTotal + "/" + tagCountTotal + ")");
 

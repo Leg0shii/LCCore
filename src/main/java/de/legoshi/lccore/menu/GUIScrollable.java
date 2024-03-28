@@ -1,5 +1,7 @@
 package de.legoshi.lccore.menu;
 
+import de.legoshi.lccore.util.GUIAction;
+import de.legoshi.lccore.util.GUIDescriptionBuilder;
 import de.themoep.inventorygui.GuiElement;
 import de.themoep.inventorygui.GuiElementGroup;
 import de.themoep.inventorygui.InventoryGui;
@@ -14,44 +16,58 @@ public abstract class GUIScrollable extends GUIPane {
     protected StaticGuiElement pageRight;
     protected int page = 0;
     protected int pageVolume = 0;
+    protected int maxPages = 0;
 
     public void openGui(Player player, InventoryGui parent) {
         super.openGui(player, parent);
         registerPageElements();
     }
 
-    protected abstract boolean getPage();
+    protected boolean isPageEmpty() {
+        return maxPages + 1 == 0;
+    }
+
+    protected abstract void getPage();
+
+    private StaticGuiElement createPageElement(char slot, String display, int increment) {
+        ItemStack arrowItem = new ItemStack(Material.ARROW, page + 1 + increment);
+        GUIDescriptionBuilder descriptionBuilder = new GUIDescriptionBuilder()
+                .raw(display)
+                .action(GUIAction.LEFT_CLICK, "1 Page")
+                .action(GUIAction.SHIFT_LEFT_CLICK, "5 Pages");
+
+        return new StaticGuiElement(slot, arrowItem, click -> {
+            int newPage;
+//            if(increment == 1 && page == maxPages) {
+//                return true;
+//            }
+//
+//            if(increment == -1 && page == 0) {
+//                return true;
+//            }
+
+            if (click.getType().isShiftClick()) {
+                newPage = Math.max(Math.min(page + (5 * increment), maxPages), 0);
+            } else {
+                newPage = Math.max(Math.min(page + increment, maxPages), 0);
+            }
+
+            if (newPage != page) {
+                page = newPage;
+                getPage();
+                pageRight.setNumber(page + 2);
+                pageLeft.setNumber(page + 1);
+                click.getGui().setPageNumber(page);
+                click.getGui().playClickSound();
+            }
+            return true;
+        }, descriptionBuilder.build());
+    }
 
     private void registerPageElements() {
         this.page = 0;
-        this.pageLeft = new StaticGuiElement('l', new ItemStack(Material.ARROW, page + 1), (click -> {
-            if(click.getType().isLeftClick()) {
-                if(page > 0) {
-                    page--;
-                    pageRight.setNumber(page + 2);
-                    pageLeft.setNumber(page + 1);
-                    getPage();
-                    click.getGui().setPageNumber(click.getGui().getPageNumber(holder));
-                    click.getGui().playClickSound();
-                }
-            }
-
-            return true;
-        }), "Previous Page");
-
-        this.pageRight = new StaticGuiElement('r', new ItemStack(Material.ARROW, page + 2), (click -> {
-            page++;
-            if(getPage()) {
-                pageRight.setNumber(page + 2);
-                pageLeft.setNumber(page + 1);
-                click.getGui().setPageNumber(click.getGui().getPageNumber(holder) + 2);
-                click.getGui().playClickSound();
-                click.getGui().setPageNumber(page);
-            } else {
-                page--;
-            }
-            return true;
-        }), "Next Page");
+        this.pageLeft = createPageElement('l', "Previous Page", -1);
+        this.pageRight = createPageElement('r', "Next Page", 1);
     }
 
     protected void noDataItem(char slot, String title) {

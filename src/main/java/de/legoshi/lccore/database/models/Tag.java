@@ -3,6 +3,7 @@ package de.legoshi.lccore.database.models;
 import de.legoshi.lccore.database.Identifiable;
 import de.legoshi.lccore.tag.TagRarity;
 import de.legoshi.lccore.tag.TagType;
+import de.legoshi.lccore.util.GUIUtil;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -49,6 +50,14 @@ public class Tag implements Identifiable<String> {
 
     public Tag(String id) {
         this.name = id;
+    }
+
+    public String getDisplay() {
+        return GUIUtil.colorize(display);
+    }
+
+    public String getDisplayRaw() {
+        return display;
     }
 
     public String getId() {

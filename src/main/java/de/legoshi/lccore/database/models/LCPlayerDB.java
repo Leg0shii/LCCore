@@ -1,8 +1,10 @@
 package de.legoshi.lccore.database.models;
 
+import de.legoshi.lccore.database.Identifiable;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.bukkit.entity.Player;
 
 import javax.persistence.*;
 
@@ -12,7 +14,7 @@ import javax.persistence.*;
 @Entity
 @Table(name = "lc_players")
 @Cacheable
-public class LCPlayerDB {
+public class LCPlayerDB implements Identifiable<String> {
     @Id
     @Column(name = "id", length = 36)
     private String id;
@@ -28,5 +30,9 @@ public class LCPlayerDB {
     public LCPlayerDB(String uuid) {
         this.id = uuid;
         this.name = "";
+    }
+
+    public LCPlayerDB(Player player) {
+        this(player.getUniqueId().toString(), player.getName());
     }
 }

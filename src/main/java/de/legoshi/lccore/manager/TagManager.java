@@ -6,10 +6,7 @@ import de.legoshi.lccore.database.models.PlayerPreferences;
 import de.legoshi.lccore.database.models.PlayerTag;
 import de.legoshi.lccore.database.models.Tag;
 import de.legoshi.lccore.menu.tags.TagHolder;
-import de.legoshi.lccore.player.display.LCPlayer;
-import de.legoshi.lccore.tag.TagDTO;
-import de.legoshi.lccore.tag.TagRarity;
-import de.legoshi.lccore.tag.TagType;
+import de.legoshi.lccore.tag.*;
 import de.legoshi.lccore.util.CommandException;
 import de.legoshi.lccore.util.CommonUtil;
 import de.legoshi.lccore.util.message.Message;
@@ -65,6 +62,16 @@ public class TagManager {
         PlayerPreferences prefs = playerManager.getPlayerPrefs(player);
         prefs.setTag(null);
         db.update(prefs);
+    }
+
+    public void unsetIfCurrent(PlayerPreferences prefs, String tag) {
+        if(prefs != null) {
+            Tag tagObj = prefs.getTag();
+            if(tagObj != null && tagObj.getId().equals(tag)) {
+                prefs.setTag(null);
+                db.update(prefs);
+            }
+        }
     }
 
     public boolean hasTagSelected(Player player) {
@@ -130,14 +137,6 @@ public class TagManager {
         }
     }
 
-//    public Tag tagById(String id) {
-//        try {
-//            return tagById(Integer.parseInt(id));
-//        } catch (NumberFormatException e) {
-//            return null;
-//        }
-//    }
-
     public void setTag(Player player, String tagId) throws CommandException {
         PlayerPreferences prefs = playerManager.getPlayerPrefs(player);
         if(prefs.getTag() != null && prefs.getTag().getId().equals(tagId)) {
@@ -157,7 +156,7 @@ public class TagManager {
         EntityManager em = db.getEntityManager();
         String hql = "FROM PlayerTag p WHERE p.player = :player AND p.tag = :tag";
         TypedQuery<PlayerTag> query = em.createQuery(hql, PlayerTag.class);
-        query.setParameter("player", uuid);
+        query.setParameter("player", new LCPlayerDB(uuid));
         query.setParameter("tag", new Tag(tagId));
         query.setMaxResults(1);
         return db.hasResult(query);
@@ -207,94 +206,109 @@ public class TagManager {
         return counts;
     }
 
-    public HashMap<Integer, Integer> getTagCountsCache() {
-        String hql = "SELECT t.id, COUNT(pt.tag) FROM Tag t " +
-                "LEFT JOIN PlayerTag pt ON pt.tag = t.id " +
-                "GROUP BY t.id";
+    public HashMap<String, Long> getOwnerCounts() {
+        String hql = "SELECT t.name, COUNT(pt.tag) FROM Tag t " +
+                "LEFT JOIN PlayerTag pt ON pt.tag = t.name " +
+                "GROUP BY t.name";
 
         EntityManager em = db.getEntityManager();
         TypedQuery<Object[]> query = em.createQuery(hql, Object[].class);
         List<Object[]> results = query.getResultList();
 
-        HashMap<Integer, Integer> tagCounts = new HashMap<>();
+        HashMap<String, Long> tagCounts = new HashMap<>();
         for (Object[] result : results) {
-            Integer tagId = (Integer) result[0];
+            String tagName = (String) result[0];
             Long count = (Long) result[1];
-            tagCounts.put(tagId, count.intValue());
+            if(count == null) {
+                count = 0L;
+            }
+            tagCounts.put(tagName, count);
         }
 
         return tagCounts;
     }
 
-    public List<TagDTO> getTags(Player player, TagType type, TagHolder.TagOwnershipFilter ownershipFilter, TagRarity rarityFilter, TagHolder.TagOrder tagOrder, int page, int pageVolume, boolean staff) {
+    public List<TagDTO> getOwnedTags(Player player, HashMap<String, Long> ownerCounts) {
+        String hql = "SELECT t, pt.unlocked FROM Tag t " +
+                "LEFT JOIN PlayerTag pt ON pt.tag = t.name " +
+                "WHERE pt.player = :player";
 
-        String hql = "SELECT t, pt.unlocked, COUNT(pt2) FROM Tag t " +
-                "LEFT JOIN PlayerTag pt ON pt.tag = t.id AND pt.player = :player " +
-                "LEFT JOIN PlayerTag pt2 ON pt2.tag = t.id " +
-                "WHERE (:ignoreType is null OR t.type = :type) " +
-                "AND (:ignoreRarity is null OR t.rarity = :rarity) " +
-                "{} " +
-                "AND (t.visible = true OR pt.unlocked IS NOT NULL OR :staff IS NOT NULL) " +
-                "GROUP BY t.id, pt.unlocked ";
-
-        switch (ownershipFilter) {
-            case COLLECTED:
-                hql = CommonUtil.format(hql, "{}", "AND pt.unlocked IS NOT NULL");
-                break;
-            case UNCOLLECTED:
-                hql = CommonUtil.format(hql, "{}", "AND pt.unlocked IS NULL");
-                break;
-            default:
-                hql = CommonUtil.format(hql, "{}", "");
-        }
-
-        switch(tagOrder) {
-            case OWNERSHIP:
-                hql += "ORDER BY pt.unlocked DESC, FIELD(t.rarity, " + CommonUtil.hqlOrderByEnum(TagRarity.class) + "), COUNT(pt2) DESC";
-                break;
-            case RARITY:
-                hql += "ORDER BY FIELD(t.rarity, " + CommonUtil.hqlOrderByEnum(TagRarity.class) + "), COUNT(pt2) ASC, pt.unlocked DESC";
-                break;
-            case OWNER_COUNT:
-                hql += "ORDER BY COUNT(pt2) DESC, FIELD(t.rarity, " + CommonUtil.hqlOrderByEnum(TagRarity.class) + "), pt.unlocked DESC";
-        }
-
+        List<TagDTO> ownedTags = new ArrayList<>();
         EntityManager em = db.getEntityManager();
         TypedQuery<Object[]> query = em.createQuery(hql, Object[].class);
-        query.setFirstResult(page * pageVolume);
-        query.setMaxResults(pageVolume);
-        query.setParameter("player", new LCPlayerDB(player.getUniqueId().toString()));
-        query.setParameter("type", type);
-        query.setParameter("rarity", rarityFilter);
-
-        // Hack to get "All" menu working without changing query string
-        if(type == null)
-            query.setParameter("ignoreType", null);
-        else
-            query.setParameter("ignoreType", 1);
-
-        // Same thing but for rarity filter
-        if(rarityFilter == null)
-            query.setParameter("ignoreRarity", null);
-        else
-            query.setParameter("ignoreRarity", 1);
-
-        // Shows 'NONE' and 'CUSTOM' regardless of ownership
-        if(staff) {
-            query.setParameter("staff", 1);
-        } else {
-            query.setParameter("staff", null);
-        }
-
-        List<TagDTO> tags = new ArrayList<>();
+        query.setParameter("player", new LCPlayerDB(player));
 
         for(Object[] o : query.getResultList()) {
-            tags.add(new TagDTO((Tag)o[0], (Date)o[1], (long)o[2]));
+            Tag tag = (Tag)o[0];
+            ownedTags.add(new TagDTO((Tag)o[0], (Date)o[1], ownerCounts.get(tag.getName())));
         }
 
         em.close();
+        return ownedTags;
+    }
 
-        return tags;
+    public List<TagDTO> getUnownedTags(Player player, HashMap<String, Long> ownerCounts) {
+        String hql = "SELECT t FROM Tag t " +
+                "LEFT JOIN PlayerTag pt " +
+                "ON pt.tag = t.name AND pt.player = :player " +
+                "WHERE pt.tag IS NULL";
+
+        EntityManager em = db.getEntityManager();
+        TypedQuery<Tag> query = em.createQuery(hql, Tag.class);
+        query.setParameter("player", new LCPlayerDB(player));
+
+        List<TagDTO> unownedTags = new ArrayList<>();
+        for(Tag t : query.getResultList()) {
+            unownedTags.add(new TagDTO(t, null, ownerCounts.get(t.getName())));
+        }
+
+
+        em.close();
+        return unownedTags;
+    }
+
+    public TagMenuData getTagMenuData(Player player) {
+        HashMap<String, Long> ownerCounts = getOwnerCounts();
+        return new TagMenuData(getOwnedTags(player, ownerCounts), getUnownedTags(player, ownerCounts));
+    }
+
+    public List<TagOwnedDTO> getTagLBData(String tagId) {
+        String hql = "SELECT pt.player.id, pt.unlocked FROM PlayerTag pt " +
+                "WHERE pt.tag = :tag " +
+                "ORDER BY pt.unlocked";
+
+        EntityManager em = db.getEntityManager();
+        TypedQuery<Object[]> query = em.createQuery(hql, Object[].class);
+        query.setParameter("tag", new Tag(tagId));
+
+        List<TagOwnedDTO> results = new ArrayList<>();
+        for(Object[] ownedTag : query.getResultList()) {
+            results.add(new TagOwnedDTO((String)ownedTag[0], (Date)ownedTag[1]));
+        }
+
+        em.close();
+        return results;
+    }
+
+    public void removeTagFrom(String uuid, String tag) throws CommandException {
+        if(!tagExists(tag)) {
+            throw new CommandException(Message.TAGS_NO_TAG, tag);
+        }
+        if(!hasTag(uuid, tag)) {
+            throw new CommandException(Message.TAGS_HASNT_UNLOCKED, tag);
+        }
+
+        PlayerPreferences prefs = playerManager.getPlayerPrefs(uuid);
+        unsetIfCurrent(prefs, tag);
+
+        EntityManager em = db.getEntityManager();
+        em.getTransaction().begin();
+        Query query = em.createQuery("DELETE FROM PlayerTag pt WHERE pt.tag = :tag AND pt.player = :player");
+        query.setParameter("tag", new Tag(tag));
+        query.setParameter("player", new LCPlayerDB(uuid));
+        query.executeUpdate();
+        em.getTransaction().commit();
+        em.close();
     }
 
     @SuppressWarnings("unused")

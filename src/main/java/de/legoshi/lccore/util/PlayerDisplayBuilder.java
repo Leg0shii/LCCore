@@ -113,7 +113,7 @@ public class PlayerDisplayBuilder {
         if(tag == null || tag.isEmpty()) {
             return this;
         }
-        components.add(new DisplayComponent(GUIUtil.colorize(tag)));
+        components.add(new DisplayComponent(tag));
         return this;
     }
 

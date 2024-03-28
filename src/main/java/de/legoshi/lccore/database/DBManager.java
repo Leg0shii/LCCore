@@ -71,12 +71,15 @@ public class DBManager {
     }
 
     @Transactional
-    public <T> T persist(Identifiable<T> entity) {
+    public <T> T persist(Identifiable<T> entity, Identifiable<?>... toMergeEntities) {
         EntityManager em = getEntityManager();
         EntityTransaction et = em.getTransaction();
 
         try {
             et.begin();
+            for(Identifiable<?> toMerge : toMergeEntities) {
+                em.merge(toMerge);
+            }
             em.persist(entity);
             et.commit();
         } catch (Exception e) {
@@ -87,6 +90,11 @@ public class DBManager {
         }
 
         return entity.getId();
+    }
+
+    @Transactional
+    public <T> T persist(Identifiable<T> entity) {
+        return persist(entity, new Identifiable<?>[0]);
     }
 
     // Must be a DataModel annotated with '@Entity' or an exception will be thrown

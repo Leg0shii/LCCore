@@ -60,9 +60,10 @@ public class TagCreate extends GUIPane {
         this.current.show(this.holder);
     }
 
-    public void openGui(Player player, InventoryGui parent, Tag tag) {
+    public GUIPane openGui(Player player, InventoryGui parent, Tag tag) {
         this.tag = tag;
         openGui(player, parent);
+        return this;
     }
 
     private void update() {
@@ -97,7 +98,7 @@ public class TagCreate extends GUIPane {
         StaticGuiElement tagSetDisplay = new StaticGuiElement('i', new ItemStack(Material.NAME_TAG), click -> true,
                 new GUIDescriptionBuilder()
                         .raw("Display")
-                        .pair("Display", GUIUtil.colorize(tag.getDisplay()))
+                        .pair("Display", tag.getDisplay())
                         .action(GUIAction.LEFT_CLICK, "Edit Display (Anvil)")
                         .action(GUIAction.RIGHT_CLICK, "Edit Display (Chat)")
                         .build());
@@ -121,7 +122,7 @@ public class TagCreate extends GUIPane {
                 })
                         .onClose(close -> current.show(holder))
                         .title("Tag Display")
-                        .itemLeft(ItemUtil.setItemText(new ItemStack(Material.PAPER), GUIUtil.colorize(tag.getDisplay())))
+                        .itemLeft(ItemUtil.setItemText(new ItemStack(Material.PAPER), tag.getDisplayRaw()))
                         .plugin(Linkcraft.getPlugin())
                         .open(holder);
             } else if(click.getType().isRightClick()) {
@@ -147,11 +148,19 @@ public class TagCreate extends GUIPane {
                                 .action(GUIAction.LEFT_CLICK, "Next")
                                 .build()));
 
+        if(tag.getType() != null) {
+            tagSetType.setState(tag.getType().name());
+        }
+
         GuiStateElement tagSetRarity = new GuiStateElement('r',
                 GUIUtil.createSelectionMenu(TagRarity.class, new ItemStack(Material.DIAMOND), "Rarity", tagRaritySetter, false,
                         new GUIDescriptionBuilder()
                                 .action(GUIAction.LEFT_CLICK, "Next")
                                 .build()));
+
+        if(tag.getRarity() != null) {
+            tagSetRarity.setState(tag.getRarity().name());
+        }
 
         GuiStateElement tagToggleObtainable = new GuiStateElement('o',
                 new GuiStateElement.State(
@@ -178,6 +187,8 @@ public class TagCreate extends GUIPane {
                 )
         );
 
+        tagToggleObtainable.setState(tag.isObtainable() ? "obtainable" : "unobtainable");
+
         GuiStateElement tagToggleVisibility = new GuiStateElement('v',
                 new GuiStateElement.State(
                         change -> {
@@ -202,6 +213,8 @@ public class TagCreate extends GUIPane {
                                 .build()
                 )
         );
+
+        tagToggleVisibility.setState(tag.isVisible() ? "visible" : "invisible");
 
 //        StaticGuiElement tagSetDescription = new StaticGuiElement('e', new ItemStack(Material.SIGN), click -> true,
 //                new GUIDescriptionBuilder()
@@ -259,7 +272,11 @@ public class TagCreate extends GUIPane {
                         .build());
 
         tagSetName.setAction(click -> {
-            if(click.getType().isLeftClick()) {
+            if(edit) {
+                MessageUtil.send(Message.TAGS_CANT_EDIT_NAME, holder);
+                LCSound.ERROR.playLater(holder);
+            }
+            else if(click.getType().isLeftClick()) {
                 new AnvilGUI.Builder().onComplete((completion) -> {
                             if(tagManager.tagExists(completion.getText())) {
                                 MessageUtil.send(Message.TAGS_ALREADY_EXISTS, holder, completion.getText());

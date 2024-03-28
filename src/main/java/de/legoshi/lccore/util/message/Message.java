@@ -138,6 +138,10 @@ public enum Message {
     TAGS_DELETE_TAG("§aSuccessfully deleted tag: §r{0} §r({1}/{2})", MessageType.TAGS),
     TAGS_ADD_SUCCESS("§aSuccessfully added tag §r({0}/{1})§a: §r{2}", MessageType.TAGS),
     TAGS_SELECT("§aYour tag has been set to: §r{0}", MessageType.TAGS),
+    TAGS_UNLOCKED_TAG("{0}§r unlocked, check out §6/tags§r!", MessageType.TAGS),
+    TAGS_GAVE_TAG("§aSuccessfully gave {0} tag: §r{1} §r({2})", MessageType.TAGS),
+    TAGS_SIGN_CREATED("§aTag sign for §r{0}§a created!", MessageType.TAGS),
+    TAGS_REMOVE_TAG("§aSuccessfully removed {0}'s tag: §r{1}", MessageType.TAGS),
 
     // Tag Errors
     TAGS_INVALID_RARITY("§cInvalid tag rarity!", MessageType.TAGS_ERROR),
@@ -147,6 +151,7 @@ public enum Message {
     TAGS_HASNT_UNLOCKED_SELF("§cYou do not own the tag: {0}", MessageType.TAGS_ERROR),
     TAGS_HAS_TAG("§c{0} already has the tag with id {1}.", MessageType.TAGS_ERROR),
     TAGS_ALREADY_HAVE("§cYou already have the tag: {0}", MessageType.TAGS_ERROR),
+    TAGS_ALREADY_HAVE_OTHER("§c{0} already has the tag: §r{1} §r({2})", MessageType.TAGS_ERROR),
     TAGS_HAS_TAG_SET("§cYou already have that tag selected!", MessageType.TAGS_ERROR),
     TAGS_NOT_UNLOCKED("§cYou have not unlocked §r{0}", MessageType.TAGS_ERROR),
     TAGS_REMOVE_TAG_ERROR("§cCouldn't remove {0}'s tag: §r{1}", MessageType.TAGS_ERROR),
@@ -160,6 +165,8 @@ public enum Message {
     TAGS_ALREADY_EXISTS("§cThere is already a tag with the name: {0}", MessageType.TAGS_ERROR),
     TAGS_MUST_HAVE_NAME("§cThe tag must have a name set!", MessageType.TAGS_ERROR),
     TAGS_MUST_HAVE_DISPLAY("§cThe tag must have a display set!", MessageType.TAGS_ERROR),
+    TAGS_CANT_EDIT_NAME("§cHi staff. To unfortunately to edit the name, tags need to be deleted and remade (DB primary key). I was too lazy to automate this niche feature. sorry -dk", MessageType.TAGS_ERROR),
+    TAGS_UNCOMMON_TAG_BLOCK("§cYou just made ({0}, {1}, {2}, {3}) a tag sign, did you mean to do that?", MessageType.TAGS_ERROR),
 
     FILLER("", MessageType.SYSTEM);
 

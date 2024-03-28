@@ -9,5 +9,9 @@ import java.util.Date;
 public class TagDTO {
     private final Tag tag;
     private final Date unlocked;
-    private final long ownedCount;
+    private final Long ownedCount;
+
+    public Long getOwnedCount() {
+        return ownedCount != null ? ownedCount : 0;
+    }
 }

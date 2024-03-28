@@ -1,6 +1,7 @@
 package de.legoshi.lccore.database.composite;
 
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.io.Serializable;
@@ -8,6 +9,7 @@ import java.util.Objects;
 
 @Getter
 @Setter
+@NoArgsConstructor
 public class PlayerTagId implements Serializable {
 
     private String player;

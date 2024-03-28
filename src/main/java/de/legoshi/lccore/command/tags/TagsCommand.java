@@ -21,7 +21,10 @@ import team.unnamed.inject.Injector;
 @SubCommandClasses({
     TagsCreateCommand.class,
     TagsEditCommand.class,
-    TagsDeleteCommand.class
+    TagsDeleteCommand.class,
+    TagsUnlockCommand.class,
+    TagsSignCommand.class,
+    TagsRemoveCommand.class
 })
 public class TagsCommand implements CommandClass {
 

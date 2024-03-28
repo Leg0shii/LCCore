@@ -6,8 +6,12 @@ import de.legoshi.lccore.manager.PlayerManager;
 import de.legoshi.lccore.manager.TagManager;
 import de.legoshi.lccore.menu.GUIScrollablePane;
 import de.legoshi.lccore.tag.TagDTO;
+import de.legoshi.lccore.tag.TagMenuData;
 import de.legoshi.lccore.tag.TagRarity;
 import de.legoshi.lccore.tag.TagType;
+import de.legoshi.lccore.tag.comparators.TagOwnerCountComparator;
+import de.legoshi.lccore.tag.comparators.TagOwnershipComparator;
+import de.legoshi.lccore.tag.comparators.TagRarityComparator;
 import de.legoshi.lccore.util.*;
 import de.legoshi.lccore.util.message.Message;
 import de.legoshi.lccore.util.message.MessageUtil;
@@ -15,13 +19,12 @@ import de.themoep.inventorygui.*;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.plugin.java.JavaPlugin;
 import team.unnamed.inject.Inject;
 import team.unnamed.inject.Injector;
 
-import java.util.HashMap;
-import java.util.List;
+import java.util.*;
 import java.util.function.BiConsumer;
+import java.util.stream.Collectors;
 
 public class TagHolder extends GUIScrollablePane {
     @Inject private Injector injector;
@@ -32,14 +35,14 @@ public class TagHolder extends GUIScrollablePane {
     public enum TagOwnershipFilter { ALL, COLLECTED, UNCOLLECTED }
     public enum TagOrder { OWNERSHIP, RARITY, OWNER_COUNT }
 
-    //private TagLeaderboard tagLeaderboard;
-
     private TagOwnershipFilter ownershipFilter = TagOwnershipFilter.ALL;
-    private HashMap<Integer, Long> tagCountsCache = new HashMap<>();
-    private TagRarity rarityFilter = null;
     private TagOrder tagOrder = TagOrder.OWNERSHIP;
     private TagType tagType;
-    private boolean isStaff;
+    private boolean ignoreOwnershipRequirement;
+    private boolean viewAllTags;
+    private boolean editTags;
+    private TagMenuData tagMenuData;
+    private List<TagDTO> tags;
 
     private final String[] guiSetup = {
             "ddmmcmmdd",
@@ -60,21 +63,30 @@ public class TagHolder extends GUIScrollablePane {
         changeOption('g', click);
     };
 
-    public void openGui(Player player, InventoryGui parent, TagType type, int count) {
+    @Override
+    protected void changeOption(char slotToRemove, GuiElement.Click click) {
+        this.tags = getTags();
+        super.changeOption(slotToRemove, click);
+    }
+
+    public void openGui(Player player, InventoryGui parent, TagType type, int count, TagMenuData tagMenuData) {
+
         super.openGui(player, parent);
         this.tagType = type;
-        this.current = new InventoryGui((JavaPlugin) Linkcraft.getPlugin(), player, formattedName() + " Tags " + "(" + count + ")", guiSetup);
-        this.isStaff = playerManager.isStaff(holder);
-        //this.tagCountsCache = tagManager.getTagCountsCache();
+        this.tagMenuData = tagMenuData;
+        this.current = new InventoryGui(Linkcraft.getPlugin(), player, formattedName() + " Tags " + "(" + count + ")", guiSetup);
+        this.ignoreOwnershipRequirement = player.hasPermission("linkcraft.tags.all");
+        this.viewAllTags = player.hasPermission("linkcraft.tags.viewall");
+        this.editTags = player.hasPermission("linkcraft.tags.edit");
         fullCloseOnEsc();
         registerGuiElements();
 
         this.current.show(this.holder);
-        //this.tagLeaderboard = injector.getInstance(TagLeaderboard.class);
     }
 
     @Override
     protected void registerGuiElements() {
+        this.tags = getTags();
         getPage();
 
         GuiStateElement sortTags = new GuiStateElement('f',
@@ -108,38 +120,97 @@ public class TagHolder extends GUIScrollablePane {
         this.current.addElements(this.pageLeft, this.pageRight, this.returnToParent, sortTags, orderTags);
     }
 
-    @Override
-    protected boolean getPage() {
-        List<TagDTO> tagData = tagManager.getTags(holder, tagType, ownershipFilter, rarityFilter, tagOrder, page, pageVolume, isStaff);
+    private List<TagDTO> getTags() {
+        List<TagDTO> filteredTags = filterTags();
+        sortTags(filteredTags);
+        maxPages = (int) Math.ceil((double) filteredTags.size() / pageVolume) - 1;
+        return filteredTags;
+    }
 
-
-        if(tagData.isEmpty()) {
-            if(page == 0) {
-                noDataItem('g', "No tags found");
-            }
-            return false;
+    private List<TagDTO> filterByVisibility(List<TagDTO> tags) {
+        if(!viewAllTags) {
+            return tags.stream().filter(tagDTO -> tagDTO.getTag().isVisible() || tagDTO.getUnlocked() != null).collect(Collectors.toList());
         }
+        return tags;
+    }
+
+    private List<TagDTO> filterByType(List<TagDTO> tags) {
+        if(tagType == null) {
+            return tags;
+        }
+        return tags.stream().filter(tagDTO -> tagDTO.getTag().getType().equals(tagType)).collect(Collectors.toList());
+    }
+
+    private void sortTags(List<TagDTO> tags) {
+        Comparator<TagDTO> tagSortingMethod = null;
+        switch (tagOrder) {
+            case OWNERSHIP:
+                tagSortingMethod = new TagOwnershipComparator();
+                break;
+            case RARITY:
+                tagSortingMethod = new TagRarityComparator();
+                break;
+            case OWNER_COUNT:
+                tagSortingMethod = new TagOwnerCountComparator();
+                break;
+        }
+
+        tags.sort(tagSortingMethod);
+    }
+
+    private List<TagDTO> filterTags() {
+        List<TagDTO> tags = new ArrayList<>();
+        switch (ownershipFilter) {
+            case ALL:
+                tags.addAll(tagMenuData.getOwnedTags());
+                tags.addAll(tagMenuData.getUnownedTags());
+                break;
+            case COLLECTED:
+                tags.addAll(tagMenuData.getOwnedTags());
+                break;
+            case UNCOLLECTED:
+                tags.addAll(tagMenuData.getUnownedTags());
+                break;
+        }
+
+        tags = filterByType(tags);
+        tags = filterByVisibility(tags);
+
+        return tags;
+    }
+
+    @Override
+    protected void getPage() {
+        if(isPageEmpty()) {
+            noDataItem('g', "No tags found");
+            return;
+        }
+
+        int startIndex = page * pageVolume;
+        int endIndex = Math.min(startIndex + pageVolume, tags.size());
+        List<TagDTO> paginatedList = tags.subList(startIndex, endIndex);
 
         this.current.removeElement('g');
 
         GuiElementGroup group = new GuiElementGroup('g');
-        for (TagDTO tag : tagData) {
+        for (TagDTO tag : paginatedList) {
             group.addElement(addTag(tag));
         }
         this.current.addElement(group);
-        return true;
     }
 
     private StaticGuiElement addTag(TagDTO tagData) {
-        //int tagId = tagData.getTag().getId();
         String tagId = tagData.getTag().getId();
         String example = chatManager.globalChatTagExample(holder, "msg", tagData.getTag());
-        GUIDescriptionBuilder base = GUIUtil.getFullTagDisplayBuilder(tagData, example, tagData.getUnlocked() != null);
+        GUIDescriptionBuilder base = GUIUtil.getFullTagDisplayBuilder(tagData, example, tagData.getUnlocked() != null, editTags);
 
         String leaderboardDisplay = base.build();
-        String tagGuiActions = base.action(GUIAction.LEFT_CLICK, "Equip")
-                .action(GUIAction.RIGHT_CLICK, "Tag Owners")
-                .build();
+
+        GUIDescriptionBuilder tagGuiActions = base.action(GUIAction.LEFT_CLICK, "Equip")
+                .action(GUIAction.RIGHT_CLICK, "Tag Owners");
+        if(editTags) {
+            tagGuiActions.action(GUIAction.SHIFT_RIGHT_CLICK, "Edit Tag");
+        }
 
         ItemStack tagItem = new ItemStack(Material.NAME_TAG, 1);
 
@@ -150,24 +221,31 @@ public class TagHolder extends GUIScrollablePane {
 
         // TODO: Add some way to let the player know their current tag?
         return new StaticGuiElement('g', tagItem, click -> {
-            if(click.getType().isRightClick()) {
-                //this.tagLeaderboard.openGui(holder, current, tagId, leaderboardDisplay, tagName);
+            if(editTags && click.getType().isShiftClick() && click.getType().isRightClick()) {
+                injector.getInstance(TagCreate.class).openGui(holder, current, tagData.getTag()).onReturn(() -> {
+                    this.tags = getTags();
+                    getPage();
+                    current.draw();
+                });
+            }
+            else if(click.getType().isRightClick()) {
+                injector.getInstance(TagLeaderboard.class).openGui(holder, current, tagId, leaderboardDisplay, tagData.getTag().getDisplay());
             } else {
-                if (tagManager.hasTag(holder, tagId)) {
+                if (ignoreOwnershipRequirement || tagManager.hasTag(holder, tagId)) {
                     try {
                         tagManager.setTag(holder, tagId);
-                        MessageUtil.send(Message.TAGS_SELECT, holder, tagGuiActions);
+                        MessageUtil.send(Message.TAGS_SELECT, holder, tagData.getTag().getDisplay());
                         current.close();
                     } catch(CommandException e) {
                         MessageUtil.send(Message.TAGS_HAS_TAG_SET, holder);
                     }
                 } else {
-                    MessageUtil.send(Message.TAGS_HASNT_UNLOCKED_SELF, holder, tagGuiActions);
+                    MessageUtil.send(Message.TAGS_HASNT_UNLOCKED_SELF, holder, tagData.getTag().getDisplay());
                 }
             }
             return true;
         },
-                tagGuiActions);
+                tagGuiActions.build());
     }
 
     private String formattedName() {

@@ -70,6 +70,11 @@ public class GUIDescriptionBuilder {
         return this;
     }
 
+    public GUIDescriptionBuilder coloured(String string, ChatColor colour) {
+        addLine(colour + string);
+        return this;
+    }
+
     public GUIDescriptionBuilder wrap(String string) {
         addLine(GUIUtil.wrap(string, 50, 50));
         return this;

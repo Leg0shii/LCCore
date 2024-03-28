@@ -15,24 +15,24 @@ import org.bukkit.entity.Player;
 import team.unnamed.inject.Inject;
 import team.unnamed.inject.Injector;
 
-@Command(names = {"edit"}, permission = "tags.edit", desc = "<tag id/name>")
+@Command(names = {"edit"}, permission = "tags.edit", desc = "<id>")
 public class TagsEditCommand implements CommandClass {
 
     @Inject private TagManager tagManager;
     @Inject private Injector injector;
 
     @Command(names = "")
-    public void tagsEdit(CommandSender sender, @ReflectiveTabComplete(clazz = TagManager.class, method = "getTagNames") String tagIdName) {
+    public void tagsEdit(CommandSender sender, @ReflectiveTabComplete(clazz = TagManager.class, method = "getTagNames") String id) {
         Bukkit.getScheduler().runTaskAsynchronously(Linkcraft.getPlugin(), () -> {
             if (!(sender instanceof Player)) {
                 MessageUtil.send(Message.NOT_A_PLAYER, sender);
                 return;
             }
             Player player = (Player)sender;
-            Tag tag = tagManager.getTag(tagIdName);
+            Tag tag = tagManager.getTag(id);
 
             if(tag == null) {
-                MessageUtil.send(Message.TAGS_NO_TAG, player, tagIdName);
+                MessageUtil.send(Message.TAGS_NO_TAG, player, id);
                 return;
             }
 

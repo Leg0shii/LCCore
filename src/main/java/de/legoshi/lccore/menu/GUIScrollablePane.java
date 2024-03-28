@@ -29,5 +29,5 @@ public abstract class GUIScrollablePane extends GUIScrollable {
         group.addElement(new StaticGuiElement(slot, new ItemStack(Material.PAPER, 1), ChatColor.RED + title));
         this.current.addElement(group);
     }
-    protected abstract boolean getPage();
+    protected abstract void getPage();
 }

@@ -48,6 +48,10 @@ public abstract class GUIPane {
         current.addElements(this.outside, this.between, this.middle, this.sides);
     }
 
+    protected void setColours() {
+        current.addElements(this.outside, this.between, this.middle, this.sides);
+    }
+
     protected void fullCloseOnEsc() {
         this.current.setCloseAction(close -> false);
     }

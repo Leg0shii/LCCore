@@ -15,6 +15,7 @@ import org.bukkit.craftbukkit.v1_8_R3.entity.CraftPlayer;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
+import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
 import java.util.*;
 import java.util.function.BiConsumer;
@@ -51,30 +52,38 @@ public interface GUIUtil {
         return options.toArray(new GuiStateElement.State[0]);
     }
 
-    static GUIDescriptionBuilder getTagBaseDisplayBuilder(Tag tag) {
-        return getTagBaseDisplayBuilder(tag, false);
-    }
+//    static GUIDescriptionBuilder getTagBaseDisplayBuilder(Tag tag) {
+//        return getTagBaseDisplayBuilder(tag, false);
+//    }
 
-    static GUIDescriptionBuilder getTagBaseDisplayBuilder(Tag tag, boolean hideDesc) {
+    static GUIDescriptionBuilder getTagBaseDisplayBuilder(Tag tag, boolean owned, boolean canEdit) {
         String tagId = tag.getId();
-        String name = colorize(tag.getDisplay());
-        String finalName = "§r" + name; //+ //ChatColor.WHITE + " (" + tagId + ")";
+        String name = tag.getDisplay();
+        String finalName = "§r" + name;
         //String desc = tag.getDescription() != null && !tag.getDescription().isEmpty() ? tag.getDescription() : "N/A";
         TagRarity rarity = tag.getRarity();
         TagType type = tag.getType();
 
-//        if(hideDesc) {
+//        if(!owned) {
 //            desc = ChatColor.MAGIC + desc;
 //        }
 //        desc = ChatColor.GRAY + desc;
 
-        return new GUIDescriptionBuilder()
+        GUIDescriptionBuilder tagDesc = new GUIDescriptionBuilder()
                 .raw(finalName)
                 .header("Tag Info")
                 .pair("Type", TagType.toColor(type) + type.name)
-                .pair("Rarity", rarity.color + rarity.name)
-                .pair("Identifier", tag.getId());
-                //.pair("Description", GUIUtil.wrap(desc, 17, 30));
+                .pair("Rarity", rarity.display) //rarity.color + rarity.name
+                .pair("Identifier", tag.getId())
+                .pair("Obtainable", trueFalseDisplay(tag.isObtainable()));
+        //.pair("Description", GUIUtil.wrap(desc, 17, 30));
+
+        if(canEdit || (owned && !tag.isVisible())) {
+            tagDesc.pair("Visible", trueFalseDisplay(tag.isVisible()));
+        }
+
+        return tagDesc;
+
     }
 
 //    static GUIDescriptionBuilder getTagBaseWithExampleBuilder(Tag tag, String example) {
@@ -84,11 +93,15 @@ public interface GUIUtil {
 //                .blank();
 //    }
 //
-    static GUIDescriptionBuilder getFullTagDisplayBuilder(TagDTO tagData, String example, boolean owned) {
-        String date = tagData.getUnlocked() != null ? !tagData.getUnlocked().equals(new Date(1970, 1, 1)) ? GUIUtil.ISOString(tagData.getUnlocked()) : "N/A" : "Not collected";
+    static GUIDescriptionBuilder getFullTagDisplayBuilder(TagDTO tagData, String example, boolean owned, boolean canEdit) {
+        String date = tagData.getUnlocked() != null ? GUIUtil.ISOString(tagData.getUnlocked()) : "Not collected";
+        // Date comparison annoyed me too much :)
+        if(date.equals("1970-01-01")) {
+            date = "N/A";
+        }
         String plural = tagData.getOwnedCount() == 1 ? "player" : "players";
 
-        return getTagBaseDisplayBuilder(tagData.getTag(), !owned)
+        return getTagBaseDisplayBuilder(tagData.getTag(), owned, canEdit)
                 .blank()
                 .header("Tag Stats")
                 .pair("Collected", date)
@@ -255,5 +268,9 @@ public interface GUIUtil {
 
     static String comma(int number) {
         return String.format("%,d", number);
+    }
+
+    static String trueFalseDisplay(boolean bool) {
+        return bool ? ChatColor.GREEN + "true" : ChatColor.RED + "false";
     }
 }

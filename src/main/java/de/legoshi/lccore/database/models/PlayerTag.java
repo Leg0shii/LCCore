@@ -40,4 +40,9 @@ public class PlayerTag implements Identifiable<PlayerTagId> {
     public PlayerTagId getId() {
         return new PlayerTagId(player.getId(), tag.getId());
     }
+
+    public PlayerTag(Tag tag, LCPlayerDB lcPlayerDB) {
+        this.tag = tag;
+        this.player = lcPlayerDB;
+    }
 }
