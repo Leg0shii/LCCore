@@ -28,6 +28,7 @@ public class TagMenu extends GUIPane {
     @Inject private TagManager tagManager;
     private HashMap<TagType, Integer> tagCount;
     private HashMap<TagType, Integer> playerTagCount;
+    private HashMap<TagType, Integer> playerUnobtainableTagCount;
     private TagMenuData tagMenuData;
     private int tagCountTotal;
     private int playerTagCountTotal;
@@ -46,8 +47,9 @@ public class TagMenu extends GUIPane {
         super.openGui(player, parent);
         this.tagCount = tagManager.tagCounts();
         this.playerTagCount = tagManager.tagCountPlayer(player);
+        this.playerUnobtainableTagCount = tagManager.tagCountPlayerUnobtainable(player);
         this.tagMenuData = tagManager.getTagMenuData(player);
-        this.tagCountTotal = tagCount.values().stream().mapToInt(Integer::intValue).sum();
+        this.tagCountTotal = tagCount.values().stream().mapToInt(Integer::intValue).sum() + playerUnobtainableTagCount.values().stream().mapToInt(Integer::intValue).sum();
         this.playerTagCountTotal = playerTagCount.values().stream().mapToInt(Integer::intValue).sum();
 
 
@@ -95,6 +97,7 @@ public class TagMenu extends GUIPane {
         StaticGuiElement resetTag = new StaticGuiElement('r', HeadUtil.resetHead, click -> {
             if(tagManager.hasTagSelected(holder)) {
                 tagManager.unsetTag(holder);
+                MessageUtil.send(Message.TAGS_UNSET_TAG, holder);
                 current.close();
             } else {
                 MessageUtil.send(Message.TAGS_UNSET_NONE, holder);
@@ -107,6 +110,6 @@ public class TagMenu extends GUIPane {
     }
 
     private String getMenuTitle(TagType type) {
-        return " (" + playerTagCount.get(type) + "/" + tagCount.get(type) + ")";
+        return " (" + playerTagCount.get(type) + "/" + (tagCount.get(type) + playerUnobtainableTagCount.get(type)) + ")";
     }
 }

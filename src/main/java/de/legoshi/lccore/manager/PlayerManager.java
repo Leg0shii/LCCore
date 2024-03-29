@@ -7,7 +7,6 @@ import de.legoshi.lccore.database.models.PlayerPreferences;
 import de.legoshi.lccore.player.display.LCPlayer;
 import de.legoshi.lccore.util.ConfigAccessor;
 import de.legoshi.lccore.util.Utils;
-import me.clip.deluxetags.DeluxeTag;
 import net.minecraft.server.v1_8_R3.ChatMessage;
 import net.minecraft.server.v1_8_R3.PacketPlayOutTitle;
 import net.minecraft.server.v1_8_R3.PlayerConnection;
@@ -177,7 +176,6 @@ public class PlayerManager {
         FileConfiguration playerDataConfig = playerData.getConfig();
         playerDataConfig.set("lastlocation", Utils.getStringFromLocation(player.getLocation()));
         playerDataConfig.set("jumps", player.getStatistic(Statistic.JUMP));
-        playerDataConfig.set("tags", DeluxeTag.getAvailableTagIdentifiers(player));
         playerData.saveConfig();
     }
 

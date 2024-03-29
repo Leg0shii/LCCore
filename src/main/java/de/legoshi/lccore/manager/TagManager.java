@@ -206,6 +206,28 @@ public class TagManager {
         return counts;
     }
 
+    public HashMap<TagType, Integer> tagCountPlayerUnobtainable(Player player) {
+        String hql = "SELECT t.type, COUNT(t) FROM PlayerTag p JOIN p.tag t WHERE p.player = :player " +
+                "AND t.obtainable = false " +
+                "GROUP BY t.type";
+
+        HashMap<TagType, Integer> counts = new HashMap<>();
+        for(TagType type : TagType.values()) {
+            counts.put(type, 0);
+        }
+
+        EntityManager em = db.getEntityManager();
+        TypedQuery<Object[]> query = db.getEntityManager().createQuery(hql, Object[].class);
+        query.setParameter("player", playerManager.getPlayerDB(player));
+
+        for (Object[] result : query.getResultList()) {
+            counts.put((TagType)result[0], (int)((long)result[1]));
+        }
+
+        em.close();
+        return counts;
+    }
+
     public HashMap<String, Long> getOwnerCounts() {
         String hql = "SELECT t.name, COUNT(pt.tag) FROM Tag t " +
                 "LEFT JOIN PlayerTag pt ON pt.tag = t.name " +

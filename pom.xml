@@ -54,8 +54,8 @@
                                     <shadedPattern>com.linkcraft.common</shadedPattern>
                                 </relocation>
                                 <relocation>
-                                    <pattern>de.themoep.inventorygui</pattern>
-                                    <shadedPattern>de.themoep.linkcraft</shadedPattern>
+                                    <pattern>de.themoep</pattern>
+                                    <shadedPattern>ca.dklink750</shadedPattern>
                                 </relocation>
                             </relocations>
                         </configuration>
@@ -175,13 +175,6 @@
             <artifactId>api</artifactId>
             <version>5.4</version>
             <scope>provided</scope>
-        </dependency>
-        <dependency>
-            <groupId>me.clip.deluxetags</groupId>
-            <artifactId>deluxetags</artifactId>
-            <version>1.7.1</version>
-            <scope>system</scope>
-            <systemPath>${project.basedir}/lib/DeluxeTags.jar</systemPath>
         </dependency>
         <dependency>
             <groupId>net.milkbowl.vault</groupId>

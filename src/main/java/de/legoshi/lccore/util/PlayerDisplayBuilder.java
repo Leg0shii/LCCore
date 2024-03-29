@@ -7,7 +7,6 @@ import de.legoshi.lccore.player.chat.ChatChannel;
 import de.legoshi.lccore.player.display.*;
 import lombok.Setter;
 import lombok.experimental.Accessors;
-import me.clip.deluxetags.DeluxeTag;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import team.unnamed.inject.Inject;
