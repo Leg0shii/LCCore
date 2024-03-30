@@ -47,12 +47,14 @@ public class ConfigAccessor {
         this.fileLock = getFileLock(fileName);
     }
 
-    public void reloadConfig() {
-        this.fileConfiguration = YamlConfiguration.loadConfiguration(this.configFile);
-        InputStream defConfigStream = this.plugin.getResource(this.fileName);
-        if (defConfigStream != null) {
-            YamlConfiguration defConfig = YamlConfiguration.loadConfiguration(new InputStreamReader(defConfigStream));
-            this.fileConfiguration.setDefaults(defConfig);
+    public synchronized void reloadConfig() {
+        synchronized (fileLock) {
+            this.fileConfiguration = YamlConfiguration.loadConfiguration(this.configFile);
+            InputStream defConfigStream = this.plugin.getResource(this.fileName);
+            if (defConfigStream != null) {
+                YamlConfiguration defConfig = YamlConfiguration.loadConfiguration(new InputStreamReader(defConfigStream));
+                this.fileConfiguration.setDefaults(defConfig);
+            }
         }
     }
 
