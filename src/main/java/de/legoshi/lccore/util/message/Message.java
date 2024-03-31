@@ -169,6 +169,22 @@ public enum Message {
     TAGS_CANT_EDIT_NAME("§cHi staff. To unfortunately to edit the name, tags need to be deleted and remade (DB primary key). I was too lazy to automate this niche feature. sorry -dk", MessageType.TAGS_ERROR),
     TAGS_UNCOMMON_TAG_BLOCK("§cYou just made ({0}, {1}, {2}, {3}) a tag sign, did you mean to do that?", MessageType.TAGS_ERROR),
 
+    // Punishment
+    PUNISH_FINISHED("§aYou no longer have a {0}!", MessageType.PUNISHMENT),
+    PUNISH_REMOVE_OTHER("§6{0} §ais no longer &b{1}!", MessageType.PUNISHMENT),
+    PUNISH_REMOVED("§aYou have been {0}!", MessageType.PUNISHMENT),
+    PUNISH_UNTIL_SILENT("§f[Silent] §6{0} &fhas been &c{1} &funtil &b{2} &ffor &c{3}!", MessageType.PUNISHMENT),
+    PUNISH_UNTIL("§6{0} &fhas been &c{1} &funtil &b{2} &ffor &c{3}!", MessageType.PUNISHMENT),
+    PUNISH_YOU_ARE_MUTED("§cYou are muted!", MessageType.PUNISHMENT),
+    PUNISH_YOU_ARE_FULL_MUTED("§cYou are full muted!", MessageType.PUNISHMENT),
+
+    // Punishment Errors
+    PUNISH_CRITICAL_ERROR("§cCRITICAL ERROR: {0} has more than one currently active {1}???", MessageType.PUNISHMENT_ERROR),
+    PUNISH_WAS_NOT_PUNISHED("§c{0} was not {1}!", MessageType.PUNISHMENT_ERROR),
+    PUNISH_WRONG_LENGTH("§cThe length '{0}' is incorrectly formatted! (ex: 30d/1y/...)!", MessageType.PUNISHMENT_ERROR),
+    PUNISH_ALREADY_PUNISHED("§c{0} is already {1} until {2}!", MessageType.PUNISHMENT_ERROR),
+
+
     FILLER("", MessageType.SYSTEM);
 
     @Getter public final String message;

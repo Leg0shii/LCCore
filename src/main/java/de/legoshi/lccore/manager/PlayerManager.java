@@ -4,6 +4,7 @@ import de.legoshi.lccore.Linkcraft;
 import de.legoshi.lccore.database.DBManager;
 import de.legoshi.lccore.database.models.LCPlayerDB;
 import de.legoshi.lccore.database.models.PlayerPreferences;
+import de.legoshi.lccore.database.models.Punishment;
 import de.legoshi.lccore.player.display.LCPlayer;
 import de.legoshi.lccore.util.ConfigAccessor;
 import de.legoshi.lccore.util.Utils;
@@ -11,6 +12,7 @@ import net.minecraft.server.v1_8_R3.ChatMessage;
 import net.minecraft.server.v1_8_R3.PacketPlayOutTitle;
 import net.minecraft.server.v1_8_R3.PlayerConnection;
 import org.bukkit.Bukkit;
+import org.bukkit.OfflinePlayer;
 import org.bukkit.Statistic;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.craftbukkit.v1_8_R3.CraftServer;
@@ -18,13 +20,18 @@ import org.bukkit.craftbukkit.v1_8_R3.entity.CraftPlayer;
 import org.bukkit.entity.Player;
 import team.unnamed.inject.Inject;
 
+import javax.persistence.EntityManager;
+import javax.persistence.NoResultException;
+import javax.persistence.TypedQuery;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 
 public class PlayerManager {
     @Inject private ChatManager chatManager;
     @Inject private VisibilityManager visibilityManager;
+    @Inject private PunishmentManager punishmentManager;
     @Inject private DBManager db;
 
     private final HashMap<String, LCPlayer> players = new HashMap<>();
@@ -52,7 +59,11 @@ public class PlayerManager {
     }
 
     public LCPlayerDB getPlayerDB(Player player) {
-        return db.find(player.getUniqueId().toString(), LCPlayerDB.class);
+        return getPlayerDB(player.getUniqueId().toString());
+    }
+
+    public LCPlayerDB getPlayerDB(String player) {
+        return db.find(player, LCPlayerDB.class);
     }
 
     public void playerLeave(Player player) {
@@ -87,6 +98,7 @@ public class PlayerManager {
         lcPlayer.setNameFormats(chatManager.determineNameFormat(player));
         lcPlayer.setManualChatColors(chatManager.determineManualChatColors(player));
         lcPlayer.setManualChatFormats(chatManager.determineManualChatFormats(player));
+        lcPlayer.setPunishments(punishmentManager.getCurrentPunishments(player));
         return lcPlayer;
     }
 
@@ -225,6 +237,30 @@ public class PlayerManager {
             }
         }
         return bestMatch;
+    }
+
+    public String uuidByName(String name) {
+        OfflinePlayer player = Bukkit.getOfflinePlayer(name);
+        if(player != null && player.hasPlayedBefore()) {
+            return player.getUniqueId().toString();
+        }
+
+        String hql = "SELECT p FROM LCPlayerDB p WHERE p.name=:name";
+        EntityManager em = db.getEntityManager();
+        TypedQuery<LCPlayerDB> query = db.getEntityManager().createQuery(hql, LCPlayerDB.class);
+        query.setParameter("name", name);
+        try {
+            LCPlayerDB lcPlayerDB = query.getSingleResult();
+            if(lcPlayerDB != null) {
+                return lcPlayerDB.getId();
+            }
+        } catch (NoResultException e) {
+            return null;
+        } finally {
+            em.close();
+        }
+
+        return null;
     }
 
     @SuppressWarnings("unused")

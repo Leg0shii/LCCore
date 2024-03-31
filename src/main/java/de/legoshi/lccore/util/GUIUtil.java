@@ -261,6 +261,10 @@ public interface GUIUtil {
         return new SimpleDateFormat("yyyy-MM-dd").format(d);
     }
 
+    static String ISOStringWithTime(Date d) {
+        return new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(d);
+    }
+
     static void sendActionBar(Player p, String actionBar) {
         PacketPlayOutChat packet = new PacketPlayOutChat(new ChatComponentText(actionBar), (byte) 2);
         ((CraftPlayer) p).getHandle().playerConnection.sendPacket(packet);

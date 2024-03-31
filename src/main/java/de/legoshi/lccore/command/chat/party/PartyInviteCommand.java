@@ -4,7 +4,9 @@ import de.legoshi.lccore.Linkcraft;
 import de.legoshi.lccore.command.flow.annotated.annotation.ReflectiveTabComplete;
 import de.legoshi.lccore.manager.PartyManager;
 import de.legoshi.lccore.manager.PlayerManager;
+import de.legoshi.lccore.manager.PunishmentManager;
 import de.legoshi.lccore.manager.VisibilityManager;
+import de.legoshi.lccore.player.PunishmentType;
 import de.legoshi.lccore.util.message.Message;
 import de.legoshi.lccore.util.message.MessageUtil;
 import me.fixeddev.commandflow.annotated.CommandClass;
@@ -18,8 +20,8 @@ import team.unnamed.inject.Inject;
 public class PartyInviteCommand implements CommandClass {
 
     @Inject private PartyManager partyManager;
-    @Inject
-    private VisibilityManager visibilityManager;
+    @Inject private VisibilityManager visibilityManager;
+    @Inject private PunishmentManager punishmentManager;
 
     @Command(names = "")
     public void invite(CommandSender sender, @ReflectiveTabComplete(clazz = PlayerManager.class, method = "getPlayers", player = true) String toInviteName) {
@@ -31,6 +33,11 @@ public class PartyInviteCommand implements CommandClass {
             }
 
             Player player = (Player)sender;
+
+            if(punishmentManager.isPunished(player, PunishmentType.FULL_MUTE)) {
+                MessageUtil.send(Message.PUNISH_YOU_ARE_FULL_MUTED, player);
+                return;
+            }
 
             if(invitee == null || !invitee.isOnline() || !visibilityManager.canSee(player, invitee)) {
                 MessageUtil.send(Message.IS_OFFLINE, player, toInviteName);

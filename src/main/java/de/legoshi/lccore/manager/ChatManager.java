@@ -3,6 +3,7 @@ package de.legoshi.lccore.manager;
 import de.legoshi.lccore.Linkcraft;
 import de.legoshi.lccore.database.models.Tag;
 import de.legoshi.lccore.menu.GuiMessage;
+import de.legoshi.lccore.player.PunishmentType;
 import de.legoshi.lccore.player.chat.ChatChannel;
 import de.legoshi.lccore.player.display.*;
 import de.legoshi.lccore.util.ColorHelper;
@@ -24,6 +25,7 @@ import java.util.function.Function;
 
 public class ChatManager {
     @Inject private LuckPermsManager luckPermsManager;
+    @Inject private PunishmentManager punishmentManager;
     @Inject private PlayerManager playerManager;
     @Inject private VisibilityManager visibilityManager;
     @Inject private PartyManager partyManager;
@@ -213,8 +215,17 @@ public class ChatManager {
             return;
         }
 
+        if(punishmentManager.isPunished(player, PunishmentType.FULL_MUTE)) {
+            MessageUtil.send(Message.PUNISH_YOU_ARE_FULL_MUTED, player);
+            return;
+        }
+
         switch (getChannel(player)) {
             case GLOBAL:
+                if(punishmentManager.isPunished(player, PunishmentType.MUTE)) {
+                    MessageUtil.send(Message.PUNISH_YOU_ARE_MUTED, player);
+                    return;
+                }
                 sendGlobalMessage(player, message);
                 break;
             case PARTY:
@@ -368,6 +379,17 @@ public class ChatManager {
         }
         return list;
     }
+
+    public List<Player> getPlayersWithPerm(String permission) {
+        List<Player> list = new ArrayList<>();
+        for(Player p : Bukkit.getOnlinePlayers()) {
+            if(p.hasPermission(permission)) {
+                list.add(p);
+            }
+        }
+        return list;
+    }
+
 
 
     public String colourIfHasColour(String message, List<ChatColor> owned, String chatMods) {

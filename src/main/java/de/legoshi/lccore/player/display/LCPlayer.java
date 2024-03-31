@@ -1,5 +1,6 @@
 package de.legoshi.lccore.player.display;
 
+import de.legoshi.lccore.database.models.Punishment;
 import de.legoshi.lccore.util.ColorHelper;
 import lombok.Data;
 import org.bukkit.ChatColor;
@@ -21,4 +22,5 @@ public class LCPlayer {
     private List<ColorHelper.ChatFormat> nameFormats;
     private List<ChatColor> manualChatColors;
     private List<ChatColor> manualChatFormats;
+    private List<Punishment> punishments;
 }

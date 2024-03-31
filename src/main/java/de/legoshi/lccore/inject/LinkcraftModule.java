@@ -35,6 +35,7 @@ public class LinkcraftModule extends AbstractModule {
         bind(PartyManager.class).singleton();
         bind(TagManager.class).singleton();
         bind(SVSManager.class).singleton();
+        bind(PunishmentManager.class).singleton();
 
         // Listeners
         bind(GeneralListener.class).singleton();
