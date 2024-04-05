@@ -7,7 +7,6 @@ import de.legoshi.lccore.manager.TagManager;
 import de.legoshi.lccore.menu.GUIScrollablePane;
 import de.legoshi.lccore.tag.TagDTO;
 import de.legoshi.lccore.tag.TagMenuData;
-import de.legoshi.lccore.tag.TagRarity;
 import de.legoshi.lccore.tag.TagType;
 import de.legoshi.lccore.tag.comparators.TagCreationComparator;
 import de.legoshi.lccore.tag.comparators.TagOwnerCountComparator;
@@ -23,7 +22,9 @@ import org.bukkit.inventory.ItemStack;
 import team.unnamed.inject.Inject;
 import team.unnamed.inject.Injector;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.List;
 import java.util.function.BiConsumer;
 import java.util.stream.Collectors;
 

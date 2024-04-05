@@ -1,7 +1,5 @@
 package de.legoshi.lccore.menu.maps;
 
-import de.legoshi.lccore.menu.maps.LCMap;
-
 import java.util.Comparator;
 
 public class MapComparator implements Comparator<LCMap> {

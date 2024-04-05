@@ -2,7 +2,6 @@ package de.legoshi.lccore.util;
 
 import de.legoshi.lccore.Linkcraft;
 import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
 import org.bukkit.Sound;
 import org.bukkit.entity.Player;
 

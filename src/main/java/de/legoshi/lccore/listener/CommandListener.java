@@ -2,8 +2,6 @@ package de.legoshi.lccore.listener;
 
 import de.legoshi.lccore.Linkcraft;
 import de.legoshi.lccore.manager.PlayerManager;
-import de.legoshi.lccore.util.Menu;
-import de.legoshi.lccore.util.message.MessageUtil;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;

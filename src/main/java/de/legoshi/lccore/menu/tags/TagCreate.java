@@ -21,10 +21,8 @@ import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.plugin.java.JavaPlugin;
 import team.unnamed.inject.Inject;
 
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.function.BiConsumer;
 

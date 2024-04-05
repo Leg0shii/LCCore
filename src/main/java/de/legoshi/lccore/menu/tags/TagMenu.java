@@ -1,7 +1,6 @@
 package de.legoshi.lccore.menu.tags;
 
 import de.legoshi.lccore.Linkcraft;
-import de.legoshi.lccore.database.models.Tag;
 import de.legoshi.lccore.manager.TagManager;
 import de.legoshi.lccore.menu.GUIPane;
 import de.legoshi.lccore.tag.TagMenuData;
@@ -20,7 +19,6 @@ import team.unnamed.inject.Inject;
 import team.unnamed.inject.Injector;
 
 import java.util.HashMap;
-import java.util.List;
 
 public class TagMenu extends GUIPane {
 

@@ -4,7 +4,6 @@ import de.legoshi.lccore.Linkcraft;
 import de.legoshi.lccore.database.DBManager;
 import de.legoshi.lccore.database.models.LCPlayerDB;
 import de.legoshi.lccore.database.models.PlayerPreferences;
-import de.legoshi.lccore.database.models.Punishment;
 import de.legoshi.lccore.player.display.LCPlayer;
 import de.legoshi.lccore.util.ConfigAccessor;
 import de.legoshi.lccore.util.Utils;

@@ -3,7 +3,6 @@ package de.legoshi.lccore.menu.tags;
 import de.legoshi.lccore.Linkcraft;
 import de.legoshi.lccore.manager.TagManager;
 import de.legoshi.lccore.menu.GUIScrollablePane;
-import de.legoshi.lccore.tag.TagDTO;
 import de.legoshi.lccore.tag.TagOwnedDTO;
 import de.legoshi.lccore.util.*;
 import de.legoshi.lccore.util.message.Message;
@@ -18,7 +17,6 @@ import org.bukkit.Material;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.plugin.java.JavaPlugin;
 import team.unnamed.inject.Inject;
 
 import java.util.Date;

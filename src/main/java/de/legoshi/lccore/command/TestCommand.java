@@ -1,6 +1,5 @@
 package de.legoshi.lccore.command;
 
-import de.legoshi.lccore.util.CommonUtil;
 import de.legoshi.lccore.util.GUIUtil;
 import de.legoshi.lccore.util.Register;
 import de.legoshi.lccore.util.Utils;

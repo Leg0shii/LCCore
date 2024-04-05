@@ -2,7 +2,6 @@ package de.legoshi.lccore.database.models;
 
 import de.legoshi.lccore.database.Identifiable;
 import de.legoshi.lccore.player.PunishmentType;
-import de.legoshi.lccore.tag.TagRarity;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
