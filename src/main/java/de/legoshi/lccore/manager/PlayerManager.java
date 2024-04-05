@@ -23,10 +23,7 @@ import team.unnamed.inject.Inject;
 import javax.persistence.EntityManager;
 import javax.persistence.NoResultException;
 import javax.persistence.TypedQuery;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
+import java.util.*;
 
 public class PlayerManager {
     @Inject private ChatManager chatManager;
@@ -35,6 +32,7 @@ public class PlayerManager {
     @Inject private DBManager db;
 
     private final HashMap<String, LCPlayer> players = new HashMap<>();
+    private Set<String> clearEffectsOnTps = new HashSet<>();
 
     public void playerJoin(Player player) {
         initDbData(player);
@@ -261,6 +259,18 @@ public class PlayerManager {
         }
 
         return null;
+    }
+
+    public void addClearEffectsOnTps(Player player) {
+        clearEffectsOnTps.add(player.getUniqueId().toString());
+    }
+
+    public void removeClearEffectsOnTps(Player player) {
+        clearEffectsOnTps.remove(player.getUniqueId().toString());
+    }
+
+    public boolean hasClearEffectsOnTp(Player player) {
+        return clearEffectsOnTps.contains(player.getUniqueId().toString());
     }
 
     @SuppressWarnings("unused")

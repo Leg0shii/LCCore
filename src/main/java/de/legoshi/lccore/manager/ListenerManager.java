@@ -23,6 +23,9 @@ public class ListenerManager {
     @Inject private PlayerKickListener playerKickListener;
     @Inject private ChatListener chatListener;
     @Inject private LPListener lpListener;
+    @Inject private CommandListener commandListener;
+    @Inject private TeleportListener teleportListener;
+
 
     public void registerEvents() {
         PluginManager pluginManager = plugin.getServer().getPluginManager();
@@ -38,6 +41,8 @@ public class ListenerManager {
         pluginManager.registerEvents(preJoinListener, plugin);
         pluginManager.registerEvents(playerKickListener, plugin);
         pluginManager.registerEvents(chatListener, plugin);
+        pluginManager.registerEvents(commandListener, plugin);
+        pluginManager.registerEvents(teleportListener, plugin);
         lpListener.register();
     }
 }
