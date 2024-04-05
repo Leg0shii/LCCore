@@ -51,23 +51,23 @@ public class NickCommand implements CommandClass {
             Player player = (Player)sender;
 
             boolean unsafeAll = player.hasPermission("linkcraft.nick.unsafe");
-            boolean isSelf = toNickPlayer != null && toNickPlayer.getUniqueId().toString().equals(player.getUniqueId().toString());
+            boolean isSelf = toNickPlayer == null || toNickPlayer.getUniqueId().toString().equals(player.getUniqueId().toString());
             boolean unsafeSelf = isSelf && player.hasPermission("linkcraft.nick.unsafe.self");
 
-            if(!checkNickFormat(nick) && (!unsafeAll || !unsafeSelf)) {
+            if(!checkNickFormat(nick) && !(unsafeAll || unsafeSelf)) {
                 MessageUtil.send(Message.INVALID_NICKNAME_FORMAT, player);
                 return;
             }
 
-            if(!checkNickLength(nick) && (!unsafeAll || !unsafeSelf)) {
+            if(!checkNickLength(nick) && (unsafeAll || unsafeSelf)) {
                 MessageUtil.send(Message.INVALID_NICKNAME_FORMAT, player);
                 return;
             }
 
-            if(!checkNickTaken(nick, player) && !(!unsafeAll || !unsafeSelf)) {
+            if(!checkNickTaken(nick, player) && !(unsafeAll || unsafeSelf)) {
                 MessageUtil.send(Message.INVALID_NICKNAME_ALREADY_TAKEN, player);
                 return;
-            } else if(!checkNickTaken(nick, player) && (!unsafeAll || !unsafeSelf)) {
+            } else if(!checkNickTaken(nick, player) && (unsafeAll || unsafeSelf)) {
                 MessageUtil.send(Message.INVALID_NICKNAME_ALREADY_TAKEN_WARN, player);
             }
 
