@@ -31,10 +31,12 @@ public class TagsUnlockCommand implements CommandClass {
                        @ReflectiveTabComplete(clazz = PlayerManager.class, method = "getPossibleNames", player = true) String name) {
         Player toReceive = playerManager.playerByName(name);
         Bukkit.getScheduler().runTaskAsynchronously(Linkcraft.getPlugin(), () -> {
-            if(toReceive == null) {
+            String uuid = toReceive != null ? toReceive.getUniqueId().toString() : playerManager.uuidByName(name);
+            if(uuid == null) {
                 MessageUtil.send(Message.IS_OFFLINE, sender, name);
                 return;
             }
+            String playerName = toReceive != null ? toReceive.getName() : name;
 
             Tag tag = tagManager.getTag(id);
             if(tag == null) {
@@ -43,18 +45,22 @@ public class TagsUnlockCommand implements CommandClass {
             }
             boolean isVictor = tag.getType().equals(TagType.VICTOR);
 
-            if(tagManager.hasTag(toReceive, tag.getId())) {
-                MessageUtil.send(Message.TAGS_ALREADY_HAVE, toReceive, tag.getDisplay());
-                MessageUtil.send(Message.TAGS_ALREADY_HAVE_OTHER, sender, toReceive.getName(), tag.getDisplay(), tag.getId());
+            if(tagManager.hasTag(uuid, tag.getId())) {
+                if(toReceive != null) {
+                    MessageUtil.send(Message.TAGS_ALREADY_HAVE, toReceive, tag.getDisplay());
+                }
+                MessageUtil.send(Message.TAGS_ALREADY_HAVE_OTHER, sender, playerName, tag.getDisplay(), tag.getId());
                 return;
             }
 
-            LCPlayerDB lcPlayerDB = playerManager.getPlayerDB(toReceive);
+            LCPlayerDB lcPlayerDB = playerManager.getPlayerDB(uuid);
             db.persist(new PlayerTag(tag, lcPlayerDB), lcPlayerDB, tag);
-            MessageUtil.send(Message.TAGS_GAVE_TAG, sender, toReceive.getName(), tag.getDisplay(), tag.getId());
-            MessageUtil.send(Message.TAGS_UNLOCKED_TAG, toReceive, tag.getDisplay());
+            MessageUtil.send(Message.TAGS_GAVE_TAG, sender, playerName, tag.getDisplay(), tag.getId());
+            if(toReceive != null) {
+                MessageUtil.send(Message.TAGS_UNLOCKED_TAG, toReceive, tag.getDisplay());
+            }
 
-            if(!isVictor) {
+            if(toReceive != null && !isVictor) {
                 switch (tag.getRarity()) {
                     case COMMON:
                         LCSound.COMMON.playLater(toReceive);

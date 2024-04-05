@@ -154,6 +154,10 @@ public class TagManager {
     }
 
     public void setTag(Player player, String tagId) throws CommandException {
+        setTag(player.getUniqueId().toString(), tagId);
+    }
+
+    public void setTag(String player, String tagId) throws CommandException {
         PlayerPreferences prefs = playerManager.getPlayerPrefs(player);
         if(prefs.getTag() != null && prefs.getTag().getId().equals(tagId)) {
             throw new CommandException(Message.TAGS_HAS_TAG_SET);
