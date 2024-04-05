@@ -23,7 +23,6 @@ import java.util.Map;
 
 public class ConfigManager {
     private final Linkcraft plugin;
-    private final Injector injector;
 
     public static Map<String, RankDTO> ranksDisplay = new HashMap<>();
     public static Map<String, BonusDTO> bonusDisplay = new HashMap<>();
@@ -39,9 +38,8 @@ public class ConfigManager {
     public static int port;
     public static String database;
 
-    public ConfigManager(Linkcraft plugin, Injector injector) {
+    public ConfigManager(Linkcraft plugin) {
         this.plugin = plugin;
-        this.injector = injector;
     }
 
     public void loadConfigs(boolean first) {
@@ -88,7 +86,7 @@ public class ConfigManager {
     }
 
     private void reloadPlayerCosmetics() {
-        PlayerManager playerManager = injector.getInstance(PlayerManager.class);
+        PlayerManager playerManager = Linkcraft.getPlugin().getInjector().getInstance(PlayerManager.class);
         for(Player player : Bukkit.getOnlinePlayers()) {
             playerManager.updatePlayer(player);
         }

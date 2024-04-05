@@ -14,6 +14,7 @@ public enum Message {
     INVALID_INTEGER("§cArgument must be an integer!", MessageType.SYSTEM),
     ON_DISABLE_MESSAGE("§b§lLinkcraft§r§b is restarting...", MessageType.SYSTEM),
     ILLEGAL_CHARACTER("§bYou cannot use ·!", MessageType.SYSTEM),
+    RELOAD_COMPLETE("§aReload complete!", MessageType.SYSTEM),
 
     // Logging
     CONFIG_LOADING_ERR("Error loading {0}", MessageType.LOGGING),

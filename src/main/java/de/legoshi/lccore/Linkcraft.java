@@ -41,7 +41,7 @@ public class Linkcraft extends JavaPlugin {
 
     public static Economy economy = null;
     private static Chat chat = null;
-    private Injector injector;
+    @Getter private Injector injector;
 
     public LuckPerms luckPerms;
     public final ConfigAccessor playerConfig = new ConfigAccessor(this, "playerdata.yml");
@@ -61,7 +61,7 @@ public class Linkcraft extends JavaPlugin {
         plugin = this;
 
         loadDependencies();
-        configManager = new ConfigManager(this, injector);
+        configManager = new ConfigManager(this);
         configManager.loadConfigs(true);
         injector = Injector.create(new LinkcraftModule(this));
 
@@ -186,5 +186,6 @@ public class Linkcraft extends JavaPlugin {
     public static void syncLater(Runnable runnable, Long ticks) {
         Bukkit.getScheduler().runTaskLater(plugin, runnable, ticks);
     }
+
 }
 

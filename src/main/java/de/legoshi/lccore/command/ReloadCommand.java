@@ -1,12 +1,13 @@
 package de.legoshi.lccore.command;
 
 import de.legoshi.lccore.Linkcraft;
+import de.legoshi.lccore.util.message.Message;
+import de.legoshi.lccore.util.message.MessageUtil;
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 
-// PARTLY REFACTORED
 public class ReloadCommand implements CommandExecutor {
 
     private final Linkcraft plugin;
@@ -16,12 +17,11 @@ public class ReloadCommand implements CommandExecutor {
     }
 
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
-        if(!sender.hasPermission("lc.reload")) {
-            sender.sendMessage(ChatColor.RED + "Insufficient permission");
+        if(!MessageUtil.hasPerm(sender, "lc.reload")) {
             return true;
         }
         plugin.configManager.loadConfigs(false);
-        sender.sendMessage(ChatColor.GREEN + "[LC] Reload complete!");
+        MessageUtil.send(Message.RELOAD_COMPLETE, sender);
         return true;
     }
 
