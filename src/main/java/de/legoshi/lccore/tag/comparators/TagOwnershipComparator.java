@@ -13,11 +13,6 @@ public class TagOwnershipComparator implements Comparator<TagDTO> {
             return 1;
         }
 
-        int rarityComparison = Integer.compare(tag1.getTag().getRarity().ordinal(), tag2.getTag().getRarity().ordinal());
-        if (rarityComparison != 0) {
-            return rarityComparison;
-        }
-
-        return Long.compare(tag2.getOwnedCount(), tag1.getOwnedCount());
+        return Integer.compare(tag1.getTag().getOrder(), tag2.getTag().getOrder());
     }
 }

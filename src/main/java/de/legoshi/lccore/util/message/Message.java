@@ -136,7 +136,7 @@ public enum Message {
 
     // Tag
     TAGS_DELETE_TAG("§aSuccessfully deleted tag: §r{0} §r({1}/{2})", MessageType.TAGS),
-    TAGS_ADD_SUCCESS("§aSuccessfully added tag §r({0}/{1})§a: §r{2}", MessageType.TAGS),
+    TAGS_ADD_SUCCESS("§aSuccessfully added tag §r({0})§a: §r{2}", MessageType.TAGS),
     TAGS_SELECT("§aYour tag has been set to: §r{0}", MessageType.TAGS),
     TAGS_UNLOCKED_TAG("{0}§r §7unlocked, check out §6/tags§r!", MessageType.TAGS),
     TAGS_GAVE_TAG("§aSuccessfully gave {0} tag: §r{1} §r({2})", MessageType.TAGS),

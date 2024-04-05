@@ -9,6 +9,7 @@ import de.legoshi.lccore.tag.TagDTO;
 import de.legoshi.lccore.tag.TagMenuData;
 import de.legoshi.lccore.tag.TagRarity;
 import de.legoshi.lccore.tag.TagType;
+import de.legoshi.lccore.tag.comparators.TagCreationComparator;
 import de.legoshi.lccore.tag.comparators.TagOwnerCountComparator;
 import de.legoshi.lccore.tag.comparators.TagOwnershipComparator;
 import de.legoshi.lccore.tag.comparators.TagRarityComparator;
@@ -33,7 +34,7 @@ public class TagHolder extends GUIScrollablePane {
     @Inject private ChatManager chatManager;
 
     public enum TagOwnershipFilter { ALL, COLLECTED, UNCOLLECTED }
-    public enum TagOrder { OWNERSHIP, RARITY, OWNER_COUNT }
+    public enum TagOrder { OWNERSHIP, CREATED, RARITY, OWNER_COUNT }
 
     private TagOwnershipFilter ownershipFilter = TagOwnershipFilter.ALL;
     private TagOrder tagOrder = TagOrder.OWNERSHIP;
@@ -144,6 +145,9 @@ public class TagHolder extends GUIScrollablePane {
     private void sortTags(List<TagDTO> tags) {
         Comparator<TagDTO> tagSortingMethod = null;
         switch (tagOrder) {
+            case CREATED:
+                tagSortingMethod = new TagCreationComparator();
+                break;
             case OWNERSHIP:
                 tagSortingMethod = new TagOwnershipComparator();
                 break;

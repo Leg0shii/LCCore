@@ -330,7 +330,7 @@ public class TagCreate extends GUIPane {
         StaticGuiElement tagCreate = new StaticGuiElement('q', new ItemStack(Material.WOOL, 1, Dye.LIME.data), click -> {
             try {
                 String id = tagManager.createTag(tag);
-                MessageUtil.send(Message.TAGS_ADD_SUCCESS, holder, tag.getName(), id, tag.getDisplay());
+                MessageUtil.send(Message.TAGS_ADD_SUCCESS, holder, id, tag.getDisplay());
                 LCSound.COMPLETE.playLater(holder);
                 current.close();
             } catch (CommandException e) {

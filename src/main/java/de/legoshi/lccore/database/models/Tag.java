@@ -45,8 +45,8 @@ public class Tag implements Identifiable<String> {
 
     private boolean visible = true;
 
-//    @CreationTimestamp
-//    private Date created;
+    @Column(name = "tag_order")
+    private int order;
 
     public Tag(String id) {
         this.name = id;

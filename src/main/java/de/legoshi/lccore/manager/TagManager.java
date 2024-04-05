@@ -122,7 +122,25 @@ public class TagManager {
             throw new CommandException(Message.TAGS_ALREADY_EXISTS, tag.getName());
         }
 
+        tag.setOrder(getNextTagOrder());
+
         return db.persist(tag);
+    }
+
+    public int getNextTagOrder() {
+        String hql = "SELECT t.order FROM Tag t ORDER BY t.order DESC";
+
+        EntityManager em = db.getEntityManager();
+        TypedQuery<Integer> query = em.createQuery(hql, Integer.class);
+        query.setMaxResults(1);
+        try {
+            Integer result = query.getSingleResult();
+            return result != null ? result + 1 : 1;
+        } catch (NoResultException e) {
+            return 1;
+        } finally {
+            em.close();
+        }
     }
 
     public boolean isValidType(String type) {
@@ -289,6 +307,24 @@ public class TagManager {
         return unownedTags;
     }
 
+    public List<Tag> getOwnedTags(String player) {
+        String hql = "SELECT t FROM Tag t " +
+                "LEFT JOIN PlayerTag pt ON pt.tag = t.name " +
+                "WHERE pt.player = :player";
+
+        List<Tag> ownedTags;
+        EntityManager em = db.getEntityManager();
+        TypedQuery<Tag> query = em.createQuery(hql, Tag.class);
+        query.setParameter("player", new LCPlayerDB(player));
+        ownedTags = query.getResultList();
+        em.close();
+        return ownedTags;
+    }
+
+    public List<Tag> getOwnedTags(Player player) {
+        return getOwnedTags(player.getUniqueId().toString());
+    }
+
     public TagMenuData getTagMenuData(Player player) {
         HashMap<String, Long> ownerCounts = getOwnerCounts();
         return new TagMenuData(getOwnedTags(player, ownerCounts), getUnownedTags(player, ownerCounts));
@@ -361,4 +397,15 @@ public class TagManager {
         }
         return tagNames;
     }
+
+    @SuppressWarnings("unused")
+    public List<String> getOwnedTagNames(Player player) {
+        List<String> tagNames = new ArrayList<>();
+        for(Tag tag : getOwnedTags(player)) {
+            tagNames.add(tag.getName());
+        }
+        return tagNames;
+    }
+
+
 }
