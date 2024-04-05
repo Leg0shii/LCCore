@@ -19,7 +19,7 @@ import team.unnamed.inject.Inject;
 
 
 @Register
-@Command(names = {"sc", "staffchat", "helpop"}, permission = "staffchat", desc = "<message>")
+@Command(names = {"sc", "schat", "staffchat", "helpop"}, permission = "staffchat", desc = "<message>")
 public class StaffChatCommand implements CommandClass {
 
     @Inject private ChatManager chatManager;

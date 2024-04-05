@@ -18,7 +18,7 @@ import team.unnamed.inject.Inject;
 
 
 @Register
-@Command(names = {"pc", "partychat"}, permission = "partychat", desc = "<message>")
+@Command(names = {"pc", "pchat", "partychat"}, permission = "partychat", desc = "<message>")
 public class PartyChatCommand implements CommandClass {
 
     @Inject private ChatManager chatManager;
