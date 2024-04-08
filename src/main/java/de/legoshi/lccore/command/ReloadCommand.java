@@ -3,7 +3,6 @@ package de.legoshi.lccore.command;
 import de.legoshi.lccore.Linkcraft;
 import de.legoshi.lccore.util.message.Message;
 import de.legoshi.lccore.util.message.MessageUtil;
-import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
