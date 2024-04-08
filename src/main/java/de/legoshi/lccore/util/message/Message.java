@@ -15,6 +15,8 @@ public enum Message {
     ON_DISABLE_MESSAGE("§b§lLinkcraft§r§b is restarting...", MessageType.SYSTEM),
     ILLEGAL_CHARACTER("§bYou cannot use ·!", MessageType.SYSTEM),
     RELOAD_COMPLETE("§aReload complete!", MessageType.SYSTEM),
+    GLOBAL_IS_MUTED("§cGlobal chat is currently muted", MessageType.SYSTEM),
+    GLOBAL_MUTE("§aGlobal chat is now {0}!", MessageType.SYSTEM),
 
     // Logging
     CONFIG_LOADING_ERR("Error loading {0}", MessageType.LOGGING),
@@ -149,6 +151,7 @@ public enum Message {
     // Tag Errors
     TAGS_INVALID_RARITY("§cInvalid tag rarity!", MessageType.TAGS_ERROR),
     TAGS_INVALID_TYPE("§cInvalid tag type!", MessageType.TAGS_ERROR),
+    TAGS_INVALID_PAGE("§cInvalid page number!", MessageType.TAGS_ERROR),
     TAGS_REMOVE_ERROR("§cError when deleting tag.", MessageType.TAGS_ERROR),
     TAGS_HASNT_UNLOCKED("§cPlayer does not have a tag with the id {0}", MessageType.TAGS_ERROR),
     TAGS_HASNT_UNLOCKED_SELF("§cYou do not own the tag: §r{0}", MessageType.TAGS_ERROR),

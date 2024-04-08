@@ -35,11 +35,6 @@ public class AllChatCommand implements CommandClass {
 
             Player player = (Player)sender;
 
-            if(punishmentManager.isPunished(player, PunishmentType.MUTE)) {
-                MessageUtil.send(Message.PUNISH_YOU_ARE_MUTED, player);
-                return;
-            }
-
             if(punishmentManager.isPunished(player, PunishmentType.FULL_MUTE)) {
                 MessageUtil.send(Message.PUNISH_YOU_ARE_FULL_MUTED, player);
                 return;

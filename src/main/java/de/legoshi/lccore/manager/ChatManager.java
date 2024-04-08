@@ -12,6 +12,8 @@ import de.legoshi.lccore.util.PlayerDisplayBuilder;
 import de.legoshi.lccore.util.Utils;
 import de.legoshi.lccore.util.message.Message;
 import de.legoshi.lccore.util.message.MessageUtil;
+import lombok.Getter;
+import lombok.Setter;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Sound;
@@ -40,6 +42,7 @@ public class ChatManager {
     private final Map<String, Function<Player, String>> papiMap = new HashMap<>();
     private final Map<String, List<String>> ignores = new HashMap<>();
     private final Map<String, GuiMessage> captureGuiMessages = new HashMap<>();
+    @Getter @Setter private boolean globalChatMuted = false;
 
 
     public void initPapiMap() {
@@ -222,10 +225,6 @@ public class ChatManager {
 
         switch (getChannel(player)) {
             case GLOBAL:
-                if(punishmentManager.isPunished(player, PunishmentType.MUTE)) {
-                    MessageUtil.send(Message.PUNISH_YOU_ARE_MUTED, player);
-                    return;
-                }
                 sendGlobalMessage(player, message);
                 break;
             case PARTY:
@@ -338,6 +337,16 @@ public class ChatManager {
     }
 
     public void sendGlobalMessage(Player player, String message) {
+        if(punishmentManager.isPunished(player, PunishmentType.MUTE)) {
+            MessageUtil.send(Message.PUNISH_YOU_ARE_MUTED, player);
+            return;
+        }
+
+        if(globalChatMuted && !player.hasPermission("linkcraft.globalchat.bypass")) {
+            MessageUtil.send(Message.GLOBAL_IS_MUTED, player);
+            return;
+        }
+
         String globalMessage = globalChat(player, message);
         MessageUtil.broadcast(getGlobalChatFromRecipients(player), globalMessage, false);
         MessageUtil.log("[" + player.getName() + "] " + globalMessage, false);
