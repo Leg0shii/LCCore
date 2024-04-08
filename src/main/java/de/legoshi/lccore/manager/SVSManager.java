@@ -5,14 +5,14 @@ import de.czymm.serversigns.ServerSignsPlugin;
 import de.czymm.serversigns.parsing.CommandType;
 import de.czymm.serversigns.parsing.command.ServerSignCommand;
 import de.czymm.serversigns.signs.ServerSign;
+import de.czymm.serversigns.signs.ServerSignManager;
 import de.legoshi.lccore.util.svs.SignClickType;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.block.Block;
 import org.bukkit.block.Sign;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 public class SVSManager {
     public void createServerSign(Location location, String cmd) {
@@ -40,6 +40,14 @@ public class SVSManager {
         return (ServerSignsPlugin) Bukkit.getPluginManager().getPlugin("ServerSigns");
     }
 
+    private ServerSignManager getSVSManager() {
+        return getSVS().serverSignsManager;
+    }
+
+    private Collection<ServerSign> getSigns() {
+        return getSVSManager().getSigns();
+    }
+
     private void saveServerSign(ServerSign serverSign) {
         getSVS().serverSignsManager.save(serverSign);
     }
@@ -54,6 +62,16 @@ public class SVSManager {
         signState.update();
     }
 
-
-
+    public List<Location> getTagSVSLocation(String identifier) {
+        List<Location> locations = new ArrayList<>();
+        for(ServerSign sign : getSigns()) {
+            for(ServerSignCommand cmd : sign.getCommands()) {
+                String[] args = cmd.getUnformattedCommand().split(" ");
+                if(args.length == 4 && args[0].equalsIgnoreCase("tags") && args[1].equalsIgnoreCase("unlock") && args[2].equals(identifier)) {
+                    locations.add(sign.getLocation());
+                }
+            }
+        }
+        return locations;
+    }
 }

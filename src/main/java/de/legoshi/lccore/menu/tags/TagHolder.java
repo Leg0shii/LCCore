@@ -3,6 +3,7 @@ package de.legoshi.lccore.menu.tags;
 import de.legoshi.lccore.Linkcraft;
 import de.legoshi.lccore.manager.ChatManager;
 import de.legoshi.lccore.manager.PlayerManager;
+import de.legoshi.lccore.manager.SVSManager;
 import de.legoshi.lccore.manager.TagManager;
 import de.legoshi.lccore.menu.GUIScrollablePane;
 import de.legoshi.lccore.menu.GuiMessage;
@@ -17,7 +18,9 @@ import de.legoshi.lccore.util.*;
 import de.legoshi.lccore.util.message.Message;
 import de.legoshi.lccore.util.message.MessageUtil;
 import de.themoep.inventorygui.*;
+import net.md_5.bungee.api.chat.TextComponent;
 import net.wesjd.anvilgui.AnvilGUI;
+import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
@@ -36,6 +39,7 @@ public class TagHolder extends GUIScrollablePane {
     @Inject private PlayerManager playerManager;
     @Inject private TagManager tagManager;
     @Inject private ChatManager chatManager;
+    @Inject private SVSManager svsManager;
 
     public enum TagOwnershipFilter { ALL, COLLECTED, UNCOLLECTED }
     public enum TagSort { OWNERSHIP, CREATED, RARITY, OWNER_COUNT }
@@ -49,6 +53,7 @@ public class TagHolder extends GUIScrollablePane {
     private boolean ignoreOwnershipRequirement;
     private boolean viewAllTags;
     private boolean editTags;
+    private boolean teleportTags;
     private TagMenuData tagMenuData;
     private List<TagDTO> tags;
 
@@ -95,6 +100,7 @@ public class TagHolder extends GUIScrollablePane {
         this.ignoreOwnershipRequirement = player.hasPermission("linkcraft.tags.all");
         this.viewAllTags = player.hasPermission("linkcraft.tags.viewall");
         this.editTags = player.hasPermission("linkcraft.tags.edit");
+        this.teleportTags = player.hasPermission("linkcraft.tags.teleport");
         fullCloseOnEsc();
         registerGuiElements();
 
@@ -293,6 +299,11 @@ public class TagHolder extends GUIScrollablePane {
 
         GUIDescriptionBuilder tagGuiActions = base.action(GUIAction.LEFT_CLICK, "Equip")
                 .action(GUIAction.RIGHT_CLICK, "Tag Owners");
+
+        if(teleportTags) {
+            tagGuiActions.action(GUIAction.SHIFT_LEFT_CLICK, "Teleport");
+        }
+
         if(editTags) {
             tagGuiActions.action(GUIAction.SHIFT_RIGHT_CLICK, "Edit Tag");
         }
@@ -312,6 +323,22 @@ public class TagHolder extends GUIScrollablePane {
                     getPage();
                     current.draw();
                 });
+            }
+            else if(teleportTags && click.getType().isShiftClick() && click.getType().isLeftClick()) {
+                List<Location> locations = svsManager.getTagSVSLocation(tagId);
+                if(locations.isEmpty()) {
+                    MessageUtil.send(Message.TAGS_TELEPORT_NO_LOC, holder);
+                }
+                else if(locations.size() == 1) {
+                    MessageUtil.send(Message.TAGS_TELEPORT, holder);
+                    Linkcraft.sync(() -> holder.teleport(locations.get(0)));
+                } else {
+                    MessageUtil.send(Message.TAGS_TELEPORT_MORE, holder);
+                    for(int i = 0; i < locations.size(); i++) {
+                        TextComponent comp = MessageUtil.createClickable("§e" + (i+1) + ". §a" + Utils.getLocationDisplay(locations.get(i)),  (i+1) +". Teleport to SVS", "/wtp " + Utils.getLocationForCommand(locations.get(i)));
+                        holder.spigot().sendMessage(comp);
+                    }
+                }
             }
             else if(click.getType().isRightClick()) {
                 injector.getInstance(TagLeaderboard.class).openGui(holder, current, tagId, leaderboardDisplay, tagData.getTag().getDisplay());

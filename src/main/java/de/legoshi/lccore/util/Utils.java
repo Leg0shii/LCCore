@@ -56,6 +56,14 @@ public class Utils {
         return l.getWorld().getName() + ":" + l.getX() + ":" + l.getY() + ":" + l.getZ() + ":" + l.getYaw() + ":" + l.getPitch();
     }
 
+    public static String getLocationDisplay(Location l) {
+        return l.getWorld().getName() + ":" + l.getBlockX() + ":" + l.getBlockY() + ":" + l.getBlockZ();
+    }
+
+    public static String getLocationForCommand(Location l) {
+        return l.getWorld().getName() + " " + l.getBlockX() + " " + l.getBlockY() + " " + l.getBlockZ();
+    }
+
     public static ConfigAccessor getPlayerConfig(Player player) {
         return new ConfigAccessor(Linkcraft.getPlugin(), Linkcraft.getPlugin().getPlayerdataFolder(), player.getUniqueId().toString() + ".yml");
     }

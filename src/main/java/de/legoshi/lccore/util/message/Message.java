@@ -141,12 +141,14 @@ public enum Message {
     TAGS_DELETE_TAG("§aSuccessfully deleted tag: §r{0} §r({1}/{2})", MessageType.TAGS),
     TAGS_ADD_SUCCESS("§aSuccessfully added tag §r({0})§a: §r{2}", MessageType.TAGS),
     TAGS_SELECT("§aYour tag has been set to: §r{0}", MessageType.TAGS),
+    TAGS_TELEPORT("§aTeleporting to tag location...", MessageType.TAGS),
     TAGS_SELECT_OTHER("§a{0}'s tag has been set to: §r{1}", MessageType.TAGS),
     TAGS_UNLOCKED_TAG("{0}§r §7unlocked, check out §6/tags§r!", MessageType.TAGS),
     TAGS_GAVE_TAG("§aSuccessfully gave {0} tag: §r{1} §r({2})", MessageType.TAGS),
     TAGS_SIGN_CREATED("§aTag sign for §r{0}§a created!", MessageType.TAGS),
     TAGS_REMOVE_TAG("§aSuccessfully removed {0}'s tag: §r{1}", MessageType.TAGS),
     TAGS_UNSET_TAG("§aYour tag has been unset", MessageType.TAGS),
+    TAG_SIGN_LOCATION("§aSVS found at: ", MessageType.TAGS),
 
     // Tag Errors
     TAGS_INVALID_RARITY("§cInvalid tag rarity!", MessageType.TAGS_ERROR),
@@ -175,6 +177,9 @@ public enum Message {
     TAGS_MUST_HAVE_DISPLAY("§cThe tag must have a display set!", MessageType.TAGS_ERROR),
     TAGS_CANT_EDIT_NAME("§cHi staff. To unfortunately to edit the name, tags need to be deleted and remade (DB primary key). I was too lazy to automate this niche feature. sorry -dk", MessageType.TAGS_ERROR),
     TAGS_UNCOMMON_TAG_BLOCK("§cYou just made ({0}, {1}, {2}, {3}) a tag sign, did you mean to do that?", MessageType.TAGS_ERROR),
+    TAGS_TELEPORT_MORE("§cMore than one SVS detected for this tag! Listing locations...", MessageType.TAGS_ERROR),
+    TAGS_TELEPORT_DESC("§e{0}: §a{1}", MessageType.TAGS_ERROR),
+    TAGS_TELEPORT_NO_LOC("§cNo SVS locations found for this tag", MessageType.TAGS_ERROR),
 
     // Punishment
     PUNISH_FINISHED("§aYou no longer have a {0}!", MessageType.PUNISHMENT),
