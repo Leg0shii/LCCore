@@ -7,8 +7,10 @@ import de.legoshi.lccore.database.models.PlayerTag;
 import de.legoshi.lccore.database.models.Tag;
 import de.legoshi.lccore.tag.*;
 import de.legoshi.lccore.util.CommandException;
+import de.legoshi.lccore.util.ItemUtil;
 import de.legoshi.lccore.util.message.Message;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.ItemStack;
 import team.unnamed.inject.Inject;
 
 import javax.persistence.EntityManager;
@@ -394,7 +396,8 @@ public class TagManager {
     }
 
     public List<TagOwnedDTO> getTagLBData(String tagId) {
-        String hql = "SELECT pt.player.id, pt.unlocked FROM PlayerTag pt " +
+        String hql = "SELECT pt.player.id, pt.player.name, ps.skull, pt.unlocked FROM PlayerTag pt " +
+                "LEFT JOIN PlayerSkull ps ON ps.id=pt.player.id " +
                 "WHERE pt.tag = :tag " +
                 "ORDER BY pt.unlocked";
 
@@ -403,8 +406,11 @@ public class TagManager {
         query.setParameter("tag", new Tag(tagId));
 
         List<TagOwnedDTO> results = new ArrayList<>();
-        for(Object[] ownedTag : query.getResultList()) {
-            results.add(new TagOwnedDTO((String)ownedTag[0], (Date)ownedTag[1]));
+        List<Object[]> queryResult = query.getResultList();
+        for(Object[] ownedTag : queryResult) {
+            String skullBase64 = (String)ownedTag[2];
+            ItemStack skull = skullBase64 != null ? ItemUtil.fromBase64(skullBase64) : null;
+            results.add(new TagOwnedDTO((String)ownedTag[0], (String)ownedTag[1], skull, (Date)ownedTag[3]));
         }
 
         em.close();

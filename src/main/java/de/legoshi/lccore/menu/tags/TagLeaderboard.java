@@ -1,6 +1,7 @@
 package de.legoshi.lccore.menu.tags;
 
 import de.legoshi.lccore.Linkcraft;
+import de.legoshi.lccore.manager.PlayerManager;
 import de.legoshi.lccore.manager.TagManager;
 import de.legoshi.lccore.menu.GUIScrollablePane;
 import de.legoshi.lccore.tag.TagOwnedDTO;
@@ -26,6 +27,7 @@ import java.util.UUID;
 public class TagLeaderboard extends GUIScrollablePane {
 
     @Inject private TagManager tagManager;
+    @Inject private PlayerManager playerManager;
 
     private String tagId;
     private String tagDisplay;
@@ -72,9 +74,19 @@ public class TagLeaderboard extends GUIScrollablePane {
     private StaticGuiElement addOwner(TagOwnedDTO owned, int ownersIdx) {
         String uuid = owned.getUuid();
         Date date = owned.getDate();
+        String name = owned.getName();
         String dateStr = GUIUtil.ISOString(date).equals("1970-01-01") ? "N/A" : GUIUtil.ISOString(date);
-        OfflinePlayer offlinePlayer = Bukkit.getOfflinePlayer(UUID.fromString(uuid));
-        String name = offlinePlayer.getName();
+        ItemStack skull = owned.getSkull();
+        if(name == null || name.isEmpty()) {
+            OfflinePlayer offlinePlayer = Bukkit.getOfflinePlayer(UUID.fromString(uuid));
+            name = offlinePlayer.getName();
+            playerManager.updateDBName(uuid, name);
+        }
+
+        if(skull == null) {
+            skull = HeadUtil.playerHead(name);
+            playerManager.updateSkull(uuid, skull);
+        }
 
         if(name != null) {
             GUIDescriptionBuilder validPlayerDesc = new GUIDescriptionBuilder()
@@ -85,7 +97,8 @@ public class TagLeaderboard extends GUIScrollablePane {
                 validPlayerDesc.action(GUIAction.SHIFT_RIGHT_CLICK, "Remove Tag");
             }
 
-            return new StaticGuiElement('g', HeadUtil.playerHead(name), click -> deleteTag(click, uuid, name, ownersIdx), validPlayerDesc.build());
+            String finalName = name;
+            return new StaticGuiElement('g', HeadUtil.playerHead(name), click -> deleteTag(click, uuid, finalName, ownersIdx), validPlayerDesc.build());
         }
         else {
             GUIDescriptionBuilder invalidPlayerDesc = new GUIDescriptionBuilder()

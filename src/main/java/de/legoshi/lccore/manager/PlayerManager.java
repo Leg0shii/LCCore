@@ -4,8 +4,11 @@ import de.legoshi.lccore.Linkcraft;
 import de.legoshi.lccore.database.DBManager;
 import de.legoshi.lccore.database.models.LCPlayerDB;
 import de.legoshi.lccore.database.models.PlayerPreferences;
+import de.legoshi.lccore.database.models.PlayerSkull;
 import de.legoshi.lccore.player.display.LCPlayer;
 import de.legoshi.lccore.util.ConfigAccessor;
+import de.legoshi.lccore.util.HeadUtil;
+import de.legoshi.lccore.util.ItemUtil;
 import de.legoshi.lccore.util.Utils;
 import net.minecraft.server.v1_8_R3.ChatMessage;
 import net.minecraft.server.v1_8_R3.PacketPlayOutTitle;
@@ -17,6 +20,7 @@ import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.craftbukkit.v1_8_R3.CraftServer;
 import org.bukkit.craftbukkit.v1_8_R3.entity.CraftPlayer;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.ItemStack;
 import team.unnamed.inject.Inject;
 
 import javax.persistence.EntityManager;
@@ -36,11 +40,23 @@ public class PlayerManager {
     public void playerJoin(Player player) {
         initDbData(player);
         updateName(player);
+        updateSkull(player);
         players.put(player.getUniqueId().toString(), loadPlayer(player));
         player.setDisplayName(chatManager.rankNickStar(player));
         visibilityManager.hideIfHiding(player);
         chatManager.onJoin(player);
         clearTitle(player);
+    }
+
+    public void updateDBName(String uuid, String name) {
+        LCPlayerDB lcPlayerDB = getPlayerDB(uuid);
+        if(lcPlayerDB != null) {
+            lcPlayerDB.setName(name);
+            db.update(lcPlayerDB);
+        } else {
+            lcPlayerDB = new LCPlayerDB(uuid, name);
+            db.persist(lcPlayerDB);
+        }
     }
 
     private void initDbData(Player player) {
@@ -125,6 +141,32 @@ public class PlayerManager {
         FileConfiguration config = playerData.getConfig();
         config.set("username", player.getName());
         playerData.saveConfig();
+    }
+
+    private void updateSkull(Player player) {
+        PlayerSkull playerSkull = db.find(player.getUniqueId().toString(), PlayerSkull.class);
+        if(playerSkull == null) {
+            playerSkull = new PlayerSkull();
+            playerSkull.setId(player.getUniqueId().toString());
+            playerSkull.setSkull(ItemUtil.toBase64(HeadUtil.playerHead(player.getName())));
+            db.persist(playerSkull);
+        } else {
+            playerSkull.setSkull(ItemUtil.toBase64(HeadUtil.playerHead(player.getName())));
+            db.update(playerSkull);
+        }
+    }
+
+    public void updateSkull(String uuid, ItemStack skull) {
+        PlayerSkull playerSkull = db.find(uuid, PlayerSkull.class);
+        if(playerSkull == null) {
+            playerSkull = new PlayerSkull();
+            playerSkull.setId(uuid);
+            playerSkull.setSkull(ItemUtil.toBase64(skull));
+            db.persist(playerSkull);
+        } else {
+            playerSkull.setSkull(ItemUtil.toBase64(skull));
+            db.update(playerSkull);
+        }
     }
 
     private void updateNameDB(Player player) {
