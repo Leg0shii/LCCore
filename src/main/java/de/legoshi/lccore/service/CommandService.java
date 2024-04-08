@@ -30,7 +30,13 @@ public class CommandService implements Service {
     @Inject private CommandManager commandManager;
     @Inject private Injector injector;
 
-    private static final String[] commandsToUnregister = {"pl", "nick", "realname", "ac", "helpop", "msg", "message", "r", "reply", "t", "tell", "w", "whisper", "ignore", "togglechat", "p", "tags", "mute"};
+    private static final String[] commandsToUnregister =
+                    {
+                            "pl", "nick", "realname", "ac", "helpop",
+                            "msg", "message", "r", "reply", "t", "tell",
+                            "w", "whisper", "ignore", "togglechat", "p",
+                            "tags", "mute", "unmute"
+                    };
 
     @Override
     public void start() {
