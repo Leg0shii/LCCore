@@ -46,6 +46,10 @@ public class GUIDescriptionBuilder {
         lines.add(ChatColor.RESET + text);
     }
 
+    private void replaceLine(String text, int replaceAt) {
+        lines.set(replaceAt, ChatColor.RESET + text);
+    }
+
     public GUIDescriptionBuilder header(String name) {
         String updated = CommonUtil.format(header, "{colour}", headerColour);
         addLine(CommonUtil.format(updated, "{0}", name));
@@ -57,6 +61,14 @@ public class GUIDescriptionBuilder {
         String updatedK = CommonUtil.format(this.key, "{colour}", keyColour);
         String updatedK2 = CommonUtil.format(updatedK, "{0}", key);
         addLine(updated + " " + updatedK2 + ChatColor.RESET + " " + valueDefault + value);
+        return this;
+    }
+
+    public GUIDescriptionBuilder pair(String key, String value, int replaceAt) {
+        String updated = CommonUtil.format(prefix, "{colour}", prefixColour);
+        String updatedK = CommonUtil.format(this.key, "{colour}", keyColour);
+        String updatedK2 = CommonUtil.format(updatedK, "{0}", key);
+        replaceLine(updated + " " + updatedK2 + ChatColor.RESET + " " + valueDefault + value, replaceAt);
         return this;
     }
 

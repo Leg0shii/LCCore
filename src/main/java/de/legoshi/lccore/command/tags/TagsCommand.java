@@ -23,7 +23,8 @@ import team.unnamed.inject.Injector;
     TagsUnlockCommand.class,
     TagsSignCommand.class,
     TagsRemoveCommand.class,
-    TagsEquipCommand.class
+    TagsEquipCommand.class,
+    TagsSearchCommand.class
 })
 public class TagsCommand implements CommandClass {
 

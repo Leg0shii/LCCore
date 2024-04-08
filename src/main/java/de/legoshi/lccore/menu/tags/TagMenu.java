@@ -4,8 +4,10 @@ import de.legoshi.lccore.Linkcraft;
 import de.legoshi.lccore.manager.TagManager;
 import de.legoshi.lccore.menu.GUIPane;
 import de.legoshi.lccore.tag.TagMenuData;
+import de.legoshi.lccore.tag.TagRarity;
 import de.legoshi.lccore.tag.TagType;
 import de.legoshi.lccore.util.Dye;
+import de.legoshi.lccore.util.GUIDescriptionBuilder;
 import de.legoshi.lccore.util.HeadUtil;
 import de.legoshi.lccore.util.ItemUtil;
 import de.legoshi.lccore.util.message.Message;
@@ -27,9 +29,15 @@ public class TagMenu extends GUIPane {
     private HashMap<TagType, Integer> tagCount;
     private HashMap<TagType, Integer> playerTagCount;
     private HashMap<TagType, Integer> playerUnobtainableTagCount;
+
+    private HashMap<TagRarity, Integer> tagRarityCount;
+    private HashMap<TagRarity, Integer> playerRarityTagCount;
+    private HashMap<TagRarity, Integer> playerUnobtainableRarityTagCount;
+
     private TagMenuData tagMenuData;
     private int tagCountTotal;
     private int playerTagCountTotal;
+    private int totalUnobtainableCount;
 
     private final String[] guiSetup = {
             "ddmmcmmdd",
@@ -46,8 +54,12 @@ public class TagMenu extends GUIPane {
         this.tagCount = tagManager.tagCounts();
         this.playerTagCount = tagManager.tagCountPlayer(player);
         this.playerUnobtainableTagCount = tagManager.tagCountPlayerUnobtainable(player);
+        this.tagRarityCount = tagManager.tagRarityCounts();
+        this.playerRarityTagCount = tagManager.tagRarityCountPlayer(player);
+        this.playerUnobtainableRarityTagCount = tagManager.tagRarityCountPlayerUnobtainable(player);
         this.tagMenuData = tagManager.getTagMenuData(player);
         this.tagCountTotal = tagCount.values().stream().mapToInt(Integer::intValue).sum() + playerUnobtainableTagCount.values().stream().mapToInt(Integer::intValue).sum();
+        this.totalUnobtainableCount = playerUnobtainableTagCount.values().stream().mapToInt(Integer::intValue).sum();
         this.playerTagCountTotal = playerTagCount.values().stream().mapToInt(Integer::intValue).sum();
 
 
@@ -61,25 +73,57 @@ public class TagMenu extends GUIPane {
 
     @Override
     protected void registerGuiElements() {
+        GUIDescriptionBuilder hiddenBuilder = new GUIDescriptionBuilder()
+                .raw("&d&lHidden Tags" + getMenuTitle(TagType.HIDDEN));
+
+        int hiddenUnobtainable = playerUnobtainableTagCount.get(TagType.HIDDEN);
+        if(hiddenUnobtainable > 0) {
+            hiddenBuilder.blank().raw("§c" + hiddenUnobtainable + " Unobtainable Owned");
+        }
+
         StaticGuiElement hiddenElement = new StaticGuiElement('v', HeadUtil.hiddenHead, click -> {
             injector.getInstance(TagHolder.class).openGui(this.holder, this.current, TagType.HIDDEN, playerTagCount.get(TagType.HIDDEN), tagMenuData);
             return true;
-        }, "&d&lHidden Tags" + getMenuTitle(TagType.HIDDEN));
+        }, hiddenBuilder.build());
+
+        GUIDescriptionBuilder victorBuilder = new GUIDescriptionBuilder()
+                .raw("&6&lVictor Tags" + getMenuTitle(TagType.VICTOR));
+
+        int victorUnobtainable = playerUnobtainableTagCount.get(TagType.VICTOR);
+        if(victorUnobtainable > 0) {
+            victorBuilder.blank().raw("§c" + victorUnobtainable + " Unobtainable Owned");
+        }
 
         StaticGuiElement victorElement = new StaticGuiElement('w', HeadUtil.victorHead, click -> {
             injector.getInstance(TagHolder.class).openGui(this.holder, this.current, TagType.VICTOR, playerTagCount.get(TagType.VICTOR), tagMenuData);
             return true;
-        }, "&6&lVictor Tags" + getMenuTitle(TagType.VICTOR));
+        }, victorBuilder.build());
+
+        GUIDescriptionBuilder eventBuilder = new GUIDescriptionBuilder()
+                .raw("&c&lEvent Tags" + getMenuTitle(TagType.EVENT));
+
+        int eventUnobtainable = playerUnobtainableTagCount.get(TagType.EVENT);
+        if(eventUnobtainable > 0) {
+            eventBuilder.blank().raw("§c" + eventUnobtainable + " Unobtainable Owned");
+        }
 
         StaticGuiElement eventElement = new StaticGuiElement('x', HeadUtil.getSeasonalHead(), click -> {
             injector.getInstance(TagHolder.class).openGui(this.holder, this.current, TagType.EVENT, playerTagCount.get(TagType.EVENT), tagMenuData);
             return true;
-        }, "&c&lEvent Tags" + getMenuTitle(TagType.EVENT));
+        }, eventBuilder.build());
+
+        GUIDescriptionBuilder specialBuilder = new GUIDescriptionBuilder()
+                .raw("&3&lSpecial Tags" + getMenuTitle(TagType.SPECIAL));
+
+        int specialUnobtainable = playerUnobtainableTagCount.get(TagType.SPECIAL);
+        if(specialUnobtainable > 0) {
+            specialBuilder.blank().raw("§c" + specialUnobtainable + " Unobtainable Owned");
+        }
 
         StaticGuiElement specialElement = new StaticGuiElement('y', HeadUtil.specialHead, click -> {
             injector.getInstance(TagHolder.class).openGui(this.holder, this.current, TagType.SPECIAL, playerTagCount.get(TagType.SPECIAL), tagMenuData);
             return true;
-        }, "&3&lSpecial Tags" + getMenuTitle(TagType.SPECIAL));
+        }, specialBuilder.build());
 
         ItemStack allTagsItem = new ItemStack(Material.NAME_TAG);
 
@@ -87,10 +131,24 @@ public class TagMenu extends GUIPane {
             ItemUtil.addGlow(allTagsItem);
         }
 
+        GUIDescriptionBuilder allBuilder = new GUIDescriptionBuilder()
+                .raw("&7&lAll Tags" + " (" + playerTagCountTotal + "/" + tagCountTotal + ")")
+                .blank();
+
+        for(TagRarity rarity : TagRarity.values()) {
+            allBuilder.pairCustom(rarity.display, " §7» §r", rarity.color + "" + playerRarityTagCount.get(rarity) + "/" + (tagRarityCount.get(rarity) + playerUnobtainableRarityTagCount.get(rarity)));
+        }
+
+        if(totalUnobtainableCount > 0) {
+            allBuilder.blank().raw("§c" + totalUnobtainableCount + " Unobtainable Owned");
+        }
+
         StaticGuiElement allElement = new StaticGuiElement('z', allTagsItem, click -> {
             injector.getInstance(TagHolder.class).openGui(this.holder, this.current, null, playerTagCountTotal, tagMenuData);
             return true;
-        }, "&7&lAll Tags" + " (" + playerTagCountTotal + "/" + tagCountTotal + ")");
+        }, allBuilder.build());
+
+
 
         StaticGuiElement resetTag = new StaticGuiElement('r', HeadUtil.resetHead, click -> {
             if(tagManager.hasTagSelected(holder)) {

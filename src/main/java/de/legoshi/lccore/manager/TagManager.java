@@ -15,6 +15,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.NoResultException;
 import javax.persistence.Query;
 import javax.persistence.TypedQuery;
+import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -205,9 +206,27 @@ public class TagManager {
         return counts;
     }
 
+    public HashMap<TagRarity, Integer> tagRarityCounts() {
+        String hql = "SELECT rarity, COUNT(t) FROM Tag t WHERE t.obtainable = true GROUP BY rarity";
+
+        HashMap<TagRarity, Integer> counts = new HashMap<>();
+        for(TagRarity rarity : TagRarity.values()) {
+            counts.put(rarity, 0);
+        }
+
+        EntityManager em = db.getEntityManager();
+        TypedQuery<Object[]> query = db.getEntityManager().createQuery(hql, Object[].class);
+
+        for (Object[] result : query.getResultList()) {
+            counts.put((TagRarity)result[0], (int)((long)result[1]));
+        }
+
+        em.close();
+        return counts;
+    }
+
     public HashMap<TagType, Integer> tagCountPlayer(Player player) {
         String hql = "SELECT t.type, COUNT(t) FROM PlayerTag p JOIN p.tag t WHERE p.player = :player " +
-//                "AND t.obtainable = true " + // this made it look weird
                 "GROUP BY t.type";
 
         HashMap<TagType, Integer> counts = new HashMap<>();
@@ -220,6 +239,48 @@ public class TagManager {
 
         for (Object[] result : query.getResultList()) {
             counts.put((TagType)result[0], (int)((long)result[1]));
+        }
+
+        em.close();
+        return counts;
+    }
+
+    public HashMap<TagRarity, Integer> tagRarityCountPlayer(Player player) {
+        String hql = "SELECT t.rarity, COUNT(t) FROM PlayerTag p JOIN p.tag t WHERE p.player = :player " +
+                "GROUP BY t.rarity";
+
+        HashMap<TagRarity, Integer> counts = new HashMap<>();
+        for(TagRarity rarity : TagRarity.values()) {
+            counts.put(rarity, 0);
+        }
+        EntityManager em = db.getEntityManager();
+        TypedQuery<Object[]> query = db.getEntityManager().createQuery(hql, Object[].class);
+        query.setParameter("player", playerManager.getPlayerDB(player));
+
+        for (Object[] result : query.getResultList()) {
+            counts.put((TagRarity)result[0], (int)((long)result[1]));
+        }
+
+        em.close();
+        return counts;
+    }
+
+    public HashMap<TagRarity, Integer> tagRarityCountPlayerUnobtainable(Player player) {
+        String hql = "SELECT t.rarity, COUNT(t) FROM PlayerTag p JOIN p.tag t WHERE p.player = :player " +
+                "AND t.obtainable = false " +
+                "GROUP BY t.rarity";
+
+        HashMap<TagRarity, Integer> counts = new HashMap<>();
+        for(TagRarity rarity : TagRarity.values()) {
+            counts.put(rarity, 0);
+        }
+
+        EntityManager em = db.getEntityManager();
+        TypedQuery<Object[]> query = db.getEntityManager().createQuery(hql, Object[].class);
+        query.setParameter("player", playerManager.getPlayerDB(player));
+
+        for (Object[] result : query.getResultList()) {
+            counts.put((TagRarity)result[0], (int)((long)result[1]));
         }
 
         em.close();
@@ -371,6 +432,98 @@ public class TagManager {
         em.close();
     }
 
+    public TagTopResultDTO getTagTopEntries(TagType type, int page, int volume, boolean all) {
+        String sql = "SELECT ROW_NUMBER() OVER(ORDER BY COUNT(pt.tag_id) DESC), p.name, COUNT(pt.tag_id) " +
+                "FROM lc_players p " +
+                "LEFT JOIN lc_player_tags pt ON p.id = pt.player_id " +
+                "LEFT JOIN lc_tags t ON pt.tag_id = t.name " +
+                "WHERE (? IS NULL OR t.type = ?) " +
+                "AND (? IS NULL OR t.obtainable = TRUE) " +
+                "GROUP BY p.id, p.name " +
+                "HAVING COUNT(pt.tag_id) > 0 " +
+                "ORDER BY COUNT(pt.tag_id) DESC ";
+
+        String typeName = type == null ? "" : type.name;
+        EntityManager em = db.getEntityManager();
+        Query query = em.createNativeQuery(sql);
+        query.setParameter(2, typeName);
+
+        if(type == null) {
+            query.setParameter(1, null);
+        } else {
+            query.setParameter(1, 1);
+        }
+
+        if(all) {
+            query.setParameter(3, null);
+        } else {
+            query.setParameter(3, 1);
+        }
+
+        TagTopResultDTO result = new TagTopResultDTO();
+        List<Object[]> temp = (List<Object[]>)query.getResultList();
+        result.setTotalPages((int)Math.ceil(temp.size() / 10.0));
+        int endIndex = (page + 1) * volume;
+        int startIndex = Math.min(page * volume, temp.size());
+        endIndex = Math.min(endIndex, temp.size());
+        List<Object[]> sublist = temp.subList(startIndex, endIndex);
+
+
+
+
+        List<TagTopEntry> entries = new ArrayList<>();
+
+
+        for(Object[] e : sublist) {
+            entries.add(new TagTopEntry(((BigInteger)e[0]).intValue(), (String)e[1], ((BigInteger)e[2]).intValue()));
+        }
+
+        result.setEntries(entries);
+
+        em.close();
+
+        return result;
+    }
+
+    public Integer serverTagCount(TagType type, boolean all) {
+        String hql = "SELECT COUNT(pt) FROM PlayerTag pt " +
+                "LEFT JOIN Tag t ON pt.tag = t.name " +
+                "WHERE (:ignoreType is null or t.type = :type) " +
+                "AND (:ignoreUnobtainable is null or t.obtainable = true)";
+
+        EntityManager em = db.getEntityManager();
+        TypedQuery<Long> query = em.createQuery(hql, Long.class);
+        query.setParameter("type", type);
+
+        if(type == null) {
+            query.setParameter("ignoreType", null);
+        } else {
+            query.setParameter("ignoreType", 1);
+        }
+
+        if(all) {
+            query.setParameter("ignoreUnobtainable", null);
+        } else {
+            query.setParameter("ignoreUnobtainable", 1);
+        }
+        try {
+            return query.getSingleResult().intValue();
+        } catch (NoResultException e) {
+            return null;
+        } finally {
+            em.close();
+        }
+    }
+
+    public TagTopDTO getTagTopData(TagType type, int page, int volume, boolean all) {
+        TagTopResultDTO tagTopResults = getTagTopEntries(type, page, volume, all);
+        List<TagTopEntry> entries = tagTopResults.getEntries();
+        int currentPage = page + 1;
+        int totalPageCount = tagTopResults.getTotalPages();
+        int serverCount = serverTagCount(type, all);
+        return new TagTopDTO(entries, currentPage, totalPageCount, serverCount);
+    }
+
     @SuppressWarnings("unused")
     public List<String> getTagTypes() {
         List<String> types = new ArrayList<>();
@@ -380,6 +533,18 @@ public class TagManager {
 
         return types;
     }
+
+    @SuppressWarnings("unused")
+    public List<String> getTagTypesAndAll() {
+        List<String> types = new ArrayList<>();
+        for(TagType type : TagType.values()) {
+            types.add(type.name().toLowerCase());
+        }
+        types.add("all");
+
+        return types;
+    }
+
 
     @SuppressWarnings("unused")
     public List<String> getTagRarities() {

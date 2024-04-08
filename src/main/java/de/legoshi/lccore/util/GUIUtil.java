@@ -256,6 +256,10 @@ public interface GUIUtil {
         return ChatColor.translateAlternateColorCodes('&', s);
     }
 
+    static String decolorize(String s) {
+        return ChatColor.stripColor(s);
+    }
+
     static String ISOString(Date d) {
         return new SimpleDateFormat("yyyy-MM-dd").format(d);
     }

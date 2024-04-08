@@ -5,6 +5,7 @@ import de.legoshi.lccore.manager.ChatManager;
 import de.legoshi.lccore.manager.PlayerManager;
 import de.legoshi.lccore.manager.TagManager;
 import de.legoshi.lccore.menu.GUIScrollablePane;
+import de.legoshi.lccore.menu.GuiMessage;
 import de.legoshi.lccore.tag.TagDTO;
 import de.legoshi.lccore.tag.TagMenuData;
 import de.legoshi.lccore.tag.TagType;
@@ -16,6 +17,7 @@ import de.legoshi.lccore.util.*;
 import de.legoshi.lccore.util.message.Message;
 import de.legoshi.lccore.util.message.MessageUtil;
 import de.themoep.inventorygui.*;
+import net.wesjd.anvilgui.AnvilGUI;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
@@ -23,6 +25,7 @@ import team.unnamed.inject.Inject;
 import team.unnamed.inject.Injector;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 import java.util.function.BiConsumer;
@@ -35,10 +38,13 @@ public class TagHolder extends GUIScrollablePane {
     @Inject private ChatManager chatManager;
 
     public enum TagOwnershipFilter { ALL, COLLECTED, UNCOLLECTED }
-    public enum TagOrder { OWNERSHIP, CREATED, RARITY, OWNER_COUNT }
+    public enum TagSort { OWNERSHIP, CREATED, RARITY, OWNER_COUNT }
+    public enum TagOrder { DESCENDING, ASCENDING }
 
     private TagOwnershipFilter ownershipFilter = TagOwnershipFilter.ALL;
-    private TagOrder tagOrder = TagOrder.OWNERSHIP;
+    private TagSort tagSort = TagSort.OWNERSHIP;
+    private TagOrder tagOrder = TagOrder.DESCENDING;
+    private String tagSearch = "";
     private TagType tagType;
     private boolean ignoreOwnershipRequirement;
     private boolean viewAllTags;
@@ -52,11 +58,16 @@ public class TagHolder extends GUIScrollablePane {
             "sgggggggs",
             "sgggggggs",
             "ddmmcmmdd",
-            "lo--q--fr",
+            "lox-q-pfr",
     };
 
     private final BiConsumer<GuiElement.Click, TagOwnershipFilter> tagOwnershipSetter = (click, ownershipFilterOption) -> {
         this.ownershipFilter = ownershipFilterOption;
+        changeOption('g', click);
+    };
+
+    private final BiConsumer<GuiElement.Click, TagSort> tagSortSetter = (click, sortOption) -> {
+        this.tagSort = sortOption;
         changeOption('g', click);
     };
 
@@ -72,8 +83,12 @@ public class TagHolder extends GUIScrollablePane {
     }
 
     public void openGui(Player player, InventoryGui parent, TagType type, int count, TagMenuData tagMenuData) {
+        openGui(player, parent, type, count, tagMenuData, "");
+    }
 
+    public void openGui(Player player, InventoryGui parent, TagType type, int count, TagMenuData tagMenuData, String search) {
         super.openGui(player, parent);
+        this.tagSearch = search;
         this.tagType = type;
         this.tagMenuData = tagMenuData;
         this.current = new InventoryGui(Linkcraft.getPlugin(), player, formattedName() + " Tags " + "(" + count + ")", guiSetup);
@@ -91,13 +106,60 @@ public class TagHolder extends GUIScrollablePane {
         this.tags = getTags();
         getPage();
 
-        GuiStateElement sortTags = new GuiStateElement('f',
+        GuiStateElement filterTags = new GuiStateElement('f',
                 GUIUtil.createSelectionMenu(TagOwnershipFilter.class, new ItemStack(Material.HOPPER), "Filter by", tagOwnershipSetter, false)
         );
 
-        GuiStateElement orderTags = new GuiStateElement('o',
-                GUIUtil.createSelectionMenu(TagOrder.class, new ItemStack(Material.REDSTONE_COMPARATOR), "Order by", tagOrderSetter, false)
+        GuiStateElement sortTags = new GuiStateElement('o',
+                GUIUtil.createSelectionMenu(TagSort.class, new ItemStack(Material.REDSTONE_COMPARATOR), "Sort by", tagSortSetter, false)
         );
+
+        GuiStateElement orderTags = new GuiStateElement('x',
+                GUIUtil.createSelectionMenu(TagOrder.class, new ItemStack(Material.DETECTOR_RAIL), "Order by", tagOrderSetter, false)
+        );
+
+        GUIDescriptionBuilder searchTagsDesc = new GUIDescriptionBuilder().raw("Search")
+                .pair("Current", tagSearch)
+                .action(GUIAction.LEFT_CLICK, "Edit Search (Anvil)")
+                .action(GUIAction.RIGHT_CLICK, "Edit Search (Chat)")
+                .action(GUIAction.SHIFT_RIGHT_CLICK, "Clear Search");
+
+        StaticGuiElement searchTags = new StaticGuiElement('p', new ItemStack(Material.COMPASS), click -> true, searchTagsDesc.build());
+
+        searchTags.setAction(click -> {
+            if(click.getType().isShiftClick() && click.getType().isRightClick()) {
+                tagSearch = "";
+                searchTags.setText(searchTagsDesc.pair("Current", tagSearch, 1).build());
+                changeOption('g', click);
+            }
+            else if(click.getType().isLeftClick()) {
+                new AnvilGUI.Builder().onComplete((completion) -> {
+                    tagSearch = completion.getText();
+
+                    searchTags.setText(searchTagsDesc.pair("Current", tagSearch, 1).build());
+                    changeOption('g', click);
+                    LCSound.SUCCESS.playLater(holder);
+
+                    return Collections.singletonList(AnvilGUI.ResponseAction.run(() -> {
+                        current.show(holder);
+                    }));
+                })
+                .onClose(close -> current.show(holder))
+                .title("Tag Search")
+                .itemLeft(ItemUtil.setItemText(new ItemStack(Material.PAPER), tagSearch))
+                .plugin(Linkcraft.getPlugin())
+                .open(holder);
+            } else if(click.getType().isRightClick()) {
+                current.close();
+                chatManager.listenForGuiMessage(holder, new GuiMessage(this, (response) -> {
+                    tagSearch = response;
+                    searchTags.setText(searchTagsDesc.pair("Current", tagSearch, 1).build());
+                    changeOption('g', click);
+                    current.show(holder);
+                }));
+            }
+            return true;
+        });
 
         if(tagType == null) {
             setColours(Dye.LIME, Dye.GREEN, Dye.WHITE);
@@ -119,12 +181,15 @@ public class TagHolder extends GUIScrollablePane {
             }
         }
 
-        this.current.addElements(this.pageLeft, this.pageRight, this.returnToParent, sortTags, orderTags);
+        this.current.addElements(this.pageLeft, this.pageRight, this.returnToParent, filterTags, sortTags, searchTags, orderTags);
     }
 
     private List<TagDTO> getTags() {
         List<TagDTO> filteredTags = filterTags();
         sortTags(filteredTags);
+        if(tagOrder.equals(TagOrder.ASCENDING)) {
+            Collections.reverse(filteredTags);
+        }
         maxPages = (int) Math.ceil((double) filteredTags.size() / pageVolume) - 1;
         return filteredTags;
     }
@@ -136,6 +201,19 @@ public class TagHolder extends GUIScrollablePane {
         return tags;
     }
 
+    private boolean matchesSearch(TagDTO tag) {
+        String tagName = tag.getTag().getName().toLowerCase();
+        String tagDisplay = GUIUtil.decolorize(tag.getTag().getDisplay()).toLowerCase();
+        return tagName.contains(tagSearch.toLowerCase()) || tagDisplay.contains(tagSearch.toLowerCase());
+    }
+
+    private List<TagDTO> filterBySearch(List<TagDTO> tags) {
+        if(tagSearch.isEmpty()) {
+            return tags;
+        }
+        return tags.stream().filter(this::matchesSearch).collect(Collectors.toList());
+    }
+
     private List<TagDTO> filterByType(List<TagDTO> tags) {
         if(tagType == null) {
             return tags;
@@ -145,7 +223,7 @@ public class TagHolder extends GUIScrollablePane {
 
     private void sortTags(List<TagDTO> tags) {
         Comparator<TagDTO> tagSortingMethod = null;
-        switch (tagOrder) {
+        switch (tagSort) {
             case CREATED:
                 tagSortingMethod = new TagCreationComparator();
                 break;
@@ -176,10 +254,12 @@ public class TagHolder extends GUIScrollablePane {
             case UNCOLLECTED:
                 tags.addAll(tagMenuData.getUnownedTags());
                 break;
+
         }
 
         tags = filterByType(tags);
         tags = filterByVisibility(tags);
+        tags = filterBySearch(tags);
 
         return tags;
     }
