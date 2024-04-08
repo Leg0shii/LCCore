@@ -59,15 +59,17 @@ public class NickCommand implements CommandClass {
                 return;
             }
 
-            if(!checkNickLength(nick) && (unsafeAll || unsafeSelf)) {
+            if(!checkNickLength(nick) && !(unsafeAll || unsafeSelf)) {
                 MessageUtil.send(Message.INVALID_NICKNAME_FORMAT, player);
                 return;
             }
 
+
+
             if(!checkNickTaken(nick, player) && !(unsafeAll || unsafeSelf)) {
                 MessageUtil.send(Message.INVALID_NICKNAME_ALREADY_TAKEN, player);
                 return;
-            } else if(!checkNickTaken(nick, player) && (unsafeAll || unsafeSelf)) {
+            } else if(!checkNickTaken(nick, player)) {
                 MessageUtil.send(Message.INVALID_NICKNAME_ALREADY_TAKEN_WARN, player);
             }
 
@@ -108,7 +110,9 @@ public class NickCommand implements CommandClass {
 
     private boolean checkNickTaken(String nick, Player player) {
         OfflinePlayer offlinePlayer = Bukkit.getOfflinePlayer(nick);
+        boolean offlinePlayerHasName = offlinePlayer != null && offlinePlayer.hasPlayedBefore();
+        boolean onlinePlayerHasNick = playerManager.getNicksLower(player).contains(nick.toLowerCase());
 
-        return (offlinePlayer == null || !offlinePlayer.hasPlayedBefore()) && !playerManager.getNicksLower(player).contains(nick.toLowerCase());
+        return !offlinePlayerHasName && !onlinePlayerHasNick;
     }
 }
