@@ -74,6 +74,11 @@ public class IgnoreCommand implements CommandClass {
                 return;
             }
 
+            if(chatManager.getIgnores(player).size() >= 200) {
+                MessageUtil.send(Message.IGNORE_TOO_MANY, player);
+                return;
+            }
+
             chatManager.ignore(player, uuid);
         });
     }

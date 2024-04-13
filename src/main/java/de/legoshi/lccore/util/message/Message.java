@@ -92,6 +92,7 @@ public enum Message {
     INVALID_NICKNAME_ALREADY_TAKEN_WARN("§cWARNING: someone already uses this nick. Using this nick may break things!", MessageType.PLAYER_ERROR),
     STAR_DOES_NOT_EXIST("§cThe star {0} does not exist!", MessageType.PLAYER_ERROR),
     IGNORE_LIST_NONE("§cYou are not currently ignoring anyone!", MessageType.PLAYER_ERROR),
+    IGNORE_TOO_MANY("§cYou may not ignore more than 200 players!", MessageType.PLAYER_ERROR),
 
     // Practice
     PRAC_SUCCESS("§aYou are now in practice mode, do /unprac to stop.", MessageType.PRACTICE),
