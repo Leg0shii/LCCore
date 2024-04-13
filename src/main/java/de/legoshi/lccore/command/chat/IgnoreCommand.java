@@ -10,22 +10,32 @@ import de.legoshi.lccore.util.message.Message;
 import de.legoshi.lccore.util.message.MessageUtil;
 import me.fixeddev.commandflow.annotated.CommandClass;
 import me.fixeddev.commandflow.annotated.annotation.Command;
+import me.fixeddev.commandflow.annotated.annotation.OptArg;
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import team.unnamed.inject.Inject;
 
+import java.util.List;
+
 @Register
-@Command(names = {"ignore"}, permission = "ignore", desc = "<player>")
+@Command(names = {"ignore"}, permission = "ignore", desc = "[player]")
 public class IgnoreCommand implements CommandClass {
 
     @Inject private ChatManager chatManager;
     @Inject private VisibilityManager visibilityManager;
+    @Inject private PlayerManager playerManager;
 
     @Command(names = "")
-    public void ignore(CommandSender sender, @ReflectiveTabComplete(clazz = PlayerManager.class, method = "getPlayers", player = true) String playerName) {
+    public void ignore(CommandSender sender, @OptArg @ReflectiveTabComplete(clazz = PlayerManager.class, method = "getPlayers", player = true) String playerName) {
 
-        Player toIgnore = Bukkit.getPlayer(playerName);
+
+        Player toIgnore;
+        if(playerName != null) {
+            toIgnore = Bukkit.getPlayer(playerName);
+        } else {
+            toIgnore = null;
+        }
 
         Bukkit.getScheduler().runTaskAsynchronously(Linkcraft.getPlugin(), () -> {
             if (!(sender instanceof Player)) {
@@ -34,6 +44,25 @@ public class IgnoreCommand implements CommandClass {
             }
 
             Player player = (Player)sender;
+
+            if(playerName == null) {
+                List<String> ignoredIds = chatManager.getIgnores(player);
+                if(ignoredIds == null || ignoredIds.isEmpty()) {
+                    MessageUtil.send(Message.IGNORE_LIST_NONE, player);
+                    return;
+                }
+                StringBuilder sb = new StringBuilder();
+                int ignoredIdsSize = ignoredIds.size();
+                for (int i = 0; i < ignoredIdsSize; i++) {
+                    String id = ignoredIds.get(i);
+                    sb.append(playerManager.nameByUUID(id));
+                    if (i < ignoredIdsSize - 1) {
+                        sb.append(",");
+                    }
+                }
+                MessageUtil.send(Message.IGNORE_LIST, player, sb.toString());
+                return;
+            }
 
             if(toIgnore == null || !visibilityManager.canSee(player, toIgnore)) {
                 MessageUtil.send(Message.IS_OFFLINE, sender, playerName);

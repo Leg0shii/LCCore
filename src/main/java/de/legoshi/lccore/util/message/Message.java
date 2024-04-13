@@ -47,6 +47,8 @@ public enum Message {
     PARTY_KICKED("§eYou have been kicked from the party by {0}", MessageType.PLAYER),
     IGNORE_PLAYER("§aYou are now ignoring {0}", MessageType.PLAYER),
     UNIGNORE_PLAYER("§aYou are no longer ignoring {0}", MessageType.PLAYER),
+    IGNORE_LIST("§dIgnored: §f{0}", MessageType.PLAYER),
+
     CHAT_TOGGLED_OFF("§aGlobal chat has been toggled off for you!", MessageType.PLAYER),
     CHAT_TOGGLED_ON("§aGlobal chat is no longer toggled off for you!", MessageType.PLAYER),
     SET_STAR("§aYour star has been set to: §r{0}", MessageType.PLAYER),
@@ -89,6 +91,7 @@ public enum Message {
     INVALID_NICKNAME_ALREADY_TAKEN("§cInvalid nick, someone who has played LC already has that name!", MessageType.PLAYER_ERROR),
     INVALID_NICKNAME_ALREADY_TAKEN_WARN("§cWARNING: someone already uses this nick. Using this nick may break things!", MessageType.PLAYER_ERROR),
     STAR_DOES_NOT_EXIST("§cThe star {0} does not exist!", MessageType.PLAYER_ERROR),
+    IGNORE_LIST_NONE("§cYou are not currently ignoring anyone!", MessageType.PLAYER_ERROR),
 
     // Practice
     PRAC_SUCCESS("§aYou are now in practice mode, do /unprac to stop.", MessageType.PRACTICE),

@@ -165,6 +165,10 @@ public class ChatManager {
         }
     }
 
+    public List<String> getIgnores(Player player) {
+        return ignores.get(player.getUniqueId().toString());
+    }
+
 
     public void setChannel(Player player, ChatChannel channel) {
         if(isInChannel(player, channel)) {

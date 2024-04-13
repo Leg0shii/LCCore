@@ -278,6 +278,35 @@ public class PlayerManager {
         return bestMatch;
     }
 
+    public String nameByUUID(String uuid) {
+        Player player = Bukkit.getPlayer(UUID.fromString(uuid));
+        if(player != null) {
+            return player.getName();
+        }
+
+        OfflinePlayer op = Bukkit.getOfflinePlayer(UUID.fromString(uuid));
+        if(op != null) {
+            return op.getName();
+        }
+
+        String hql = "SELECT p FROM LCPlayerDB p WHERE p.id=:id";
+        EntityManager em = db.getEntityManager();
+        TypedQuery<LCPlayerDB> query = db.getEntityManager().createQuery(hql, LCPlayerDB.class);
+        query.setParameter("id", uuid);
+        try {
+            LCPlayerDB lcPlayerDB = query.getSingleResult();
+            if(lcPlayerDB != null) {
+                return lcPlayerDB.getName();
+            }
+        } catch (NoResultException e) {
+            return null;
+        } finally {
+            em.close();
+        }
+
+        return null;
+    }
+
     public String uuidByName(String name) {
         OfflinePlayer player = Bukkit.getOfflinePlayer(name);
         if(player != null && player.hasPlayedBefore()) {
