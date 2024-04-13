@@ -27,12 +27,10 @@ public class IgnoreCommand implements CommandClass {
     @Inject private PlayerManager playerManager;
 
     @Command(names = "")
-    public void ignore(CommandSender sender, @OptArg @ReflectiveTabComplete(clazz = PlayerManager.class, method = "getPlayers", player = true) String playerName) {
-
-
+    public void ignore(CommandSender sender, @OptArg @ReflectiveTabComplete(clazz = PlayerManager.class, method = "getPossibleNames", player = true) String playerName) {
         Player toIgnore;
         if(playerName != null) {
-            toIgnore = Bukkit.getPlayer(playerName);
+            toIgnore = playerManager.playerByName(playerName);
         } else {
             toIgnore = null;
         }
@@ -57,24 +55,26 @@ public class IgnoreCommand implements CommandClass {
                     String id = ignoredIds.get(i);
                     sb.append(playerManager.nameByUUID(id));
                     if (i < ignoredIdsSize - 1) {
-                        sb.append(",");
+                        sb.append(", ");
                     }
                 }
                 MessageUtil.send(Message.IGNORE_LIST, player, sb.toString());
                 return;
             }
 
-            if(toIgnore == null || !visibilityManager.canSee(player, toIgnore)) {
-                MessageUtil.send(Message.IS_OFFLINE, sender, playerName);
+            String uuid = toIgnore != null ? toIgnore.getUniqueId().toString() : playerManager.uuidByName(playerName);
+
+            if(uuid == null) {
+                MessageUtil.send(Message.NEVER_JOINED, player, playerName);
                 return;
             }
-            
-            if(player.getUniqueId().toString().equals(toIgnore.getUniqueId().toString())) {
+
+            if(player.getUniqueId().toString().equals(uuid)) {
                 MessageUtil.send(Message.IGNORE_SELF, sender);
                 return;
             }
 
-            chatManager.ignore(player, toIgnore);
+            chatManager.ignore(player, uuid);
         });
     }
 }

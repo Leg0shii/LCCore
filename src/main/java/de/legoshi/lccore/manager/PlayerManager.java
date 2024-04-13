@@ -71,6 +71,15 @@ public class PlayerManager {
         }
     }
 
+    private void initDbData(String player) {
+        LCPlayerDB lcPlayerDB = getPlayerDB(player);
+        if(lcPlayerDB == null) {
+            db.persist(new LCPlayerDB(player));
+        }
+
+        getPlayerPrefs(player);
+    }
+
     public LCPlayerDB getPlayerDB(Player player) {
         return getPlayerDB(player.getUniqueId().toString());
     }
@@ -120,7 +129,12 @@ public class PlayerManager {
     }
 
     public PlayerPreferences getPlayerPrefs(String player) {
-        return db.find(player, PlayerPreferences.class);
+        PlayerPreferences playerPreferences = db.find(player, PlayerPreferences.class);
+        if(playerPreferences == null) {
+            db.persist(new PlayerPreferences(player));
+            playerPreferences = db.find(player, PlayerPreferences.class);
+        }
+        return playerPreferences;
     }
 
     public boolean isStaff(Player player) {
@@ -193,15 +207,15 @@ public class PlayerManager {
         return ignores != null ? ignores : new ArrayList<>();
     }
 
-    public void updateIgnore(Player player, Player toIgnore, boolean ignore) {
+    public void updateIgnore(Player player, String toIgnore, boolean ignore) {
         ConfigAccessor playerData = new ConfigAccessor(Linkcraft.getPlugin(), Linkcraft.getPlugin().getPlayerdataFolder(), player.getUniqueId().toString() + ".yml");
         FileConfiguration config = playerData.getConfig();
         List<String> ignores = getIgnores(player);
 
         if(!ignore) {
-            ignores.remove(toIgnore.getUniqueId().toString());
+            ignores.remove(toIgnore);
         } else {
-            ignores.add(toIgnore.getUniqueId().toString());
+            ignores.add(toIgnore);
         }
 
         config.set("ignores", ignores);
@@ -209,9 +223,7 @@ public class PlayerManager {
     }
 
     private String getName(String uuid) {
-        ConfigAccessor playerData = new ConfigAccessor(Linkcraft.getPlugin(), Linkcraft.getPlugin().getPlayerdataFolder(), uuid + ".yml");
-        FileConfiguration config = playerData.getConfig();
-        return config.getString("username");
+        return nameByUUID(uuid);
     }
 
     private String getNick(String uuid) {
@@ -304,7 +316,9 @@ public class PlayerManager {
             em.close();
         }
 
-        return null;
+        ConfigAccessor playerData = new ConfigAccessor(Linkcraft.getPlugin(), Linkcraft.getPlugin().getPlayerdataFolder(), uuid + ".yml");
+        FileConfiguration config = playerData.getConfig();
+        return config.getString("username");
     }
 
     public String uuidByName(String name) {

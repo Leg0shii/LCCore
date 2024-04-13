@@ -26,4 +26,8 @@ public class PlayerPreferences implements Identifiable<String> {
     public PlayerPreferences(Player player) {
         this.id = player.getUniqueId().toString();
     }
+
+    public PlayerPreferences(String player) {
+        this.id = player;
+    }
 }

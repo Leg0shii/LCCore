@@ -153,13 +153,13 @@ public class ChatManager {
         currentChannels.put(player.getUniqueId().toString(), channel);
     }
 
-    public void ignore(Player player, Player toIgnore) {
+    public void ignore(Player player, String toIgnore) {
         if(ignores(player, toIgnore)) {
-            ignores.get(player.getUniqueId().toString()).remove(toIgnore.getUniqueId().toString());
+            ignores.get(player.getUniqueId().toString()).remove(toIgnore);
             playerManager.updateIgnore(player, toIgnore, false);
             MessageUtil.send(Message.UNIGNORE_PLAYER, player, rankNickStar(toIgnore));
         } else {
-            ignores.get(player.getUniqueId().toString()).add(toIgnore.getUniqueId().toString());
+            ignores.get(player.getUniqueId().toString()).add(toIgnore);
             playerManager.updateIgnore(player, toIgnore, true);
             MessageUtil.send(Message.IGNORE_PLAYER, player, rankNickStar(toIgnore));
         }
@@ -268,8 +268,12 @@ public class ChatManager {
     }
 
     public boolean ignores(Player player, Player other) {
+        return ignores(player, other.getUniqueId().toString());
+    }
+
+    public boolean ignores(Player player, String other) {
         List<String> ignoredPlayers = ignores.get(player.getUniqueId().toString());
-        return ignoredPlayers != null && ignoredPlayers.contains(other.getUniqueId().toString());
+        return ignoredPlayers != null && ignoredPlayers.contains(other);
     }
 
     public void sendDirectChat(Player sender, Player recipient, String message) {
