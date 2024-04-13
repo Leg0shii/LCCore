@@ -75,8 +75,11 @@ public class TagsEquipCommand implements CommandClass {
 
             try {
                 tagManager.setTag(toEquip, tag.getId());
-                Message messageToSend = isSelf ? Message.TAGS_SELECT : Message.TAGS_SELECT_OTHER;
-                MessageUtil.send(messageToSend, sender, playerName, tag.getDisplay());
+                if(isSelf) {
+                    MessageUtil.send(Message.TAGS_SELECT, sender, tag.getDisplay());
+                } else {
+                    MessageUtil.send(Message.TAGS_SELECT_OTHER, sender, playerName, tag.getDisplay());
+                }
             } catch (CommandException e) {
                 Message messageToSend = isSelf ? Message.TAGS_HAS_TAG_SET : Message.TAGS_HAS_TAG_SET_OTHER;
                 MessageUtil.send(messageToSend, sender, playerName);
