@@ -182,7 +182,9 @@ public class TagManager {
         query.setParameter("player", new LCPlayerDB(uuid));
         query.setParameter("tag", new Tag(tagId));
         query.setMaxResults(1);
-        return db.hasResult(query);
+        boolean result = db.hasResult(query);
+        em.close();
+        return result;
     }
 
     public Tag tagById(String id) {
@@ -198,7 +200,7 @@ public class TagManager {
         }
 
         EntityManager em = db.getEntityManager();
-        TypedQuery<Object[]> query = db.getEntityManager().createQuery(hql, Object[].class);
+        TypedQuery<Object[]> query = em.createQuery(hql, Object[].class);
 
         for (Object[] result : query.getResultList()) {
             counts.put((TagType)result[0], (int)((long)result[1]));
@@ -217,7 +219,7 @@ public class TagManager {
         }
 
         EntityManager em = db.getEntityManager();
-        TypedQuery<Object[]> query = db.getEntityManager().createQuery(hql, Object[].class);
+        TypedQuery<Object[]> query = em.createQuery(hql, Object[].class);
 
         for (Object[] result : query.getResultList()) {
             counts.put((TagRarity)result[0], (int)((long)result[1]));
@@ -236,7 +238,7 @@ public class TagManager {
             counts.put(type, 0);
         }
         EntityManager em = db.getEntityManager();
-        TypedQuery<Object[]> query = db.getEntityManager().createQuery(hql, Object[].class);
+        TypedQuery<Object[]> query = em.createQuery(hql, Object[].class);
         query.setParameter("player", playerManager.getPlayerDB(player));
 
         for (Object[] result : query.getResultList()) {
@@ -256,7 +258,7 @@ public class TagManager {
             counts.put(rarity, 0);
         }
         EntityManager em = db.getEntityManager();
-        TypedQuery<Object[]> query = db.getEntityManager().createQuery(hql, Object[].class);
+        TypedQuery<Object[]> query = em.createQuery(hql, Object[].class);
         query.setParameter("player", playerManager.getPlayerDB(player));
 
         for (Object[] result : query.getResultList()) {
@@ -278,7 +280,7 @@ public class TagManager {
         }
 
         EntityManager em = db.getEntityManager();
-        TypedQuery<Object[]> query = db.getEntityManager().createQuery(hql, Object[].class);
+        TypedQuery<Object[]> query = em.createQuery(hql, Object[].class);
         query.setParameter("player", playerManager.getPlayerDB(player));
 
         for (Object[] result : query.getResultList()) {
@@ -300,7 +302,7 @@ public class TagManager {
         }
 
         EntityManager em = db.getEntityManager();
-        TypedQuery<Object[]> query = db.getEntityManager().createQuery(hql, Object[].class);
+        TypedQuery<Object[]> query = em.createQuery(hql, Object[].class);
         query.setParameter("player", playerManager.getPlayerDB(player));
 
         for (Object[] result : query.getResultList()) {

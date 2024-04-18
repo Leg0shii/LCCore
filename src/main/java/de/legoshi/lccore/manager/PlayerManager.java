@@ -303,7 +303,7 @@ public class PlayerManager {
 
         String hql = "SELECT p FROM LCPlayerDB p WHERE p.id=:id";
         EntityManager em = db.getEntityManager();
-        TypedQuery<LCPlayerDB> query = db.getEntityManager().createQuery(hql, LCPlayerDB.class);
+        TypedQuery<LCPlayerDB> query = em.createQuery(hql, LCPlayerDB.class);
         query.setParameter("id", uuid);
         try {
             LCPlayerDB lcPlayerDB = query.getSingleResult();
@@ -329,7 +329,7 @@ public class PlayerManager {
 
         String hql = "SELECT p FROM LCPlayerDB p WHERE p.name=:name";
         EntityManager em = db.getEntityManager();
-        TypedQuery<LCPlayerDB> query = db.getEntityManager().createQuery(hql, LCPlayerDB.class);
+        TypedQuery<LCPlayerDB> query = em.createQuery(hql, LCPlayerDB.class);
         query.setParameter("name", name);
         try {
             LCPlayerDB lcPlayerDB = query.getSingleResult();
