@@ -8,14 +8,10 @@ import team.unnamed.inject.Named;
 public class LinkcraftService implements Service {
     @Inject @Named("command") private Service commandService;
     @Inject @Named("papi") private Service papiService;
-    @Inject @Named("config") private Service configService;
-    @Inject @Named("database") private Service dbService;
     @Inject @Named("listener") private Service listenerService;
 
     @Override
     public void start() {
-        startService(configService, "Configuration");
-        startService(dbService, "Database");
         startService(commandService, "Command");
         startService(listenerService, "Listener");
         startService(papiService, "PAPI");

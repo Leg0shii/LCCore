@@ -73,7 +73,6 @@ public class Linkcraft extends JavaPlugin {
         im.init();
 
         injector.injectMembers(this);
-        injector.getInstance(ListenerManager.class).registerEvents();
         service.start();
     }
 

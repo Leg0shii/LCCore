@@ -22,9 +22,10 @@ public enum Message {
     CONFIG_LOADING_ERR("Error loading {0}", MessageType.LOGGING),
     DATABASE_CONNECTED("Database connected.", MessageType.LOGGING),
     DATABASE_FAILED("CRITICAL ERROR - Failed to connect to database. Shutting down server...", MessageType.LOGGING),
-    SERVICE_STARTED("Started {0} service.", MessageType.LOGGING),
-    SERVICE_STOPPED("Stopped {0} service.", MessageType.LOGGING),
-    SERVICE_ERROR("Error encountered while starting {0} service.", MessageType.LOGGING),
+    SERVICE_STARTING("Starting {0} service...", MessageType.LOGGING),
+    SERVICE_STARTED("Started {0} service in {1}s", MessageType.LOGGING),
+    SERVICE_STOPPED("Stopped {0} service", MessageType.LOGGING),
+    SERVICE_ERROR("Error encountered while starting {0} service", MessageType.LOGGING),
     SPAWN_INITIALIZED("Spawn initialized.", MessageType.LOGGING),
     SPAWN_INITIALIZED_ERR("Spawn could not be initialized.", MessageType.LOGGING),
 
