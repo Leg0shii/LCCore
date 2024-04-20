@@ -331,6 +331,7 @@ public class TagManager {
             }
             tagCounts.put(tagName, count);
         }
+        em.close();
 
         return tagCounts;
     }
