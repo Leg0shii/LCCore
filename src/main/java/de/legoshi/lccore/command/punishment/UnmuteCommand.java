@@ -4,6 +4,7 @@ import de.legoshi.lccore.Linkcraft;
 import de.legoshi.lccore.command.flow.annotated.annotation.ReflectiveTabComplete;
 import de.legoshi.lccore.manager.PlayerManager;
 import de.legoshi.lccore.manager.PunishmentManager;
+import de.legoshi.lccore.player.PlayerRecord;
 import de.legoshi.lccore.player.PunishmentType;
 import de.legoshi.lccore.util.Register;
 import de.legoshi.lccore.util.message.Message;
@@ -27,29 +28,33 @@ public class UnmuteCommand implements CommandClass {
 
         Player player = playerManager.playerByName(toUnmute);
         Bukkit.getScheduler().runTaskAsynchronously(Linkcraft.getPlugin(), () -> {
-            String uuid = player != null ? player.getUniqueId().toString() : playerManager.uuidByName(toUnmute);
-            if(uuid == null) {
+            PlayerRecord record = playerManager.getPlayerRecord(player, toUnmute);
+
+            if(record == null) {
                 MessageUtil.send(Message.NEVER_JOINED, sender, toUnmute);
                 return;
             }
+
+            String uuid = record.getUuid();
+            String name = record.getName();
 
             boolean unmuted = punishmentManager.removePunishment(uuid, PunishmentType.MUTE);
             boolean unFullMuted = punishmentManager.removePunishment(uuid, PunishmentType.FULL_MUTE);
 
             if(!unmuted && !unFullMuted) {
-                MessageUtil.send(Message.PUNISH_WAS_NOT_PUNISHED, sender, toUnmute, "muted");
+                MessageUtil.send(Message.PUNISH_WAS_NOT_PUNISHED, sender, name, "muted");
                 return;
             }
 
             if(unmuted) {
-                MessageUtil.send(Message.PUNISH_REMOVE_OTHER, sender, toUnmute, "muted");
+                MessageUtil.send(Message.PUNISH_REMOVE_OTHER, sender, name, "muted");
                 if(player != null && player.isOnline()) {
                     MessageUtil.send(Message.PUNISH_REMOVED, player, "unmuted");
                 }
             }
 
             if(unFullMuted) {
-                MessageUtil.send(Message.PUNISH_REMOVE_OTHER, sender, toUnmute, "full muted");
+                MessageUtil.send(Message.PUNISH_REMOVE_OTHER, sender, name, "full muted");
                 if(player != null && player.isOnline()) {
                     MessageUtil.send(Message.PUNISH_REMOVED, player, "unmuted");
                 }

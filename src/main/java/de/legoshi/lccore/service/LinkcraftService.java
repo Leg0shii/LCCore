@@ -6,15 +6,20 @@ import team.unnamed.inject.Inject;
 import team.unnamed.inject.Named;
 
 public class LinkcraftService implements Service {
+    @Inject @Named("config") private Service configurationService;
     @Inject @Named("command") private Service commandService;
     @Inject @Named("papi") private Service papiService;
     @Inject @Named("listener") private Service listenerService;
+    @Inject @Named("database") private Service databaseService;
 
     @Override
     public void start() {
+        startService(configurationService, "Configuration");
         startService(commandService, "Command");
         startService(listenerService, "Listener");
         startService(papiService, "PAPI");
+        startService(databaseService, "Database");
+
     }
 
     private void startService(Service service, String display) {

@@ -2,8 +2,6 @@ package de.legoshi.lccore.service;
 
 import de.legoshi.lccore.command.flow.LinkcraftCommandPartModule;
 import de.legoshi.lccore.util.Register;
-import de.legoshi.lccore.util.message.Message;
-import de.legoshi.lccore.util.message.MessageUtil;
 import me.fixeddev.commandflow.CommandManager;
 import me.fixeddev.commandflow.annotated.AnnotatedCommandTreeBuilder;
 import me.fixeddev.commandflow.annotated.AnnotatedCommandTreeBuilderImpl;
@@ -35,14 +33,13 @@ public class CommandService implements Service {
                             "pl", "nick", "realname", "ac", "helpop",
                             "msg", "message", "r", "reply", "t", "tell",
                             "w", "whisper", "ignore", "togglechat", "p",
-                            "tags", "mute", "unmute"
+                            "tags", "mute", "unmute", "bonus"
                     };
 
     @Override
     public void start() {
         unregister();
         register();
-        MessageUtil.log(Message.SERVICE_STARTED, true, "command");
     }
 
     private void register() {

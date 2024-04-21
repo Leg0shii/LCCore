@@ -3,7 +3,9 @@ package de.legoshi.lccore;
 import com.comphenix.protocol.ProtocolLibrary;
 import com.comphenix.protocol.ProtocolManager;
 import de.legoshi.lccore.inject.LinkcraftModule;
-import de.legoshi.lccore.manager.*;
+import de.legoshi.lccore.manager.ConfigManager;
+import de.legoshi.lccore.manager.OldCommandManager;
+import de.legoshi.lccore.manager.PlayerManager;
 import de.legoshi.lccore.service.Service;
 import de.legoshi.lccore.util.ConfigAccessor;
 import de.legoshi.lccore.util.Constants;
@@ -59,14 +61,10 @@ public class Linkcraft extends JavaPlugin {
 
     public void onEnable() {
         plugin = this;
-
         loadDependencies();
-        configManager = new ConfigManager(this);
-        configManager.loadConfigs(true);
-        injector = Injector.create(new LinkcraftModule(this));
 
-        new CommandManager(this, injector).registerCommands();
-        new MapManager(this);
+        injector = Injector.create(new LinkcraftModule(this));
+        new OldCommandManager(this, injector).registerCommands();
 
         // TODO: refactor inventory library
         im = new InventoryManager(this);
@@ -184,6 +182,10 @@ public class Linkcraft extends JavaPlugin {
 
     public static void syncLater(Runnable runnable, Long ticks) {
         Bukkit.getScheduler().runTaskLater(plugin, runnable, ticks);
+    }
+
+    public static void consoleCommand(String command) {
+        Bukkit.dispatchCommand(Bukkit.getConsoleSender(), command);
     }
 
 }

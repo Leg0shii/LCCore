@@ -6,10 +6,10 @@ public class MapComparator implements Comparator<LCMap> {
 
     @Override
     public int compare(LCMap lcMap1, LCMap lcMap2) {
-        int ppComparison = Double.compare(lcMap1.pp, lcMap2.pp);
+        int ppComparison = Double.compare(lcMap1.getPp(), lcMap2.getPp());
 
         if (ppComparison == 0) {
-            return lcMap1.name.compareTo(lcMap2.name);
+            return lcMap1.getName().compareTo(lcMap2.getName());
         }
 
         return ppComparison;

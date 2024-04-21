@@ -5,6 +5,7 @@ import de.legoshi.lccore.command.flow.annotated.annotation.ReflectiveTabComplete
 import de.legoshi.lccore.manager.ChatManager;
 import de.legoshi.lccore.manager.PlayerManager;
 import de.legoshi.lccore.manager.VisibilityManager;
+import de.legoshi.lccore.player.PlayerRecord;
 import de.legoshi.lccore.util.Register;
 import de.legoshi.lccore.util.message.Message;
 import de.legoshi.lccore.util.message.MessageUtil;
@@ -62,12 +63,14 @@ public class IgnoreCommand implements CommandClass {
                 return;
             }
 
-            String uuid = toIgnore != null ? toIgnore.getUniqueId().toString() : playerManager.uuidByName(playerName);
+            PlayerRecord record = playerManager.getPlayerRecord(toIgnore, playerName);
 
-            if(uuid == null) {
+            if(record == null) {
                 MessageUtil.send(Message.NEVER_JOINED, player, playerName);
                 return;
             }
+
+            String uuid = record.getUuid();
 
             if(player.getUniqueId().toString().equals(uuid)) {
                 MessageUtil.send(Message.IGNORE_SELF, sender);

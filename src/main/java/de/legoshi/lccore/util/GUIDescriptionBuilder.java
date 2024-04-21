@@ -72,6 +72,12 @@ public class GUIDescriptionBuilder {
         return this;
     }
 
+    public GUIDescriptionBuilder pairRaw(String key, String value) {
+        String updated = CommonUtil.format(prefix, "{colour}", prefixColour);
+        addLine(updated + " " + key + ChatColor.RESET + ": " + value);
+        return this;
+    }
+
     public GUIDescriptionBuilder pairCustom(String key, String separator, String value) {
         addLine(key + separator + value);
         return this;

@@ -1,16 +1,21 @@
 package de.legoshi.lccore.menu.maps;
 
 import de.legoshi.lccore.util.MapType;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+import org.bukkit.inventory.ItemStack;
 
-import java.util.List;
-
+@Data
+@AllArgsConstructor
+@NoArgsConstructor
 public class LCMap {
-    public String name;
-    public String id;
-    public String creator;
-    public double star_rating;
-    public double pp;
-    public String length;
-    public List<Integer> item;
-    public MapType mapType;
+    private String name;
+    private String id;
+    private String creator;
+    private double star;
+    private double pp;
+    private String length;
+    private ItemStack item;
+    private MapType mapType;
 }

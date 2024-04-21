@@ -7,18 +7,17 @@ import de.legoshi.lccore.command.hide.Hide;
 import de.legoshi.lccore.command.hide.HideAll;
 import de.legoshi.lccore.command.hide.Show;
 import de.legoshi.lccore.command.hide.ShowAll;
-import de.legoshi.lccore.command.maps.*;
 import de.legoshi.lccore.command.practice.PracticeCommand;
 import de.legoshi.lccore.command.practice.UnpracticeCommand;
 import team.unnamed.inject.Injector;
 
 // REFACTORED
-public class CommandManager {
+public class OldCommandManager {
 
     private final Linkcraft plugin;
     private final Injector injector;
 
-    public CommandManager(Linkcraft plugin, Injector injector) {
+    public OldCommandManager(Linkcraft plugin, Injector injector) {
         this.plugin = plugin;
         this.injector = injector;
     }
@@ -49,13 +48,7 @@ public class CommandManager {
         plugin.getCommand("nv").setExecutor(new NightVisionCommand());
         plugin.getCommand("otphere").setExecutor(new OfflineTpHereCommand());
         plugin.getCommand("otp").setExecutor(new OfflineTpCommand());
-        plugin.getCommand("maps").setExecutor(new MapsCommand());
-        plugin.getCommand("mapsreload").setExecutor(new MapsReloadCommand());
-        plugin.getCommand("menu").setExecutor(new MapsCommand());
-        plugin.getCommand("complete").setExecutor(new CompleteCommand());
-        plugin.getCommand("addcompletions").setExecutor(new AddCompletionsCommand());
         plugin.getCommand("giveunlocks").setExecutor(new GiveUnlocksCommand());
-        plugin.getCommand("checkcompletions").setExecutor(new CheckCompletionsCommand());
     }
 
 }

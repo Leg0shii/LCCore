@@ -21,12 +21,6 @@ public class LinkcraftModule extends AbstractModule {
     protected void configure() {
         bind(Plugin.class).toInstance(plugin);
 
-        // Database
-        install(new DBModule(plugin));
-
-        // Flow
-        install(new CommandFlowModule());
-
         // Managers
         bind(VisibilityManager.class).singleton();
         bind(LuckPermsManager.class).singleton();
@@ -36,6 +30,14 @@ public class LinkcraftModule extends AbstractModule {
         bind(TagManager.class).singleton();
         bind(SVSManager.class).singleton();
         bind(PunishmentManager.class).singleton();
+        bind(MapManager.class).singleton();
+        bind(ConfigManager.class).singleton();
+
+        // Database
+        install(new DBModule(plugin));
+
+        // Flow
+        install(new CommandFlowModule());
 
         // Listeners
         bind(GeneralListener.class).singleton();

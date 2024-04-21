@@ -20,10 +20,6 @@ import java.util.Date;
 @IdClass(PlayerTagId.class)
 @Table(name = "lc_player_tags")
 public class PlayerTag implements Identifiable<PlayerTagId> {
-//    @Id
-//    @GeneratedValue(strategy = GenerationType.IDENTITY)
-//    private int id;
-
     @Id
     @ManyToOne
     @JoinColumn(name = "tag_id", nullable = false, columnDefinition = "VARCHAR(100)")

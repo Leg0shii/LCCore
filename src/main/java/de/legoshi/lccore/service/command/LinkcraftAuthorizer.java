@@ -12,7 +12,7 @@ public class LinkcraftAuthorizer implements Authorizer {
             return true;
         } else {
             CommandSender sender = (CommandSender)namespace.getObject(CommandSender.class, "SENDER");
-            return sender.hasPermission("linkcraft." + permission);
+            return sender.hasPermission("linkcraft." + permission) || sender.hasPermission("lc." + permission);
         }
     }
 }

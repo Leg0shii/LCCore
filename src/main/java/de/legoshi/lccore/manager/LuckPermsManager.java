@@ -2,6 +2,7 @@ package de.legoshi.lccore.manager;
 
 import net.luckperms.api.LuckPerms;
 import net.luckperms.api.LuckPermsProvider;
+import net.luckperms.api.context.DefaultContextKeys;
 import net.luckperms.api.event.EventBus;
 import net.luckperms.api.model.group.Group;
 import net.luckperms.api.model.user.User;
@@ -56,6 +57,22 @@ public class LuckPermsManager {
         User user = getUserForPlayer(player);
         user.data().add(Node.builder(permission).build());
         getLP().getUserManager().saveUser(user);
+    }
+
+    public void giveNegativePermission(Player player, String permission) {
+        User user = getUserForPlayer(player);
+        user.data().add(Node.builder(permission).value(false).build());
+        getLP().getUserManager().saveUser(user);
+    }
+
+    public void giveWorldPermission(Player player, String permission, String world, boolean value) {
+        User user = getUserForPlayer(player);
+        user.data().add(Node.builder(permission).withContext(DefaultContextKeys.WORLD_KEY, world).value(value).build());
+        getLP().getUserManager().saveUser(user);
+    }
+
+    public void giveWorldPermission(Player player, String permission, String world) {
+        giveWorldPermission(player, permission, world, true);
     }
 
     public boolean doesGroupExist(String group) {

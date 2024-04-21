@@ -1,7 +1,7 @@
 package de.legoshi.lccore.command.maps;
 
 import de.legoshi.lccore.Linkcraft;
-import de.legoshi.lccore.menu.maps.MapsMenu;
+import de.legoshi.lccore.menu.maps.BonusConfirmationMenu;
 import de.legoshi.lccore.util.Register;
 import de.legoshi.lccore.util.message.Message;
 import de.legoshi.lccore.util.message.MessageUtil;
@@ -14,13 +14,13 @@ import team.unnamed.inject.Inject;
 import team.unnamed.inject.Injector;
 
 @Register
-@Command(names = {"maps", "menu"}, permission = "maps", desc = "")
-public class MapsCommand implements CommandClass {
+@Command(names = {"bonus"}, permission = "bonus", desc = "")
+public class BonusCommand implements CommandClass {
 
     @Inject private Injector injector;
 
     @Command(names = "")
-    public void maps(CommandSender sender) {
+    public void bonus(CommandSender sender) {
         Bukkit.getScheduler().runTaskAsynchronously(Linkcraft.getPlugin(), () -> {
             if (!(sender instanceof Player)) {
                 MessageUtil.send(Message.NOT_A_PLAYER, sender);
@@ -28,7 +28,7 @@ public class MapsCommand implements CommandClass {
             }
 
             Player player = (Player)sender;
-            injector.getInstance(MapsMenu.class).openGui(player, null);
+            injector.getInstance(BonusConfirmationMenu.class).openGui(player, null);
         });
     }
 }

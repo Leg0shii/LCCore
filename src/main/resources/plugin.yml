@@ -78,13 +78,7 @@ commands:
   show:
   otphere:
   otp:
-  maps:
-  mapsreload:
-  menu:
-  complete:
-  addcompletions:
   giveunlocks:
-  checkcompletions:
 permissions:
   pkprac.practice:
     description: Allows the use of the /practice and /unpractice commands.

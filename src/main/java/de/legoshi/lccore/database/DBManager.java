@@ -3,10 +3,7 @@ package de.legoshi.lccore.database;
 import com.avaje.ebean.annotation.Transactional;
 import de.legoshi.lccore.Linkcraft;
 import de.legoshi.lccore.manager.ConfigManager;
-import de.legoshi.lccore.util.message.Message;
-import de.legoshi.lccore.util.message.MessageUtil;
 import lombok.Getter;
-import org.bukkit.Bukkit;
 import org.bukkit.plugin.Plugin;
 import org.hibernate.Hibernate;
 import org.hibernate.cfg.Environment;
@@ -26,13 +23,11 @@ public class DBManager {
 
     public DBManager(Plugin plugin) {
         this.plugin = plugin;
-        if(connectToDB()) {
-            MessageUtil.log(Message.DATABASE_CONNECTED, true);
-        } else {
-            // Perhaps this is heavy-handed, but we ABSOLUTELY do not want to server to start if we cant connect to db
-            MessageUtil.log(Message.DATABASE_FAILED, true);
-            Bukkit.shutdown();
-        }
+
+    }
+
+    public boolean init() {
+        return connectToDB();
     }
 
     public boolean connectToDB() {

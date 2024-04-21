@@ -19,7 +19,6 @@ public class PapiService implements Service {
         chatManager.initPapiMap();
         if(Bukkit.getPluginManager().getPlugin("PlaceholderAPI") != null) {
             injector.getInstance(LCExpansion.class).register();
-            MessageUtil.log(Message.SERVICE_STARTED, true, "papi");
         } else {
             MessageUtil.log(Message.SERVICE_ERROR, true, "papi");
         }

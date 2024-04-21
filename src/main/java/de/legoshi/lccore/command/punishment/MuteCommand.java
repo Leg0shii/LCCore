@@ -6,6 +6,7 @@ import de.legoshi.lccore.database.models.Punishment;
 import de.legoshi.lccore.manager.ChatManager;
 import de.legoshi.lccore.manager.PlayerManager;
 import de.legoshi.lccore.manager.PunishmentManager;
+import de.legoshi.lccore.player.PlayerRecord;
 import de.legoshi.lccore.player.PunishmentType;
 import de.legoshi.lccore.util.GUIUtil;
 import de.legoshi.lccore.util.Register;
@@ -36,11 +37,15 @@ public class MuteCommand implements CommandClass {
 
         Player player = playerManager.playerByName(toMute);
         Bukkit.getScheduler().runTaskAsynchronously(Linkcraft.getPlugin(), () -> {
-            String uuid = player != null ? player.getUniqueId().toString() : playerManager.uuidByName(toMute);
-            if(uuid == null) {
+            PlayerRecord record = playerManager.getPlayerRecord(player, toMute);
+
+            if(record == null) {
                 MessageUtil.send(Message.NEVER_JOINED, sender, toMute);
                 return;
             }
+
+            String uuid = record.getUuid();
+            String name = record.getName();
 
             String reason = Utils.joinArguments(reasonList);
             boolean silent = reason.contains("-s");
@@ -64,14 +69,14 @@ public class MuteCommand implements CommandClass {
             Punishment punishment = punishmentManager.addPunishment(uuid, PunishmentType.MUTE, until, reason);
 
             if(punishment != null) {
-                MessageUtil.send(Message.PUNISH_ALREADY_PUNISHED, sender, toMute, "muted", GUIUtil.ISOStringWithTime(punishment.getLength()));
+                MessageUtil.send(Message.PUNISH_ALREADY_PUNISHED, sender, name, "muted", GUIUtil.ISOStringWithTime(punishment.getLength()));
                 return;
             }
 
             if(silent) {
-                MessageUtil.broadcast(chatManager.getPlayersWithPerm("linkcraft.punish.silent"), Message.PUNISH_UNTIL_SILENT, true, toMute, "muted", GUIUtil.ISOStringWithTime(until), reason);
+                MessageUtil.broadcast(chatManager.getPlayersWithPerm("linkcraft.punish.silent"), Message.PUNISH_UNTIL_SILENT, true, name, "muted", GUIUtil.ISOStringWithTime(until), reason);
             } else {
-                MessageUtil.broadcast(Message.PUNISH_UNTIL, true, toMute, "muted", GUIUtil.ISOStringWithTime(until), reason);
+                MessageUtil.broadcast(Message.PUNISH_UNTIL, true, name, "muted", GUIUtil.ISOStringWithTime(until), reason);
             }
         });
     }

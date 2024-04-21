@@ -8,6 +8,7 @@ import de.legoshi.lccore.database.models.PlayerTag;
 import de.legoshi.lccore.database.models.Tag;
 import de.legoshi.lccore.manager.PlayerManager;
 import de.legoshi.lccore.manager.TagManager;
+import de.legoshi.lccore.player.PlayerRecord;
 import de.legoshi.lccore.tag.TagType;
 import de.legoshi.lccore.util.LCSound;
 import de.legoshi.lccore.util.message.Message;
@@ -31,12 +32,14 @@ public class TagsUnlockCommand implements CommandClass {
                        @ReflectiveTabComplete(clazz = PlayerManager.class, method = "getPossibleNames", player = true) String name) {
         Player toReceive = playerManager.playerByName(name);
         Bukkit.getScheduler().runTaskAsynchronously(Linkcraft.getPlugin(), () -> {
-            String uuid = toReceive != null ? toReceive.getUniqueId().toString() : playerManager.uuidByName(name);
+            PlayerRecord record = playerManager.getPlayerRecord(toReceive, name);
+
+            String uuid = record.getUuid();
+            String playerName = record.getName();
             if(uuid == null) {
                 MessageUtil.send(Message.IS_OFFLINE, sender, name);
                 return;
             }
-            String playerName = toReceive != null ? toReceive.getName() : name;
 
             Tag tag = tagManager.getTag(id);
             if(tag == null) {

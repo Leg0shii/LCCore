@@ -201,6 +201,12 @@ public enum Message {
     PUNISH_WRONG_LENGTH("§cThe length '{0}' is incorrectly formatted! (ex: 30d/1y/...)!", MessageType.PUNISHMENT_ERROR),
     PUNISH_ALREADY_PUNISHED("§c{0} is already {1} until {2}!", MessageType.PUNISHMENT_ERROR),
 
+    // Maps
+    MAP_FIRST_COMPLETION("§aAdded first completion of {0} for {1}", MessageType.MAPS_ERROR),
+    MAP_NEW_COMPLETION("§aAdded new completion of {0} for {1}", MessageType.MAPS_ERROR),
+    MAP_REMOVE_COMPLETION("§aRemoved all completions of {0} for {1}", MessageType.MAPS_ERROR),
+    // Maps Errors
+    MAP_NOT_EXISTS("§c{0} is not a valid map!", MessageType.MAPS_ERROR),
 
     FILLER("", MessageType.SYSTEM);
 

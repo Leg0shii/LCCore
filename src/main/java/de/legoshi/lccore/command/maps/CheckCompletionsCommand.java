@@ -1,54 +1,47 @@
 package de.legoshi.lccore.command.maps;
 
 import de.legoshi.lccore.Linkcraft;
-import de.legoshi.lccore.menu.maps.SideCoursesMenuOther;
-import de.legoshi.lccore.util.Utils;
-import fr.minuskube.inv.SmartInventory;
+import de.legoshi.lccore.command.flow.annotated.annotation.ReflectiveTabComplete;
+import de.legoshi.lccore.manager.PlayerManager;
+import de.legoshi.lccore.menu.maps.MapsHolder;
+import de.legoshi.lccore.player.PlayerRecord;
+import de.legoshi.lccore.util.Register;
+import de.legoshi.lccore.util.message.Message;
+import de.legoshi.lccore.util.message.MessageUtil;
+import me.fixeddev.commandflow.annotated.CommandClass;
+import me.fixeddev.commandflow.annotated.annotation.Command;
 import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
-import org.bukkit.OfflinePlayer;
-import org.bukkit.command.Command;
-import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
+import team.unnamed.inject.Inject;
+import team.unnamed.inject.Injector;
 
-public class CheckCompletionsCommand implements CommandExecutor {
-    public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
-        if (!sender.hasPermission("lc.checkcompletions")) {
-            sender.sendMessage(Utils.chat("&cInsufficient permission!"));
-            return true;
-        }
+@Register
+@Command(names = {"checkcompletions"}, permission = "checkcompletions", desc = "<player>")
+public class CheckCompletionsCommand implements CommandClass {
+
+    @Inject private PlayerManager playerManager;
+    @Inject private Injector injector;
+
+    @Command(names = "")
+    public void checkCompletions(CommandSender sender,
+                                 @ReflectiveTabComplete(clazz = PlayerManager.class, method = "getPossibleNames", player = true) String player) {
+
         if (!(sender instanceof Player)) {
-            return true;
+            MessageUtil.send(Message.NOT_A_PLAYER, sender);
+            return;
         }
 
-        if(args == null || args.length < 1) {
-            sender.sendMessage(Utils.chat("&cUsage: /checkcompletions <player>"));
-            return true;
-        }
+        Player victor = playerManager.playerByName(player);
+        Bukkit.getScheduler().runTaskAsynchronously(Linkcraft.getPlugin(), () -> {
+            PlayerRecord record = playerManager.getPlayerRecord(victor, player);
+            if(record == null) {
+                MessageUtil.send(Message.NEVER_JOINED, sender, player);
+                return;
+            }
 
-        Player player = (Player)sender;
-
-        OfflinePlayer offlinePlayer = Bukkit.getOfflinePlayer(args[0]);
-
-        if(offlinePlayer == null || !offlinePlayer.hasPlayedBefore()) {
-            sender.sendMessage(ChatColor.RED + "That player does not exist!");
-            return true;
-        }
-
-        SideCoursesMenuOther temp = new SideCoursesMenuOther(offlinePlayer.getUniqueId().toString());
-        SmartInventory inv = SmartInventory.builder()
-                .id("main")
-                .provider(temp)
-                .size(6, 9)
-                .title(Utils.chat("&l" + offlinePlayer.getName() + "'s Side Courses"))
-                .manager(Linkcraft.getPlugin().im)
-                .build();
-        temp.setInv(inv);
-        inv.open(player);
-
-
-
-        return true;
+            Player playerSender = (Player)sender;
+            injector.getInstance(MapsHolder.class).openGui(playerSender, null, record);
+        });
     }
 }

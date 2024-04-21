@@ -5,7 +5,6 @@ import de.legoshi.lccore.player.display.*;
 import de.legoshi.lccore.util.ColorHelper;
 import de.legoshi.lccore.util.ConfigAccessor;
 import de.legoshi.lccore.util.ConfigWriter;
-import de.legoshi.lccore.util.MapUpdater;
 import de.legoshi.lccore.util.message.Message;
 import de.legoshi.lccore.util.message.MessageType;
 import de.legoshi.lccore.util.message.MessageUtil;
@@ -13,6 +12,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
+import team.unnamed.inject.Inject;
 
 import java.io.File;
 import java.io.IOException;
@@ -21,7 +21,6 @@ import java.util.HashSet;
 import java.util.Map;
 
 public class ConfigManager {
-    private final Linkcraft plugin;
 
     public static Map<String, RankDTO> ranksDisplay = new HashMap<>();
     public static Map<String, BonusDTO> bonusDisplay = new HashMap<>();
@@ -36,12 +35,14 @@ public class ConfigManager {
     public static String password;
     public static int port;
     public static String database;
+    @Inject private MapManager mapManager;
 
-    public ConfigManager(Linkcraft plugin) {
-        this.plugin = plugin;
+    public void init() {
+        loadConfigs(true);
     }
 
     public void loadConfigs(boolean first) {
+        Linkcraft plugin = Linkcraft.getPlugin();
         plugin.saveDefaultConfig();
         plugin.playerConfig.saveDefaultConfig();
         plugin.lockdownConfig.saveDefaultConfig();
@@ -63,7 +64,7 @@ public class ConfigManager {
         loadRankDataIntoMemory();
 
         try {
-            MapUpdater.update();
+            mapManager.updateMaps();
         } catch (Exception e) {
             e.printStackTrace();
         }

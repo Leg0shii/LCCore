@@ -5,6 +5,7 @@ import de.legoshi.lccore.command.flow.annotated.annotation.ReflectiveTabComplete
 import de.legoshi.lccore.database.models.Tag;
 import de.legoshi.lccore.manager.PlayerManager;
 import de.legoshi.lccore.manager.TagManager;
+import de.legoshi.lccore.player.PlayerRecord;
 import de.legoshi.lccore.util.CommandException;
 import de.legoshi.lccore.util.message.Message;
 import de.legoshi.lccore.util.message.MessageUtil;
@@ -59,16 +60,18 @@ public class TagsEquipCommand implements CommandClass {
                     return;
                 }
                 Player toRemove = playerManager.playerByName(name);
-                toEquip = toRemove != null ? toRemove.getUniqueId().toString() : playerManager.uuidByName(name);
-                playerName = toRemove != null ? toRemove.getName() : name;
+                PlayerRecord record = playerManager.getPlayerRecord(toRemove, name);
 
-                if(toEquip == null) {
+                if(record == null) {
                     MessageUtil.send(Message.NEVER_JOINED, sender, name);
                     return;
                 }
 
+                toEquip = record.getUuid();
+                playerName = record.getName();
+
                 if(!tagManager.hasTag(toEquip, tag.getId())) {
-                    MessageUtil.send(Message.TAGS_HASNT_UNLOCKED_OTHER, sender, name, tag.getDisplay());
+                    MessageUtil.send(Message.TAGS_HASNT_UNLOCKED_OTHER, sender, playerName, tag.getDisplay());
                     return;
                 }
             }

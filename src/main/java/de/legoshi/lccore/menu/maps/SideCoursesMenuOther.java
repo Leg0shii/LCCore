@@ -1,6 +1,5 @@
 package de.legoshi.lccore.menu.maps;
 
-import de.legoshi.lccore.manager.MapManager;
 import de.legoshi.lccore.util.ContentsHelper;
 import fr.minuskube.inv.ClickableItem;
 import fr.minuskube.inv.SmartInventory;
@@ -35,10 +34,10 @@ public class SideCoursesMenuOther implements InventoryProvider {
         ch.createBarLine(4);
 
         Pagination pagination = inventoryContents.pagination();
-        ClickableItem[] items = MapManager.getMapItems(otherPlayerUUID, player, admin);
+        //ClickableItem[] items = MapManagerO.getMapItems(otherPlayerUUID, player, admin);
 
         // I guess we just repeatedly run this everytime
-        pagination.setItems(items);
+        //pagination.setItems(items);
         pagination.setItemsPerPage(21);
 
         ClickableItem[] pageItems = pagination.getPageItems();

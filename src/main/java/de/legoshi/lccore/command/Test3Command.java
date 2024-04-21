@@ -53,7 +53,7 @@ public class Test3Command implements CommandClass {
                         db.persist(dbPlayer);
                     }
                 }
-
+                em.close();
             }
             player.sendMessage("complete");
         });

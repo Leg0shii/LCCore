@@ -25,7 +25,7 @@ public class PunishmentManager {
     public List<Punishment> getCurrentPunishments(String player) {
         String hql = "SELECT p FROM Punishment p WHERE p.length > :now AND p.player=:player";
         EntityManager em = db.getEntityManager();
-        TypedQuery<Punishment> query = db.getEntityManager().createQuery(hql, Punishment.class);
+        TypedQuery<Punishment> query = em.createQuery(hql, Punishment.class);
         query.setParameter("now", new Date());
         query.setParameter("player", new LCPlayerDB(player));
         List<Punishment> results = query.getResultList();

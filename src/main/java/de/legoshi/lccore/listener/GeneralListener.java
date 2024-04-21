@@ -67,7 +67,7 @@ public class GeneralListener implements Listener {
     public void onProjectileThrownEvent(ProjectileLaunchEvent event) {
         if (event.getEntity().getShooter() instanceof Player) {
             Player player = (Player) event.getEntity().getShooter();
-            if (!player.isOp()) event.setCancelled(true);
+            if (!player.hasPermission("lc.banneditems")) event.setCancelled(true);
         }
     }
 }

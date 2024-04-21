@@ -6,6 +6,7 @@ import de.legoshi.lccore.database.DBManager;
 import de.legoshi.lccore.database.models.Tag;
 import de.legoshi.lccore.manager.PlayerManager;
 import de.legoshi.lccore.manager.TagManager;
+import de.legoshi.lccore.player.PlayerRecord;
 import de.legoshi.lccore.util.CommandException;
 import de.legoshi.lccore.util.message.Message;
 import de.legoshi.lccore.util.message.MessageUtil;
@@ -30,12 +31,13 @@ public class TagsRemoveCommand implements CommandClass {
 
 
         Bukkit.getScheduler().runTaskAsynchronously(Linkcraft.getPlugin(), () -> {
-            String uuid = toRemove != null ? toRemove.getUniqueId().toString() : playerManager.uuidByName(name);
+            PlayerRecord record = playerManager.getPlayerRecord(toRemove, name);
+            String uuid = record.getUuid();
             if(uuid == null) {
                 MessageUtil.send(Message.NEVER_JOINED, sender, name);
                 return;
             }
-            String playerName = toRemove != null ? toRemove.getName() : name;
+            String playerName = record.getName();
 
             try {
                 Tag tag = db.find(id, Tag.class);

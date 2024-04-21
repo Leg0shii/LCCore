@@ -5,6 +5,7 @@ import de.legoshi.lccore.database.DBManager;
 import de.legoshi.lccore.database.models.LCPlayerDB;
 import de.legoshi.lccore.database.models.PlayerPreferences;
 import de.legoshi.lccore.database.models.PlayerSkull;
+import de.legoshi.lccore.player.PlayerRecord;
 import de.legoshi.lccore.player.display.LCPlayer;
 import de.legoshi.lccore.util.ConfigAccessor;
 import de.legoshi.lccore.util.HeadUtil;
@@ -321,10 +322,14 @@ public class PlayerManager {
         return config.getString("username");
     }
 
-    public String uuidByName(String name) {
+    public PlayerRecord getPlayerRecord(Player player, String name) {
+        return player != null ? new PlayerRecord(player.getUniqueId().toString(), player.getName()) : uuidByName(name);
+    }
+
+    public PlayerRecord uuidByName(String name) {
         OfflinePlayer player = Bukkit.getOfflinePlayer(name);
         if(player != null && player.hasPlayedBefore()) {
-            return player.getUniqueId().toString();
+            return new PlayerRecord(player.getUniqueId().toString(), player.getName());
         }
 
         String hql = "SELECT p FROM LCPlayerDB p WHERE p.name=:name";
@@ -334,7 +339,7 @@ public class PlayerManager {
         try {
             LCPlayerDB lcPlayerDB = query.getSingleResult();
             if(lcPlayerDB != null) {
-                return lcPlayerDB.getId();
+                return new PlayerRecord(lcPlayerDB.getId(), lcPlayerDB.getName());
             }
         } catch (NoResultException e) {
             return null;

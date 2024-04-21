@@ -1,156 +1,165 @@
 package de.legoshi.lccore.manager;
 
 import de.legoshi.lccore.Linkcraft;
+import de.legoshi.lccore.database.DBManager;
+import de.legoshi.lccore.database.composite.PlayerCompletionId;
+import de.legoshi.lccore.database.models.LCPlayerDB;
+import de.legoshi.lccore.database.models.PlayerCompletion;
 import de.legoshi.lccore.menu.maps.LCMap;
-import de.legoshi.lccore.menu.maps.MapComparator;
-import de.legoshi.lccore.util.ConfigAccessor;
 import de.legoshi.lccore.util.MapType;
-import de.legoshi.lccore.util.Utils;
-import fr.minuskube.inv.ClickableItem;
-import fr.minuskube.inv.InventoryManager;
-import org.bukkit.Bukkit;
+import de.legoshi.lccore.util.SheetsAPI;
+import lombok.Getter;
 import org.bukkit.Material;
-import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
-import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.meta.ItemMeta;
+import org.yaml.snakeyaml.Yaml;
+import team.unnamed.inject.Inject;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Set;
+import javax.persistence.EntityManager;
+import javax.persistence.TypedQuery;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.security.GeneralSecurityException;
+import java.util.*;
 
 public class MapManager {
+    private final static String sheetId = "1IRRRxXs0998rA2H-CF1vD6oFRAe-n-ewSF0dLOzTups";
+    private final static String range = "Sheet1!A2:I1000";
+    private final static String fileName = "maps.yml";
+    @Getter private List<LCMap> maps = new ArrayList<>();
+    @Getter private HashMap<String, LCMap> mapMap = new HashMap<>();
+    @Inject private PlayerManager playerManager;
+    @Inject private DBManager db;
 
-    public final Linkcraft plugin;
-    public final InventoryManager im;
-    static List<LCMap> maps;
-    public static HashMap<String, LCMap> mapMap;
-    static ClickableItem[] mapItems;
-    static FileConfiguration mapsConfig;
-
-    public MapManager(Linkcraft plugin) {
-        this.plugin = plugin;
-        im = new InventoryManager(plugin);
-        im.init();
-        mapsConfig = plugin.mapsConfig.getConfig();
-        loadMaps();
+    public void updateMaps() throws GeneralSecurityException, IOException {
+        List<LCMap> maps = parseSheetsDataToMapsList(SheetsAPI.getData(sheetId, range));
+        createYMLFromMaps(maps);
+        cacheMaps();
     }
 
-    public static boolean mapExists(String mapName) {
-        return mapMap.containsKey(mapName);
+    public static List<LCMap> parseSheetsDataToMapsList(List<List<Object>> values) {
+        List<LCMap> maps = new ArrayList<>();
+        if (values != null && !values.isEmpty()) {
+            for (List row : values) {
+                LCMap lcMap = new LCMap();
+                Object id = row.get(0);
+                if(id == null || ((String)id).isEmpty()) {
+                    continue;
+                }
+
+                lcMap.setId((String)id);
+                lcMap.setName((String)row.get(1));
+                lcMap.setCreator((String) row.get(2));
+                lcMap.setStar(Double.parseDouble((String) row.get(3)));
+                lcMap.setPp(Integer.parseInt((String)row.get(4)));
+                lcMap.setLength((String)row.get(5));
+                lcMap.setItem(new ItemStack(Integer.parseInt((String)row.get(6)), 1, Short.parseShort((String)row.get(7))));
+                lcMap.setMapType(MapType.valueOf((String)row.get(8)));
+                maps.add(lcMap);
+            }
+        }
+
+        return maps;
     }
 
-    public static void loadMaps() {
+    public static void createYMLFromMaps(List<LCMap> maps) {
+        if(maps.isEmpty()) {
+            return;
+        }
+
+        Map<String, Map<String, Object>> yamlData = new HashMap<>();
+        for (LCMap map : maps) {
+            Map<String, Object> mapData = new HashMap<>();
+            mapData.put("name", map.getName());
+            mapData.put("creator", map.getCreator());
+            mapData.put("star_rating", map.getStar());
+            mapData.put("pp", (int)map.getPp());
+            mapData.put("length", map.getLength());
+            mapData.put("item", new int[]{map.getItem().getTypeId(), map.getItem().getDurability()});
+            mapData.put("type", map.getMapType().name());
+
+            yamlData.put(map.getId(), mapData);
+        }
+
+        Map<String, Object> yamlResult = new HashMap<>();
+        yamlResult.put("maps", yamlData);
+
+        try (FileWriter writer = new FileWriter(Linkcraft.getPlugin().getDataFolder().getPath() + File.separator + fileName)) {
+            new Yaml().dump(yamlResult, writer);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void reloadMapConfig() {
         Linkcraft.getPlugin().mapsConfig.reloadConfig();
-        mapsConfig = Linkcraft.getPlugin().mapsConfig.getConfig();
-        maps = new ArrayList<>();
-        mapMap = new HashMap<>();
+    }
 
+    private FileConfiguration getMapConfig() {
+        reloadMapConfig();
+        return Linkcraft.getPlugin().mapsConfig.getConfig();
+    }
+
+    public void cacheMaps() {
+        maps.clear();
+        mapMap.clear();
+
+        FileConfiguration mapsConfig = getMapConfig();
         Set<String> keys = mapsConfig.getConfigurationSection("maps").getKeys(false);
 
         for (String key : keys) {
             LCMap map = new LCMap();
-            map.id = key;
-            map.name = mapsConfig.getString(String.format("maps.%s.name", key));
-            map.creator = mapsConfig.getString(String.format("maps.%s.creator", key));
-            map.star_rating = mapsConfig.getDouble(String.format("maps.%s.star_rating", key));
-            map.pp = mapsConfig.getDouble(String.format("maps.%s.pp", key));
-            map.length = mapsConfig.getString(String.format("maps.%s.length", key));
-            map.item = mapsConfig.getIntegerList(String.format("maps.%s.item", key));
-            map.mapType = MapType.valueOf(mapsConfig.getString(String.format("maps.%s.type", key)));
+            map.setId(key);
+            map.setName(mapsConfig.getString(String.format("maps.%s.name", key)));
+            map.setCreator(mapsConfig.getString(String.format("maps.%s.creator", key)));
+            map.setStar(mapsConfig.getDouble(String.format("maps.%s.star_rating", key)));
+            map.setPp(mapsConfig.getDouble(String.format("maps.%s.pp", key)));
+            map.setLength(mapsConfig.getString(String.format("maps.%s.length", key)));
+            List<Integer> itemValues = mapsConfig.getIntegerList(String.format("maps.%s.item", key));
+            map.setItem(new ItemStack(Material.getMaterial(itemValues.get(0)), 1, itemValues.get(1).shortValue()));
+            map.setMapType(MapType.valueOf(mapsConfig.getString(String.format("maps.%s.type", key))));
 
             maps.add(map);
             mapMap.put(key, map);
         }
-
-        maps.sort(new MapComparator());
     }
 
-    public static ClickableItem[] getMapItems(String uuid, Player holder, boolean admin) {
-        List<ClickableItem> clickableItems = new ArrayList<>();
-        ConfigAccessor playerConfigAccessor = Utils.getPlayerConfig(uuid);
-        FileConfiguration playerConfig = playerConfigAccessor.getConfig();
+    public boolean mapExists(String name) {
+        return mapMap.containsKey(name);
+    }
 
-        for (LCMap map : maps) {
-            if(!map.mapType.equals(MapType.SIDE)) {
-                continue;
-            }
-            ConfigurationSection mapsSection = playerConfig.getConfigurationSection("maps");
-            if(mapsSection == null) {
-                playerConfig.createSection("maps");
-                playerConfig.getConfigurationSection("maps");
-                mapsSection = playerConfig.getConfigurationSection("maps");
-            }
+    public List<String> getMapNames() {
+        return new ArrayList<>(mapMap.keySet());
+    }
 
-            ConfigurationSection mapSection = playerConfig.getConfigurationSection("maps." + map.id);
+    public Map<String, PlayerCompletion> getPlayerMapData(String uuid) {
+        String hql = "SELECT c FROM PlayerCompletion c " +
+                "WHERE c.player = :player";
 
-            boolean completedMap = mapSection != null;
-            ItemStack is = new ItemStack(Material.getMaterial(map.item.get(0)), 1, map.item.get(1).shortValue());
+        EntityManager em = db.getEntityManager();
+        TypedQuery<PlayerCompletion> query = em.createQuery(hql, PlayerCompletion.class);
 
-            if (completedMap) {
-                Utils.addGlow(is);
-            }
+        query.setParameter("player", new LCPlayerDB(uuid));
+        Map<String, PlayerCompletion> playerMapData = new HashMap<>();
 
-            ItemMeta im = is.getItemMeta();
-
-            ArrayList<String> lore = new ArrayList<>();
-            lore.add(Utils.chat("&7/warp " + map.id));
-            lore.add(Utils.chat(String.format("&e&lStars: &e%.1f", map.star_rating)));
-            lore.add(Utils.chat(String.format("&d&lPP: &d" + (int)map.pp)));
-            lore.add(Utils.chat("&c&lLength: &c" + map.length));
-            lore.add(Utils.chat("&a&lCreator: &a" + map.creator));
-            if(completedMap) {
-                lore.add(Utils.chat("&b&lCompletions: &b" + mapSection.get("completions")));
-                lore.add(Utils.chat("&6&lFirst: &6" + Utils.stringToISO(mapSection.getString("firstcompletion"))));
-                lore.add(Utils.chat("&6&lLatest: &6" + Utils.stringToISO(mapSection.getString("lastcompletion"))));
-            }
-
-            if(admin) {
-                lore.add(Utils.chat("&8Left Click - Add Completion"));
-                lore.add(Utils.chat("&8Right Click - Remove All Completions"));
-            }
-            im.setLore(lore);
-            im.setDisplayName(Utils.chat("&f&l" + map.name));
-
-            is.setItemMeta(im);
-
-
-            ConfigurationSection finalMapsSection = mapsSection;
-
-            clickableItems.add(ClickableItem.of(
-                    is,
-                    e -> {
-                        if(admin) {
-                            if(e.getClick().isRightClick()) {
-                                finalMapsSection.set(map.id, null);
-                                holder.sendMessage(Utils.chat("&aRemoved completions of " + map.id));
-                            } else if(e.getClick().isLeftClick()) {
-                                ConfigurationSection lamMapConfig = playerConfig.getConfigurationSection("maps." + map.id);
-                                if(completedMap) {
-                                    int completions = lamMapConfig.getInt("completions");
-                                    lamMapConfig.set("completions", completions + 1);
-                                    lamMapConfig.set("lastcompletion", "N/A");
-                                } else {
-                                    finalMapsSection.createSection(map.id);
-                                    lamMapConfig = finalMapsSection.getConfigurationSection(map.id);
-                                    lamMapConfig.set("firstcompletion", "N/A");
-                                    lamMapConfig.set("completions", 1);
-                                    lamMapConfig.set("lastcompletion", "N/A");
-                                }
-                                holder.sendMessage(Utils.chat("&aAdded a completion of " + map.id));
-                            }
-                            playerConfigAccessor.saveConfig();
-                            holder.closeInventory();
-                        } else {
-                            Bukkit.dispatchCommand(e.getWhoClicked(), "warp " + map.id);
-                        }
-                    }
-            ));
+        for(PlayerCompletion completion : query.getResultList()) {
+            playerMapData.put(completion.getMap(), completion);
         }
 
-        return clickableItems.toArray(new ClickableItem[0]);
+        em.close();
+        return playerMapData;
     }
 
+    public boolean hasPreviousCompletion(String uuid, String map) {
+        return getPreviousCompletion(uuid, map) != null;
+    }
+
+    public PlayerCompletion getPreviousCompletion(String uuid, String map) {
+        return db.find(new PlayerCompletionId(uuid, map), PlayerCompletion.class);
+    }
+
+    public LCMap getMap(String name) {
+        return mapMap.get(name);
+    }
 }

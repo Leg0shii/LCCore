@@ -6,6 +6,7 @@ import de.legoshi.lccore.database.models.Punishment;
 import de.legoshi.lccore.manager.ChatManager;
 import de.legoshi.lccore.manager.PlayerManager;
 import de.legoshi.lccore.manager.PunishmentManager;
+import de.legoshi.lccore.player.PlayerRecord;
 import de.legoshi.lccore.player.PunishmentType;
 import de.legoshi.lccore.util.GUIUtil;
 import de.legoshi.lccore.util.Register;
@@ -32,15 +33,20 @@ public class FullMuteCommand implements CommandClass {
     @Inject private ChatManager chatManager;
 
     @Command(names = "")
-    public void fullmute(CommandSender sender, @ReflectiveTabComplete(clazz = PlayerManager.class, method = "getPossibleNames", player = true) String toMute, String length, @OptArg ArgumentStack reasonList) {
+    public void fullMute(CommandSender sender, @ReflectiveTabComplete(clazz = PlayerManager.class, method = "getPossibleNames", player = true) String toMute, String length, @OptArg ArgumentStack reasonList) {
         Bukkit.getScheduler().runTaskAsynchronously(Linkcraft.getPlugin(), () -> {
             Player player = playerManager.playerByName(toMute);
             Bukkit.getScheduler().runTaskAsynchronously(Linkcraft.getPlugin(), () -> {
-                String uuid = player != null ? player.getUniqueId().toString() : playerManager.uuidByName(toMute);
-                if(uuid == null) {
+                PlayerRecord record = playerManager.getPlayerRecord(player, toMute);
+
+                if(record == null) {
                     MessageUtil.send(Message.NEVER_JOINED, sender, toMute);
                     return;
                 }
+
+                String uuid = record.getUuid();
+                String name = record.getName();
+
 
                 String reason = Utils.joinArguments(reasonList);
                 boolean silent = reason.contains("-s");
@@ -64,14 +70,14 @@ public class FullMuteCommand implements CommandClass {
                 Punishment punishment = punishmentManager.addPunishment(uuid, PunishmentType.FULL_MUTE, until, reason);
 
                 if(punishment != null) {
-                    MessageUtil.send(Message.PUNISH_ALREADY_PUNISHED, sender, toMute, "full muted", GUIUtil.ISOStringWithTime(punishment.getLength()));
+                    MessageUtil.send(Message.PUNISH_ALREADY_PUNISHED, sender, name, "full muted", GUIUtil.ISOStringWithTime(punishment.getLength()));
                     return;
                 }
 
                 if(silent) {
-                    MessageUtil.broadcast(chatManager.getPlayersWithPerm("linkcraft.punish.silent"), Message.PUNISH_UNTIL_SILENT, true, toMute, "full muted", GUIUtil.ISOStringWithTime(until), reason);
+                    MessageUtil.broadcast(chatManager.getPlayersWithPerm("linkcraft.punish.silent"), Message.PUNISH_UNTIL_SILENT, true, name, "full muted", GUIUtil.ISOStringWithTime(until), reason);
                 } else {
-                    MessageUtil.broadcast(Message.PUNISH_UNTIL, true, toMute, "full muted", GUIUtil.ISOStringWithTime(until), reason);
+                    MessageUtil.broadcast(Message.PUNISH_UNTIL, true, name, "full muted", GUIUtil.ISOStringWithTime(until), reason);
                 }
             });
 
