@@ -246,7 +246,7 @@ public class PlayerManager {
     private void saveConfigDataTemp(Player player) {
         ConfigAccessor playerData = new ConfigAccessor(Linkcraft.getPlugin(), Linkcraft.getPlugin().getPlayerdataFolder(), player.getUniqueId() + ".yml");
         FileConfiguration playerDataConfig = playerData.getConfig();
-        playerDataConfig.set("lastlocation", Utils.getStringFromLocation(player.getLocation()));
+        //playerDataConfig.set("lastlocation", Utils.getStringFromLocation(player.getLocation()));
         playerDataConfig.set("jumps", player.getStatistic(Statistic.JUMP));
         playerData.saveConfig();
     }
