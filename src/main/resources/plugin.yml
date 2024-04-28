@@ -64,7 +64,6 @@ commands:
   nv:
     aliases: [ nightvision, nvn, vision ]
   save:
-  lcreload:
   fakeup:
   pingtp:
   chungus:

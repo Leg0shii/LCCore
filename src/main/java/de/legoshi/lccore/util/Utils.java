@@ -35,19 +35,17 @@ public class Utils {
 
     }
 
-    public static void sendDiscordChat(Player player, String message) {
+    public static void sendDiscordChat(Player player, String message, String channel) {
         if(Linkcraft.getPlugin().getServer().getPluginManager().getPlugin("DiscordSRV") == null) {
             return;
         }
 
-        Linkcraft.async(() -> {
-            DiscordSRV.getPlugin().processChatMessage(
-                    player,
-                    message,
-                    DiscordSRV.getPlugin().getOptionalChannel("global"),
-                    false
-            );
-        });
+        Linkcraft.async(() -> DiscordSRV.getPlugin().processChatMessage(
+                player,
+                message,
+                DiscordSRV.getPlugin().getOptionalChannel(channel),
+                false
+        ));
     }
 
     public static String getStringFromLocation(Location l) {

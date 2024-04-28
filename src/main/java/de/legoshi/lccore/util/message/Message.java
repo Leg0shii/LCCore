@@ -22,6 +22,7 @@ public enum Message {
     CONFIG_LOADING_ERR("Error loading {0}", MessageType.LOGGING),
     DATABASE_CONNECTED("Database connected.", MessageType.LOGGING),
     DATABASE_FAILED("CRITICAL ERROR - Failed to connect to database. Shutting down server...", MessageType.LOGGING),
+    LOADING_MAPS_FAILED("CRITICAL ERROR - Skipping map '{0}' could not load {1}!", MessageType.LOGGING),
     SERVICE_STARTING("Starting {0} service...", MessageType.LOGGING),
     SERVICE_STARTED("Started {0} service in {1}s", MessageType.LOGGING),
     SERVICE_STOPPED("Stopped {0} service", MessageType.LOGGING),
@@ -202,11 +203,16 @@ public enum Message {
     PUNISH_ALREADY_PUNISHED("§c{0} is already {1} until {2}!", MessageType.PUNISHMENT_ERROR),
 
     // Maps
-    MAP_FIRST_COMPLETION("§aAdded first completion of {0} for {1}", MessageType.MAPS_ERROR),
-    MAP_NEW_COMPLETION("§aAdded new completion of {0} for {1}", MessageType.MAPS_ERROR),
-    MAP_REMOVE_COMPLETION("§aRemoved all completions of {0} for {1}", MessageType.MAPS_ERROR),
+    MAP_FIRST_COMPLETION("§aAdded first completion of {0} for {1}", MessageType.MAPS),
+    MAP_NEW_COMPLETION("§aAdded new completion of {0} for {1}", MessageType.MAPS),
+    MAP_REMOVE_COMPLETION("§aRemoved all completions of {0} for {1}", MessageType.MAPS),
+    MAP_BYPASS_BAN("§aBypassing ban requirement, map already completed!", MessageType.MAPS),
+
     // Maps Errors
     MAP_NOT_EXISTS("§c{0} is not a valid map!", MessageType.MAPS_ERROR),
+    MAP_CANT_GIVE_COMPLETION_OFFLINE("§cCan't give completion rewards while a player is offline! Consider using: /complete <map> <player> nd", MessageType.MAPS_ERROR),
+    MAP_DROPPING_ITEM("§cYour inventory was full! Dropping reward item(s) on the ground in 3 seconds...", MessageType.MAPS_ERROR),
+
 
     FILLER("", MessageType.SYSTEM);
 

@@ -1,10 +1,18 @@
 package de.legoshi.lccore.util;
 
 public enum MapType {
-    RANKUP,
-    SIDE,
-    BONUS,
-    WOLF,
-    CHALLENGE,
-    MAZE
+    RANKUP("§d§m---»§2"),
+    SIDE("&6«&lPARKOUR&6»"),
+    BONUS("&b«&eBONUS&b»"),
+    WOLF("&1&lWolf's &9&lRankup &f&m-"),
+    CHALLENGE("&4«&fCHALLENGE&4»&e"),
+    MAZE("&d«&lMAZE&d»"),
+    MISC("&6«&lPARKOUR&6»");
+
+
+    public final String prefix;
+
+    MapType(String prefix) {
+        this.prefix = prefix;
+    }
 }

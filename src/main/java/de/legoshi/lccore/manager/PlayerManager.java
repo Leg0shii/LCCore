@@ -101,6 +101,14 @@ public class PlayerManager {
         player.setDisplayName(chatManager.rankNickStar(player));
     }
 
+    public void updatePlayer(Player player, long delay) {
+        Linkcraft.asyncLater(() -> {
+            if(player.isOnline()) {
+                updatePlayer(player);
+            }
+        }, delay);
+    }
+
     private LCPlayer loadPlayer(Player player) {
         return loadPlayer(player.getUniqueId().toString());
     }

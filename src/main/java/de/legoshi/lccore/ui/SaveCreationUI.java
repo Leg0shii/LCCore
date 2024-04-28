@@ -3,6 +3,7 @@ package de.legoshi.lccore.ui;
 import de.legoshi.lccore.Linkcraft;
 import de.legoshi.lccore.util.ConfigAccessor;
 import de.legoshi.lccore.util.Utils;
+import de.legoshi.lccore.util.message.MessageUtil;
 import org.apache.commons.lang.text.StrSubstitutor;
 import org.bukkit.Bukkit;
 import org.bukkit.Sound;
@@ -101,6 +102,7 @@ public class SaveCreationUI {
                     Bukkit.dispatchCommand(Bukkit.getConsoleSender(), commandToRun);
                 }
             }
+            MessageUtil.log(p.getName() + " created a save at: " + Utils.getStringFromLocation(p.getLocation()), true);
             p.closeInventory();
             p.playSound(p.getLocation(), Sound.ORB_PICKUP, 1.0F, 1.43F);
             p.sendMessage(Utils.chat("&aSuccessfully created a new save!"));

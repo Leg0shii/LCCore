@@ -99,6 +99,11 @@ ranks:
     tabDisplay: '&4«&r&lXX&r&4»'
     colorCode: 4
     position: 19
+  'event':
+    display: §6§lEVENT
+    tabDisplay: '§6§lEVENT'
+    colorCode: 6
+    position: 20
 bonus:
   1:
     display: §e#1
@@ -172,6 +177,18 @@ bonus:
   12pro:
     display: §3§l✫12
     position: 23
+  13:
+    display: §5§l#13
+    position: 24
+  13pro:
+    display: §5§l✫13
+    position: 25
+  14:
+    display: §b§l#14
+    position: 26
+  14pro:
+    display: §b§l✫14
+    position: 27
 wolf:
   wolf_i:
     display: §a①
@@ -189,7 +206,7 @@ wolf:
     display: §d⑤
     position: 4
   wolf_vi:
-    display: §5⑥
+    display: §8⑥
     position: 5
   wolf_vii:
     display: §c⑦
@@ -207,56 +224,71 @@ wolf:
     display: §4&l⑪
     position: 10
   wolf_xii:
-    display: §f&l⑫
+    display: §3§l⑫
     position: 11
   wolf_xiii:
-    display: §3&l⑬
+    display: §5§l⑬
     position: 12
 maze:
   i:
     tabDisplay: ""
+    display: I
     position: 0
   ii:
     tabDisplay: ""
+    display: II
     position: 1
   iii:
     tabDisplay: ""
+    display: III
     position: 2
   iv:
     tabDisplay: ""
+    display: IV
     position: 3
   v:
     tabDisplay: ""
+    display: §eV
     position: 4
   vi:
     tabDisplay: ""
+    display: §eVI
     position: 5
   vii:
     tabDisplay: ""
+    display: §eVII
     position: 6
   viii:
     tabDisplay: ""
+    display: §eVIII
     position: 7
   ix:
     tabDisplay: ""
+    display: §eIX
     position: 8
   x:
     tabDisplay: ""
+    display: §6X
     position: 9
   xi:
     tabDisplay: ""
+    display: §6XI
     position: 10
   xii:
     tabDisplay: ""
+    display: §6XII
     position: 11
   xiii:
     tabDisplay: ""
+    display: §6XIII
     position: 12
   xiv:
     tabDisplay: ""
+    display: §6XIV
     position: 13
   xv:
     tabDisplay: "§c§nXV"
+    display: "§c§nXV"
     position: 14
 star:
   bronze:
@@ -310,5 +342,8 @@ staff:
     display: §3[§bStaff§3]
     position: 2
   admin:
-    display: §3[§bStaff§3]
+    display: §4[§cAdmin§4]
     position: 3
+  owner:
+    display: §2[§aOwner§2]
+    position: 4

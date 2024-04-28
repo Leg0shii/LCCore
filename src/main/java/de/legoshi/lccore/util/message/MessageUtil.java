@@ -1,7 +1,11 @@
 package de.legoshi.lccore.util.message;
 
+import de.legoshi.lccore.Linkcraft;
 import de.legoshi.lccore.manager.ConfigManager;
 import de.legoshi.lccore.util.CommonUtil;
+import github.scarsz.discordsrv.DiscordSRV;
+import github.scarsz.discordsrv.dependencies.jda.api.entities.TextChannel;
+import github.scarsz.discordsrv.dependencies.jda.api.requests.restaction.MessageAction;
 import net.kyori.text.Component;
 import net.kyori.text.TextComponent;
 import net.kyori.text.serializer.legacy.LegacyComponentSerializer;
@@ -120,7 +124,32 @@ public interface MessageUtil {
         return getMessageTranslated(Message.PREFIX);
     }
 
+    static void discord(Player player, String message) {
+        if(Linkcraft.getPlugin().getServer().getPluginManager().getPlugin("DiscordSRV") == null) {
+            return;
+        }
 
+        Linkcraft.async(() -> DiscordSRV.getPlugin().processChatMessage(
+                player,
+                message,
+                DiscordSRV.getPlugin().getOptionalChannel("global"),
+                false
+        ));
+    }
+
+    static void discord(String message, String channel) {
+        if(Linkcraft.getPlugin().getServer().getPluginManager().getPlugin("DiscordSRV") == null) {
+            return;
+        }
+
+        Linkcraft.async(() -> {
+            TextChannel textChannel = DiscordSRV.getPlugin().getOptionalTextChannel(channel);
+            if(textChannel != null) {
+                MessageAction action = textChannel.sendMessage(message);
+                action.submit();
+            }
+        });
+    }
 
     static String processMessage(Object send) {
         if (send == null) {

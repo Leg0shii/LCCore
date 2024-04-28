@@ -8,5 +8,6 @@ import lombok.Data;
 public class MazeDTO {
     private String key;
     private String tabDisplay;
+    private String display;
     private int position;
 }

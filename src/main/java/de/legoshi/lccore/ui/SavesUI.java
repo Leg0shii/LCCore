@@ -4,6 +4,7 @@ import de.legoshi.lccore.Linkcraft;
 import de.legoshi.lccore.util.ConfigAccessor;
 import de.legoshi.lccore.util.Constants;
 import de.legoshi.lccore.util.Utils;
+import de.legoshi.lccore.util.message.MessageUtil;
 import net.luckperms.api.LuckPerms;
 import net.luckperms.api.model.user.User;
 import net.luckperms.api.node.types.PermissionNode;
@@ -104,6 +105,7 @@ public class SavesUI {
             }
 
             String locationString = playerDataConfig.getString("Saves." + keys.toArray()[slot + (page - 1) * 36] + ".location");
+            MessageUtil.log(p.getName() + " used their save to teleport to: " + locationString, true);
             final Location loc = Utils.getLocationFromString(locationString);
             loc.setY(loc.getY());
             p.teleport(loc);

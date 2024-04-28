@@ -84,7 +84,7 @@ public class MapsHolder extends GUIScrollablePane {
         GUIDescriptionBuilder base = new GUIDescriptionBuilder().coloured(mapData.getName(), ChatColor.RESET)
                 .coloured("/" + warpCommand, ChatColor.GRAY)
                 .raw("§e§lStars§r§e: " + mapData.getStar())
-                .raw("§d§lPP§r§d: " + mapData.getPp())
+                .raw("§d§lPP§r§d: " + GUIUtil.removeTrailingZeros(mapData.getPp()))
                 .raw("§c§lLength§r§c: " + mapData.getLength())
                 .raw("§a§lCreator§r§a: " + mapData.getCreator());
 

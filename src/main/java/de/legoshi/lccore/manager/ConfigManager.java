@@ -208,10 +208,11 @@ public class ConfigManager {
     private void loadMazeSection(ConfigurationSection mazes) {
         if(mazes != null) {
             for(String key : mazes.getKeys(false)) {
-                ConfigurationSection wolf = mazes.getConfigurationSection(key);
-                String tabDisplay = wolf.getString("tabDisplay");
-                int position = wolf.getInt("position");
-                mazeDisplay.put("maze." + key, new MazeDTO("maze." + key, tabDisplay, position));
+                ConfigurationSection maze = mazes.getConfigurationSection(key);
+                String tabDisplay = maze.getString("tabDisplay");
+                String display = maze.getString("display");
+                int position = maze.getInt("position");
+                mazeDisplay.put("maze." + key, new MazeDTO("maze." + key, tabDisplay, display, position));
             }
         }
     }

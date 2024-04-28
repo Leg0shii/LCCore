@@ -1,5 +1,6 @@
 package de.legoshi.lccore.command.maps;
 
+import de.czymm.serversigns.hooks.EssentialsHook;
 import de.legoshi.lccore.Linkcraft;
 import de.legoshi.lccore.command.flow.annotated.annotation.ReflectiveTabComplete;
 import de.legoshi.lccore.database.DBManager;
@@ -15,6 +16,7 @@ import de.legoshi.lccore.util.message.MessageUtil;
 import me.fixeddev.commandflow.annotated.CommandClass;
 import me.fixeddev.commandflow.annotated.annotation.Command;
 import me.fixeddev.commandflow.annotated.annotation.OptArg;
+import net.milkbowl.vault.economy.Economy;
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
@@ -36,93 +38,76 @@ public class CompleteCommand implements CommandClass {
                          @OptArg String nd) {
 
         Player victor = playerManager.playerByName(player);
+        LCMap lcMap = mapManager.getMap(map);
 
-        Bukkit.getScheduler().runTaskAsynchronously(Linkcraft.getPlugin(), () -> {
-            LCMap lcMap = mapManager.getMap(map);
+        if(lcMap == null) {
+            MessageUtil.send(Message.MAP_NOT_EXISTS, sender, map);
+            return;
+        }
+        PlayerRecord record = playerManager.getPlayerRecord(victor, player);
 
-            if(lcMap == null) {
-                MessageUtil.send(Message.MAP_NOT_EXISTS, sender, map);
-                return;
+        if(record == null) {
+            MessageUtil.send(Message.NEVER_JOINED, sender, player);
+            return;
+        }
+
+        if(nd != null) {
+            Linkcraft.async(() -> mapManager.giveCompletionNoRewards(sender, record, lcMap));
+            return;
+        }
+
+        if(victor == null || !victor.isOnline()) {
+            MessageUtil.send(Message.MAP_CANT_GIVE_COMPLETION_OFFLINE, sender);
+            return;
+        }
+
+        String uuid = record.getUuid();
+        PlayerCompletion playerCompletion = mapManager.getPreviousCompletion(uuid, map);
+        boolean firstCompletion = playerCompletion == null;
+        LCPlayerDB lcPlayerDB = playerManager.getPlayerDB(uuid);
+
+        if(mapManager.requiresBanToComplete(victor, lcMap, playerCompletion)) {
+            if(!firstCompletion) {
+                playerCompletion.setReceivedBan(true);
+                db.update(playerCompletion);
+            } else {
+                PlayerCompletion completion = new PlayerCompletion();
+                completion.setPlayer(lcPlayerDB);
+                completion.setMap(map);
+                completion.setReceivedBan(true);
+                db.persist(completion, lcPlayerDB);
             }
-            PlayerRecord record = playerManager.getPlayerRecord(victor, player);
+            Linkcraft.consoleCommand("ban " + victor.getName() + " -s " + "§4You beat a hard map! §7Notify staff on §9Discord§r");
+            MessageUtil.discord(record.getName() + " received a ban for completing: " + map, "completions");
+            return;
+        }
 
-            if(record == null) {
-                MessageUtil.send(Message.NEVER_JOINED, sender, player);
-                return;
-            }
+        String warp = lcMap.getVictoryWarp() == null ? "spawn" : lcMap.getVictoryWarp();
+        Linkcraft.consoleCommand("warp " + warp + " " + victor.getName());
 
-            String uuid = record.getUuid();
-
-
-
-            LCPlayerDB lcPlayerDB = playerManager.getPlayerDB(uuid);
-            PlayerCompletion playerCompletion = new PlayerCompletion();
+        if(firstCompletion) {
+            playerCompletion = new PlayerCompletion();
             playerCompletion.setPlayer(lcPlayerDB);
             playerCompletion.setMap(map);
-
-            boolean hasPrevious = false;
-
-            if(mapManager.hasPreviousCompletion(uuid, map)) {
-                hasPrevious = true;
-                playerCompletion = mapManager.getPreviousCompletion(uuid, map);
+            playerCompletion.setCompletions(1);
+            playerCompletion.setFirst(new Date());
+            playerCompletion.setLatest(new Date());
+            playerCompletion.setReceivedBan(false);
+            db.persist(playerCompletion, lcPlayerDB);
+            MessageUtil.send(Message.MAP_FIRST_COMPLETION, sender, map, record.getName());
+        } else {
+            if(playerCompletion.isReceivedBan() && playerCompletion.getCompletions() == 0) {
+                playerCompletion.setFirst(new Date());
             }
+            playerCompletion.setCompletions(playerCompletion.getCompletions() + 1);
+            playerCompletion.setLatest(new Date());
+            playerCompletion.setReceivedBan(false);
+            db.update(playerCompletion);
+            MessageUtil.send(Message.MAP_NEW_COMPLETION, sender, map, record.getName());
+        }
+        MessageUtil.discord(record.getName() + " completed: " + map, "completions");
 
-            if(requiresBan()) {
-                playerCompletion.setCompletions(0);
-                db.persist(playerCompletion, lcPlayerDB);
-                return;
-            }
-
-            if(nd == null) {
-                playerCompletion.setLatest(new Date());
-                if(!hasPrevious) {
-                    playerCompletion.setFirst(new Date());
-                }
-            }
-
-            if(hasPrevious) {
-                playerCompletion.setCompletions(playerCompletion.getCompletions() + 1);
-                db.update(playerCompletion);
-                MessageUtil.send(Message.MAP_NEW_COMPLETION, sender, map, record.getName());
-            } else {
-                playerCompletion.setCompletions(1);
-                db.persist(playerCompletion, lcPlayerDB);
-                MessageUtil.send(Message.MAP_FIRST_COMPLETION, sender, map, record.getName());
-            }
-        });
+        mapManager.giveRewards(victor, lcMap);
     }
 
-    // TODO: ban logic
-    private boolean requiresBan() {
-        return false;
-    }
-
-//    private void ban(OfflinePlayer offlinePlayer) {
-//        Bukkit.getBanList(BanList.Type.NAME).addBan(offlinePlayer.getName(), "You beat a hard map, notify staff!", null, "map completion");
-//        Player player = Bukkit.getPlayer(offlinePlayer.getName());
-//        if(player != null && player.isOnline()) {
-//            player.kickPlayer("You beat a hard map, notify staff!");
-//        }
-//    }
-
-//    private void giveRewards(Player player, LCMap map) {
-//        String warp = "spawn"; // = map.warp != null ? map.warp : "spawn"
-//        serverCommand("warp " + warp + " " + player.getName());
-//
-//        if(map.pp > 0) {
-//            serverCommand("eco give " + player.getName() + " " + map.pp);
-//        }
-//
-//        if(map.star_rating >= 7) {
-//            Bukkit.broadcastMessage(parkour + " §a" + player.getName() + " §r§7" + "has finished §r" + Utils.chat(map.name) + "§r§7! " + "§r§e§l" + map.star_rating + "*");
-//        } else if(map.star_rating >= 3.5) {
-//            Bukkit.broadcastMessage(parkour + " §a" + player.getName() + " §r§7" + "has finished §r" + Utils.chat(map.name) + "§r§7! " + "§r§e" + map.star_rating + "*");
-//        } else {
-//            player.sendMessage(parkour + " §7You have just completed §r" + Utils.chat(map.name) + "§r§7! " + "§r§e" + map.star_rating + "*");
-//        }
-//    }
-//
-//    private void serverCommand(String command) {
-//        Bukkit.getServer().dispatchCommand(Bukkit.getServer().getConsoleSender(), command);
-//    }
 }

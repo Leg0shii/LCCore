@@ -358,7 +358,7 @@ public class ChatManager {
         String globalMessage = globalChat(player, message);
         MessageUtil.broadcast(getGlobalChatFromRecipients(player), globalMessage, false);
         MessageUtil.log("[" + player.getName() + "] " + globalMessage, false);
-        Utils.sendDiscordChat(player, globalMessage);
+        MessageUtil.discord(player, globalMessage);
     }
 
     public boolean chatToggled(Player player) {

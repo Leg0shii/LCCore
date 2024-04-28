@@ -30,7 +30,6 @@ public class OldCommandManager {
         plugin.getCommand("saves").setExecutor(new SavesCommand());
         plugin.getCommand("save").setExecutor(new SaveCommand(plugin));
         plugin.getCommand("resetsaves").setExecutor(new ResetSavesCommand(plugin));
-        plugin.getCommand("lcreload").setExecutor(new ReloadCommand(plugin));
         plugin.getCommand("pingtp").setExecutor(new PingtpCommand());
         plugin.getCommand("pex").setExecutor(new PexCommand());
         plugin.getCommand("hide").setExecutor(injector.getInstance(Hide.class));

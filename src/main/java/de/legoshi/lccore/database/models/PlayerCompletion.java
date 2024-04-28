@@ -27,11 +27,14 @@ public class PlayerCompletion implements Identifiable<PlayerCompletionId> {
     @JoinColumn(name = "player_id", nullable = false, columnDefinition = "VARCHAR(36)")
     private LCPlayerDB player;
 
-    private int completions;
+    private int completions = 0;
 
     private Date first = null;
 
     private Date latest = null;
+
+    @Column(name = "received_ban")
+    private boolean receivedBan = false;
 
     public PlayerCompletionId getId() {
         return new PlayerCompletionId(player.getId(), map);

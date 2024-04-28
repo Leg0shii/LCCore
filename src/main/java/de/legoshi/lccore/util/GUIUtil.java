@@ -38,6 +38,10 @@ public interface GUIUtil {
         return options.toArray(new GuiStateElement.State[0]);
     }
 
+    static String removeTrailingZeros(Double num) {
+        return Double.toString(num).replaceAll("0*$", "").replaceAll("\\.$", "");
+    }
+
     static <T> GuiStateElement.State[] createSelectionMenu(LinkedHashMap<String, T> names, ItemStack item, String itemName, BiConsumer<GuiElement.Click, T> setter, String ... after) {
         List<GuiStateElement.State> options = new ArrayList<>();
         ArrayList<String> displayOpts = new ArrayList<>(names.keySet());

@@ -1,27 +1,26 @@
 package de.legoshi.lccore.command;
 
 import de.legoshi.lccore.Linkcraft;
+import de.legoshi.lccore.manager.ConfigManager;
+import de.legoshi.lccore.util.Register;
 import de.legoshi.lccore.util.message.Message;
 import de.legoshi.lccore.util.message.MessageUtil;
-import org.bukkit.command.Command;
-import org.bukkit.command.CommandExecutor;
+import me.fixeddev.commandflow.annotated.CommandClass;
+import me.fixeddev.commandflow.annotated.annotation.Command;
+import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
+import org.bukkit.entity.Player;
+import team.unnamed.inject.Inject;
 
-public class ReloadCommand implements CommandExecutor {
+@Register
+@Command(names = {"lcreload"}, permission = "reload", desc = "")
+public class ReloadCommand implements CommandClass {
 
-    private final Linkcraft plugin;
+    @Inject private ConfigManager configManager;
 
-    public ReloadCommand(Linkcraft plugin) {
-        this.plugin = plugin;
-    }
-
-    public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
-        if(!MessageUtil.hasPerm(sender, "lc.reload")) {
-            return true;
-        }
-        plugin.configManager.loadConfigs(false);
+    @Command(names = "")
+    public void reload(CommandSender sender) {
+        configManager.loadConfigs(false);
         MessageUtil.send(Message.RELOAD_COMPLETE, sender);
-        return true;
     }
-
 }

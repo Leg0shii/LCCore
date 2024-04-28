@@ -83,6 +83,12 @@ public class LuckPermsManager {
         return getUserGroups(getUserForPlayer(player)).stream().anyMatch(toCheck -> toCheck.getName().equalsIgnoreCase(group));
     }
 
+    public void giveGroup(Player player, String group) {
+        if(!hasGroup(player, group)) {
+            givePermission(player, "group." + group);
+        }
+    }
+
     public boolean hasGroup(String player, String group) {
         Player p = Bukkit.getPlayer(UUID.fromString(player));
         if(p != null && p.isOnline())

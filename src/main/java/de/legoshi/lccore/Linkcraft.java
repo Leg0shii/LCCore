@@ -54,7 +54,6 @@ public class Linkcraft extends JavaPlugin {
     public InventoryManager im;
     private final FileConfiguration config = getConfig();
     public ProtocolManager protocolManager;
-    public ConfigManager configManager;
 
     @Inject private PlayerManager playerManager;
     @Inject private Service service;
