@@ -52,7 +52,9 @@ public class CompleteCommand implements CommandClass {
         }
 
         if(nd != null) {
-            Linkcraft.async(() -> mapManager.giveCompletionNoRewards(sender, record, lcMap));
+            Linkcraft.async(() -> {
+                mapManager.giveCompletionNoRewards(sender, record, lcMap, nd.equalsIgnoreCase("d"));
+            });
             return;
         }
 

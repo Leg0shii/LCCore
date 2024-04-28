@@ -252,7 +252,16 @@ public class MapManager {
             map.setCreator(mapsConfig.getString(String.format("maps.%s.creator", key)));
             map.setStar(mapsConfig.getDouble(String.format("maps.%s.star_rating", key)));
             map.setPp(mapsConfig.getDouble(String.format("maps.%s.pp", key)));
-            map.setPpReward(mapsConfig.getBoolean(String.format("maps.%s.pp_reward", key)));
+            try {
+                String temp = mapsConfig.getString(String.format("maps.%s.pp_reward", key));
+                if(temp == null) {
+                    map.setPpReward(null);
+                } else {
+                    map.setPpReward(Boolean.parseBoolean(mapsConfig.getString(String.format("maps.%s.pp_reward", key))));
+                }
+            } catch (Exception e) {
+                map.setPpReward(null);
+            }
             map.setLength(mapsConfig.getString(String.format("maps.%s.length", key)));
             List<Integer> itemValues = mapsConfig.getIntegerList(String.format("maps.%s.item", key));
             if(itemValues != null && !itemValues.isEmpty()) {
@@ -343,7 +352,7 @@ public class MapManager {
         return mapMap.get(name);
     }
 
-    public void giveCompletionNoRewards(CommandSender sender, PlayerRecord record, LCMap map) {
+    public void giveCompletionNoRewards(CommandSender sender, PlayerRecord record, LCMap map, boolean dates) {
         String uuid = record.getUuid();
         PlayerCompletion playerCompletion = getPreviousCompletion(uuid, map.getId());
         boolean firstCompletion = playerCompletion == null;
@@ -353,14 +362,18 @@ public class MapManager {
             playerCompletion = new PlayerCompletion();
             playerCompletion.setPlayer(lcPlayerDB);
             playerCompletion.setMap(map.getId());
-            playerCompletion.setFirst(new Date());
-            playerCompletion.setLatest(new Date());
+            if(dates) {
+                playerCompletion.setFirst(new Date());
+                playerCompletion.setLatest(new Date());
+            }
             playerCompletion.setCompletions(1);
             db.persist(playerCompletion, lcPlayerDB);
             MessageUtil.send(Message.MAP_FIRST_COMPLETION, sender, map.getId(), record.getName());
         } else {
             playerCompletion.setCompletions(playerCompletion.getCompletions() + 1);
-            playerCompletion.setLatest(new Date());
+            if(dates) {
+                playerCompletion.setLatest(new Date());
+            }
             db.update(playerCompletion);
             MessageUtil.send(Message.MAP_NEW_COMPLETION, sender, map.getId(), record.getName());
         }
@@ -421,7 +434,11 @@ public class MapManager {
     }
 
     private void givePPReward(Player player, LCMap map) {
-        if(map.getPp() == null || map.getPp() == 0 || (map.getPpReward() != null && !map.getPpReward())) {
+        if(map.getPpReward() != null && !map.getPpReward()) {
+            return;
+        }
+
+        if(map.getPp() == null || map.getPp() == 0) {
             return;
         }
         Linkcraft.consoleCommand("eco give " + player.getName() + " " + map.getPp());
