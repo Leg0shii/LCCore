@@ -179,7 +179,7 @@ public class TagCreate extends GUIPane {
                         },
                         "unobtainable",
                         new ItemStack(Material.WOOL, 1, Dye.GRAY.data),
-                        new GUIDescriptionBuilder().raw("Unobtainable")
+                        new GUIDescriptionBuilder().raw("Obtainable")
                                 .pair("Enabled", "false")
                                 .build()
                 )
@@ -206,7 +206,7 @@ public class TagCreate extends GUIPane {
                         },
                         "invisible",
                         new ItemStack(Material.WOOL, 1, Dye.GRAY.data),
-                        new GUIDescriptionBuilder().raw("Invisible")
+                        new GUIDescriptionBuilder().raw("Visible")
                                 .pair("Enabled", "false")
                                 .build()
                 )
