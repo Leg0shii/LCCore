@@ -3,6 +3,7 @@ package de.legoshi.lccore;
 import com.comphenix.protocol.ProtocolLibrary;
 import com.comphenix.protocol.ProtocolManager;
 import de.legoshi.lccore.inject.LinkcraftModule;
+import de.legoshi.lccore.listener.ModIdListener;
 import de.legoshi.lccore.manager.ConfigManager;
 import de.legoshi.lccore.manager.OldCommandManager;
 import de.legoshi.lccore.manager.PlayerManager;
@@ -71,6 +72,14 @@ public class Linkcraft extends JavaPlugin {
 
         injector.injectMembers(this);
         service.start();
+
+        registerForgeModListener();
+
+    }
+
+    private void registerForgeModListener() {
+        Bukkit.getMessenger().registerOutgoingPluginChannel(this, "FML|HS");
+        Bukkit.getMessenger().registerIncomingPluginChannel(this, "FML|HS", new ModIdListener());
     }
 
     private void loadDependencies() {

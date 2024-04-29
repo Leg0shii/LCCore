@@ -47,6 +47,21 @@ public class PlayerManager {
         visibilityManager.hideIfHiding(player);
         chatManager.onJoin(player);
         clearTitle(player);
+        forgeHandshake(player);
+    }
+
+    public void forgeHandshake(Player player) {
+        Linkcraft.asyncLater(() -> {
+            // Handshake Reset (https://wiki.vg/Minecraft_Forge_Handshake#HandshakeReset)
+            sendFMLPluginMessage(player, (byte)-2);
+            // Modlist (https://wiki.vg/Minecraft_Forge_Handshake#ModList)
+            sendFMLPluginMessage(player, (byte)0, (byte)2, (byte)0, (byte)0, (byte)0, (byte)0);
+        }, 20L);
+    }
+
+    private void sendFMLPluginMessage(Player player, byte... data)
+    {
+        player.sendPluginMessage(Linkcraft.getPlugin(), "FML|HS", data);
     }
 
     public void updateDBName(String uuid, String name) {
