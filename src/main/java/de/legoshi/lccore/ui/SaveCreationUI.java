@@ -91,8 +91,10 @@ public class SaveCreationUI {
             playerDataConfig.set("Saves." + saveNumber + ".location", Utils.getStringFromLocation(p.getLocation()));
             playerDataConfig.set("Saves." + saveNumber + ".date", format.format(now));
             playerData.saveConfig();
+            MessageUtil.log(p.getName() + " created a save at: " + Utils.getStringFromLocation(p.getLocation()), true);
             FileConfiguration config = plugin.getConfig();
             List<String> commandsToRun = config.getStringList("save-commands");
+
             if (!commandsToRun.isEmpty()) {
                 Map<String, String> values = new HashMap<>();
                 values.put("player", p.getName());
@@ -102,7 +104,6 @@ public class SaveCreationUI {
                     Bukkit.dispatchCommand(Bukkit.getConsoleSender(), commandToRun);
                 }
             }
-            MessageUtil.log(p.getName() + " created a save at: " + Utils.getStringFromLocation(p.getLocation()), true);
             p.closeInventory();
             p.playSound(p.getLocation(), Sound.ORB_PICKUP, 1.0F, 1.43F);
             p.sendMessage(Utils.chat("&aSuccessfully created a new save!"));
