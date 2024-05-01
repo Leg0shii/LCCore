@@ -1,7 +1,6 @@
 package de.legoshi.lccore.menu.maps;
 
 import de.legoshi.lccore.Linkcraft;
-import de.legoshi.lccore.manager.MapManagerO;
 import de.legoshi.lccore.util.ContentsHelper;
 import de.legoshi.lccore.util.Utils;
 import fr.minuskube.inv.ClickableItem;
