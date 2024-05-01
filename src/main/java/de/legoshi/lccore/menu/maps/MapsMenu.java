@@ -54,7 +54,7 @@ public class MapsMenu extends GUIPane {
         StaticGuiElement segmented = new StaticGuiElement('x', new ItemStack(Material.EMERALD), click -> {
             injector.getInstance(CommandConfirmationMenu.class).openGui(holder, current, "warp challenge", "§aWarp to challenge lobby!");
             return true;
-        }, "§a§lSegemented Challenges");
+        }, "§a§lSegmented Challenges");
 
         StaticGuiElement maze = new StaticGuiElement('y', new ItemStack(Material.REDSTONE), click -> {
             injector.getInstance(CommandConfirmationMenu.class).openGui(holder, current, "warp maze", "§aWarp to maze lobby!");
