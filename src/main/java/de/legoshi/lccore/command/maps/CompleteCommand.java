@@ -1,6 +1,5 @@
 package de.legoshi.lccore.command.maps;
 
-import de.czymm.serversigns.hooks.EssentialsHook;
 import de.legoshi.lccore.Linkcraft;
 import de.legoshi.lccore.command.flow.annotated.annotation.ReflectiveTabComplete;
 import de.legoshi.lccore.database.DBManager;
@@ -16,8 +15,6 @@ import de.legoshi.lccore.util.message.MessageUtil;
 import me.fixeddev.commandflow.annotated.CommandClass;
 import me.fixeddev.commandflow.annotated.annotation.Command;
 import me.fixeddev.commandflow.annotated.annotation.OptArg;
-import net.milkbowl.vault.economy.Economy;
-import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import team.unnamed.inject.Inject;

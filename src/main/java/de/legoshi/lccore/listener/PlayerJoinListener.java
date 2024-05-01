@@ -3,14 +3,10 @@ package de.legoshi.lccore.listener;
 import de.legoshi.lccore.Linkcraft;
 import de.legoshi.lccore.manager.PlayerManager;
 import de.legoshi.lccore.util.ConfigAccessor;
-import de.legoshi.lccore.util.Utils;
-import org.bukkit.Location;
-import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
-import org.bukkit.scheduler.BukkitRunnable;
 import team.unnamed.inject.Inject;
 
 public class PlayerJoinListener implements Listener {

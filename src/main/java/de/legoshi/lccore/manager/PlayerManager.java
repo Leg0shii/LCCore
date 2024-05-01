@@ -10,7 +10,6 @@ import de.legoshi.lccore.player.display.LCPlayer;
 import de.legoshi.lccore.util.ConfigAccessor;
 import de.legoshi.lccore.util.HeadUtil;
 import de.legoshi.lccore.util.ItemUtil;
-import de.legoshi.lccore.util.Utils;
 import net.minecraft.server.v1_8_R3.ChatMessage;
 import net.minecraft.server.v1_8_R3.PacketPlayOutTitle;
 import net.minecraft.server.v1_8_R3.PlayerConnection;

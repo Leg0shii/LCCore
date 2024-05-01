@@ -4,7 +4,6 @@ import com.comphenix.protocol.ProtocolLibrary;
 import com.comphenix.protocol.ProtocolManager;
 import de.legoshi.lccore.inject.LinkcraftModule;
 import de.legoshi.lccore.listener.ModIdListener;
-import de.legoshi.lccore.manager.ConfigManager;
 import de.legoshi.lccore.manager.OldCommandManager;
 import de.legoshi.lccore.manager.PlayerManager;
 import de.legoshi.lccore.service.Service;
