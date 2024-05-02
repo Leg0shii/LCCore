@@ -129,6 +129,71 @@ public class PunishmentManager {
         }
     }
 
+    public void fullMuteMessage(Player player) {
+        List<Punishment> punishments = playerManager.getPlayer(player).getPunishments().stream().filter(punishment -> punishment.getType().equals(PunishmentType.FULL_MUTE)).collect(Collectors.toList());
+
+        if(punishments.isEmpty()) {
+            return;
+        }
+
+        Punishment punishment = punishments.get(0);
+        MessageUtil.send(Message.PUNISH_YOU_ARE_FULL_MUTED, player, timeLeftDisplay(punishment.getLength()));
+    }
+
+    public void muteMessage(Player player) {
+        List<Punishment> punishments = playerManager.getPlayer(player).getPunishments().stream().filter(punishment -> punishment.getType().equals(PunishmentType.MUTE)).collect(Collectors.toList());
+
+        if(punishments.isEmpty()) {
+            return;
+        }
+
+        Punishment punishment = punishments.get(0);
+        MessageUtil.send(Message.PUNISH_YOU_ARE_MUTED, player, timeLeftDisplay(punishment.getLength()));
+    }
+
+    private String timeLeftDisplay(Date expiryDate) {
+        Date currentDate = new Date();
+
+        long diff = expiryDate.getTime() - currentDate.getTime();
+        if (diff <= 0) {
+            return "ERROR";
+        }
+
+        long seconds = diff / 1000;
+        long minutes = seconds / 60;
+        seconds %= 60;
+        long hours = minutes / 60;
+        minutes %= 60;
+        long days = hours / 24;
+        hours %= 24;
+        long months = days / 30;
+        days %= 30;
+        long years = months / 12;
+        months %= 12;
+
+        StringBuilder formattedExpiryDate = new StringBuilder();
+        if (years > 0) {
+            formattedExpiryDate.append(years).append("y ");
+        }
+        if (months > 0) {
+            formattedExpiryDate.append(months).append("m ");
+        }
+        if (days > 0) {
+            formattedExpiryDate.append(days).append("d ");
+        }
+        if (hours > 0) {
+            formattedExpiryDate.append(hours).append("h ");
+        }
+        if (minutes > 0) {
+            formattedExpiryDate.append(minutes).append("m ");
+        }
+        if (seconds > 0) {
+            formattedExpiryDate.append(seconds).append("s");
+        }
+
+        return formattedExpiryDate.toString();
+    }
+
     public Date getDateFromLength(String length) {
         if (length == null || length.isEmpty()) {
             return null;

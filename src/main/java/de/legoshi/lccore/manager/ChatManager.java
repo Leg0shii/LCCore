@@ -222,7 +222,7 @@ public class ChatManager {
         }
 
         if(punishmentManager.isPunished(player, PunishmentType.FULL_MUTE)) {
-            MessageUtil.send(Message.PUNISH_YOU_ARE_FULL_MUTED, player);
+            punishmentManager.fullMuteMessage(player);
             return;
         }
 
@@ -345,7 +345,7 @@ public class ChatManager {
 
     public void sendGlobalMessage(Player player, String message) {
         if(punishmentManager.isPunished(player, PunishmentType.MUTE)) {
-            MessageUtil.send(Message.PUNISH_YOU_ARE_MUTED, player);
+            punishmentManager.muteMessage(player);
             return;
         }
 

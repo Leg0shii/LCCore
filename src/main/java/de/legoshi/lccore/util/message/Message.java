@@ -193,8 +193,8 @@ public enum Message {
     PUNISH_REMOVED("§aYou have been {0}!", MessageType.PUNISHMENT),
     PUNISH_UNTIL_SILENT("§f[Silent] §6{0} &fhas been &c{1} &funtil &b{2} &ffor &c{3}!", MessageType.PUNISHMENT),
     PUNISH_UNTIL("§6{0} &fhas been &c{1} &funtil &b{2} &ffor &c{3}!", MessageType.PUNISHMENT),
-    PUNISH_YOU_ARE_MUTED("§cYou are muted!", MessageType.PUNISHMENT),
-    PUNISH_YOU_ARE_FULL_MUTED("§cYou are full muted!", MessageType.PUNISHMENT),
+    PUNISH_YOU_ARE_MUTED("§cYou are muted! §e(Expires in: {0})", MessageType.PUNISHMENT),
+    PUNISH_YOU_ARE_FULL_MUTED("§cYou are full muted! §e(Expires in: {0})", MessageType.PUNISHMENT),
 
     // Punishment Errors
     PUNISH_CRITICAL_ERROR("§cCRITICAL ERROR: {0} has more than one currently active {1}???", MessageType.PUNISHMENT_ERROR),
