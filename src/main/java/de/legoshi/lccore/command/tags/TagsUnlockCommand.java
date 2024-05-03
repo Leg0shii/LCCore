@@ -34,12 +34,14 @@ public class TagsUnlockCommand implements CommandClass {
         Bukkit.getScheduler().runTaskAsynchronously(Linkcraft.getPlugin(), () -> {
             PlayerRecord record = playerManager.getPlayerRecord(toReceive, name);
 
-            String uuid = record.getUuid();
-            String playerName = record.getName();
-            if(uuid == null) {
-                MessageUtil.send(Message.IS_OFFLINE, sender, name);
+            if(record == null) {
+                MessageUtil.send(Message.NEVER_JOINED, sender, name);
                 return;
             }
+
+            String uuid = record.getUuid();
+            String playerName = record.getName();
+
 
             Tag tag = tagManager.getTag(id);
             if(tag == null) {
