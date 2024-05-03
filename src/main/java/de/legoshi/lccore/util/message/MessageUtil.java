@@ -45,7 +45,7 @@ public interface MessageUtil {
     }
 
     static void log(Object message, boolean prefix, Object... objects) {
-        log(message, Level.INFO, true, objects);
+        log(message, Level.INFO, prefix, objects);
     }
 
     static void log(Object message, boolean prefix) {

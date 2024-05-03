@@ -19,6 +19,7 @@ public enum Message {
     GLOBAL_MUTE("§aGlobal chat is now {0}!", MessageType.SYSTEM),
     WORLD_DOES_NOT_EXIST("§cThat world is not present on this server!", MessageType.SYSTEM),
     PLAYER_DATA_FILE_ERR("§cCould not locate .dat file for UUID: {0}", MessageType.SYSTEM),
+    SERVER_RESTART("⚠ SERVER RESTART IN {0} MINUTES!! ⚠ Please leave, you have been warned. Check out our partner-server: td2.mcpro.io in the meantime :)", MessageType.SYSTEM),
 
     // Logging
     CONFIG_LOADING_ERR("Error loading {0}", MessageType.LOGGING),

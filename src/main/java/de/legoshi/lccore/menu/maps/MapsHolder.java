@@ -87,7 +87,7 @@ public class MapsHolder extends GUIScrollablePane {
                 .raw("§c§lLength§r§c: " + mapData.getLength())
                 .raw("§a§lCreator§r§a: " + mapData.getCreator());
 
-        if(completion != null) {
+        if(completion != null && completion.getCompletions() > 0) {
             String first = completion.getFirst() != null ? GUIUtil.ISOString(completion.getFirst()) : "N/A";
             String latest = completion.getLatest() != null ? GUIUtil.ISOString(completion.getLatest()) : "N/A";
             base.raw("§b§lCompletions§r§b: " + completion.getCompletions())
