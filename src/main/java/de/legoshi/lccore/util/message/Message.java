@@ -124,6 +124,8 @@ public enum Message {
 
     // Save
     SAVES_DELETE_SAVE("§aDeleted {0}'s save", MessageType.SAVE),
+    SAVES_GAVE_SAVE("§aGave new save to {0} at: {1}", MessageType.SAVE),
+    SAVES_GAVE_SAVE_LOGGING("§a{0} gave a save to {1} at: {2}", MessageType.SAVE),
 
     // Save Errors
     SAVES_CANT_SAVE("§cYou cannot save right now, try unpracticing!", MessageType.SAVE_ERROR),
