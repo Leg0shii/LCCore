@@ -1,0 +1,3 @@
+blacklisted:
+  - modid: bv
+    message: '&cBarrier mod is not permitted on LinkCraft. Please remove it before joining'

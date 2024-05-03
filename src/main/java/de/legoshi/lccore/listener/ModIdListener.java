@@ -1,5 +1,7 @@
 package de.legoshi.lccore.listener;
 
+import de.legoshi.lccore.manager.ConfigManager;
+import de.legoshi.lccore.util.GUIUtil;
 import de.legoshi.lccore.util.message.MessageUtil;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
@@ -48,6 +50,7 @@ public class ModIdListener implements PluginMessageListener {
             // modIds, but I am not certain (HashSet is a more efficient data structure of course).
 
             printMods(player, playerModIds);
+            checkBlacklistedMods(player, playerModIds);
         }
     }
 
@@ -58,9 +61,14 @@ public class ModIdListener implements PluginMessageListener {
         }
 
         MessageUtil.log(player.getName() + "'s Forge Mods: " + output.toString().trim(), true);
+    }
 
-        if(playerModIds.contains("bv")) {
-            player.kickPlayer(ChatColor.RED + "Barrier mod is not permitted on LinkCraft. Please remove it before joining");
+    private void checkBlacklistedMods(Player player, List<String> playerModIds) {
+        for(String mod : playerModIds) {
+            if(ConfigManager.modIdBlacklist.containsKey(mod)) {
+                player.kickPlayer(GUIUtil.colorize(ConfigManager.modIdBlacklist.get(mod)));
+                return;
+            }
         }
     }
 

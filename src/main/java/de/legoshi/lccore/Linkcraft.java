@@ -51,6 +51,7 @@ public class Linkcraft extends JavaPlugin {
     public final ConfigAccessor mapsConfig = new ConfigAccessor(this, "maps.yml");
     public final ConfigAccessor rankConfig = new ConfigAccessor(this, "rankdata.yml");
     public final ConfigAccessor dbConfig = new ConfigAccessor(this, "database.yml");
+    public final ConfigAccessor modBlacklist = new ConfigAccessor(this, "blacklisted-forge-mods.yml");
     public InventoryManager im;
     private final FileConfiguration config = getConfig();
     public ProtocolManager protocolManager;

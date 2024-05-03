@@ -18,6 +18,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Map;
 
 public class ConfigManager {
@@ -28,6 +29,7 @@ public class ConfigManager {
     public static Map<String, MazeDTO> mazeDisplay = new HashMap<>();
     public static Map<String, StarDTO> starDisplay = new HashMap<>();
     public static Map<String, StaffDTO> staffDisplay = new HashMap<>();
+    public static Map<String, String> modIdBlacklist = new HashMap<>();
     public static final Map<Message, String> messages = new HashMap<>();
     public static final HashSet<String> keys = new HashSet<>();
     public static String host;
@@ -49,6 +51,7 @@ public class ConfigManager {
         plugin.mapsConfig.saveDefaultConfig();
         plugin.rankConfig.saveDefaultConfig();
         plugin.dbConfig.saveDefaultConfig();
+        plugin.modBlacklist.saveDefaultConfig();
 
         File playerData = new File(plugin.getDataFolder(), "playerdata");
         if (!playerData.exists()) playerData.mkdir();
@@ -62,6 +65,7 @@ public class ConfigManager {
         ColorHelper.load();
         loadDbConfig();
         loadRankDataIntoMemory();
+        loadModBlacklistConfig();
 
         try {
             mapManager.updateMaps();
@@ -72,6 +76,16 @@ public class ConfigManager {
         loadMessages();
         if(!first) {
             reloadPlayerCosmetics();
+        }
+    }
+
+    private void loadModBlacklistConfig() {
+        modIdBlacklist.clear();
+        FileConfiguration blacklistData = new ConfigAccessor(Linkcraft.getPlugin(), "blacklisted-forge-mods.yml").getConfig();
+        List<Map<String, String>> blacklisted = (List<Map<String, String>>)blacklistData.get("blacklisted");
+
+        for(Map<String, String> entry : blacklisted) {
+            modIdBlacklist.put(entry.get("modid"), entry.get("message"));
         }
     }
 
