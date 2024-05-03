@@ -55,6 +55,7 @@ public class LinkcraftModule extends AbstractModule {
         bind(LPListener.class).singleton();
         bind(CommandListener.class).singleton();
         bind(TeleportListener.class).singleton();
+        bind(SpawnLocationListener.class).singleton();
 
         // Services
         install(new ServiceModule());

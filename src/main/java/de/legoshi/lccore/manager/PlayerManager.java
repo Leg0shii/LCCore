@@ -2,9 +2,7 @@ package de.legoshi.lccore.manager;
 
 import de.legoshi.lccore.Linkcraft;
 import de.legoshi.lccore.database.DBManager;
-import de.legoshi.lccore.database.models.LCPlayerDB;
-import de.legoshi.lccore.database.models.PlayerPreferences;
-import de.legoshi.lccore.database.models.PlayerSkull;
+import de.legoshi.lccore.database.models.*;
 import de.legoshi.lccore.player.PlayerRecord;
 import de.legoshi.lccore.player.display.LCPlayer;
 import de.legoshi.lccore.util.ConfigAccessor;
@@ -387,18 +385,21 @@ public class PlayerManager {
         return clearEffectsOnTps.contains(player.getUniqueId().toString());
     }
 
-    public void spigotToNBTLocation(Location l, String uuid) throws IOException {
-        NBTFile file = new NBTFile(getPlayerDataFile(uuid));
-        NBTList<Double> position = file.getDoubleList("Pos");
-        position.set(0, l.getX());
-        position.set(1, l.getY());
-        position.set(2, l.getZ());
-        NBTList<Float> rotation = file.getFloatList("Rotation");
-        rotation.set(0, l.getYaw());
-        rotation.set(1, l.getPitch());
-        file.setInteger("Dimension", ((CraftWorld)l.getWorld()).getHandle().dimension);
-        file.save();
-    }
+
+    // Sadness ensues:
+//    public void spigotToNBTLocation(Location l, String uuid) throws IOException {
+//        NBTFile file = new NBTFile(getPlayerDataFile(uuid));
+//        NBTList<Double> position = file.getDoubleList("Pos");
+//        position.set(0, l.getX());
+//        position.set(1, l.getY());
+//        position.set(2, l.getZ());
+//        NBTList<Float> rotation = file.getFloatList("Rotation");
+//        rotation.set(0, l.getYaw());
+//        rotation.set(1, l.getPitch());
+//        CraftWorld craftWorld = (CraftWorld)l.getWorld();
+//        file.setInteger("Dimension", craftWorld.getHandle().dimension);
+//        file.save();
+//    }
 
     public Location NBTLocationToSpigotLocation(String uuid) throws IOException {
         NBTFile file = new NBTFile(getPlayerDataFile(uuid));
@@ -419,6 +420,38 @@ public class PlayerManager {
         float pitch = rotation.get(1);
 
         return new Location(world, x, y, z, yaw, pitch);
+    }
+
+    public Location getOTPLocation(String uuid) throws IOException {
+        OTPHereLocation otp = db.find(uuid, OTPHereLocation.class);
+        if(otp != null) {
+            return otp.getLocation().toSpigot();
+        }
+
+        return NBTLocationToSpigotLocation(uuid);
+    }
+
+    public void saveOTPLocation(Location l, String uuid, Player teleportedBy) {
+        deleteCurrentOTPLocation(uuid);
+
+        LCLocation loc = new LCLocation(l);
+        db.persist(loc);
+
+        LCPlayerDB p = db.find(uuid, LCPlayerDB.class);
+        OTPHereLocation otpHereLocation = new OTPHereLocation();
+        otpHereLocation.setLocation(loc);
+        otpHereLocation.setPlayer(p);
+        otpHereLocation.setOtpBy(teleportedBy.getName());
+        db.persist(otpHereLocation, p, loc);
+    }
+
+    public void deleteCurrentOTPLocation(String uuid) {
+        OTPHereLocation l = db.find(uuid, OTPHereLocation.class);
+        if(l != null) {
+            LCLocation pos = l.getLocation();
+            db.delete(l);
+            db.delete(pos);
+        }
     }
 
     public World getSpigotWorldFromDimId(int dim) {
