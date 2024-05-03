@@ -17,6 +17,8 @@ public enum Message {
     RELOAD_COMPLETE("§aReload complete!", MessageType.SYSTEM),
     GLOBAL_IS_MUTED("§cGlobal chat is currently muted", MessageType.SYSTEM),
     GLOBAL_MUTE("§aGlobal chat is now {0}!", MessageType.SYSTEM),
+    WORLD_DOES_NOT_EXIST("§cThat world is not present on this server!", MessageType.SYSTEM),
+    PLAYER_DATA_FILE_ERR("§cCould not locate .dat file for UUID: {0}", MessageType.SYSTEM),
 
     // Logging
     CONFIG_LOADING_ERR("Error loading {0}", MessageType.LOGGING),

@@ -1,54 +1,53 @@
 package de.legoshi.lccore.command;
 
 import de.legoshi.lccore.Linkcraft;
-import de.legoshi.lccore.util.ConfigAccessor;
+import de.legoshi.lccore.command.flow.annotated.annotation.ReflectiveTabComplete;
+import de.legoshi.lccore.manager.PlayerManager;
+import de.legoshi.lccore.player.PlayerRecord;
+import de.legoshi.lccore.util.Register;
 import de.legoshi.lccore.util.Utils;
+import de.legoshi.lccore.util.message.Message;
+import de.legoshi.lccore.util.message.MessageUtil;
+import me.fixeddev.commandflow.annotated.CommandClass;
+import me.fixeddev.commandflow.annotated.annotation.Command;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
-import org.bukkit.OfflinePlayer;
-import org.bukkit.command.Command;
-import org.bukkit.command.CommandExecutor;
+import org.bukkit.Location;
 import org.bukkit.command.CommandSender;
-import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
+import team.unnamed.inject.Inject;
 
-public class OfflineTpHereCommand implements CommandExecutor {
-    public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
-        if (!(sender instanceof Player)) return true;
+import java.io.IOException;
 
-        if (!sender.hasPermission("lc.otphere")) {
-            sender.sendMessage(ChatColor.RED + "Insufficient Permission!");
-            return true;
-        }
+@Register
+@Command(names = {"otphere"}, permission = "otphere", desc = "<player>")
+public class OfflineTpHereCommand implements CommandClass {
 
-        if (args == null || args.length < 1) {
-            sender.sendMessage(ChatColor.RED + "This command requires a player name!");
-            return true;
-        }
+    @Inject private PlayerManager playerManager;
 
-        if(Bukkit.getPlayer(args[0]) != null) {
-            sender.sendMessage(ChatColor.RED + "That player is currently online!");
-            return true;
-        }
+    @Command(names = "")
+    public void otpHere(CommandSender sender, @ReflectiveTabComplete(clazz = PlayerManager.class, method = "getPossibleNames", player = true) String name) {
+        Player toOtpTo = playerManager.playerByName(name);
+        Bukkit.getScheduler().runTaskAsynchronously(Linkcraft.getPlugin(), () -> {
+            if (!(sender instanceof Player)) {
+                MessageUtil.send(Message.NOT_A_PLAYER, sender);
+                return;
+            }
+            Player player = (Player)sender;
+            PlayerRecord record = playerManager.getPlayerRecord(toOtpTo, name);
 
-        OfflinePlayer toTp = Bukkit.getOfflinePlayer(args[0]);
+            if(record == null) {
+                MessageUtil.send(Message.NEVER_JOINED, sender, name);
+                return;
+            }
 
-        if(!toTp.hasPlayedBefore()) {
-            sender.sendMessage(ChatColor.RED + "That player does not exist!");
-            return true;
-        }
-
-        Player player = (Player)sender;
-        ConfigAccessor playerData = Utils.getPlayerConfig(toTp);
-        FileConfiguration playerDataConfig = playerData.getConfig();
-
-        String locString = Utils.getStringFromLocation(player.getLocation());
-        playerDataConfig.set("lastlocation", locString);
-        playerData.saveConfig();
-        Linkcraft.getPlugin().playerConfig.getConfig().set(toTp.getUniqueId().toString(), null);
-
-        player.sendMessage(ChatColor.GREEN + "Updated " + args[0] + "'s location to: " + locString);
-
-        return true;
+            Location curr = player.getLocation();
+            try {
+                playerManager.spigotToNBTLocation(curr, record.getUuid());
+                player.sendMessage(ChatColor.GREEN + "Updated " + record.getName() + "'s location to: " + Utils.getStringFromLocation(curr));
+            } catch (IOException e) {
+                MessageUtil.send(Message.PLAYER_DATA_FILE_ERR, sender, record.getUuid());
+            }
+        });
     }
 }

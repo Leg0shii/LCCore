@@ -10,14 +10,15 @@ import de.legoshi.lccore.player.display.LCPlayer;
 import de.legoshi.lccore.util.ConfigAccessor;
 import de.legoshi.lccore.util.HeadUtil;
 import de.legoshi.lccore.util.ItemUtil;
+import de.tr7zw.changeme.nbtapi.NBTFile;
+import de.tr7zw.changeme.nbtapi.NBTList;
 import net.minecraft.server.v1_8_R3.ChatMessage;
 import net.minecraft.server.v1_8_R3.PacketPlayOutTitle;
 import net.minecraft.server.v1_8_R3.PlayerConnection;
-import org.bukkit.Bukkit;
-import org.bukkit.OfflinePlayer;
-import org.bukkit.Statistic;
+import org.bukkit.*;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.craftbukkit.v1_8_R3.CraftServer;
+import org.bukkit.craftbukkit.v1_8_R3.CraftWorld;
 import org.bukkit.craftbukkit.v1_8_R3.entity.CraftPlayer;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
@@ -26,6 +27,8 @@ import team.unnamed.inject.Inject;
 import javax.persistence.EntityManager;
 import javax.persistence.NoResultException;
 import javax.persistence.TypedQuery;
+import java.io.File;
+import java.io.IOException;
 import java.util.*;
 
 public class PlayerManager {
@@ -382,6 +385,60 @@ public class PlayerManager {
 
     public boolean hasClearEffectsOnTp(Player player) {
         return clearEffectsOnTps.contains(player.getUniqueId().toString());
+    }
+
+    public void spigotToNBTLocation(Location l, String uuid) throws IOException {
+        NBTFile file = new NBTFile(getPlayerDataFile(uuid));
+        NBTList<Double> position = file.getDoubleList("Pos");
+        position.set(0, l.getX());
+        position.set(1, l.getY());
+        position.set(2, l.getZ());
+        NBTList<Float> rotation = file.getFloatList("Rotation");
+        rotation.set(0, l.getYaw());
+        rotation.set(1, l.getPitch());
+        file.setInteger("Dimension", ((CraftWorld)l.getWorld()).getHandle().dimension);
+        file.save();
+    }
+
+    public Location NBTLocationToSpigotLocation(String uuid) throws IOException {
+        NBTFile file = new NBTFile(getPlayerDataFile(uuid));
+        NBTList<Double> position = file.getDoubleList("Pos");
+        NBTList<Float> rotation = file.getFloatList("Rotation");
+        int dim = file.getInteger("Dimension");
+
+        World world = getSpigotWorldFromDimId(dim);
+
+        if(world == null) {
+            return null;
+        }
+
+        double x = position.get(0);
+        double y = position.get(1);
+        double z = position.get(2);
+        float yaw = rotation.get(0);
+        float pitch = rotation.get(1);
+
+        return new Location(world, x, y, z, yaw, pitch);
+    }
+
+    public World getSpigotWorldFromDimId(int dim) {
+        List<World> worlds = Linkcraft.getPlugin().getServer().getWorlds();
+
+        World world = null;
+        for(World w : worlds) {
+            CraftWorld craftWorld = (CraftWorld)w;
+
+            if(craftWorld.getHandle().dimension == dim) {
+                world = w;
+                break;
+            }
+        }
+
+        return world;
+    }
+
+    public File getPlayerDataFile(String uuid) {
+        return new File(Linkcraft.getPlugin().getServer().getWorlds().get(0).getWorldFolder().getAbsolutePath() + File.separator + "playerdata" + File.separator + uuid + ".dat");
     }
 
     @SuppressWarnings("unused")
