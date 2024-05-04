@@ -19,7 +19,9 @@ public class SpawnLocationListener implements Listener {
             String uuid = e.getPlayer().getUniqueId().toString();
             Location l = playerManager.getOTPLocation(uuid);
             playerManager.deleteCurrentOTPLocation(uuid);
-            e.setSpawnLocation(l);
+            if(l != null) {
+                e.setSpawnLocation(l);
+            }
         } catch (IOException ignored) {}
     }
 }

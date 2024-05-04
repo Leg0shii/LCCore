@@ -428,6 +428,15 @@ public class PlayerManager {
             return otp.getLocation().toSpigot();
         }
 
+        return null;
+    }
+
+    public Location getOTPLocationNBT(String uuid) throws IOException {
+        OTPHereLocation otp = db.find(uuid, OTPHereLocation.class);
+        if(otp != null) {
+            return otp.getLocation().toSpigot();
+        }
+
         return NBTLocationToSpigotLocation(uuid);
     }
 

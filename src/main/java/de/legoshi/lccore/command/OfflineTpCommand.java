@@ -40,7 +40,7 @@ public class OfflineTpCommand implements CommandClass {
             }
 
             try {
-                Location location = playerManager.getOTPLocation(record.getUuid());
+                Location location = playerManager.getOTPLocationNBT(record.getUuid());
                 if(location == null) {
                     MessageUtil.send(Message.WORLD_DOES_NOT_EXIST, sender);
                     return;
