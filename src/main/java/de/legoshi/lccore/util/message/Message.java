@@ -53,7 +53,6 @@ public enum Message {
     IGNORE_PLAYER("§aYou are now ignoring {0}", MessageType.PLAYER),
     UNIGNORE_PLAYER("§aYou are no longer ignoring {0}", MessageType.PLAYER),
     IGNORE_LIST("§dIgnored: §f{0}", MessageType.PLAYER),
-
     CHAT_TOGGLED_OFF("§aGlobal chat has been toggled off for you!", MessageType.PLAYER),
     CHAT_TOGGLED_ON("§aGlobal chat is no longer toggled off for you!", MessageType.PLAYER),
     SET_STAR("§aYour star has been set to: §r{0}", MessageType.PLAYER),
@@ -98,6 +97,7 @@ public enum Message {
     STAR_DOES_NOT_EXIST("§cThe star {0} does not exist!", MessageType.PLAYER_ERROR),
     IGNORE_LIST_NONE("§cYou are not currently ignoring anyone!", MessageType.PLAYER_ERROR),
     IGNORE_TOO_MANY("§cYou may not ignore more than 200 players!", MessageType.PLAYER_ERROR),
+    NO_WORLDEDIT_SELECTION("§cYou do not currently have a selection!", MessageType.PLAYER_ERROR),
 
     // Practice
     PRAC_SUCCESS("§aYou are now in practice mode, do /unprac to stop.", MessageType.PRACTICE),
