@@ -154,7 +154,7 @@ public enum Message {
     TAGS_SELECT("§aYour tag has been set to: §r{0}", MessageType.TAGS),
     TAGS_TELEPORT("§aTeleporting to tag location...", MessageType.TAGS),
     TAGS_SELECT_OTHER("§a{0}'s tag has been set to: §r{1}", MessageType.TAGS),
-    TAGS_UNLOCKED_TAG("{0}§r §7unlocked, check out §6/tags§r!", MessageType.TAGS),
+    TAGS_UNLOCKED_TAG("§r{0}§r §7unlocked, check out §6/tags§r!", MessageType.TAGS),
     TAGS_GAVE_TAG("§aSuccessfully gave {0} tag: §r{1} §r({2})", MessageType.TAGS),
     TAGS_SIGN_CREATED("§aTag sign for §r{0}§a created!", MessageType.TAGS),
     TAGS_REMOVE_TAG("§aSuccessfully removed {0}'s tag: §r{1}", MessageType.TAGS),
