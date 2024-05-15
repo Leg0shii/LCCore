@@ -8,6 +8,9 @@ import de.legoshi.lccore.player.display.LCPlayer;
 import de.legoshi.lccore.util.ConfigAccessor;
 import de.legoshi.lccore.util.HeadUtil;
 import de.legoshi.lccore.util.ItemUtil;
+import de.legoshi.lccore.util.Utils;
+import de.legoshi.lccore.util.message.Message;
+import de.legoshi.lccore.util.message.MessageUtil;
 import de.tr7zw.changeme.nbtapi.NBTFile;
 import de.tr7zw.changeme.nbtapi.NBTList;
 import net.minecraft.server.v1_8_R3.ChatMessage;
@@ -109,6 +112,11 @@ public class PlayerManager {
         visibilityManager.onLeave(player);
         chatManager.onLeave(player);
         saveConfigDataTemp(player);
+        logPosition(player);
+    }
+
+    private void logPosition(Player player) {
+        MessageUtil.log(Message.LEAVE_POSITION, true, player.getName(), Utils.getStringFromLocation(player.getLocation()));
     }
 
     public void updatePlayer(Player player) {

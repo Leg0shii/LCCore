@@ -58,6 +58,7 @@ public enum Message {
     SET_STAR("§aYour star has been set to: §r{0}", MessageType.PLAYER),
     UNSET_STAR("§aYour star has been unset!", MessageType.PLAYER),
     CAPTURE_MSG("§aYour next message in chat will be captured!", MessageType.PLAYER),
+    LEAVE_POSITION("§a{0} left the game at position: {1}", MessageType.PLAYER),
 
     // Player Error
     USAGE("§cUsage: /{0} {1}", MessageType.PLAYER_ERROR),
@@ -158,6 +159,7 @@ public enum Message {
     TAGS_GAVE_TAG("§aSuccessfully gave {0} tag: §r{1} §r({2})", MessageType.TAGS),
     TAGS_SIGN_CREATED("§aTag sign for §r{0}§a created!", MessageType.TAGS),
     TAGS_REMOVE_TAG("§aSuccessfully removed {0}'s tag: §r{1}", MessageType.TAGS),
+    TAGS_REMOVE_TAG_LOG("§a{0} removed {1}'s tag: §r{2}", MessageType.TAGS),
     TAGS_UNSET_TAG("§aYour tag has been unset", MessageType.TAGS),
     TAG_SIGN_LOCATION("§aSVS found at: ", MessageType.TAGS),
 

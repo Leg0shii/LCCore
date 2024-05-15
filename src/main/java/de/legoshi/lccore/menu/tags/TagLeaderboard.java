@@ -128,6 +128,7 @@ public class TagLeaderboard extends GUIScrollablePane {
                 getPage();
                 click.getGui().setPageNumber(click.getGui().getPageNumber(holder));
                 click.getGui().playClickSound();
+                MessageUtil.log(Message.TAGS_REMOVE_TAG_LOG, true, holder.getName(), name, tagDisplay);
             } catch (CommandException e) {
                 MessageUtil.send(e.getMessage(), holder);
             }

@@ -427,7 +427,7 @@ public class MapManager {
         if(map.getStar() == null || map.getStar() == 0) {
             return;
         }
-        if(map.getStar() >= 7) {
+        if(map.getStar() >= 6) {
             lpManager.givePermission(player, "essentials.kittycannon");
             lpManager.givePermission(player, "essentials.chat.format");
         }
