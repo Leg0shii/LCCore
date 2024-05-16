@@ -32,7 +32,6 @@ public class LinkcraftModule extends AbstractModule {
         bind(PunishmentManager.class).singleton();
         bind(MapManager.class).singleton();
         bind(ConfigManager.class).singleton();
-        bind(FAWEManager.class).singleton();
 
         // Database
         install(new DBModule(plugin));
