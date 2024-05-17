@@ -3,7 +3,6 @@ package de.legoshi.lccore.listener;
 import de.legoshi.lccore.manager.ConfigManager;
 import de.legoshi.lccore.util.GUIUtil;
 import de.legoshi.lccore.util.message.MessageUtil;
-import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.messaging.PluginMessageListener;
 
