@@ -104,7 +104,7 @@ public class MapsHolder extends GUIScrollablePane {
 
         ItemStack mapItem = mapData.getItem().clone();
 
-        if(playerMapData.get(mapData.getId()) != null) {
+        if(completion != null && completion.getCompletions() > 0) {
             ItemUtil.addGlow(mapItem);
         }
 
