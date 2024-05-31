@@ -441,6 +441,17 @@ public class TagManager {
         em.close();
     }
 
+    public int removeAllTagsFrom(String uuid) {
+        EntityManager em = db.getEntityManager();
+        em.getTransaction().begin();
+        Query query = em.createQuery("DELETE FROM PlayerTag pt WHERE pt.player = :player");
+        query.setParameter("player", new LCPlayerDB(uuid));
+        int count = query.executeUpdate();
+        em.getTransaction().commit();
+        em.close();
+        return count;
+    }
+
     public TagTopResultDTO getTagTopEntries(TagType type, int page, int volume, boolean all) {
         String sql = "SELECT ROW_NUMBER() OVER(ORDER BY COUNT(pt.tag_id) DESC), p.name, COUNT(pt.tag_id) " +
                 "FROM lc_players p " +

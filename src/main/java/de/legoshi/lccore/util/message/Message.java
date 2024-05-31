@@ -162,6 +162,7 @@ public enum Message {
     TAGS_REMOVE_TAG_LOG("§a{0} removed {1}'s tag: §r{2}", MessageType.TAGS),
     TAGS_UNSET_TAG("§aYour tag has been unset", MessageType.TAGS),
     TAG_SIGN_LOCATION("§aSVS found at: ", MessageType.TAGS),
+    TAGS_REMOVED_TAGS("§aRemoved {0} tag(s) from {1}", MessageType.TAGS),
 
     // Tag Errors
     TAGS_INVALID_RARITY("§cInvalid tag rarity!", MessageType.TAGS_ERROR),
@@ -193,6 +194,7 @@ public enum Message {
     TAGS_TELEPORT_MORE("§cMore than one SVS detected for this tag! Listing locations...", MessageType.TAGS_ERROR),
     TAGS_TELEPORT_DESC("§e{0}: §a{1}", MessageType.TAGS_ERROR),
     TAGS_TELEPORT_NO_LOC("§cNo SVS locations found for this tag", MessageType.TAGS_ERROR),
+    TAGS_NO_TAGS("§c{0} has no tags to remove!", MessageType.TAGS_ERROR),
 
     // Punishment
     PUNISH_FINISHED("§aYou no longer have a {0}!", MessageType.PUNISHMENT),
