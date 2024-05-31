@@ -97,6 +97,10 @@ public class ChatManager {
     }
 
     private String maze(Player player) {
+        if(!playerManager.getPlayerPrefs(player).isMazeDisplay()) {
+            return "";
+        }
+
         String maze = playerManager.getPlayer(player).getMaze().getTabDisplay();
         return !maze.isEmpty() ? " " + maze : maze;
     }

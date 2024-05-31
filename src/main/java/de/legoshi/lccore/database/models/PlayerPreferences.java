@@ -23,6 +23,15 @@ public class PlayerPreferences implements Identifiable<String> {
     @JoinColumn(name = "tag_id")
     private Tag tag = null;
 
+    @Column(name = "maze_display")
+    private boolean mazeDisplay = true;
+
+    @Column(name = "wolf_display")
+    private boolean wolfDisplay = true;
+
+    @Column(name = "bonus_display")
+    private boolean bonusDisplay = true;
+
     public PlayerPreferences(Player player) {
         this.id = player.getUniqueId().toString();
     }

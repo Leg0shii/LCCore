@@ -134,6 +134,14 @@ public interface GUIUtil {
         return new ItemStack(Material.STAINED_GLASS_PANE, 1, colour.data);
     }
 
+//    static GuiStateElement createToggleable(char slot, Runnable onEnable, Runnable onDisable, boolean initialState) {
+//        GuiStateElement toggleable = new GuiStateElement(slot,
+//                new GuiStateElement.State(click -> {
+//
+//                })
+//        );
+//    }
+
     static ItemStack createGlass(Dye colour) { return new ItemStack(Material.STAINED_GLASS, 1, colour.data); }
 
     static ItemStack createWool(Dye colour) {

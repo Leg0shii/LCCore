@@ -1,5 +1,6 @@
 package de.legoshi.lccore.util;
 
+import de.legoshi.lccore.database.models.PlayerPreferences;
 import de.legoshi.lccore.database.models.Tag;
 import de.legoshi.lccore.manager.ChatManager;
 import de.legoshi.lccore.manager.PlayerManager;
@@ -21,6 +22,7 @@ public class PlayerDisplayBuilder {
     private Player player = null;
     private String playerId = null;
     private LCPlayer lcPlayer;
+    private PlayerPreferences playerPreferences;
 
     @Accessors(chain = true) @Setter private String tag = null;
     @Accessors(chain = true) @Setter private String nickname = null;
@@ -39,6 +41,7 @@ public class PlayerDisplayBuilder {
     public PlayerDisplayBuilder setPlayer(Player player) {
         this.player = player;
         this.lcPlayer = playerManager.getPlayer(player);
+        this.playerPreferences = playerManager.getPlayerPrefs(player);
         init();
         return this;
     }
@@ -46,6 +49,7 @@ public class PlayerDisplayBuilder {
     public PlayerDisplayBuilder setPlayer(String playerId) {
         this.playerId = playerId;
         this.lcPlayer = playerManager.loadPlayer(playerId);
+        this.playerPreferences = playerManager.getPlayerPrefs(player);
         init();
         return this;
     }
@@ -126,6 +130,10 @@ public class PlayerDisplayBuilder {
     }
 
     public PlayerDisplayBuilder bonus() {
+        if(!playerPreferences.isBonusDisplay()) {
+            return this;
+        }
+
         if(bonusDTO == null) {
             return this;
         }
@@ -153,6 +161,10 @@ public class PlayerDisplayBuilder {
     }
 
     public PlayerDisplayBuilder wolf() {
+        if(!playerPreferences.isWolfDisplay()) {
+            return this;
+        }
+
         if(wolfDTO == null) {
             return this;
         }
