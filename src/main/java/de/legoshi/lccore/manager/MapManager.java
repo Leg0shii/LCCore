@@ -630,4 +630,16 @@ public class MapManager {
 
         playerManager.updatePlayer(player, 10L);
     }
+
+    public List<LCMap> findMapByTagReward(String tagId) {
+        List<LCMap> foundMaps = new ArrayList<>();
+        for(LCMap map : maps) {
+            for(String tag : map.getTags()) {
+                if(tag.equalsIgnoreCase(tagId)) {
+                    foundMaps.add(map);
+                }
+            }
+        }
+        return foundMaps;
+    }
 }

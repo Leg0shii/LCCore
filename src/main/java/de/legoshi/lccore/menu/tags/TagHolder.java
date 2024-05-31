@@ -325,7 +325,7 @@ public class TagHolder extends GUIScrollablePane {
                 });
             }
             else if(teleportTags && click.getType().isShiftClick() && click.getType().isLeftClick()) {
-                List<Location> locations = svsManager.getTagSVSLocation(tagId);
+                List<Location> locations = svsManager.getTagSVSLocation(tagData);
                 if(locations.isEmpty()) {
                     MessageUtil.send(Message.TAGS_TELEPORT_NO_LOC, holder);
                 }
