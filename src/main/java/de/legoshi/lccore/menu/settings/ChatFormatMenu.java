@@ -21,7 +21,7 @@ import team.unnamed.inject.Inject;
 
 import java.util.function.Consumer;
 
-public class NameFormatMenu extends GUIPane {
+public class ChatFormatMenu extends GUIPane {
 
     @Inject private PlayerManager playerManager;
     @Inject private ChatManager chatManager;
@@ -29,22 +29,23 @@ public class NameFormatMenu extends GUIPane {
     private GuiToggleUpdateGroup updateGroup = new GuiToggleUpdateGroup();
     private PlayerPreferences prefs;
 
+
     private final String[] guiSetup = {
             "dmmmmmmmd",
-            "m 1234  m",
+            "m 12345 m",
             "dmmmqmmmd",
     };
 
     private final String[] noParentGuiSetup = {
             "dmmmmmmmd",
-            "m 1234  m",
+            "m 12345 m",
             "dmmmmmmmd",
     };
 
     @Override
     public void openGui(Player player, InventoryGui parent) {
         super.openGui(player, parent);
-        this.current = new InventoryGui(Linkcraft.getPlugin(), player, "Name Formats", parent != null ? guiSetup : noParentGuiSetup);
+        this.current = new InventoryGui(Linkcraft.getPlugin(), player, "Chat Formats", parent != null ? guiSetup : noParentGuiSetup);
         setColours(Dye.WHITE, Dye.PINK, Dye.BLACK);
         prefs = playerManager.getPlayerPrefs(holder);
         registerGuiElements();
@@ -54,15 +55,17 @@ public class NameFormatMenu extends GUIPane {
 
     @Override
     protected void registerGuiElements() {
-        GuiToggleElement bold = createToggleElement('1', ChatColor.BOLD, "linkcraft.bold", prefs::setBoldNameFormat, prefs.isBoldNameFormat());
-        GuiToggleElement italic = createToggleElement('2', ChatColor.ITALIC, "linkcraft.italics", prefs::setItalicNameFormat, prefs.isItalicNameFormat());
-        GuiToggleElement strike = createToggleElement('3', ChatColor.STRIKETHROUGH, "linkcraft.strike", prefs::setStrikeNameFormat, prefs.isStrikeNameFormat());
-        GuiToggleElement underline = createToggleElement('4', ChatColor.UNDERLINE, "linkcraft.underline", prefs::setUnderlineNameFormat, prefs.isUnderlineNameFormat());
-        updateGroup.add(bold, italic, strike, underline);
-        current.addElements(returnToParent, bold.build(), italic.build(), strike.build(), underline.build());
+        GuiToggleElement bold = createToggleElement('1', ChatColor.BOLD, "lc.chat.l", prefs::setBoldChatFormat, prefs.isBoldChatFormat(), Message.SETTINGS_HAVE_NOT_UNLOCKED_CF);
+        GuiToggleElement italic = createToggleElement('2', ChatColor.ITALIC, "lc.chat.n", prefs::setItalicChatFormat, prefs.isItalicChatFormat(), Message.SETTINGS_HAVE_NOT_UNLOCKED_CF);
+        GuiToggleElement strike = createToggleElement('3', ChatColor.STRIKETHROUGH, "lc.chat.m", prefs::setStrikeChatFormat, prefs.isStrikeChatFormat(), Message.SETTINGS_UNOBTAINABLE);
+        GuiToggleElement underline = createToggleElement('4', ChatColor.UNDERLINE, "lc.chat.o", prefs::setUnderlineChatFormat, prefs.isUnderlineChatFormat(), Message.SETTINGS_HAVE_NOT_UNLOCKED_CF);
+        GuiToggleElement magic = createToggleElement('5', ChatColor.MAGIC, "lc.chat.k", prefs::setMagicChatFormat, prefs.isMagicChatFormat(), Message.SETTINGS_UNOBTAINABLE);
+        updateGroup.add(bold, italic, strike, underline, magic);
+
+        current.addElements(returnToParent, magic.build(), bold.build(), strike.build(), underline.build(), italic.build());
     }
 
-    GuiToggleElement createToggleElement(char key, ChatColor color, String permission, Consumer<Boolean> toggleAction, boolean initialState) {
+    GuiToggleElement createToggleElement(char key, ChatColor color, String permission, Consumer<Boolean> toggleAction, boolean initialState, Message message) {
         GUIDescriptionBuilder desc = new GUIDescriptionBuilder()
                 .raw(color + GUIUtil.formatEnum(color))
                 .blank()
@@ -70,8 +73,8 @@ public class NameFormatMenu extends GUIPane {
                 .action(GUIAction.LEFT_CLICK, "Enable/Disable");
 
         return new GuiToggleElement(key, desc, initialState).setInGroup(true).setOnEnable(() -> {
-            if (!holder.hasPermission(permission)) {
-                MessageUtil.send(Message.SETTINGS_HAVE_NOT_UNLOCKED_NF, holder, color + GUIUtil.formatEnum(color));
+            if (!holder.hasPermission("lc.chatformat") || !holder.hasPermission(permission)) {
+                MessageUtil.send(message, holder, color + GUIUtil.formatEnum(color));
                 return false;
             }
             toggleAction.accept(true);

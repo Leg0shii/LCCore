@@ -141,14 +141,20 @@ public interface ItemUtil {
     static List<Material> getMaterialsOneOfEach() {
         List<Material> blocks = new ArrayList<>();
         int[] disabledBlocks = {
-                0, 8, 9, 10, 11, 26, 34, 36, 43, 51,
+                0, 8, 9, 10, 11, 26, 34, 36, 44, 51,
                 55, 59, 60, 62, 63, 64, 68, 71, 74, 75,
-                83, 90, 92, 93, 94, 99, 100, 104, 105, 115,
-                117, 118, 119, 122, 124, 125, 127, 132, 140, 141,
-                142, 144, 149, 150, 176, 177, 178, 181 };
+                83, 90, 92, 93, 94, 104, 105, 115,
+                117, 118, 119, 124, 125, 127, 132, 140, 141,
+                142, 144, 149, 150, 176, 177, 178, 181, 193, 194, 195,
+                196, 197, 198, 199, 200, 201, 202, 203, 204, 205, 206,
+                207, 208, 209, 210, 211, 212, 213, 214, 215, 216, 217,
+                218, 219, 220, 221, 223, 224, 225, 226, 227, 228, 229,
+                230, 231, 232, 233, 234, 235, 236, 237, 238, 239, 240,
+                241, 242, 243, 243, 244, 245, 246, 247, 248, 249, 250,
+                251, 252, 253, 254, 255, 383, 387};
 
         for (Material block : Material.values()) {
-            if (IntStream.of(disabledBlocks).noneMatch(x -> (x == block.getId())) && (block.getId() < 193 || block.getId() == 425)) {
+            if (IntStream.of(disabledBlocks).noneMatch(x -> (x == block.getId()))) {//(block.getId() < 193 || block.getId() == 425)) {
                 blocks.add(block);
             }
         }
@@ -167,6 +173,16 @@ public interface ItemUtil {
         return items;
     }
 
+    static List<ItemStack> getVariationsAmt(Material mat, int variations, int amt) {
+        List<ItemStack> items = new ArrayList<>();
+
+        for(int i = 0; i < variations; i++) {
+            items.add(new ItemStack(mat, amt, (short)i));
+        }
+
+        return items;
+    }
+
     static List<ItemStack> getAllItems() {
         List<Material> materials = getMaterialsOneOfEach();
         List<ItemStack> items = new ArrayList<>();
@@ -178,6 +194,9 @@ public interface ItemUtil {
                 case 139:
                 case 161:
                 case 162:
+                case 263:
+                case 322:
+                case 350:
                     items.addAll(getVariations(mat, 2));
                     break;
                 case 3:
@@ -191,7 +210,11 @@ public interface ItemUtil {
                 case 17:
                 case 18:
                 case 98:
+                case 349:
                     items.addAll(getVariations(mat, 4));
+                    break;
+                case 397:
+                    items.addAll(getVariations(mat, 5));
                     break;
                 case 5:
                 case 6:
@@ -214,6 +237,7 @@ public interface ItemUtil {
                 case 159:
                 case 160:
                 case 171:
+                case 351:
                 case 425:
                     items.addAll(getVariations(mat, 16));
                     break;
@@ -256,5 +280,63 @@ public interface ItemUtil {
             return addFlag(potion(type), ItemFlag.HIDE_POTION_EFFECTS);
         }
         return potion(type, 1, false);
+    }
+
+    static List<ItemStack> getAllItemsAmt(int amt) {
+        List<Material> materials = getMaterialsOneOfEach();
+        List<ItemStack> items = new ArrayList<>();
+        for (Material mat : materials) {
+            switch (mat.getId()) {
+                case 12:
+                case 19:
+                case 31:
+                case 139:
+                case 161:
+                case 162:
+                    items.addAll(getVariationsAmt(mat, 2, amt));
+                    break;
+                case 3:
+                case 24:
+                case 145:
+                case 155:
+                case 168:
+                case 179:
+                    items.addAll(getVariationsAmt(mat, 3, amt));
+                    break;
+                case 17:
+                case 18:
+                case 98:
+                    items.addAll(getVariationsAmt(mat, 4, amt));
+                    break;
+                case 5:
+                case 6:
+                case 97:
+                case 126:
+                case 175:
+                    items.addAll(getVariationsAmt(mat, 6, amt));
+                    break;
+                case 1:
+                    items.addAll(getVariationsAmt(mat, 7, amt));
+                    break;
+                case 44:
+                    items.addAll(getVariationsAmt(mat, 8, amt));
+                    break;
+                case 38:
+                    items.addAll(getVariationsAmt(mat, 9, amt));
+                    break;
+                case 35:
+                case 95:
+                case 159:
+                case 160:
+                case 171:
+                case 425:
+                    items.addAll(getVariationsAmt(mat, 16, amt));
+                    break;
+                default:
+                    items.add(new ItemStack(mat, amt));
+                    break;
+            }
+        }
+        return items;
     }
 }

@@ -2,15 +2,16 @@ package de.legoshi.lccore.player.display;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
-import org.bukkit.inventory.ItemStack;
+
+import java.util.List;
 
 @Data
 @AllArgsConstructor
-public class StarDTO {
+public class CommandShopDTO {
     private String key;
     private String display;
+    private String description;
+    private List<String> permissions;
     private int cost;
     private int position;
-    private ItemStack item;
-    private String color;
 }

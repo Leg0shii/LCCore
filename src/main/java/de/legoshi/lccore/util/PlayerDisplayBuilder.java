@@ -25,11 +25,11 @@ public class PlayerDisplayBuilder {
     private PlayerPreferences playerPreferences;
 
     @Accessors(chain = true) @Setter private String tag = null;
+    @Accessors(chain = true) @Setter private String star = null;
     @Accessors(chain = true) @Setter private String nickname = null;
     @Accessors(chain = true) @Setter private RankDTO rankDTO = null;
     @Accessors(chain = true) @Setter private WolfDTO wolfDTO = null;
     @Accessors(chain = true) @Setter private BonusDTO bonusDTO = null;
-    @Accessors(chain = true) @Setter private StarDTO starDTO = null;
     @Accessors(chain = true) @Setter private MazeDTO mazeDTO = null;
     @Accessors(chain = true) @Setter private String baseChatColour = null;
     @Accessors(chain = true) @Setter private String chatModifiers = null;
@@ -49,7 +49,7 @@ public class PlayerDisplayBuilder {
     public PlayerDisplayBuilder setPlayer(String playerId) {
         this.playerId = playerId;
         this.lcPlayer = playerManager.loadPlayer(playerId);
-        this.playerPreferences = playerManager.getPlayerPrefs(player);
+        this.playerPreferences = playerManager.getPlayerPrefs(playerId);
         init();
         return this;
     }
@@ -57,31 +57,15 @@ public class PlayerDisplayBuilder {
     public void init() {
         Tag tag = player != null ? playerManager.getPlayerPrefs(player.getUniqueId().toString()).getTag() : playerManager.getPlayerPrefs(playerId).getTag();
         this.tag = tag != null ? tag.getDisplay() : "";
+        this.star = player != null ? playerManager.getStarDisplay(player) : playerManager.getStarDisplay(playerId);
+        this.chatModifiers = player != null ? playerManager.getChatFormats(player) : playerManager.getChatFormats(playerId);
+        this.nameModifiers = player != null ? playerManager.getNameFormats(player) : playerManager.getNameFormats(playerId);
         this.rankDTO = lcPlayer.getRank();
         this.bonusDTO = lcPlayer.getBonus();
-        this.starDTO = lcPlayer.getStar();
         this.wolfDTO = lcPlayer.getWolf();
         this.mazeDTO = lcPlayer.getMaze();
-        this.baseChatColour = lcPlayer.getChatColor() != null ? ChatColor.getByChar(lcPlayer.getChatColor().getCode()) + "" : "";
+        this.baseChatColour = player != null ? playerManager.getChatColor(player) : playerManager.getChatColor(playerId);
         this.nickname = lcPlayer.getNick();
-        loadChatFormats(lcPlayer);
-        loadNameModifiers(lcPlayer);
-    }
-
-    private void loadChatFormats(LCPlayer lcPlayer) {
-        StringBuilder sb = new StringBuilder();
-        for(ColorHelper.ChatFormat format : lcPlayer.getChatFormats()) {
-            sb.append(ChatColor.getByChar(format.getCode()));
-        }
-        this.chatModifiers = sb.toString();
-    }
-
-    private void loadNameModifiers(LCPlayer lcPlayer) {
-        StringBuilder sb = new StringBuilder();
-        for(ColorHelper.ChatFormat format : lcPlayer.getNameFormats()) {
-            sb.append(ChatColor.getByChar(format.getCode()));
-        }
-        this.nameModifiers = sb.toString();
     }
 
     private String getNickOrDefault() {
@@ -129,6 +113,25 @@ public class PlayerDisplayBuilder {
         return this;
     }
 
+    public PlayerDisplayBuilder tabRank() {
+        if(rankDTO == null) {
+            return this;
+        }
+
+        components.add(new DisplayComponent(rankDTO.getTabDisplay()));
+        return this;
+    }
+
+    public PlayerDisplayBuilder space() {
+        if(components.isEmpty()) {
+            components.add(new DisplayComponent(" "));
+            return this;
+        }
+
+        components.set(components.size() - 1, new DisplayComponent(components.get(components.size() - 1).getDisplay() + " "));
+        return this;
+    }
+
     public PlayerDisplayBuilder bonus() {
         if(!playerPreferences.isBonusDisplay()) {
             return this;
@@ -143,6 +146,10 @@ public class PlayerDisplayBuilder {
     }
 
     public PlayerDisplayBuilder maze() {
+        if(!playerPreferences.isMazeDisplay()) {
+            return this;
+        }
+
         if(mazeDTO == null) {
             return this;
         }
@@ -152,11 +159,11 @@ public class PlayerDisplayBuilder {
     }
 
     public PlayerDisplayBuilder star() {
-        if(starDTO == null) {
+        if(star == null || star.isEmpty()) {
             return this;
         }
 
-        components.add(new DisplayComponent(starDTO.getDisplay()));
+        components.add(new DisplayComponent(star));
         return this;
     }
 

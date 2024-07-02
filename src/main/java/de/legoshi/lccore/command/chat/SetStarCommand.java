@@ -5,7 +5,6 @@ import de.legoshi.lccore.command.flow.annotated.annotation.ReflectiveTabComplete
 import de.legoshi.lccore.manager.ConfigManager;
 import de.legoshi.lccore.manager.PlayerManager;
 import de.legoshi.lccore.player.display.StarDTO;
-import de.legoshi.lccore.util.ColorHelper;
 import de.legoshi.lccore.util.Register;
 import de.legoshi.lccore.util.message.Message;
 import de.legoshi.lccore.util.message.MessageUtil;
@@ -33,7 +32,7 @@ public class SetStarCommand implements CommandClass {
             }
 
             if(star == null) {
-                ColorHelper.setStar(toSetStar, "");
+                playerManager.unequipStar(toSetStar);
                 MessageUtil.send(Message.UNSET_STAR, toSetStar);
                 playerManager.updatePlayer(toSetStar);
                 return;
@@ -45,7 +44,7 @@ public class SetStarCommand implements CommandClass {
                 return;
             }
 
-            ColorHelper.setStar(toSetStar, star);
+            playerManager.equipStar(toSetStar, star);
             MessageUtil.send(Message.SET_STAR, toSetStar, starDTO.getDisplay());
             playerManager.updatePlayer(toSetStar);
         });

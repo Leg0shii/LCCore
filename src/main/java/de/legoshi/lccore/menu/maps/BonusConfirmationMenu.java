@@ -32,7 +32,7 @@ public class BonusConfirmationMenu extends GUIPane {
         StaticGuiElement normal = new StaticGuiElement('z', new ItemStack(Material.ENDER_STONE), click -> {
             luckPermsManager.givePermission(holder, "lc.normal");
             luckPermsManager.givePermission(holder, "pkcp.checkpoint");
-            luckPermsManager.givePermission(holder, "pkcp.signsq");
+            luckPermsManager.givePermission(holder, "pkcp.signs");
             luckPermsManager.giveNegativePermission(holder, "lc.pro");
             luckPermsManager.giveNegativePermission(holder, "ps.saves");
             luckPermsManager.giveNegativePermission(holder, "ps.save");

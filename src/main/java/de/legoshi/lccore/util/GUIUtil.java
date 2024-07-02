@@ -1,6 +1,7 @@
 package de.legoshi.lccore.util;
 
 import de.legoshi.lccore.database.models.Tag;
+import de.legoshi.lccore.menu.GuiToggleResult;
 import de.legoshi.lccore.tag.TagDTO;
 import de.legoshi.lccore.tag.TagRarity;
 import de.legoshi.lccore.tag.TagType;
@@ -15,6 +16,8 @@ import org.bukkit.craftbukkit.v1_8_R3.entity.CraftPlayer;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
+import java.lang.reflect.Field;
+import java.lang.reflect.Modifier;
 import java.text.SimpleDateFormat;
 import java.util.*;
 import java.util.function.BiConsumer;
@@ -53,6 +56,54 @@ public interface GUIUtil {
         }
 
         return options.toArray(new GuiStateElement.State[0]);
+    }
+
+    static void setStateAction(GuiStateElement.State state, GuiStateElement.State.Change click) {
+        try {
+            Field changeField = GuiStateElement.State.class.getDeclaredField("change");
+            changeField.setAccessible(true);
+
+            Field modifiersField = Field.class.getDeclaredField("modifiers");
+            modifiersField.setAccessible(true);
+            modifiersField.setInt(changeField, changeField.getModifiers() & ~Modifier.FINAL);
+
+            changeField.set(state, click);
+        } catch (NoSuchFieldException | IllegalAccessException ignored) {
+
+        }
+    }
+
+    static GuiStateElement createToggleElement(char slot, GuiToggleResult onEnable, GuiToggleResult onDisable, GUIDescriptionBuilder descBuilder, boolean defaultState) {
+
+        descBuilder.pairInsert("Enabled", trueFalseDisplay(defaultState), 1);
+        GuiStateElement.State onState = new GuiStateElement.State(click -> {}, "enabled", new ItemStack(Material.INK_SACK, 1, (short)10), descBuilder.build());
+        GuiStateElement.State offState = new GuiStateElement.State(click -> {}, "disabled", new ItemStack(Material.INK_SACK, 1, (short)8), descBuilder.build());
+
+        setStateAction(onState, click -> {
+            GUIDescriptionBuilder updated = null;//onEnable.run();
+            if(updated != null) {
+                GuiStateElement curr = (GuiStateElement) click.getElement();
+                curr.setState("enabled");
+                updated.pair("Enabled", trueFalseDisplay(true), 1);
+                onState.setText(updated.build());
+                curr.getGui().draw(click.getWhoClicked(), false);
+            }
+        });
+
+        setStateAction(offState, click -> {
+            GUIDescriptionBuilder updated = null; //onDisable.run();
+            if(updated != null) {
+                GuiStateElement curr = (GuiStateElement) click.getElement();
+                curr.setState("disabled");
+                updated.pair("Enabled", trueFalseDisplay(false), 1);
+                offState.setText(updated.build());
+                curr.getGui().draw(click.getWhoClicked(), false);
+            }
+        });
+
+        GuiStateElement element = new GuiStateElement(slot, onState, offState);
+        element.setState(defaultState ? "enabled" : "disabled");
+        return element;
     }
 
 //    static GUIDescriptionBuilder getTagBaseDisplayBuilder(Tag tag) {
@@ -291,5 +342,20 @@ public interface GUIUtil {
 
     static String trueFalseDisplay(boolean bool) {
         return bool ? ChatColor.GREEN + "true" : ChatColor.RED + "false";
+    }
+
+    static String capitalize(String str) {
+        String replacedString = str.replace('_', ' ');
+        String[] words = replacedString.split(" ");
+        StringBuilder formattedString = new StringBuilder();
+        for (String word : words) {
+            if (!word.isEmpty()) {
+                formattedString.append(Character.toUpperCase(word.charAt(0)))
+                        .append(word.substring(1).toLowerCase())
+                        .append(" ");
+            }
+        }
+
+        return formattedString.toString().trim();
     }
 }

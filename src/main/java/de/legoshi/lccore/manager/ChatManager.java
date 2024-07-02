@@ -87,8 +87,7 @@ public class ChatManager {
     }
 
     private String star(Player player) {
-        StarDTO starDTO = playerManager.getPlayer(player).getStar();
-        return starDTO == null ? "" : starDTO.getDisplay();
+        return playerManager.getStarDisplay(player);
     }
 
     private String staff(Player player) {
@@ -345,6 +344,26 @@ public class ChatManager {
     public String globalChatTagExample(Player player, String message, Tag tag) {
         PlayerDisplayBuilder builder = injector.getInstance(PlayerDisplayBuilder.class);
         return builder.setPlayer(player).setTag(tag.getDisplay()).tag().bonus().wolf().rank().nick().star().arrow().message(message).build();
+    }
+
+    public String globalChatColorExample(Player player, String message, String color) {
+        PlayerDisplayBuilder builder = injector.getInstance(PlayerDisplayBuilder.class);
+        return builder.setPlayer(player).setBaseChatColour(color).tag().bonus().wolf().rank().nick().star().arrow().message(message).build();
+    }
+
+    public String globalChatStarExample(Player player, String message, String star) {
+        PlayerDisplayBuilder builder = injector.getInstance(PlayerDisplayBuilder.class);
+        return builder.setPlayer(player).setStar(star).tag().bonus().wolf().rank().nick().star().arrow().message(message).build();
+    }
+
+    public String globalChatExample(Player player) {
+        PlayerDisplayBuilder builder = injector.getInstance(PlayerDisplayBuilder.class);
+        return builder.setPlayer(player).tag().bonus().wolf().rank().nick().star().arrow().message("msg").build();
+    }
+
+    public String tabDisplay(Player player) {
+        PlayerDisplayBuilder builder = injector.getInstance(PlayerDisplayBuilder.class);
+        return builder.setPlayer(player).tabRank().nick().maze().build();
     }
 
     public void sendGlobalMessage(Player player, String message) {

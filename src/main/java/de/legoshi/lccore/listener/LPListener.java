@@ -11,10 +11,9 @@ import net.luckperms.api.event.node.NodeRemoveEvent;
 import net.luckperms.api.model.user.User;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
-import org.bukkit.event.Listener;
 import team.unnamed.inject.Inject;
 
-public class LPListener implements Listener {
+public class LPListener {
     @Inject private LuckPermsManager luckPermsManager;
     @Inject private PlayerManager playerManager;
 

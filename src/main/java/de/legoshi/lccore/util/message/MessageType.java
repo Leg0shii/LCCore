@@ -26,5 +26,9 @@ public enum MessageType {
     NICKNAME,
     RESTRICTION_ERROR,
     PUNISHMENT,
-    PUNISHMENT_ERROR
+    PUNISHMENT_ERROR,
+    SHOP,
+    SHOP_ERROR,
+    SETTINGS,
+    SETTINGS_ERROR,
 }

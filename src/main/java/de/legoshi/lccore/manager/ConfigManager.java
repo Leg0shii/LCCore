@@ -12,14 +12,12 @@ import org.bukkit.Bukkit;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.ItemStack;
 import team.unnamed.inject.Inject;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class ConfigManager {
 
@@ -29,6 +27,8 @@ public class ConfigManager {
     public static Map<String, MazeDTO> mazeDisplay = new HashMap<>();
     public static Map<String, StarDTO> starDisplay = new HashMap<>();
     public static Map<String, StaffDTO> staffDisplay = new HashMap<>();
+    public static Map<String, ChatColorDTO> chatColorsMap = new HashMap<>();
+    public static Map<String, CommandShopDTO> commandShopMap = new HashMap<>();
     public static Map<String, String> modIdBlacklist = new HashMap<>();
     public static final Map<Message, String> messages = new HashMap<>();
     public static final HashSet<String> keys = new HashSet<>();
@@ -64,7 +64,7 @@ public class ConfigManager {
 
         ColorHelper.load();
         loadDbConfig();
-        loadRankDataIntoMemory();
+        loadLCDataIntoMemory();
         loadModBlacklistConfig();
 
         try {
@@ -151,20 +151,24 @@ public class ConfigManager {
         }
     }
 
-    private void loadRankDataIntoMemory() {
+    private void loadLCDataIntoMemory() {
         ranksDisplay = new HashMap<>();
         bonusDisplay = new HashMap<>();
         wolfDisplay = new HashMap<>();
         starDisplay = new HashMap<>();
         mazeDisplay = new HashMap<>();
         staffDisplay = new HashMap<>();
-        FileConfiguration rankData = new ConfigAccessor(Linkcraft.getPlugin(), "rankdata.yml").getConfig();
-        loadRankSection(rankData.getConfigurationSection("ranks"));
-        loadBonusSection(rankData.getConfigurationSection("bonus"));
-        loadWolfSection(rankData.getConfigurationSection("wolf"));
-        loadMazeSection(rankData.getConfigurationSection("maze"));
-        loadStarSection(rankData.getConfigurationSection("star"));
-        loadStaffSection(rankData.getConfigurationSection("staff"));
+        chatColorsMap = new HashMap<>();
+        FileConfiguration lcData = new ConfigAccessor(Linkcraft.getPlugin(), "lcdata.yml").getConfig();
+        loadRankSection(lcData.getConfigurationSection("ranks"));
+        loadBonusSection(lcData.getConfigurationSection("bonus"));
+        loadWolfSection(lcData.getConfigurationSection("wolf"));
+        loadMazeSection(lcData.getConfigurationSection("maze"));
+        loadStarSection(lcData.getConfigurationSection("star"));
+        loadStaffSection(lcData.getConfigurationSection("staff"));
+        loadChatColorSection(lcData.getConfigurationSection("chatcolor"));
+        loadCommandShopSection(lcData.getConfigurationSection("commands"));
+
 
         addToSet(ranksDisplay, "group.");
         addToSet(bonusDisplay);
@@ -236,9 +240,66 @@ public class ConfigManager {
             for(String key : stars.getKeys(false)) {
                 ConfigurationSection star = stars.getConfigurationSection(key);
                 String display = star.getString("display");
+                String color = star.getString("color");
+
+                ItemStack itemObj;
+                String item = star.getString("item");
+
+                String[] itemData = item.split(":");
+                if(itemData.length > 1) {
+                    itemObj = new ItemStack(Integer.parseInt(itemData[0]), 1, Short.parseShort(itemData[1]));
+                } else {
+                    itemObj = new ItemStack(Integer.parseInt(itemData[0]));
+                }
+
                 int cost = star.getInt("cost");
                 int position = star.getInt("position");
-                starDisplay.put(key, new StarDTO(key, display, cost, position));
+                starDisplay.put(key, new StarDTO(key, display, cost, position, itemObj, color));
+            }
+        }
+    }
+
+    private void loadChatColorSection(ConfigurationSection chatcolors) {
+        if(chatcolors != null) {
+            for(String key : chatcolors.getKeys(false)) {
+                ConfigurationSection chatColor = chatcolors.getConfigurationSection(key);
+                String code = chatColor.getString("code");
+
+                ItemStack itemObj;
+                String item = chatColor.getString("item");
+
+                String[] itemData = item.split(":");
+                if(itemData.length > 1) {
+                    itemObj = new ItemStack(Integer.parseInt(itemData[0]), 1, Short.parseShort(itemData[1]));
+                } else {
+                    itemObj = new ItemStack(Integer.parseInt(itemData[0]));
+                }
+
+                int cost = chatColor.getInt("cost");
+                int position = chatColor.getInt("position");
+                chatColorsMap.put(key, new ChatColorDTO(key, code, cost, position, itemObj));
+            }
+        }
+    }
+
+    private void loadCommandShopSection(ConfigurationSection commands) {
+        if(commands != null) {
+            for(String key : commands.getKeys(false)) {
+                ConfigurationSection command = commands.getConfigurationSection(key);
+                String display = command.getString("display");
+                String description = command.getString("description");
+                List<String> permissionList = new ArrayList<>();
+                String permission = command.getString("permission");
+
+                String[] permissionData = permission.split(":");
+                if(permissionData.length > 1) {
+                    permissionList.addAll(Arrays.asList(permissionData));
+                } else {
+                    permissionList.add(permissionData[0]);
+                }
+                int cost = command.getInt("cost");
+                int position = command.getInt("position");
+                commandShopMap.put(key, new CommandShopDTO(key, display, description, permissionList, cost, position));
             }
         }
     }

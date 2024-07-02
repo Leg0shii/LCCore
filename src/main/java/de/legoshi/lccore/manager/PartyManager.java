@@ -1,6 +1,7 @@
 package de.legoshi.lccore.manager;
 
 import de.legoshi.lccore.Linkcraft;
+import de.legoshi.lccore.player.PlayerPartyResult;
 import de.legoshi.lccore.player.chat.PartyMember;
 import de.legoshi.lccore.player.chat.PartyRole;
 import de.legoshi.lccore.util.PlayerDisplayBuilder;
@@ -94,12 +95,12 @@ public class PartyManager {
     }
 
     public void broadcastToParty(String partyId, String message) {
-        MessageUtil.broadcast(getPartyMembers(partyId), message, false);
+        MessageUtil.broadcast(getOnlinePartyMembers(partyId), message, false);
     }
 
     public void broadcastToParty(String partyId, String message, Player sender) {
-        HashSet<Player> partyMembers = getPartyMembers(partyId);
-        MessageUtil.broadcast(chatManager.getNonIgnoringPlayers(getPartyMembers(partyId), sender), message, false);
+        HashSet<Player> partyMembers = getOnlinePartyMembers(partyId);
+        MessageUtil.broadcast(chatManager.getNonIgnoringPlayers(getOnlinePartyMembers(partyId), sender), message, false);
 
         StringBuilder sb = new StringBuilder();
         sb.append("[").append(sender.getName()).append("] ");
@@ -124,12 +125,14 @@ public class PartyManager {
     }
 
     public void disbandIfEmpty(String partyId) {
-        HashSet<Player> members = getPartyMembers(partyId);
+        HashSet<PlayerPartyResult> members = getPartyMembers(partyId);
         if((members.isEmpty() || members.size() == 1) && inviteListIsEmpty(partyId)) {
             partyToPlayers.remove(partyId);
-            for(Player member : members) {
-                playersToParty.remove(member.getUniqueId().toString());
-                MessageUtil.send(Message.PARTY_DISBANDED, member);
+            for(PlayerPartyResult member : members) {
+                playersToParty.remove(member.getId());
+                if(member.isOnline()) {
+                    MessageUtil.send(Message.PARTY_DISBANDED, member.getPlayer());
+                }
             }
         }
     }
@@ -174,8 +177,10 @@ public class PartyManager {
             return;
         }
 
-        playersToParty.remove(uuid);
+
         HashMap<String, PartyMember> party = partyToPlayers.get(partyId);
+        playersToParty.remove(uuid);
+
         if(party == null) {
             return;
         }
@@ -341,12 +346,12 @@ public class PartyManager {
 
     public String getPartyId(String uuid) { return playersToParty.get(uuid); }
 
-    public HashSet<Player> getPartyMembers(Player player) {
+    public HashSet<PlayerPartyResult> getPartyMembers(Player player) {
         return getPartyMembers(getPartyId(player));
     }
 
 
-    public HashSet<Player> getPartyMembers(String partyId) {
+    public HashSet<Player> getOnlinePartyMembers(String partyId) {
         HashMap<String, PartyMember> partyMembers = partyToPlayers.get(partyId);
         HashSet<Player> partyPlayers = new HashSet<>();
         if(partyMembers == null) {
@@ -357,6 +362,25 @@ public class PartyManager {
             Player player = Bukkit.getPlayer(UUID.fromString(member.getPlayer()));
             if(player != null && player.isOnline()) {
                 partyPlayers.add(player);
+            }
+        }
+
+        return partyPlayers;
+    }
+
+    public HashSet<PlayerPartyResult> getPartyMembers(String partyId) {
+        HashMap<String, PartyMember> partyMembers = partyToPlayers.get(partyId);
+        HashSet<PlayerPartyResult> partyPlayers = new HashSet<>();
+        if(partyMembers == null) {
+            return partyPlayers;
+        }
+
+        for(PartyMember member : partyMembers.values()) {
+            Player player = Bukkit.getPlayer(UUID.fromString(member.getPlayer()));
+            if(player != null && player.isOnline()) {
+                partyPlayers.add(new PlayerPartyResult(player));
+            } else {
+                partyPlayers.add(new PlayerPartyResult(member.getPlayer()));
             }
         }
 

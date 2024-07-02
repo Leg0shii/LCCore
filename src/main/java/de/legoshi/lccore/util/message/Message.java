@@ -222,6 +222,25 @@ public enum Message {
     MAP_CANT_GIVE_COMPLETION_OFFLINE("§cCan't give completion rewards while a player is offline! Consider using: /complete <map> <player> nd", MessageType.MAPS_ERROR),
     MAP_DROPPING_ITEM("§cYour inventory was full! Dropping reward item(s) on the ground in 3 seconds...", MessageType.MAPS_ERROR),
 
+    // Shop
+    SHOP_BOUGHT_STAR("§aStar unlocked: §r{0}", MessageType.SHOP),
+    SHOP_BOUGHT_COLOR("§aColor unlocked: §r{0}", MessageType.SHOP),
+    SHOP_BOUGHT_COMMAND("§aCommand unlocked: §r{0}", MessageType.SHOP),
+    SHOP_EQUIPPED("§aSuccessfully equipped: §r{0}", MessageType.SHOP),
+    SHOP_UNEQUIPPED("§aSuccessfully unequipped: §r{0}", MessageType.SHOP),
+
+    // Shop Errors
+    SHOP_ALREADY_OWN("§cYou already own: §r{0}", MessageType.SHOP_ERROR),
+    SHOP_CANT_AFFORD("§cYou need §e{0}pp §cmore to buy: §r{1}", MessageType.SHOP_ERROR),
+    SHOP_ALREADY_EQUIPPED("{0}§c is already equipped!", MessageType.SHOP_ERROR),
+    SHOP_NOT_EQUIPPED("{0}§c is not equipped!", MessageType.SHOP_ERROR),
+    SHOP_NOT_OWNED("§cYou do not own §r{0}§c! You can buy it in §e/shop", MessageType.SHOP_ERROR),
+
+    // Settings Errors
+    SETTINGS_HAVE_NOT_UNLOCKED("§cYou have not unlocked: {0}", MessageType.SETTINGS_ERROR),
+    SETTINGS_HAVE_NOT_UNLOCKED_NF("§cYou must be §eXI §cor above to use the {0}§c name format!", MessageType.SETTINGS_ERROR),
+    SETTINGS_HAVE_NOT_UNLOCKED_CF("§cYou must be §eXVI §cto use the {0}§c chat format!", MessageType.SETTINGS_ERROR),
+    SETTINGS_UNOBTAINABLE("§c{0}§c is not currently obtainable!", MessageType.SETTINGS_ERROR),
 
     FILLER("", MessageType.SYSTEM);
 

@@ -624,11 +624,7 @@ public class MapManager {
             case CHALLENGE:
                 lpManager.givePermission(player, map.getRank());
                 break;
-            default:
-                return;
         }
-
-        playerManager.updatePlayer(player, 10L);
     }
 
     public List<LCMap> findMapByTagReward(String tagId) {

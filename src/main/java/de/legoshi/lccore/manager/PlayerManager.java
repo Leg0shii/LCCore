@@ -2,9 +2,13 @@ package de.legoshi.lccore.manager;
 
 import de.legoshi.lccore.Linkcraft;
 import de.legoshi.lccore.database.DBManager;
+import de.legoshi.lccore.database.composite.PlayerChatColorId;
+import de.legoshi.lccore.database.composite.PlayerStarId;
 import de.legoshi.lccore.database.models.*;
 import de.legoshi.lccore.player.PlayerRecord;
+import de.legoshi.lccore.player.display.ChatColorDTO;
 import de.legoshi.lccore.player.display.LCPlayer;
+import de.legoshi.lccore.player.display.StarDTO;
 import de.legoshi.lccore.util.ConfigAccessor;
 import de.legoshi.lccore.util.HeadUtil;
 import de.legoshi.lccore.util.ItemUtil;
@@ -489,6 +493,153 @@ public class PlayerManager {
 
     public File getPlayerDataFile(String uuid) {
         return new File(Linkcraft.getPlugin().getServer().getWorlds().get(0).getWorldFolder().getAbsolutePath() + File.separator + "playerdata" + File.separator + uuid + ".dat");
+    }
+
+    public boolean canAfford(Player player, double amt) {
+        return Linkcraft.economy.has(player.getName(), amt);
+    }
+
+    public int ppInt(Player player) {
+        return (int)Linkcraft.economy.getBalance(player.getName());
+    }
+
+    public List<String> ownedStars(Player player) {
+        String hql = "SELECT s FROM PlayerStar s WHERE s.player = :player";
+
+        List<String> owned = new ArrayList<>();
+        EntityManager em = db.getEntityManager();
+        TypedQuery<PlayerStar> query = em.createQuery(hql, PlayerStar.class);
+        query.setParameter("player", new LCPlayerDB(player));
+        for(PlayerStar star : query.getResultList()) {
+            owned.add(star.getStar());
+        }
+        em.close();
+        return owned;
+    }
+
+    public void unlockStar(Player player, String star) {
+        LCPlayerDB lcPlayer = db.find(player.getUniqueId().toString(), LCPlayerDB.class);
+        db.persist(new PlayerStar(lcPlayer, star), lcPlayer);
+    }
+
+    public String getEquippedStar(Player player) {
+        return getPlayerPrefs(player).getStar();
+    }
+
+    public String getStarDisplay(Player player) {
+        return getStarDisplay(player.getUniqueId().toString());
+    }
+
+
+
+    public String getStarDisplay(String player) {
+        PlayerPreferences prefs = getPlayerPrefs(player);
+        if(prefs.getStar() == null) {
+            return "";
+        }
+
+        StarDTO starDTO = ConfigManager.starDisplay.get(prefs.getStar());
+
+        if(starDTO == null) {
+            return "";
+        }
+
+        return starDTO.getDisplay();
+    }
+
+    public void unequipStar(Player player) {
+        PlayerPreferences prefs = getPlayerPrefs(player);
+        prefs.setStar(null);
+        db.update(prefs);
+    }
+
+    public void equipStar(Player player, String star) {
+        PlayerPreferences prefs = getPlayerPrefs(player);
+        prefs.setStar(star);
+        db.update(prefs);
+    }
+
+    public boolean hasStar(Player player, String star) {
+        PlayerStar ps = db.find(new PlayerStarId(player.getUniqueId().toString(), star), PlayerStar.class);
+        return ps != null;
+    }
+
+    public List<String> ownedColors(Player player) {
+        String hql = "SELECT c FROM PlayerChatColor c WHERE c.player = :player";
+
+        List<String> owned = new ArrayList<>();
+        EntityManager em = db.getEntityManager();
+        TypedQuery<PlayerChatColor> query = em.createQuery(hql, PlayerChatColor.class);
+        query.setParameter("player", new LCPlayerDB(player));
+        for(PlayerChatColor color : query.getResultList()) {
+            owned.add(color.getColor());
+        }
+        em.close();
+        return owned;
+    }
+
+    public void unlockColor(Player player, String color) {
+        LCPlayerDB lcPlayer = db.find(player.getUniqueId().toString(), LCPlayerDB.class);
+        db.persist(new PlayerChatColor(lcPlayer, color), lcPlayer);
+    }
+
+    public String getEquippedColor(Player player) {
+        return getPlayerPrefs(player).getChatColor();
+    }
+
+    public String getChatColor(Player player) {
+        return getChatColor(player.getUniqueId().toString());
+    }
+
+    public String getChatColor(String player) {
+        PlayerPreferences prefs = getPlayerPrefs(player);
+        if(prefs.getChatColor() == null) {
+            return "";
+        }
+
+        ChatColorDTO color = ConfigManager.chatColorsMap.get(prefs.getChatColor());
+
+        if(color == null) {
+            return "";
+        }
+
+        return ChatColor.getByChar(color.getCode()) + "";
+    }
+
+    public void unequipColor(Player player) {
+        PlayerPreferences prefs = getPlayerPrefs(player);
+        prefs.setChatColor(null);
+        db.update(prefs);
+    }
+
+    public void equipColor(Player player, String color) {
+        PlayerPreferences prefs = getPlayerPrefs(player);
+        prefs.setChatColor(color);
+        db.update(prefs);
+    }
+
+    public boolean hasColor(Player player, String color) {
+        PlayerChatColor pc = db.find(new PlayerChatColorId(player.getUniqueId().toString(), color), PlayerChatColor.class);
+        return pc != null;
+    }
+
+
+    public String getChatFormats(Player player) {
+        return getChatFormats(player.getUniqueId().toString());
+    }
+
+    public String getChatFormats(String player) {
+        PlayerPreferences prefs = getPlayerPrefs(player);
+        return prefs.getChatFormats();
+    }
+
+    public String getNameFormats(Player player) {
+        return getNameFormats(player.getUniqueId().toString());
+    }
+
+    public String getNameFormats(String player) {
+        PlayerPreferences prefs = getPlayerPrefs(player);
+        return prefs.getNameFormats();
     }
 
     @SuppressWarnings("unused")

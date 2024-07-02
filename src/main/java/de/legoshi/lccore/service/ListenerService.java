@@ -1,6 +1,7 @@
 package de.legoshi.lccore.service;
 
 import de.legoshi.lccore.Linkcraft;
+import de.legoshi.lccore.listener.LPListener;
 import org.bukkit.event.Listener;
 import org.bukkit.plugin.PluginManager;
 import org.reflections.Reflections;
@@ -25,5 +26,7 @@ public class ListenerService implements Service {
         for(Class<? extends Listener> listener : listeners) {
             pluginManager.registerEvents(injector.getInstance(listener), Linkcraft.getPlugin());
         }
+
+        injector.getInstance(LPListener.class).register();
     }
 }

@@ -49,7 +49,7 @@ public class Linkcraft extends JavaPlugin {
     public final ConfigAccessor playerConfig = new ConfigAccessor(this, "playerdata.yml");
     public final ConfigAccessor lockdownConfig = new ConfigAccessor(this, "lockdown.yml");
     public final ConfigAccessor mapsConfig = new ConfigAccessor(this, "maps.yml");
-    public final ConfigAccessor rankConfig = new ConfigAccessor(this, "rankdata.yml");
+    public final ConfigAccessor rankConfig = new ConfigAccessor(this, "lcdata.yml");
     public final ConfigAccessor dbConfig = new ConfigAccessor(this, "database.yml");
     public final ConfigAccessor modBlacklist = new ConfigAccessor(this, "blacklisted-forge-mods.yml");
     public InventoryManager im;
@@ -190,6 +190,14 @@ public class Linkcraft extends JavaPlugin {
 
     public static void syncLater(Runnable runnable, Long ticks) {
         Bukkit.getScheduler().runTaskLater(plugin, runnable, ticks);
+    }
+
+    public static int syncRepeat(Runnable runnable, Long delay, Long initial) {
+        return Bukkit.getScheduler().scheduleSyncRepeatingTask(plugin, runnable, initial, delay);
+    }
+
+    public static void cancelTask(int id) {
+        Bukkit.getScheduler().cancelTask(id);
     }
 
     public static void consoleCommand(String command) {

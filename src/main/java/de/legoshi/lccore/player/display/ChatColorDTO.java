@@ -6,11 +6,10 @@ import org.bukkit.inventory.ItemStack;
 
 @Data
 @AllArgsConstructor
-public class StarDTO {
+public class ChatColorDTO {
     private String key;
-    private String display;
+    private String code;
     private int cost;
     private int position;
     private ItemStack item;
-    private String color;
 }

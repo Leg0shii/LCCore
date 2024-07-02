@@ -1,61 +1,67 @@
 package de.legoshi.lccore.command;
 
 import de.legoshi.lccore.Linkcraft;
-import de.legoshi.lccore.database.DBManager;
-import de.legoshi.lccore.database.models.LCPlayerDB;
+import de.legoshi.lccore.manager.PlayerManager;
+import de.legoshi.lccore.util.IdWrapper;
+import de.legoshi.lccore.util.ItemUtil;
 import de.legoshi.lccore.util.Register;
-import de.legoshi.lccore.util.message.Message;
-import de.legoshi.lccore.util.message.MessageUtil;
 import me.fixeddev.commandflow.annotated.CommandClass;
 import me.fixeddev.commandflow.annotated.annotation.Command;
-import org.bukkit.Bukkit;
-import org.bukkit.OfflinePlayer;
+import me.fixeddev.commandflow.annotated.annotation.OptArg;
 import org.bukkit.command.CommandSender;
+import org.bukkit.entity.Item;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.ItemStack;
+import org.bukkit.util.Vector;
 import team.unnamed.inject.Inject;
 
-import javax.persistence.EntityManager;
-import javax.persistence.NoResultException;
-import javax.persistence.Query;
-import javax.persistence.TypedQuery;
 import java.util.List;
-import java.util.UUID;
+import java.util.Random;
+
 
 @Register
-@Command(names = {"test3"}, permission = "test3", desc = "")
+@Command(names = {"test3"}, permission = "test3", desc = "<amtOrMin> <max> <velo>")
 public class Test3Command implements CommandClass {
 
-    @Inject private DBManager db;
+    @Inject private PlayerManager playerManager;
 
     @Command(names = "")
-    public void test3(CommandSender sender) {
-        Bukkit.getScheduler().runTaskAsynchronously(Linkcraft.getPlugin(), () -> {
-            if (!(sender instanceof Player)) {
-                MessageUtil.send(Message.NOT_A_PLAYER, sender);
-                return;
-            }
-            Player player = (Player)sender;
-            if(player.getUniqueId().toString().equals("57344e2d-488a-428c-8537-0f22dfca2ec7")) {
-                String sql = "SELECT DISTINCT player_id FROM lc_player_tags pt";
-                EntityManager em = db.getEntityManager();
-                Query query = em.createNativeQuery(sql);
-                List<String> data = (List<String>)query.getResultList();
+    public void test3(CommandSender sender, @OptArg Integer amtOrMin, @OptArg Integer max, @OptArg Boolean velo) {
+        if(!(sender instanceof Player)) {
+            return;
+        }
 
-                for(String pId : data) {
-                    String hql2 = "SELECT p FROM LCPlayerDB p WHERE p.id=:player";
-                    TypedQuery<LCPlayerDB> query2 = em.createQuery(hql2, LCPlayerDB.class);
-                    query2.setParameter("player", pId);
-                    try {
-                        query2.getSingleResult();
-                    } catch (NoResultException ignored) {
-                        OfflinePlayer oPlayer = Bukkit.getOfflinePlayer(UUID.fromString(pId));
-                        LCPlayerDB dbPlayer = new LCPlayerDB(pId, oPlayer.getName());
-                        db.persist(dbPlayer);
-                    }
+        if(amtOrMin == null) {
+            amtOrMin = 64;
+        }
+
+
+
+        List<ItemStack> items = ItemUtil.getAllItemsAmt(64);
+        Player finalResult = (Player)sender;
+
+        IdWrapper idWrapper = new IdWrapper();
+        Random random = new Random();
+
+        Integer finalAmtOrMin = amtOrMin;
+        int id = Linkcraft.syncRepeat(() -> {
+            try {
+                ItemStack item = items.remove(0);
+                if(max != null) {
+                    item.setAmount(random.nextInt((max - finalAmtOrMin) + 1) + finalAmtOrMin);
+                } else {
+                    item.setAmount(finalAmtOrMin);
                 }
-                em.close();
+                Item res = finalResult.getWorld().dropItem(finalResult.getLocation(), item);
+
+                if(velo) {
+                    res.setVelocity(new Vector(2 * random.nextDouble() - 1, 2 * random.nextDouble() - 1, 2 * random.nextDouble() - 1));
+                }
+            } catch (IndexOutOfBoundsException e) {
+                Linkcraft.cancelTask(idWrapper.id);
             }
-            player.sendMessage("complete");
-        });
+        }, 1L, 20L);
+
+        idWrapper.id = id;
     }
 }

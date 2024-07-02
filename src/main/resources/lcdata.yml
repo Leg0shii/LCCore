@@ -75,7 +75,7 @@ ranks:
     colorCode: 7
     position: 14
   'XVI':
-    display: §b«§3«§2«§a§lXVI§2»§3»§b»
+    display: §b«§3««§a§lXVI§2»§3»§b»
     tabDisplay: '&b«XVI»'
     colorCode: b
     position: 15
@@ -99,11 +99,6 @@ ranks:
     tabDisplay: '&4«&r&lXX&r&4»'
     colorCode: 4
     position: 19
-  'event':
-    display: §6§lEVENT
-    tabDisplay: '§6§lEVENT'
-    colorCode: 6
-    position: 20
 bonus:
   1:
     display: §e#1
@@ -177,18 +172,6 @@ bonus:
   12pro:
     display: §3§l✫12
     position: 23
-  13:
-    display: §5§l#13
-    position: 24
-  13pro:
-    display: §5§l✫13
-    position: 25
-  14:
-    display: §b§l#14
-    position: 26
-  14pro:
-    display: §b§l✫14
-    position: 27
 wolf:
   wolf_i:
     display: §a①
@@ -206,7 +189,7 @@ wolf:
     display: §d⑤
     position: 4
   wolf_vi:
-    display: §8⑥
+    display: §5⑥
     position: 5
   wolf_vii:
     display: §c⑦
@@ -224,113 +207,261 @@ wolf:
     display: §4&l⑪
     position: 10
   wolf_xii:
-    display: §3§l⑫
+    display: §f&l⑫
     position: 11
   wolf_xiii:
-    display: §5§l⑬
+    display: §3&l⑬
     position: 12
 maze:
   i:
     tabDisplay: ""
-    display: I
     position: 0
   ii:
     tabDisplay: ""
-    display: II
     position: 1
   iii:
     tabDisplay: ""
-    display: III
     position: 2
   iv:
     tabDisplay: ""
-    display: IV
     position: 3
   v:
     tabDisplay: ""
-    display: §eV
     position: 4
   vi:
     tabDisplay: ""
-    display: §eVI
     position: 5
   vii:
     tabDisplay: ""
-    display: §eVII
     position: 6
   viii:
     tabDisplay: ""
-    display: §eVIII
     position: 7
   ix:
     tabDisplay: ""
-    display: §eIX
     position: 8
   x:
     tabDisplay: ""
-    display: §6X
     position: 9
   xi:
     tabDisplay: ""
-    display: §6XI
     position: 10
   xii:
     tabDisplay: ""
-    display: §6XII
     position: 11
   xiii:
     tabDisplay: ""
-    display: §6XIII
     position: 12
   xiv:
     tabDisplay: ""
-    display: §6XIV
     position: 13
   xv:
     tabDisplay: "§c§nXV"
-    display: "§c§nXV"
     position: 14
 star:
   bronze:
     display: §c§l⚝
+    color: §c
+    item: '336'
     cost: 250
     position: 1
   silver:
     display: §f§l⚝
+    color: §f
+    item: '370'
     cost: 1000
     position: 2
   gold:
     display: §6§l⚝
+    color: §6
+    item: '371'
     cost: 2400
     position: 3
   diamond:
     display: §b§l⚝
+    color: §b
+    item: '264'
     cost: 4200
     position: 4
   obsidian:
     display: §1§l⚝
+    color: §1
+    item: '49'
     cost: 6800
     position: 5
   calcite:
     display: §d§l⚝
+    color: §d
+    item: '406'
     cost: 8200
     position: 6
   aquamarine:
     display: §a§l⚝
+    color: §a
+    item: '388'
     cost: 22000
     position: 7
   red_diamond:
     display: §4§l⚝
+    color: §4
+    item: '372'
     cost: 100000
     position: 8
   black_quartz:
     display: §0§l⚝
+    color: §0
+    item: '318'
     cost: 250000
     position: 9
   sugilite:
     display: §5§l⚝
+    color: §5
+    item: '351:12'
     cost: 1000000
     position: 10
+chatcolor:
+  light_green:
+    code: a
+    item: '35:5'
+    cost: 5000
+    position: 1
+  light_blue:
+    code: b
+    item: '35:3'
+    cost: 8200
+    position: 2
+  light_red:
+    code: c
+    item: '95:14'
+    cost: 11400
+    position: 3
+  pink:
+    code: d
+    item: '35:6'
+    cost: 14600
+    position: 4
+  yellow:
+    code: e
+    item: '35:4'
+    cost: 17800
+    position: 5
+  blue:
+    code: 9
+    item: '95:11'
+    cost: 21000
+    position: 6
+  dark_blue:
+    code: 1
+    item: '35:11'
+    cost: 24200
+    position: 7
+  dark_green:
+    code: 2
+    item: '35:13'
+    cost: 27400
+    position: 8
+  cyan:
+    code: 3
+    item: '35:9'
+    cost: 30600
+    position: 9
+  dark_red:
+    code: 4
+    item: '35:14'
+    cost: 33800
+    position: 10
+  purple:
+    code: 5
+    item: '35:10'
+    cost: 37000
+    position: 11
+  orange:
+    code: 6
+    item: '35:1'
+    cost: 40200
+    position: 12
+  light_gray:
+    code: 7
+    item: '35:8'
+    cost: 43400
+    position: 13
+  gray:
+    code: 8
+    item: '35:7'
+    cost: 46600
+    position: 14
+  black:
+    code: 0
+    item: '35:15'
+    cost: 49800
+    position: 15
+commands:
+  ragequit:
+    display: /ragequit
+    description: Makes you leave the game with a unique quit message
+    permission: ragequitcommand.ragequit
+    cost: 100
+    position: 0
+  broadcast:
+    display: /bc
+    description: Sends a message in chat with unique formatting (bannable for mute evading)
+    permission: essentials.broadcast
+    cost: 5000
+    position: 1
+  trash:
+    display: /trash
+    description: Opens a GUI where you can dispose of items
+    permission: essentials.disposal
+    cost: 10000
+    position: 2
+  workbench:
+    display: /wb
+    description: Opens a crafting table GUI
+    permission: essentials.workbench
+    cost: 20000
+    position: 3
+  mail:
+    display: /mail send [name]
+    description: Allows you to send messages to player even while they are offline (bannable for mute evading)
+    permission: essentials.mail.send
+    cost: 35000
+    position: 4
+  itemlore:
+    display: /itemlore
+    description: Allows you to modify the description of items
+    permission: essentials.itemlore
+    cost: 50000
+    position: 5
+  itemname:
+    display: /itemname
+    description: Allows you to modify the name of items. Includes chat colors.
+    permission: 'essentials.itemname:essentials.itemname.*'
+    cost: 80000
+    position: 6
+  fix:
+    display: /fix
+    description: Repairs the currently held item, removing any durability damage done to it
+    permission: essentials.repair
+    cost: 100000
+    position: 5
+  invsee:
+    display: /invsee [name]
+    description: Lets you check the contents of another online player's inventory
+    permission: essentials.invsee
+    cost: 200000
+    position: 6
+  echest:
+    display: /echest [name]
+    description: Lets you check the contents of another online player's ender chest
+    permission: essentials.invsee
+    cost: 250000
+    position: 6
+  skull:
+    display: /skull [name]
+    description: Gives you the ability to give yourself any player head
+    permission: 'essentials.skull:essentials.skull.spawn:essentials.skull.others'
+    cost: 5000000
+    position: 7
 staff:
   builder:
     display: §5[§dBuilder§5]
@@ -342,8 +473,5 @@ staff:
     display: §3[§bStaff§3]
     position: 2
   admin:
-    display: §4[§cAdmin§4]
+    display: §3[§bStaff§3]
     position: 3
-  owner:
-    display: §2[§aOwner§2]
-    position: 4
