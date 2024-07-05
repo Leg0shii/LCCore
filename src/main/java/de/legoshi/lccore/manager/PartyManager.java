@@ -4,6 +4,7 @@ import de.legoshi.lccore.Linkcraft;
 import de.legoshi.lccore.player.PlayerPartyResult;
 import de.legoshi.lccore.player.chat.PartyMember;
 import de.legoshi.lccore.player.chat.PartyRole;
+import de.legoshi.lccore.util.GUIUtil;
 import de.legoshi.lccore.util.PlayerDisplayBuilder;
 import de.legoshi.lccore.util.message.Message;
 import de.legoshi.lccore.util.message.MessageUtil;
@@ -192,6 +193,14 @@ public class PartyManager {
         disbandIfEmpty(partyId);
     }
 
+    public HashMap<String, PartyMember> getParty(String partyId) {
+        return partyToPlayers.get(partyId);
+    }
+
+    public void updateParty(String partyId, HashMap<String, PartyMember> party) {
+        partyToPlayers.put(partyId, party);
+    }
+
     public void removeDueToInactivity(Player player) {
         String uuid = player.getUniqueId().toString();
         String partyId = getPartyId(player);
@@ -224,7 +233,7 @@ public class PartyManager {
             return;
         }
 
-        if(!canManageParty(kicker)) {
+        if(!isHigherRank(kicker, kickeeID)) {
             MessageUtil.send(Message.PARTY_NO_KICK_PERM, kicker);
             return;
         }
@@ -305,6 +314,13 @@ public class PartyManager {
         return member.getRole().equals(PartyRole.OWNER);
     }
 
+    public boolean isHigherRank(Player player, String member) {
+        PartyMember playerRole = getPartyMember(player);
+        PartyMember memberRole = getPartyMember(member);
+
+        return playerRole != null && memberRole != null && playerRole.getRole().weight > memberRole.getRole().weight;
+    }
+
     public boolean canManageParty(Player player) {
         PartyMember member = getPartyMember(player);
         if(member == null) {
@@ -329,10 +345,75 @@ public class PartyManager {
         return party.get(player.getUniqueId().toString());
     }
 
+    public PartyMember getPartyMember(String player) {
+        String partyId = getPartyId(player);
+        if(partyId == null) {
+            return null;
+        }
 
+        HashMap<String, PartyMember> party = partyToPlayers.get(partyId);
+
+        if(party == null) {
+            return null;
+        }
+
+        return party.get(player);
+    }
+
+    public void changeRole(String member, PartyRole role) {
+        if(isInParty(member)) {
+            HashMap<String, PartyMember> party = getParty(getPartyId(member));
+            if(party.get(member) != null) {
+                party.put(member, new PartyMember(member, role));
+            }
+        }
+    }
+
+    public void promote(Player player, String member) {
+        if(!isInParty(player)) {
+            MessageUtil.send(Message.PARTY_NOT_IN, player);
+            return;
+        }
+
+        if(!isInSameParty(player, member)) {
+            MessageUtil.send(Message.PARTY_PLAYER_NOT_IN, player);
+            return;
+        }
+
+        PartyMember promoter = getPartyMember(player);
+        PartyMember promotee = getPartyMember(member);
+        PartyRole promoterRole = promoter.getRole();
+        PartyRole promoteeRole = promotee.getRole();
+        if(promoterRole.equals(PartyRole.OWNER) && promoteeRole.equals(PartyRole.MODERATOR)) {
+            changeRole(player.getUniqueId().toString(), PartyRole.MODERATOR);
+            changeRole(member, PartyRole.OWNER);
+            broadcastToParty(getPartyId(player), MessageUtil.compose(Message.PARTY_TRANSFERRED, true, chatManager.rankNickStar(player), chatManager.rankNickStar(member)));
+        } else if(promoterRole.equals(PartyRole.OWNER) && promoteeRole.equals(PartyRole.GUEST)) {
+            changeRole(member, PartyRole.MODERATOR);
+            broadcastToParty(getPartyId(player), MessageUtil.compose(Message.PARTY_PROMOTED, true, chatManager.rankNickStar(player), chatManager.rankNickStar(member), GUIUtil.capitalize(PartyRole.MODERATOR.name())));
+        } else {
+            MessageUtil.send(Message.PARTY_CAN_NOT_PROMOTE, player, GUIUtil.capitalize(promoterRole.name()), GUIUtil.capitalize(promoteeRole.name()));
+        }
+    }
+
+    public boolean isHigherRank(PartyMember p, PartyMember p2) {
+        return p.getRole().weight > p2.getRole().weight;
+    }
+
+    public boolean canPromote(PartyMember p, PartyMember p2) {
+        return p.getRole().weight > p2.getRole().weight + 1;
+    }
 
     public boolean isInParty(Player player) {
         return getPartyId(player) != null;
+    }
+
+    public boolean isInParty(String player) {
+        return getPartyId(player) != null;
+    }
+
+    public boolean isInSameParty(Player member, String toCheck) {
+        return getPartyId(member).equals(getPartyId(toCheck));
     }
 
     public boolean isInParty(String playerId, String partyId) {

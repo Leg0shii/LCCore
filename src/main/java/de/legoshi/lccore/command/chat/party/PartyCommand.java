@@ -25,6 +25,7 @@ import team.unnamed.inject.Inject;
     PartyInviteCommand.class,
     PartyKickCommand.class,
     PartyListCommand.class,
+    PartyPromoteCommand.class,
     PLCommand.class
 })
 @ArgOrSub(value = true)
