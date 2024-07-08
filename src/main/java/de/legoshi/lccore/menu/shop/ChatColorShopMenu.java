@@ -105,6 +105,7 @@ public class ChatColorShopMenu extends GUIPane {
         loadData();
         current.addElements(returnToParent,
                 GUIUtil.createPaneGuiElement(Dye.BLUE, 'e'),
+                GUIUtil.createPaneGuiElement(Dye.LIGHT_BLUE, 'l'),
                 GUIUtil.createPaneGuiElement(Dye.PURPLE, 'u'),
                 GUIUtil.createPaneGuiElement(Dye.PINK, 'p'),
                 GUIUtil.createPaneGuiElement(Dye.RED, 'r'),
