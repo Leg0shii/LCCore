@@ -138,6 +138,53 @@ public class PartyManager {
         }
     }
 
+    public void promoteNewOwner(String partyId) {
+        HashSet<PlayerPartyResult> members = getPartyMembers(partyId);
+
+        if(members.stream().anyMatch(member -> getPartyMember(member.getId()).getRole().equals(PartyRole.OWNER))) {
+            return;
+        }
+
+        PlayerPartyResult highestOnline = null;
+        PlayerPartyResult result;
+        int onlineWeight = 0;
+        for(PlayerPartyResult member : members) {
+            if(member.isOnline()) {
+                PartyMember partyMember = getPartyMember(member.getId());
+                PartyRole memberRole = partyMember.getRole();
+                int memberWeight = memberRole.weight;
+                if (memberWeight > onlineWeight) {
+                    onlineWeight = memberWeight;
+                    highestOnline = member;
+                }
+            }
+        }
+
+        if(highestOnline != null) {
+           result = highestOnline;
+        } else {
+            PlayerPartyResult highestOffline = null;
+            int offlineWeight = 0;
+            for(PlayerPartyResult member : members) {
+                if(member.isOnline()) {
+                    PartyMember partyMember = getPartyMember(member.getId());
+                    PartyRole memberRole = partyMember.getRole();
+                    int memberWeight = memberRole.weight;
+                    if (memberWeight > offlineWeight) {
+                        offlineWeight = memberWeight;
+                        highestOffline = member;
+                    }
+                }
+            }
+            result = highestOffline;
+        }
+
+        if(result != null) {
+            changeRole(result.getId(), PartyRole.OWNER);
+            broadcastToParty(getPartyId(result.getId()), MessageUtil.compose(Message.PARTY_TRANSFERRED_AUTO, true, chatManager.rankNickStar(result.getId())));
+        }
+    }
+
     public boolean inviteListIsEmpty(String partyId) {
         HashSet<String> inviteList = invites.get(partyId);
         return inviteList == null || inviteList.isEmpty();
@@ -191,6 +238,7 @@ public class PartyManager {
         broadcastToParty(partyId, MessageUtil.compose(Message.PARTY_PLAYER_LEFT, true, chatManager.rankNickStar(player)));
         MessageUtil.send(Message.PARTY_LEFT, player);
         disbandIfEmpty(partyId);
+        promoteNewOwner(partyId);
     }
 
     public HashMap<String, PartyMember> getParty(String partyId) {
