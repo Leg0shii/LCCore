@@ -51,6 +51,7 @@ public enum Message {
     PARTY_KICK("{0}§r§e removed §r{1}§r§e from the party.", MessageType.PLAYER),
     PARTY_PROMOTED("{0}§r§e promoted §r{1}§r§e to §a{2}§r§e.", MessageType.PLAYER),
     PARTY_TRANSFERRED("{0}§r§e transferred ownership of the party to §r{1}§r§e.", MessageType.PLAYER),
+    PARTY_TRANSFERRED_AUTO("§eParty ownership transferred to §r{0}§r§e.", MessageType.PLAYER),
     PARTY_KICKED("§eYou have been kicked from the party by {0}", MessageType.PLAYER),
     IGNORE_PLAYER("§aYou are now ignoring {0}", MessageType.PLAYER),
     UNIGNORE_PLAYER("§aYou are no longer ignoring {0}", MessageType.PLAYER),
