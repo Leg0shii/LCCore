@@ -2,13 +2,14 @@ package de.legoshi.lccore.manager;
 
 import de.legoshi.lccore.Linkcraft;
 import de.legoshi.lccore.player.display.*;
-import de.legoshi.lccore.util.ColorHelper;
-import de.legoshi.lccore.util.ConfigAccessor;
-import de.legoshi.lccore.util.ConfigWriter;
+import de.legoshi.lccore.player.practice.PracticeItem;
+import de.legoshi.lccore.util.*;
 import de.legoshi.lccore.util.message.Message;
 import de.legoshi.lccore.util.message.MessageType;
 import de.legoshi.lccore.util.message.MessageUtil;
 import org.bukkit.Bukkit;
+import org.bukkit.Material;
+import org.bukkit.Sound;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
@@ -30,6 +31,7 @@ public class ConfigManager {
     public static Map<String, ChatColorDTO> chatColorsMap = new HashMap<>();
     public static Map<String, CommandShopDTO> commandShopMap = new HashMap<>();
     public static Map<String, String> modIdBlacklist = new HashMap<>();
+    public static Map<String, PracticeItem> practiceItems = new HashMap<>();
     public static final Map<Message, String> messages = new HashMap<>();
     public static final HashSet<String> keys = new HashSet<>();
     public static String host;
@@ -159,6 +161,7 @@ public class ConfigManager {
         mazeDisplay = new HashMap<>();
         staffDisplay = new HashMap<>();
         chatColorsMap = new HashMap<>();
+        commandShopMap = new HashMap<>();
         FileConfiguration lcData = new ConfigAccessor(Linkcraft.getPlugin(), "lcdata.yml").getConfig();
         loadRankSection(lcData.getConfigurationSection("ranks"));
         loadBonusSection(lcData.getConfigurationSection("bonus"));
@@ -168,6 +171,7 @@ public class ConfigManager {
         loadStaffSection(lcData.getConfigurationSection("staff"));
         loadChatColorSection(lcData.getConfigurationSection("chatcolor"));
         loadCommandShopSection(lcData.getConfigurationSection("commands"));
+        loadPracticeItems();
 
 
         addToSet(ranksDisplay, "group.");
@@ -313,5 +317,49 @@ public class ConfigManager {
                 staffDisplay.put(key, new StaffDTO(key, display, position));
             }
         }
+    }
+
+    private void loadPracticeItems() {
+        PracticeItem defaultPracticeItem = new PracticeItem();
+        defaultPracticeItem.setItemText(new GUIDescriptionBuilder().raw("§3§l【§b§lLC§3§l】-§4Return"));
+        defaultPracticeItem.setItemMat(Material.SLIME_BALL);
+        defaultPracticeItem.setPracticeMessage("§3§l【§b§lLinkCraft§3§l】- §aYou are on a practice mode, Do /unprac to stop.");
+        defaultPracticeItem.setUnpracticeMessage("§3§l【§b§lLinkCraft§3§l】- §4You have stopped practicing.");
+        defaultPracticeItem.setAlreadyPracticeMessage("§3§l【§b§lLinkCraft§3§l】- §4You are already in practice mode!");
+        defaultPracticeItem.setNotInPracticeMessage("§3§l【§b§lLinkCraft§3§l】- §4You are not in a practice mode.");
+        defaultPracticeItem.setActionBarMessage("§4§lYou are practicing!");
+        defaultPracticeItem.setNotOnBlockMessage("§3§l【§b§lLinkCraft§3§l】- §4You must be on a block to use the practice system!");
+        defaultPracticeItem.build();
+
+        PracticeItem hpkPracticeItem = new PracticeItem();
+        Audio hpkErrorAudio = new Audio(Sound.NOTE_BASS, 1, 1);
+        hpkPracticeItem.setItemText(new GUIDescriptionBuilder().raw("§cBack to checkpoint §8[§7Right-click§8]")
+                .raw("§7Return to your previous checkpoint.")
+                .raw("§8Item ID: cp_returner"));
+        hpkPracticeItem.setItemMat(Material.INK_SACK);
+        hpkPracticeItem.setItemDamage((short)1);
+        hpkPracticeItem.setPracticeMessage("§8[§2§l!§8] §7Enabled §bPractice Mode§7.");
+        hpkPracticeItem.setUnpracticeMessage("§8[§3§l!§8] §7Disabled §bPractice Mode.");
+        hpkPracticeItem.setNotOnBlockMessage("§8[§3§l!§8] §cYou have to be on ground.");
+        hpkPracticeItem.setNotOnBlockAudio(hpkErrorAudio);
+        hpkPracticeItem.setNotInPracticeMessage("§8[§4§l!§8] §cYou aren't in practice mode.");
+        hpkPracticeItem.setNotInPracticeAudio(hpkErrorAudio);
+        hpkPracticeItem.setAlreadyPracticeMessage("§8[§4§l!§8] §cYou are already in practice mode.");
+        hpkPracticeItem.setAlreadyPracticeAudio(hpkErrorAudio);
+        hpkPracticeItem.setActionBarMessage("§3You are in §bPractice Mode§3.");
+        hpkPracticeItem.setUnpracticeAudio(new Audio(Sound.CLICK, 1, 1));
+        hpkPracticeItem.setPracticeAudio(new Audio(Sound.CLICK, 1, 1));
+        // Assumed
+        hpkPracticeItem.setFullInventoryMessage("§8[§4§l!§8] §cYour inventory is full.");
+        hpkPracticeItem.setFullInventoryAudio(hpkErrorAudio);
+        PracticeItem pkuPracticeItem = new PracticeItem();
+        pkuPracticeItem.setItemText(new GUIDescriptionBuilder().raw("§cReturn"));
+        pkuPracticeItem.setItemMat(Material.FIREWORK);
+        pkuPracticeItem.setPracticeMessage("§bYou are practicing. Do /unpractice to stop practicing.");
+        pkuPracticeItem.setUnpracticeMessage("§aYou stopped practicing. Good luck!");
+        pkuPracticeItem.setAlreadyPracticeMessage("§cYou are already practicing! Do /unpractice to stop practicing.");
+        pkuPracticeItem.setNotInPracticeMessage("§cYou are not practicing! Do /practice to start practicing.");
+        pkuPracticeItem.setFullInventoryMessage("§cYou cannot practice with a full inventory!");
+        practiceItems.put("default", defaultPracticeItem);
     }
 }
