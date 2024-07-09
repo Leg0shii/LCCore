@@ -33,7 +33,7 @@ import java.util.function.Consumer;
 
 public class MapManager {
     private final static String sheetId = "1IRRRxXs0998rA2H-CF1vD6oFRAe-n-ewSF0dLOzTups";
-    private final static String range = "Sheet1!A2:R1000";
+    private final static String range = "Sheet1!A2:S1000";
     private final static String fileName = "maps.yml";
 
     @Getter private List<LCMap> maps = new ArrayList<>();
@@ -101,7 +101,7 @@ public class MapManager {
         parseList(row.get(15), lcMap::setPlayerMessages);
         lcMap.setForceBan(parseBanType(row.get(16)));
         lcMap.setDisplay(parseString(row.get(17)));
-
+        parseBoolean(row.get(18), lcMap::setNoPrac);
         return lcMap;
     }
 
@@ -153,6 +153,12 @@ public class MapManager {
 
     private static Integer parseInteger(Object value) {
         return (value != null && !"N/A".equals(value)) ? Integer.parseInt((String) value) : null;
+    }
+
+    private static void parseBoolean(Object value, Consumer<Boolean> setter) {
+        if(value != null && !"N/A".equals(value)) {
+            setter.accept(Boolean.parseBoolean((String)value));
+        }
     }
 
     private static ItemStack parseItem(Object id, Object damage) {
@@ -217,6 +223,7 @@ public class MapManager {
             }
 
             store(mapData, "display", map.getDisplay());
+            store(mapData, "no_prac", map.getNoPrac());
 
             yamlData.put(map.getId(), mapData);
         }
@@ -308,6 +315,7 @@ public class MapManager {
             }
 
             map.setDisplay(mapsConfig.getString(String.format("maps.%s.display", key)));
+            map.setNoPrac(Boolean.parseBoolean(mapsConfig.getString(String.format("maps.%s.no_prac", key))));
 
             maps.add(map);
             mapMap.put(key, map);

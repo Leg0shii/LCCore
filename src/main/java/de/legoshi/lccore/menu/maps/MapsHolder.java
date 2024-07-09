@@ -80,17 +80,27 @@ public class MapsHolder extends GUIScrollablePane {
     private StaticGuiElement addMap(LCMap mapData) {
         String warpCommand = "warp " + mapData.getId();
         PlayerCompletion completion = playerMapData.get(mapData.getId());
-        GUIDescriptionBuilder base = new GUIDescriptionBuilder().coloured(mapData.getName(), ChatColor.RESET)
-                .coloured("/" + warpCommand, ChatColor.GRAY)
-                .raw("§e§lStars§r§e: " + mapData.getStar())
-                .raw("§d§lPP§r§d: " + GUIUtil.removeTrailingZeros(mapData.getPp()))
-                .raw("§c§lLength§r§c: " + mapData.getLength())
-                .raw("§a§lCreator§r§a: " + mapData.getCreator());
+        GUIDescriptionBuilder base = new GUIDescriptionBuilder().coloured(mapData.getName(), ChatColor.BOLD)
+                .header("Map Info");
+               // .coloured("/" + warpCommand, ChatColor.GRAY);
+
+        if(mapData.getNoPrac() != null && mapData.getNoPrac()) {
+            base.raw("§c§lNo Practice");
+        }
+
+        base.raw("§e§lStars§r§e: " + mapData.getStar())
+            .raw("§d§lPP§r§d: " + GUIUtil.removeTrailingZeros(mapData.getPp()))
+            .raw("§c§lLength§r§c: " + mapData.getLength())
+            .raw("§a§lCreator§r§a: " + mapData.getCreator());
+
+
 
         if(completion != null && completion.getCompletions() > 0) {
             String first = completion.getFirst() != null ? GUIUtil.ISOString(completion.getFirst()) : "N/A";
             String latest = completion.getLatest() != null ? GUIUtil.ISOString(completion.getLatest()) : "N/A";
-            base.raw("§b§lCompletions§r§b: " + completion.getCompletions())
+            base.blank()
+                .header("Completion Info")
+                .raw("§b§lCompletions§r§b: " + completion.getCompletions())
                 .raw("§6§lFirst§r§6: " + first)
                 .raw("§6§lLatest§r§6: " + latest);
         }

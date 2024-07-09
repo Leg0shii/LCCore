@@ -34,4 +34,5 @@ public class LCMap {
     private List<String> playerMessages;
     private BanType forceBan;
     private String display;
+    private Boolean noPrac;
 }

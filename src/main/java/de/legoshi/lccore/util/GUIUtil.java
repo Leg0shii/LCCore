@@ -260,6 +260,7 @@ public interface GUIUtil {
         return wrap(desc, 50, 50);
     }
 
+
     static String getStarColour(int stars) {
         if(stars < 3) {
             return ChatColor.GREEN + "";
