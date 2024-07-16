@@ -26,7 +26,6 @@ commands:
   resetsaves:
   checksaves:
   pex:
-  togglenotify:
   hide:
   hideall:
   showall:

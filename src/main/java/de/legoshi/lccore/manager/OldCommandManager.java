@@ -2,11 +2,17 @@ package de.legoshi.lccore.manager;
 
 import de.legoshi.lccore.Linkcraft;
 import de.legoshi.lccore.command.*;
-import de.legoshi.lccore.command.checkpoint.*;
+import de.legoshi.lccore.command.debug.GiveUnlocksCommand;
 import de.legoshi.lccore.command.hide.Hide;
 import de.legoshi.lccore.command.hide.HideAll;
 import de.legoshi.lccore.command.hide.Show;
 import de.legoshi.lccore.command.hide.ShowAll;
+import de.legoshi.lccore.command.saves.CheckSavesCommand;
+import de.legoshi.lccore.command.saves.SaveCommand;
+import de.legoshi.lccore.command.saves.SavesCommand;
+import de.legoshi.lccore.command.staff.LockdownCommand;
+import de.legoshi.lccore.command.saves.ResetSavesCommand;
+import de.legoshi.lccore.command.staff.SetLockdownMessageCommand;
 import team.unnamed.inject.Injector;
 
 // REFACTORED
@@ -24,7 +30,6 @@ public class OldCommandManager {
 //        plugin.getCommand("practice").setExecutor(new PracticeCommandOld(plugin));
 //        plugin.getCommand("unpractice").setExecutor(new UnpracticeCommandOld(plugin));
         plugin.getCommand("checksaves").setExecutor(new CheckSavesCommand());
-        plugin.getCommand("togglenotify").setExecutor(new ToggleNotifyCommand());
         plugin.getCommand("saves").setExecutor(new SavesCommand());
         plugin.getCommand("save").setExecutor(new SaveCommand(plugin));
         plugin.getCommand("resetsaves").setExecutor(new ResetSavesCommand(plugin));
