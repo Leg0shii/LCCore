@@ -15,6 +15,7 @@ import de.legoshi.lccore.util.message.Message;
 import de.legoshi.lccore.util.message.MessageUtil;
 import me.fixeddev.commandflow.annotated.CommandClass;
 import me.fixeddev.commandflow.annotated.annotation.Command;
+import me.fixeddev.commandflow.annotated.annotation.OptArg;
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
@@ -29,7 +30,7 @@ public class TagsUnlockCommand implements CommandClass {
 
     @Command(names = "")
     public void unlock(CommandSender sender, @ReflectiveTabComplete(clazz = TagManager.class, method = "getTagNames") String id,
-                       @ReflectiveTabComplete(clazz = PlayerManager.class, method = "getPossibleNames", player = true) String name) {
+                       @ReflectiveTabComplete(clazz = PlayerManager.class, method = "getPossibleNames", player = true) String name, @OptArg Boolean pro) {
         Player toReceive = playerManager.playerByName(name);
         Bukkit.getScheduler().runTaskAsynchronously(Linkcraft.getPlugin(), () -> {
             PlayerRecord record = playerManager.getPlayerRecord(toReceive, name);
@@ -43,11 +44,15 @@ public class TagsUnlockCommand implements CommandClass {
             String playerName = record.getName();
 
 
+
+
             Tag tag = tagManager.getTag(id);
             if(tag == null) {
                 MessageUtil.send(Message.TAGS_NO_TAG, sender, id);
                 return;
             }
+
+
             boolean isVictor = tag.getType().equals(TagType.VICTOR);
 
             if(tagManager.hasTag(uuid, tag.getId())) {
@@ -56,6 +61,13 @@ public class TagsUnlockCommand implements CommandClass {
                 }
                 MessageUtil.send(Message.TAGS_ALREADY_HAVE_OTHER, sender, playerName, tag.getDisplay(), tag.getId());
                 return;
+            }
+
+            if(pro != null && pro && toReceive != null) {
+                if(toReceive.hasPermission("linkcraft.checkpoint")) {
+                    MessageUtil.send(Message.TAGS_MUST_BE_PRO_MODE, toReceive, tag.getDisplay());
+                    return;
+                }
             }
 
             LCPlayerDB lcPlayerDB = playerManager.getPlayerDB(uuid);

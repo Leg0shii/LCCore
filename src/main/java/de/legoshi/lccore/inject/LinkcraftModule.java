@@ -32,6 +32,9 @@ public class LinkcraftModule extends AbstractModule {
         bind(PunishmentManager.class).singleton();
         bind(MapManager.class).singleton();
         bind(ConfigManager.class).singleton();
+        bind(EssentialsManager.class).singleton();
+        bind(PracticeManager.class).singleton();
+        bind(CheckpointManager.class).singleton();
 
         // Database
         install(new DBModule(plugin));
@@ -42,7 +45,6 @@ public class LinkcraftModule extends AbstractModule {
         // Listeners
         bind(GeneralListener.class).singleton();
         bind(InventoryClickListener.class).singleton();
-        bind(PkPracListener.class).singleton();
         bind(PlayerJoinListener.class).singleton();
         bind(PlayerLeaveListener.class).singleton();
         bind(CheckPointListener.class).singleton();
@@ -56,6 +58,8 @@ public class LinkcraftModule extends AbstractModule {
         bind(CommandListener.class).singleton();
         bind(TeleportListener.class).singleton();
         bind(SpawnLocationListener.class).singleton();
+        bind(InteractListener.class).singleton();
+        bind(ItemDropListener.class).singleton();
 
         // Services
         install(new ServiceModule());

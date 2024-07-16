@@ -63,6 +63,8 @@ public enum Message {
     UNSET_STAR("§aYour star has been unset!", MessageType.PLAYER),
     CAPTURE_MSG("§aYour next message in chat will be captured!", MessageType.PLAYER),
     LEAVE_POSITION("§a{0} left the game at position: {1}", MessageType.PLAYER),
+    UPDATED_CP_MAP("§a{0}'s current checkpoint map has been set to: {1}", MessageType.PLAYER),
+    DELETED_CP("§a{0}'s current checkpoint has been cleared", MessageType.PLAYER),
 
     // Player Error
     USAGE("§cUsage: /{0} {1}", MessageType.PLAYER_ERROR),
@@ -103,6 +105,12 @@ public enum Message {
     STAR_DOES_NOT_EXIST("§cThe star {0} does not exist!", MessageType.PLAYER_ERROR),
     IGNORE_LIST_NONE("§cYou are not currently ignoring anyone!", MessageType.PLAYER_ERROR),
     IGNORE_TOO_MANY("§cYou may not ignore more than 200 players!", MessageType.PLAYER_ERROR),
+    INVALID_WARP("§cThat warp does not exist!", MessageType.PLAYER_ERROR),
+    NO_PERM_WARP("§cYou do not have permission to warp there!", MessageType.PLAYER_ERROR),
+    NO_CHECKPOINT_PERM("§cYou do not have the permission to click this sign!", MessageType.PLAYER_ERROR),
+    CHECKPOINT_GROUND("§cYou have to be on the ground to click this checkpoint!", MessageType.PLAYER_ERROR),
+    CHECKPOINT_SAVING_ERROR("§cERROR: You do not have a current checkpoint map set. Please report this issue!", MessageType.PLAYER_ERROR),
+    CHECKPOINT_NO_CP("§cYou do not have a checkpoint to go to!", MessageType.PLAYER_ERROR),
 
     // Practice
     PRAC_SUCCESS("§aYou are now in practice mode, do /unprac to stop.", MessageType.PRACTICE),
@@ -162,6 +170,7 @@ public enum Message {
     TAGS_UNLOCKED_TAG("§r{0}§r §7unlocked, check out §6/tags§r!", MessageType.TAGS),
     TAGS_GAVE_TAG("§aSuccessfully gave {0} tag: §r{1} §r({2})", MessageType.TAGS),
     TAGS_SIGN_CREATED("§aTag sign for §r{0}§a created!", MessageType.TAGS),
+    TAGS_SIGN_PRO_CREATED("§aPro Mode tag sign for §r{0}§a created!", MessageType.TAGS),
     TAGS_REMOVE_TAG("§aSuccessfully removed {0}'s tag: §r{1}", MessageType.TAGS),
     TAGS_REMOVE_TAG_LOG("§a{0} removed {1}'s tag: §r{2}", MessageType.TAGS),
     TAGS_UNSET_TAG("§aYour tag has been unset", MessageType.TAGS),
@@ -199,6 +208,7 @@ public enum Message {
     TAGS_TELEPORT_DESC("§e{0}: §a{1}", MessageType.TAGS_ERROR),
     TAGS_TELEPORT_NO_LOC("§cNo SVS locations found for this tag", MessageType.TAGS_ERROR),
     TAGS_NO_TAGS("§c{0} has no tags to remove!", MessageType.TAGS_ERROR),
+    TAGS_MUST_BE_PRO_MODE("§cYou can only unlock {0}§c in pro mode!", MessageType.TAGS_ERROR),
 
     // Punishment
     PUNISH_FINISHED("§aYou no longer have a {0}!", MessageType.PUNISHMENT),

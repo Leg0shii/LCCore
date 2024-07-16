@@ -101,7 +101,7 @@ public class SaveCreationUI {
                 StrSubstitutor sub = new StrSubstitutor(values, "[", "]");
                 for (int i = 0; i < commandsToRun.size(); i++) {
                     String commandToRun = sub.replace(commandsToRun.toArray()[i]);
-                    Bukkit.dispatchCommand(Bukkit.getConsoleSender(), commandToRun);
+                    Linkcraft.consoleCommand(commandToRun);
                 }
             }
             p.closeInventory();

@@ -2,7 +2,9 @@ package de.legoshi.lccore.util.message;
 
 import de.legoshi.lccore.Linkcraft;
 import de.legoshi.lccore.manager.ConfigManager;
+import de.legoshi.lccore.util.Audio;
 import de.legoshi.lccore.util.CommonUtil;
+import de.legoshi.lccore.util.GUIUtil;
 import github.scarsz.discordsrv.DiscordSRV;
 import github.scarsz.discordsrv.dependencies.jda.api.entities.TextChannel;
 import github.scarsz.discordsrv.dependencies.jda.api.requests.restaction.MessageAction;
@@ -54,6 +56,18 @@ public interface MessageUtil {
 
     static void send(Object message, CommandSender sender, Object... objects) {
         sender.sendMessage(compose(message, true, objects));
+    }
+
+    static void sendMessageIfNotNull(Player player, String message) {
+        if(message != null) {
+            player.sendMessage(GUIUtil.colorize(message));
+        }
+    }
+
+    static void sendAudioIfNotNull(Player player, Audio audio) {
+        if(audio != null) {
+            player.playSound(player.getEyeLocation(), audio.getSound(), audio.getVolume(), audio.getPitch());
+        }
     }
 
     static void sendIfPlayer(Object message, CommandSender sender, Object... objects) {

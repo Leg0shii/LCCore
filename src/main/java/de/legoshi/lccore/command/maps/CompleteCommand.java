@@ -82,7 +82,11 @@ public class CompleteCommand implements CommandClass {
         }
 
         String warp = lcMap.getVictoryWarp() == null ? "spawn" : lcMap.getVictoryWarp();
-        Linkcraft.consoleCommand("warp " + warp + " " + victor.getName());
+        if(warp.equalsIgnoreCase("bonus")) {
+            Linkcraft.consoleCommand("warp " + warp + " " + victor.getName() + " " + "true");
+        } else {
+            Linkcraft.consoleCommand("warp " + warp + " " + victor.getName());
+        }
 
         if(firstCompletion) {
             playerCompletion = new PlayerCompletion();

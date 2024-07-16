@@ -133,6 +133,10 @@ public interface ItemUtil {
     }
 
     static boolean hasNbtId(ItemStack item, String value) {
+        if(item == null) {
+            return false;
+        }
+
         net.minecraft.server.v1_8_R3.ItemStack nmsItem = asNMSCopy(item);
         NBTTagCompound itemCompound = (nmsItem.hasTag()) ? nmsItem.getTag() : new NBTTagCompound();
         return itemCompound.getString("id").equals(value);

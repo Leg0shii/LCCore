@@ -1,49 +1,36 @@
 package de.legoshi.lccore.command.checkpoint;
 
-import de.legoshi.lccore.Linkcraft;
-import de.legoshi.lccore.util.LocationHelper;
-import org.bukkit.ChatColor;
-import org.bukkit.Location;
-import org.bukkit.command.Command;
-import org.bukkit.command.CommandExecutor;
+import de.legoshi.lccore.database.models.PlayerCheckpoint;
+import de.legoshi.lccore.manager.CheckpointManager;
+import de.legoshi.lccore.util.Register;
+import de.legoshi.lccore.util.message.Message;
+import de.legoshi.lccore.util.message.MessageUtil;
+import me.fixeddev.commandflow.annotated.CommandClass;
+import me.fixeddev.commandflow.annotated.annotation.Command;
 import org.bukkit.command.CommandSender;
-import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
+import team.unnamed.inject.Inject;
 
-import java.io.File;
+@Register
+@Command(names = {"checkpoint", "cp"}, permission = "checkpoint", desc = "")
+public class CheckpointCommand implements CommandClass {
 
-public class CheckpointCommand implements CommandExecutor {
+    @Inject private CheckpointManager checkpointManager;
 
-    private final Linkcraft plugin;
-    private final File pluginFolder;
-
-    public CheckpointCommand(Linkcraft plugin) {
-        this.plugin = plugin;
-        this.pluginFolder = plugin.getPluginFolder();
-    }
-
-    public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
-        if (sender instanceof Player) {
-            Player player = (Player) sender;
-            String uuid = player.getUniqueId().toString();
-            File file = new File(this.pluginFolder.getAbsolutePath() + File.separator + "player_checkpoint_data" + File.separator + uuid + ".yml");
-            if (!file.exists()) {
-                player.sendRawMessage(ChatColor.translateAlternateColorCodes('&', "&cYou do not have a checkpoint to go to! (You don't have a player file)"));
-                return true;
-            }
-            YamlConfiguration yamlConfiguration = YamlConfiguration.loadConfiguration(file);
-            String world = player.getWorld().getName();
-            String mapName = yamlConfiguration.getString("Worlds." + world);
-            String locationString = yamlConfiguration.getString("Checkpoints." + mapName + ".Location");
-            Location location = LocationHelper.getLocationFromString(locationString);
-            if (location == null) {
-                player.sendRawMessage(ChatColor.translateAlternateColorCodes('&', "&cYou do not have a checkpoint to go to!"));
-                return true;
-            }
-            player.teleport(location);
-        } else {
-            this.plugin.getLogger().info("You can only send this command as a player!");
+    @Command(names = "")
+    public void checkpoint(CommandSender sender) {
+        if (!(sender instanceof Player)) {
+            MessageUtil.send(Message.NOT_A_PLAYER, sender);
+            return;
         }
-        return true;
+        Player player = (Player)sender;
+        PlayerCheckpoint playerCheckpoint = checkpointManager.getPlayerCheckpoint(player);
+
+        if(playerCheckpoint == null) {
+            MessageUtil.send(Message.CHECKPOINT_NO_CP, player);
+            return;
+        }
+
+        player.teleport(playerCheckpoint.getLocation().toSpigot());
     }
 }

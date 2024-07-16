@@ -327,7 +327,7 @@ public class ConfigManager {
         defaultPracticeItem.setUnpracticeMessage("§3§l【§b§lLinkCraft§3§l】- §4You have stopped practicing.");
         defaultPracticeItem.setAlreadyPracticeMessage("§3§l【§b§lLinkCraft§3§l】- §4You are already in practice mode!");
         defaultPracticeItem.setNotInPracticeMessage("§3§l【§b§lLinkCraft§3§l】- §4You are not in a practice mode.");
-        defaultPracticeItem.setActionBarMessage("§4§lYou are practicing!");
+        defaultPracticeItem.setActionBarMessage("§b§lYou are practicing!");
         defaultPracticeItem.setNotOnBlockMessage("§3§l【§b§lLinkCraft§3§l】- §4You must be on a block to use the practice system!");
         defaultPracticeItem.build();
 
@@ -352,6 +352,7 @@ public class ConfigManager {
         // Assumed
         hpkPracticeItem.setFullInventoryMessage("§8[§4§l!§8] §cYour inventory is full.");
         hpkPracticeItem.setFullInventoryAudio(hpkErrorAudio);
+        hpkPracticeItem.build();
         PracticeItem pkuPracticeItem = new PracticeItem();
         pkuPracticeItem.setItemText(new GUIDescriptionBuilder().raw("§cReturn"));
         pkuPracticeItem.setItemMat(Material.FIREWORK);
@@ -360,6 +361,9 @@ public class ConfigManager {
         pkuPracticeItem.setAlreadyPracticeMessage("§cYou are already practicing! Do /unpractice to stop practicing.");
         pkuPracticeItem.setNotInPracticeMessage("§cYou are not practicing! Do /practice to start practicing.");
         pkuPracticeItem.setFullInventoryMessage("§cYou cannot practice with a full inventory!");
+        pkuPracticeItem.build();
         practiceItems.put("default", defaultPracticeItem);
+        practiceItems.put("hpk", hpkPracticeItem);
+        practiceItems.put("pku", pkuPracticeItem);
     }
 }

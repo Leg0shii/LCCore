@@ -50,17 +50,11 @@ save-commands:
 
 # Commands that are executed in the teleport animation when a player teleports to a save. (Its important to disable any signs)
 save-teleport-commands:
-  - pex user [player] add -serversigns.use.*
-  - pex user [player] add -pk.signs
-  - pex user [player] remove serversigns.use.*
-  - pex user [player] remove pk.signs
+  - lp user [player] permission set serversigns.use.* false
 
 # Commands that are executed when the teleport animation for saves is finished. (Enable permissions here)
 save-teleport-finish-commands:
-  - pex user [player] remove -serversigns.use.*
-  - pex user [player] remove -pk.signs
-  - pex user [player] add serversigns.use.*
-  - pex user [player] add pk.signs
+  - lp user [player] permission unset serversigns.use.*
 
 ggmessage: '&6&lG&e&lG'
 glmessage: '&2&lG&a&lL ☺'

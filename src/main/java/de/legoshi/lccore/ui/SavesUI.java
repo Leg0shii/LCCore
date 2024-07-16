@@ -1,6 +1,7 @@
 package de.legoshi.lccore.ui;
 
 import de.legoshi.lccore.Linkcraft;
+import de.legoshi.lccore.listener.events.MapChangeEvent;
 import de.legoshi.lccore.util.ConfigAccessor;
 import de.legoshi.lccore.util.Constants;
 import de.legoshi.lccore.util.Utils;
@@ -101,7 +102,6 @@ public class SavesUI {
             User user = api.getUserManager().getUser(p.getUniqueId());
             if(user != null) {
                 user.data().add(PermissionNode.builder(Constants.SERVERSIGNS_USE_ALL).value(false).build());
-                user.data().add(PermissionNode.builder(Constants.PKCP_SIGNS).value(false).build());
             }
 
             String locationString = playerDataConfig.getString("Saves." + keys.toArray()[slot + (page - 1) * 36] + ".location");
@@ -116,10 +116,9 @@ public class SavesUI {
                 p.sendMessage(Utils.chat("&aTeleported you to your save!"));
                 p.closeInventory();
                 p.playSound(p.getLocation(), Sound.ENDERMAN_TELEPORT, 1.0F, 1.7F);
-
+                Linkcraft.fireMapChangeEvent(p);
                 if(user != null) {
-                    user.data().add(PermissionNode.builder(Constants.SERVERSIGNS_USE_ALL).value(true).build());
-                    user.data().add(PermissionNode.builder(Constants.PKCP_SIGNS).value(true).build());
+                    user.data().remove(PermissionNode.builder(Constants.SERVERSIGNS_USE_ALL).value(false).build());
                 }
             }, 20L);
             playerDataConfig.set("Saves." + keys.toArray()[slot + (page - 1) * 36], null);

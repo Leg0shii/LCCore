@@ -26,6 +26,20 @@ public class SVSManager {
         createServerSign(location, cmd, SignClickType.RIGHT);
     }
 
+    public void createServerSign(Location location, ServerSignCommand ... commands) {
+        ServerSign old = getSVS().serverSignsManager.getServerSignByLocation(location);
+        if(old != null) {
+            getSVS().serverSignsManager.remove(old);
+        }
+
+        ServerSign serverSign = new ServerSign();
+        serverSign.setLocation(location);
+        for(ServerSignCommand cmd : commands) {
+            serverSign.addCommand(cmd);
+        }
+        saveServerSign(serverSign);
+    }
+
     public void createServerSign(Location location, String cmd, SignClickType clickType) {
         createServerSign(location, cmd, clickType, CommandType.SERVER_COMMAND);
     }

@@ -14,7 +14,7 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import team.unnamed.inject.Inject;
 
-@Command(names = {"reset"}, permission = "tags.search", desc = "<player>")
+@Command(names = {"reset"}, permission = "tags.reset", desc = "<player>")
 public class TagsResetCommand implements CommandClass {
 
     @Inject private PlayerManager playerManager;

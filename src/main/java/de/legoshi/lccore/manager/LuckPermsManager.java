@@ -75,6 +75,12 @@ public class LuckPermsManager {
         giveWorldPermission(player, permission, world, true);
     }
 
+    public void removePermission(Player player, String permission) {
+        User user = getUserForPlayer(player);
+        user.data().remove(Node.builder(permission).build());
+        getLP().getUserManager().saveUser(user);
+    }
+
     public boolean doesGroupExist(String group) {
         return getLP().getGroupManager().getGroup(group) != null;
     }
@@ -89,10 +95,53 @@ public class LuckPermsManager {
         }
     }
 
+    public void removeGroup(Player player, String group) {
+        if(hasGroup(player, group)) {
+            removePermission(player, "group." + group);
+        }
+    }
+
     public boolean hasGroup(String player, String group) {
         Player p = Bukkit.getPlayer(UUID.fromString(player));
         if(p != null && p.isOnline())
             return hasGroup(p, group);
         return getUserGroups(getUserForPlayer(player)).stream().anyMatch(toCheck -> toCheck.getName().equalsIgnoreCase(group));
+    }
+
+    public boolean groupExists(String group) {
+        return getLP().getGroupManager().getGroup(group) != null;
+    }
+
+    public void createDefaultPracticeGroup() {
+        if(!groupExists("practice")) {
+            try {
+                Group pracGroup = getLP().getGroupManager().createAndLoadGroup("practice").get();
+                pracGroup.data().add(Node.builder("weight.500").build());
+                pracGroup.data().add(Node.builder("ps.save").value(false).build());
+                pracGroup.data().add(Node.builder("ps.saves").value(false).build());
+                pracGroup.data().add(Node.builder("chestcommands.open.challenge.yml").value(false).build());
+                pracGroup.data().add(Node.builder("chestcommands.open.maze.yml").value(false).build());
+                pracGroup.data().add(Node.builder("chestcommands.open.parkour.yml").value(false).build());
+                pracGroup.data().add(Node.builder("chestcommands.open.rankup.yml").value(false).build());
+                pracGroup.data().add(Node.builder("linkcraft.bonus").value(false).build());
+                pracGroup.data().add(Node.builder("linkcraft.spawn").value(false).build());
+                pracGroup.data().add(Node.builder("linkcraft.checkpoint").value(false).build());
+                pracGroup.data().add(Node.builder("linkcraft.warp").value(false).build());
+                pracGroup.data().add(Node.builder("serversigns.use.*").value(false).build());
+                getLP().getGroupManager().saveGroup(pracGroup);
+            } catch (Exception ignored) {}
+        }
+    }
+
+    public void createDefaultCheckpointGroup() {
+        if(!groupExists("checkpoint")) {
+            try {
+                Group checkpointGroup = getLP().getGroupManager().createAndLoadGroup("checkpoint").get();
+                checkpointGroup.data().add(Node.builder("weight.450").build());
+                checkpointGroup.data().add(Node.builder("linkcraft.checkpoint").build());
+                checkpointGroup.data().add(Node.builder("ps.save").value(false).build());
+                getLP().getGroupManager().saveGroup(checkpointGroup);
+            } catch (Exception ignored) {}
+        }
     }
 }

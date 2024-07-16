@@ -1,5 +1,6 @@
 package de.legoshi.lccore.listener;
 
+import com.earth2me.essentials.Essentials;
 import de.legoshi.lccore.manager.PlayerManager;
 import org.bukkit.Location;
 import org.bukkit.event.EventHandler;

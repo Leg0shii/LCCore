@@ -1,5 +1,8 @@
 package de.legoshi.lccore.manager;
 
+import com.comphenix.protocol.PacketType;
+import com.comphenix.protocol.events.PacketContainer;
+import com.comphenix.protocol.wrappers.WrappedChatComponent;
 import de.legoshi.lccore.Linkcraft;
 import de.legoshi.lccore.database.DBManager;
 import de.legoshi.lccore.database.composite.PlayerChatColorId;
@@ -9,14 +12,12 @@ import de.legoshi.lccore.player.PlayerRecord;
 import de.legoshi.lccore.player.display.ChatColorDTO;
 import de.legoshi.lccore.player.display.LCPlayer;
 import de.legoshi.lccore.player.display.StarDTO;
-import de.legoshi.lccore.util.ConfigAccessor;
-import de.legoshi.lccore.util.HeadUtil;
-import de.legoshi.lccore.util.ItemUtil;
-import de.legoshi.lccore.util.Utils;
+import de.legoshi.lccore.util.*;
 import de.legoshi.lccore.util.message.Message;
 import de.legoshi.lccore.util.message.MessageUtil;
 import de.tr7zw.changeme.nbtapi.NBTFile;
 import de.tr7zw.changeme.nbtapi.NBTList;
+import me.neznamy.tab.api.TabAPI;
 import net.minecraft.server.v1_8_R3.ChatMessage;
 import net.minecraft.server.v1_8_R3.PacketPlayOutTitle;
 import net.minecraft.server.v1_8_R3.PlayerConnection;
@@ -43,7 +44,7 @@ public class PlayerManager {
     @Inject private DBManager db;
 
     private final HashMap<String, LCPlayer> players = new HashMap<>();
-    private Set<String> clearEffectsOnTps = new HashSet<>();
+    private final Set<String> clearEffectsOnTps = new HashSet<>();
 
     public void playerJoin(Player player) {
         initDbData(player);
@@ -51,11 +52,20 @@ public class PlayerManager {
         updateSkull(player);
         players.put(player.getUniqueId().toString(), loadPlayer(player));
         player.setDisplayName(chatManager.rankNickStar(player));
+        updateTabPosition(player);
         visibilityManager.hideIfHiding(player);
         chatManager.onJoin(player);
         clearTitle(player);
         forgeHandshake(player);
     }
+
+    public void updateTabPosition(Player player) {
+        if(!isStaff(player)) {
+            TabAPI.getInstance().getInstance().getPlayer(player.getUniqueId()).setTemporaryGroup(getPlayer(player).getRank().getKey());
+        }
+    }
+
+
 
     public void forgeHandshake(Player player) {
         Linkcraft.asyncLater(() -> {
@@ -126,6 +136,7 @@ public class PlayerManager {
     public void updatePlayer(Player player) {
         players.put(player.getUniqueId().toString(), loadPlayer(player));
         player.setDisplayName(chatManager.rankNickStar(player));
+        updateTabPosition(player);
     }
 
     public void updatePlayer(Player player, long delay) {
@@ -398,20 +409,6 @@ public class PlayerManager {
     }
 
 
-    // Sadness ensues:
-//    public void spigotToNBTLocation(Location l, String uuid) throws IOException {
-//        NBTFile file = new NBTFile(getPlayerDataFile(uuid));
-//        NBTList<Double> position = file.getDoubleList("Pos");
-//        position.set(0, l.getX());
-//        position.set(1, l.getY());
-//        position.set(2, l.getZ());
-//        NBTList<Float> rotation = file.getFloatList("Rotation");
-//        rotation.set(0, l.getYaw());
-//        rotation.set(1, l.getPitch());
-//        CraftWorld craftWorld = (CraftWorld)l.getWorld();
-//        file.setInteger("Dimension", craftWorld.getHandle().dimension);
-//        file.save();
-//    }
 
     public Location NBTLocationToSpigotLocation(String uuid) throws IOException {
         NBTFile file = new NBTFile(getPlayerDataFile(uuid));
@@ -640,6 +637,29 @@ public class PlayerManager {
     public String getNameFormats(String player) {
         PlayerPreferences prefs = getPlayerPrefs(player);
         return prefs.getNameFormats();
+    }
+
+    public boolean isFalling(Player player) {
+        return (player.getVelocity().getY() != -0.0784000015258789D && player.getVelocity().getY() != -0.02);
+    }
+
+    public boolean isOnGround(Player player) {
+        return Arrays.asList(Utils.possBlockYValues()).contains(player.getLocation().getY() % 1.0D);
+    }
+
+    public boolean isInventoryFull(Player player) {
+        return player.getInventory().firstEmpty() == -1;
+    }
+
+    public void giveItem(Player player, ItemStack item) {
+        player.getInventory().addItem(item);
+    }
+
+    public void clearActionBar(Player player) {
+        PacketContainer packet = new PacketContainer(PacketType.Play.Server.CHAT);
+        packet.getChatComponents().write(0, WrappedChatComponent.fromText(""));
+        packet.getBytes().write(0, (byte) 2);
+        Linkcraft.getPlugin().protocolManager.sendServerPacket(player, packet);
     }
 
     @SuppressWarnings("unused")

@@ -33,7 +33,8 @@ public class CommandService implements Service {
                             "pl", "nick", "realname", "ac", "helpop",
                             "msg", "message", "r", "reply", "t", "tell",
                             "w", "whisper", "ignore", "togglechat", "p",
-                            "tags", "mute", "unmute", "bonus"
+                            "tags", "mute", "unmute", "bonus", "spawn",
+                            "warp", "join"
                     };
 
     @Override

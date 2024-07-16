@@ -1,6 +1,7 @@
 package de.legoshi.lccore.listener;
 
 import de.legoshi.lccore.Linkcraft;
+import de.legoshi.lccore.manager.ConfigManager;
 import de.legoshi.lccore.util.Constants;
 import de.legoshi.lccore.util.LocationHelper;
 import org.bukkit.ChatColor;
@@ -26,7 +27,7 @@ public class PkPracListener implements Listener {
         Action a = e.getAction();
         Player p = e.getPlayer();
         String uuid = p.getUniqueId().toString();
-        if (a != Action.LEFT_CLICK_AIR && a != Action.LEFT_CLICK_BLOCK && a != Action.PHYSICAL && p.getItemInHand().isSimilar(Linkcraft.getPlugin().getReturnItem())) {
+        if (a != Action.LEFT_CLICK_AIR && a != Action.LEFT_CLICK_BLOCK && a != Action.PHYSICAL && p.getItemInHand().isSimilar(ConfigManager.practiceItems.get("default").getItem())) {
             e.setCancelled(true);
             String saved = this.playerdataConfig.getString(uuid);
             if (saved != null) {
@@ -39,7 +40,7 @@ public class PkPracListener implements Listener {
     @EventHandler
     public void onPlayerDropItemEvent(PlayerDropItemEvent e) {
         Item i = e.getItemDrop();
-        if (i.getItemStack().isSimilar(Linkcraft.getPlugin().getReturnItem())) e.setCancelled(true);
+        if (i.getItemStack().isSimilar(ConfigManager.practiceItems.get("default").getItem())) e.setCancelled(true);
     }
 
     @EventHandler

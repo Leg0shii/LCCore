@@ -7,8 +7,6 @@ import de.legoshi.lccore.command.hide.Hide;
 import de.legoshi.lccore.command.hide.HideAll;
 import de.legoshi.lccore.command.hide.Show;
 import de.legoshi.lccore.command.hide.ShowAll;
-import de.legoshi.lccore.command.practice.PracticeCommand;
-import de.legoshi.lccore.command.practice.UnpracticeCommand;
 import team.unnamed.inject.Injector;
 
 // REFACTORED
@@ -23,8 +21,8 @@ public class OldCommandManager {
     }
 
     public void registerCommands() {
-        plugin.getCommand("practice").setExecutor(new PracticeCommand(plugin));
-        plugin.getCommand("unpractice").setExecutor(new UnpracticeCommand(plugin));
+//        plugin.getCommand("practice").setExecutor(new PracticeCommandOld(plugin));
+//        plugin.getCommand("unpractice").setExecutor(new UnpracticeCommandOld(plugin));
         plugin.getCommand("checksaves").setExecutor(new CheckSavesCommand());
         plugin.getCommand("togglenotify").setExecutor(new ToggleNotifyCommand());
         plugin.getCommand("saves").setExecutor(new SavesCommand());
@@ -36,12 +34,11 @@ public class OldCommandManager {
         plugin.getCommand("hideall").setExecutor(injector.getInstance(HideAll.class));
         plugin.getCommand("show").setExecutor(injector.getInstance(Show.class));
         plugin.getCommand("showall").setExecutor(injector.getInstance(ShowAll.class));
-        plugin.getCommand("checkpoint").setExecutor(new CheckpointCommand(plugin));
-        plugin.getCommand("sendtomap").setExecutor(new SendToMapCommand(plugin.getPluginFolder().getAbsolutePath()));
-        plugin.getCommand("sendtomapworld").setExecutor(new SendToMapWorldCommand(plugin.getPluginFolder().getAbsolutePath()));
-        plugin.getCommand("checkpointdelete").setExecutor(new CheckpointDeleteCommand(plugin));
-        plugin.getCommand("savecheckpoint").setExecutor(new SaveCheckpointCommand(plugin));
-        plugin.getCommand("fakeup").setExecutor(new FakeupCommand());
+        //plugin.getCommand("checkpoint").setExecutor(new CheckpointCommandOld(plugin));
+//        plugin.getCommand("sendtomap").setExecutor(new SendToMapCommand(plugin.getPluginFolder().getAbsolutePath()));
+//        plugin.getCommand("sendtomapworld").setExecutor(new SendToMapWorldCommand(plugin.getPluginFolder().getAbsolutePath()));
+        //plugin.getCommand("checkpointdelete").setExecutor(new CheckpointDeleteCommandOld(plugin));
+//        plugin.getCommand("savecheckpoint").setExecutor(new SaveCheckpointCommand(plugin));
         plugin.getCommand("ld").setExecutor(injector.getInstance(LockdownCommand.class));
         plugin.getCommand("ldmsg").setExecutor(injector.getInstance(SetLockdownMessageCommand.class));
         plugin.getCommand("nv").setExecutor(new NightVisionCommand());

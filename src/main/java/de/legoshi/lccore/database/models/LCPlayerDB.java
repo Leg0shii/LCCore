@@ -21,6 +21,8 @@ public class LCPlayerDB implements Identifiable<String> {
 
     private String name;
 
+    @Column(name = "current_checkpoint_map")
+    private String currentCheckpointMap = null;
 
     public LCPlayerDB(String uuid, String name) {
         this.id = uuid;

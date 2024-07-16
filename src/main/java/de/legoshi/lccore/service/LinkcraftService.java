@@ -11,6 +11,7 @@ public class LinkcraftService implements Service {
     @Inject @Named("papi") private Service papiService;
     @Inject @Named("listener") private Service listenerService;
     @Inject @Named("database") private Service databaseService;
+    @Inject @Named("init") private Service initService;
 
     @Override
     public void start() {
@@ -19,7 +20,7 @@ public class LinkcraftService implements Service {
         startService(listenerService, "Listener");
         startService(papiService, "PAPI");
         startService(databaseService, "Database");
-
+        startService(initService, "Initialization");
     }
 
     private void startService(Service service, String display) {

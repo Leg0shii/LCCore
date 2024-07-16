@@ -17,54 +17,10 @@ commands:
     permission: lc.lockdown
   ldmsg:
     permission: lc.lockdownmsg
-  practice:
-    aliases: [prac]
-    permission: pkprac.practice
-  unpractice:
-    aliases: [unprac]
-    permission: pkprac.practice
-  pkpracreload:
-    permission: pkprac.reload
-  checkpoint:
-    description: Return to your checkpoint.
-    aliases: [ cp ]
-    usage: /checkpoint
-    default: false
-    permission: pkcp.checkpoint
-    permission-message: You do not have permission to use this command!
-  checkpointdelete:
-    description: Delete a checkpoint from a player.
-    aliases: [ cpd, cpdelete ]
-    usage: /checkpointdelete <player> <map>
-    default: false
-    permission: pkcp.checkpointdelete
-    permission-message: You do not have permission to use this command!
-  sendtomap:
-    description: Send a player to a specific map.
-    aliases: [ stm ]
-    usage: /sendtomap <player> <map>
-    default: false
-    permission: pkcp.sendtomap
-    permission-message: You do not have permission to use this command!
-  sendtomapworld:
-    description: Send a player to a specific map world.
-    aliases: [ stmw ]
-    usage: /sendtomapworld <player> <map>
-    default: false
-    permission: pkcp.sendtomapworld
-    permission-message: You do not have permission to use this command!
-  savecheckpoint:
-    description: Save a checkpoint right at the player's spot.
-    aliases: [ savecp, scp ]
-    usage: /savecheckpoint
-    default: false
-    permission: pkcp.savecheckpoint
-    permission-message: You do not have permission to use this command!
   saves:
   nv:
     aliases: [ nightvision, nvn, vision ]
   save:
-  fakeup:
   pingtp:
   chungus:
   resetsaves:

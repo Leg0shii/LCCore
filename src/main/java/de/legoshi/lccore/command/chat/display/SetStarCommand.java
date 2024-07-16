@@ -1,4 +1,4 @@
-package de.legoshi.lccore.command.chat;
+package de.legoshi.lccore.command.chat.display;
 
 import de.legoshi.lccore.Linkcraft;
 import de.legoshi.lccore.command.flow.annotated.annotation.ReflectiveTabComplete;

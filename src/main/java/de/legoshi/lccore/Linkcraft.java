@@ -2,8 +2,10 @@ package de.legoshi.lccore;
 
 import com.comphenix.protocol.ProtocolLibrary;
 import com.comphenix.protocol.ProtocolManager;
+import com.comphenix.protocol.events.PacketContainer;
 import de.legoshi.lccore.inject.LinkcraftModule;
 import de.legoshi.lccore.listener.ModIdListener;
+import de.legoshi.lccore.listener.events.MapChangeEvent;
 import de.legoshi.lccore.manager.OldCommandManager;
 import de.legoshi.lccore.manager.PlayerManager;
 import de.legoshi.lccore.service.Service;
@@ -172,6 +174,10 @@ public class Linkcraft extends JavaPlugin {
         return new File(getDataFolder(), "playerdata");
     }
 
+    public FileConfiguration getPracticeData() {
+        return playerConfig.getConfig();
+    }
+
     public File getPluginFolder() {
         return getDataFolder();
     }
@@ -204,5 +210,8 @@ public class Linkcraft extends JavaPlugin {
         Bukkit.dispatchCommand(Bukkit.getConsoleSender(), command);
     }
 
+    public static void fireMapChangeEvent(Player player) {
+        Bukkit.getPluginManager().callEvent(new MapChangeEvent(player));
+    }
 }
 

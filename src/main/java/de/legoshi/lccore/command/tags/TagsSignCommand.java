@@ -1,5 +1,7 @@
 package de.legoshi.lccore.command.tags;
 
+import de.czymm.serversigns.parsing.CommandType;
+import de.czymm.serversigns.parsing.command.ServerSignCommand;
 import de.legoshi.lccore.Linkcraft;
 import de.legoshi.lccore.command.flow.annotated.annotation.ReflectiveTabComplete;
 import de.legoshi.lccore.database.models.Tag;
@@ -7,8 +9,10 @@ import de.legoshi.lccore.manager.SVSManager;
 import de.legoshi.lccore.manager.TagManager;
 import de.legoshi.lccore.util.message.Message;
 import de.legoshi.lccore.util.message.MessageUtil;
+import de.legoshi.lccore.util.svs.SignClickType;
 import me.fixeddev.commandflow.annotated.CommandClass;
 import me.fixeddev.commandflow.annotated.annotation.Command;
+import me.fixeddev.commandflow.annotated.annotation.OptArg;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -28,7 +32,7 @@ public class TagsSignCommand implements CommandClass {
     @Inject private SVSManager svsManager;
 
     @Command(names = "")
-    public void sign(CommandSender sender, @ReflectiveTabComplete(clazz = TagManager.class, method = "getTagNames") String id) {
+    public void sign(CommandSender sender, @ReflectiveTabComplete(clazz = TagManager.class, method = "getTagNames") String id, @OptArg Boolean noCp) {
         Bukkit.getScheduler().runTaskAsynchronously(Linkcraft.getPlugin(), () -> {
             if (!(sender instanceof Player)) {
                 MessageUtil.send(Message.NOT_A_PLAYER, sender);
@@ -60,8 +64,13 @@ public class TagsSignCommand implements CommandClass {
                 MessageUtil.send(Message.TAGS_UNCOMMON_TAG_BLOCK, player, block.getType().name(), bLoc.getBlockX(), bLoc.getBlockY(), bLoc.getBlockZ());
             }
 
-            svsManager.createServerSign(bLoc, "tags unlock " + tag.getId() + " <player>");
-            MessageUtil.send(Message.TAGS_SIGN_CREATED, player, tag.getDisplay());
+            if(noCp != null && noCp) {
+                svsManager.createServerSign(bLoc, "tags unlock " + tag.getId() + " <player> true");
+                MessageUtil.send(Message.TAGS_SIGN_PRO_CREATED, player, tag.getDisplay());
+            } else {
+                svsManager.createServerSign(bLoc, "tags unlock " + tag.getId() + " <player>");
+                MessageUtil.send(Message.TAGS_SIGN_CREATED, player, tag.getDisplay());
+            }
         });
     }
 }

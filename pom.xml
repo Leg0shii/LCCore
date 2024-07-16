@@ -126,6 +126,10 @@
             <url>https://repo.codemc.org/repository/maven-public/</url>
             <layout>default</layout>
         </repository>
+        <repository>
+            <id>jitpack.io</id>
+            <url>https://jitpack.io</url>
+        </repository>
     </repositories>
 
     <dependencies>
@@ -214,6 +218,13 @@
             <systemPath>${project.basedir}/lib/ServerSigns.jar</systemPath>
         </dependency>
         <dependency>
+            <groupId>com.earth2me.essentials</groupId>
+            <artifactId>Essentials</artifactId>
+            <version>2.18.2.0</version>
+            <scope>system</scope>
+            <systemPath>${project.basedir}/lib/EssentialsX-2.18.2.0.jar</systemPath>
+        </dependency>
+        <dependency>
             <groupId>team.unnamed</groupId>
             <artifactId>inject</artifactId>
             <version>2.0.0</version>
@@ -283,6 +294,12 @@
             <groupId>de.tr7zw</groupId>
             <artifactId>item-nbt-api</artifactId>
             <version>2.12.4</version>
+        </dependency>
+        <dependency>
+            <groupId>com.github.NEZNAMY</groupId>
+            <artifactId>TAB-API</artifactId>
+            <version>4.1.6</version>
+            <scope>provided</scope>
         </dependency>
     </dependencies>
 </project>
