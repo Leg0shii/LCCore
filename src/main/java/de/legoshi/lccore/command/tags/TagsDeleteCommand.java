@@ -19,7 +19,7 @@ public class TagsDeleteCommand implements CommandClass {
 
     @Command(names = "")
     public void tagDelete(CommandSender sender, @ReflectiveTabComplete(clazz = TagManager.class, method = "getTagNames") String id) {
-        Bukkit.getScheduler().runTaskAsynchronously(Linkcraft.getPlugin(), () -> {
+        Linkcraft.async(() -> {
             Tag tag = tagManager.getTag(id);
 
             if(tag == null) {

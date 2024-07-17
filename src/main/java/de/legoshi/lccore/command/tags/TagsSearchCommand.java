@@ -21,7 +21,7 @@ public class TagsSearchCommand implements CommandClass {
 
     @Command(names = "")
     public void search(CommandSender sender, String search) {
-        Bukkit.getScheduler().runTaskAsynchronously(Linkcraft.getPlugin(), () -> {
+        Linkcraft.async(() -> {
             if (!(sender instanceof Player)) {
                 MessageUtil.send(Message.NOT_A_PLAYER, sender);
                 return;

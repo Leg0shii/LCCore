@@ -26,7 +26,7 @@ public class PartyChatCommand implements CommandClass {
 
     @Command(names = "")
     public void partyChat(CommandSender sender, String first, ArgumentStack as) {
-        Bukkit.getScheduler().runTaskAsynchronously(Linkcraft.getPlugin(), () -> {
+        Linkcraft.async(() -> {
             if (!(sender instanceof Player)) {
                 MessageUtil.send(Message.NOT_A_PLAYER, sender);
                 return;

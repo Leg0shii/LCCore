@@ -36,7 +36,7 @@ public class IgnoreCommand implements CommandClass {
             toIgnore = null;
         }
 
-        Bukkit.getScheduler().runTaskAsynchronously(Linkcraft.getPlugin(), () -> {
+        Linkcraft.async(() -> {
             if (!(sender instanceof Player)) {
                 MessageUtil.send(Message.NOT_A_PLAYER, sender);
                 return;

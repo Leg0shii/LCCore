@@ -30,7 +30,7 @@ public class NickCommand implements CommandClass {
     public void nick(CommandSender sender, @TabComplete(suggestions = "off") String nick, @ReflectiveTabComplete(clazz = PlayerManager.class, method = "getPlayers", player = true) @OptArg String toNick) {
 
         Player toNickPlayer = toNick != null ? playerManager.playerByName(toNick) : null;
-        Bukkit.getScheduler().runTaskAsynchronously(Linkcraft.getPlugin(), () -> {
+        Linkcraft.async(() -> {
             boolean disable = nick.equalsIgnoreCase("off");
 
             if (!(sender instanceof Player)) {

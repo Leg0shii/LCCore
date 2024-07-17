@@ -33,7 +33,7 @@ public class CheckCompletionsCommand implements CommandClass {
         }
 
         Player victor = playerManager.playerByName(player);
-        Bukkit.getScheduler().runTaskAsynchronously(Linkcraft.getPlugin(), () -> {
+        Linkcraft.async(() -> {
             PlayerRecord record = playerManager.getPlayerRecord(victor, player);
             if(record == null) {
                 MessageUtil.send(Message.NEVER_JOINED, sender, player);

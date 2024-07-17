@@ -26,7 +26,7 @@ public class OfflineTpCommand implements CommandClass {
     @Command(names = "")
     public void otp(CommandSender sender, @ReflectiveTabComplete(clazz = PlayerManager.class, method = "getPossibleNames", player = true) String name) {
         Player toOtpTo = playerManager.playerByName(name);
-        Bukkit.getScheduler().runTaskAsynchronously(Linkcraft.getPlugin(), () -> {
+        Linkcraft.async(() -> {
             if (!(sender instanceof Player)) {
                 MessageUtil.send(Message.NOT_A_PLAYER, sender);
                 return;

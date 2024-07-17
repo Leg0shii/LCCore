@@ -39,7 +39,7 @@ public class PartyCommand implements CommandClass {
     public void party(CommandSender sender, String toInviteName) {
 
         Player invitee = Bukkit.getPlayer(toInviteName);
-        Bukkit.getScheduler().runTaskAsynchronously(Linkcraft.getPlugin(), () -> {
+        Linkcraft.async(() -> {
             if (!(sender instanceof Player)) {
                 MessageUtil.send(Message.NOT_A_PLAYER, sender);
                 return;

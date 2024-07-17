@@ -32,7 +32,7 @@ public class TagsUnlockCommand implements CommandClass {
     public void unlock(CommandSender sender, @ReflectiveTabComplete(clazz = TagManager.class, method = "getTagNames") String id,
                        @ReflectiveTabComplete(clazz = PlayerManager.class, method = "getPossibleNames", player = true) String name, @OptArg Boolean pro) {
         Player toReceive = playerManager.playerByName(name);
-        Bukkit.getScheduler().runTaskAsynchronously(Linkcraft.getPlugin(), () -> {
+        Linkcraft.async(() -> {
             PlayerRecord record = playerManager.getPlayerRecord(toReceive, name);
 
             if(record == null) {

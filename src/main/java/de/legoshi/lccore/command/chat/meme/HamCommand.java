@@ -21,7 +21,7 @@ public class HamCommand implements CommandClass {
 
     @Command(names = "")
     public void ham(CommandSender sender) {
-        Bukkit.getScheduler().runTaskAsynchronously(Linkcraft.getPlugin(), () -> {
+        Linkcraft.async(() -> {
             if (!(sender instanceof Player)) {
                 MessageUtil.send(Message.NOT_A_PLAYER, sender);
                 return;

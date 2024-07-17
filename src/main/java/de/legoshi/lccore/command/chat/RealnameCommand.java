@@ -29,7 +29,7 @@ public class RealnameCommand implements CommandClass {
 
     @Command(names = "")
     public void realname(CommandSender sender, @ReflectiveTabComplete(clazz = PlayerManager.class, method = "getNicks", player = true) String toCheck) {
-        Bukkit.getScheduler().runTaskAsynchronously(Linkcraft.getPlugin(), () -> {
+        Linkcraft.async(() -> {
             if (!(sender instanceof Player)) {
                 MessageUtil.send(Message.NOT_A_PLAYER, sender);
                 return;

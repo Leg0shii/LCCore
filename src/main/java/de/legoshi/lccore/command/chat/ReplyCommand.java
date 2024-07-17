@@ -27,7 +27,7 @@ public class ReplyCommand implements CommandClass {
 
     @Command(names = "")
     public void reply(CommandSender sender, @OptArg String first, @OptArg ArgumentStack as) {
-        Bukkit.getScheduler().runTaskAsynchronously(Linkcraft.getPlugin(), () -> {
+        Linkcraft.async(() -> {
             if (!(sender instanceof Player)) {
                 MessageUtil.send(Message.NOT_A_PLAYER, sender);
                 return;

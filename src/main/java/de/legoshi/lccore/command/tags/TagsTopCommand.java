@@ -30,7 +30,7 @@ public class TagsTopCommand implements CommandClass {
     public void tagsTop(CommandSender sender,
                         @OptArg @ReflectiveTabComplete(clazz = TagManager.class, method = "getTagTypesAndAll") String pageOrType,
                         @OptArg String page) {
-        Bukkit.getScheduler().runTaskAsynchronously(Linkcraft.getPlugin(), () -> {
+        Linkcraft.async(() -> {
             int pageNum = 1;
             TagType type = null;
             boolean allTags = false;

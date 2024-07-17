@@ -26,7 +26,7 @@ public class PartyKickCommand implements CommandClass {
     @Command(names = "")
     public void kick(CommandSender sender, @ReflectiveTabComplete(clazz = PlayerManager.class, method = "getPlayers", player = true) String playerName) {
         Player toBeKicked = Bukkit.getPlayer(playerName);
-        Bukkit.getScheduler().runTaskAsynchronously(Linkcraft.getPlugin(), () -> {
+        Linkcraft.async(() -> {
             if (!(sender instanceof Player)) {
                 MessageUtil.send(Message.NOT_A_PLAYER, sender);
                 return;

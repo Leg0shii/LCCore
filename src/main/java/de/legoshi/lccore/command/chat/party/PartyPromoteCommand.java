@@ -24,7 +24,7 @@ public class PartyPromoteCommand implements CommandClass {
     @Command(names = "")
     public void promote(CommandSender sender, @ReflectiveTabComplete(clazz = PlayerManager.class, method = "getPossibleNames", player = true) String playerName) {
         Player toPromote = playerManager.playerByName(playerName);
-        Bukkit.getScheduler().runTaskAsynchronously(Linkcraft.getPlugin(), () -> {
+        Linkcraft.async(() -> {
             if (!(sender instanceof Player)) {
                 MessageUtil.send(Message.NOT_A_PLAYER, sender);
                 return;

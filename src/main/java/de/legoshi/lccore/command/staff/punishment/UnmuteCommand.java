@@ -27,7 +27,7 @@ public class UnmuteCommand implements CommandClass {
     public void unmute(CommandSender sender, @ReflectiveTabComplete(clazz = PlayerManager.class, method = "getPossibleNames", player = true) String toUnmute) {
 
         Player player = playerManager.playerByName(toUnmute);
-        Bukkit.getScheduler().runTaskAsynchronously(Linkcraft.getPlugin(), () -> {
+        Linkcraft.async(() -> {
             PlayerRecord record = playerManager.getPlayerRecord(player, toUnmute);
 
             if(record == null) {

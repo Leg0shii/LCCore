@@ -30,7 +30,7 @@ public class TagsRemoveCommand implements CommandClass {
         Player toRemove = playerManager.playerByName(name);
 
 
-        Bukkit.getScheduler().runTaskAsynchronously(Linkcraft.getPlugin(), () -> {
+        Linkcraft.async(() -> {
             PlayerRecord record = playerManager.getPlayerRecord(toRemove, name);
             String uuid = record.getUuid();
             if(uuid == null) {

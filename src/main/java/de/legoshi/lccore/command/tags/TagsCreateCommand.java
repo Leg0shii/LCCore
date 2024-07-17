@@ -13,7 +13,7 @@ import org.bukkit.entity.Player;
 import team.unnamed.inject.Inject;
 import team.unnamed.inject.Injector;
 
-@Command(names = {"create"}, permission = "tags.create", desc = "")
+@Command(names = {"create", "add"}, permission = "tags.create", desc = "")
 public class TagsCreateCommand implements CommandClass {
 
     @Inject private TagManager tagManager;
@@ -22,7 +22,7 @@ public class TagsCreateCommand implements CommandClass {
     // TODO: add optional arguments to pass to the creation menu to set values automatically!
     @Command(names = "")
     public void tagsCreate(CommandSender sender) {
-        Bukkit.getScheduler().runTaskAsynchronously(Linkcraft.getPlugin(), () -> {
+        Linkcraft.async(() -> {
 
             if (!(sender instanceof Player)) {
                 MessageUtil.send(Message.NOT_A_PLAYER, sender);

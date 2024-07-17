@@ -19,7 +19,7 @@ public class MapsReloadCommand implements CommandClass {
 
     @Command(names = "")
     public void mapsReload(CommandSender sender) {
-        Bukkit.getScheduler().runTaskAsynchronously(Linkcraft.getPlugin(), () -> {
+        Linkcraft.async(() -> {
             try {
                 mapManager.updateMaps();
                 sender.sendMessage(Utils.chat("&aReloaded map data!"));

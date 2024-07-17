@@ -33,7 +33,7 @@ public class TagTeleportCommand implements CommandClass {
                       double x, double y, double z,
                       ArgumentStack as) {
         Player toTp = playerManager.playerByName(name);
-        Bukkit.getScheduler().runTaskAsynchronously(Linkcraft.getPlugin(), () -> {
+        Linkcraft.async(() -> {
             if(toTp == null) {
                 MessageUtil.send(Message.IS_OFFLINE, sender, name);
                 return;

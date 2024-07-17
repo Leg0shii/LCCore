@@ -25,7 +25,7 @@ public class SetStarCommand implements CommandClass {
     @Command(names = "")
     public void setStar(CommandSender sender, @ReflectiveTabComplete(clazz = PlayerManager.class, method = "getPlayers", player = true) String player, @ReflectiveTabComplete(clazz = PlayerManager.class, method = "getStars") @OptArg String star) {
         Player toSetStar = playerManager.playerByName(player);
-        Bukkit.getScheduler().runTaskAsynchronously(Linkcraft.getPlugin(), () -> {
+        Linkcraft.async(() -> {
             if(toSetStar == null) {
                 MessageUtil.send(Message.IS_OFFLINE, sender, player);
                 return;

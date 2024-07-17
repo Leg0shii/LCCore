@@ -26,7 +26,7 @@ public class PartyInviteCommand implements CommandClass {
     @Command(names = "")
     public void invite(CommandSender sender, @ReflectiveTabComplete(clazz = PlayerManager.class, method = "getPlayers", player = true) String toInviteName) {
         Player invitee = Bukkit.getPlayer(toInviteName);
-        Bukkit.getScheduler().runTaskAsynchronously(Linkcraft.getPlugin(), () -> {
+        Linkcraft.async(() -> {
             if (!(sender instanceof Player)) {
                 MessageUtil.send(Message.NOT_A_PLAYER, sender);
                 return;

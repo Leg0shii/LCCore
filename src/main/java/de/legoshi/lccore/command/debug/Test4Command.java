@@ -23,7 +23,7 @@ public class Test4Command implements CommandClass {
 
     @Command(names = "")
     public void test4(CommandSender sender) {
-        Bukkit.getScheduler().runTaskAsynchronously(Linkcraft.getPlugin(), () -> {
+        Linkcraft.async(() -> {
             if (!(sender instanceof Player)) {
                 MessageUtil.send(Message.NOT_A_PLAYER, sender);
                 return;

@@ -23,7 +23,7 @@ public class TagsResetCommand implements CommandClass {
     @Command(names = "")
     public void reset(CommandSender sender, @ReflectiveTabComplete(clazz = PlayerManager.class, method = "getPossibleNames", player = true) String name) {
         Player toReset = playerManager.playerByName(name);
-        Bukkit.getScheduler().runTaskAsynchronously(Linkcraft.getPlugin(), () -> {
+        Linkcraft.async(() -> {
             PlayerRecord record = playerManager.getPlayerRecord(toReset, name);
             String uuid = record.getUuid();
             if(uuid == null) {

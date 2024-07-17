@@ -27,7 +27,7 @@ public class OfflineTpHereCommand implements CommandClass {
     @Command(names = "")
     public void otpHere(CommandSender sender, @ReflectiveTabComplete(clazz = PlayerManager.class, method = "getPossibleNames", player = true) String name) {
         Player toOtpHereTo = playerManager.playerByName(name);
-        Bukkit.getScheduler().runTaskAsynchronously(Linkcraft.getPlugin(), () -> {
+        Linkcraft.async(() -> {
             if (!(sender instanceof Player)) {
                 MessageUtil.send(Message.NOT_A_PLAYER, sender);
                 return;

@@ -19,7 +19,7 @@ public class Test5Command implements CommandClass {
 
     @Command(names = "")
     public void test5(CommandSender sender, @TabComplete(suggestions = {"default", "hpk", "pku"}) String globalPracticeItem) {
-        Bukkit.getScheduler().runTaskAsynchronously(Linkcraft.getPlugin(), () -> {
+        Linkcraft.async(() -> {
             practiceManager.setGlobalPracticeItem(globalPracticeItem);
             MessageUtil.send("Updated global practice item to: " + globalPracticeItem, sender);
         });

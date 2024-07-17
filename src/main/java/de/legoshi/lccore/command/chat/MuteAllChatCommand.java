@@ -19,7 +19,7 @@ public class MuteAllChatCommand implements CommandClass {
 
     @Command(names = "")
     public void muteAllChat(CommandSender sender) {
-        Bukkit.getScheduler().runTaskAsynchronously(Linkcraft.getPlugin(), () -> {
+        Linkcraft.async(() -> {
             boolean muted = chatManager.isGlobalChatMuted();
             String msg = muted ? "unmuted" : "muted";
             chatManager.setGlobalChatMuted(!muted);

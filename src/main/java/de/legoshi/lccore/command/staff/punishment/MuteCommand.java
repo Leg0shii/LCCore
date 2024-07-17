@@ -36,7 +36,7 @@ public class MuteCommand implements CommandClass {
     public void mute(CommandSender sender, @ReflectiveTabComplete(clazz = PlayerManager.class, method = "getPossibleNames", player = true) String toMute, String length, @OptArg ArgumentStack reasonList) {
 
         Player player = playerManager.playerByName(toMute);
-        Bukkit.getScheduler().runTaskAsynchronously(Linkcraft.getPlugin(), () -> {
+        Linkcraft.async(() -> {
             PlayerRecord record = playerManager.getPlayerRecord(player, toMute);
 
             if(record == null) {

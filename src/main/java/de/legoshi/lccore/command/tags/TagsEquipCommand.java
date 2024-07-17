@@ -26,7 +26,7 @@ public class TagsEquipCommand implements CommandClass {
     @Command(names = "")
     public void tagEquip(CommandSender sender, @ReflectiveTabComplete(clazz = TagManager.class, player = true, method = "getOwnedTagNames") String id,
                          @OptArg @ReflectiveTabComplete(clazz = PlayerManager.class, method = "getPossibleNames", player = true) String name) {
-        Bukkit.getScheduler().runTaskAsynchronously(Linkcraft.getPlugin(), () -> {
+        Linkcraft.async(() -> {
             boolean isSelf = name == null;
             String toEquip = "";
             String playerName = "";

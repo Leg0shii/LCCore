@@ -35,7 +35,7 @@ public class MessageCommand implements CommandClass {
     public void message(CommandSender sender, @ReflectiveTabComplete(clazz = PlayerManager.class, method = "getPossibleNames", player = true) String toMessage,
                         @OptArg String message,  @OptArg ArgumentStack as) {
         Player recipient = playerManager.playerByName(toMessage);
-        Bukkit.getScheduler().runTaskAsynchronously(Linkcraft.getPlugin(), () -> {
+        Linkcraft.async(() -> {
             if (!(sender instanceof Player)) {
                 MessageUtil.send(Message.NOT_A_PLAYER, sender);
                 return;

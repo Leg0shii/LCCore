@@ -22,7 +22,7 @@ public class PartyAcceptCommand implements CommandClass {
     @Command(names = "")
     public void accept(CommandSender sender, String inviterName) {
         Player inviter = Bukkit.getPlayer(inviterName);
-        Bukkit.getScheduler().runTaskAsynchronously(Linkcraft.getPlugin(), () -> {
+        Linkcraft.async(() -> {
             if (!(sender instanceof Player)) {
                 MessageUtil.send(Message.NOT_A_PLAYER, sender);
                 return;

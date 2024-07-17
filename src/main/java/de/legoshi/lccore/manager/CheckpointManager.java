@@ -17,7 +17,11 @@ import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
 import team.unnamed.inject.Inject;
 
+import javax.persistence.EntityManager;
+import javax.persistence.TypedQuery;
 import java.io.File;
+import java.util.ArrayList;
+import java.util.List;
 
 public class CheckpointManager {
     @Inject private LuckPermsManager lpManager;
@@ -178,5 +182,17 @@ public class CheckpointManager {
     public void exitCheckpointMode(Player player) {
         removeCheckpointGroup(player);
         clearCurrentCheckpointMap(player);
+    }
+
+    @SuppressWarnings("unused")
+    public List<String> getCpMaps() {
+        EntityManager em = db.getEntityManager();
+        String hql = "SELECT p.checkpointMap FROM PlayerCheckpoint p GROUP BY p.checkpointMap";
+        TypedQuery<String> query = em.createQuery(hql, String.class);
+
+        List<String> results = query.getResultList();
+        em.close();
+
+        return results;
     }
 }
