@@ -2,7 +2,6 @@ package de.legoshi.lccore.database.models;
 
 import de.legoshi.lccore.database.Identifiable;
 import de.legoshi.lccore.database.composite.PlayerCheckpointId;
-import de.legoshi.lccore.database.composite.PlayerCompletionId;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;

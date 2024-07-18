@@ -1,7 +1,5 @@
 package de.legoshi.lccore.command.tags;
 
-import de.czymm.serversigns.parsing.CommandType;
-import de.czymm.serversigns.parsing.command.ServerSignCommand;
 import de.legoshi.lccore.Linkcraft;
 import de.legoshi.lccore.command.flow.annotated.annotation.ReflectiveTabComplete;
 import de.legoshi.lccore.database.models.Tag;
@@ -9,11 +7,9 @@ import de.legoshi.lccore.manager.SVSManager;
 import de.legoshi.lccore.manager.TagManager;
 import de.legoshi.lccore.util.message.Message;
 import de.legoshi.lccore.util.message.MessageUtil;
-import de.legoshi.lccore.util.svs.SignClickType;
 import me.fixeddev.commandflow.annotated.CommandClass;
 import me.fixeddev.commandflow.annotated.annotation.Command;
 import me.fixeddev.commandflow.annotated.annotation.OptArg;
-import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;

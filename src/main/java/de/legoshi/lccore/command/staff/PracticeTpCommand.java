@@ -2,7 +2,6 @@ package de.legoshi.lccore.command.staff;
 
 import de.legoshi.lccore.Linkcraft;
 import de.legoshi.lccore.command.flow.annotated.annotation.ReflectiveTabComplete;
-import de.legoshi.lccore.database.models.PlayerCheckpoint;
 import de.legoshi.lccore.manager.PlayerManager;
 import de.legoshi.lccore.manager.PracticeManager;
 import de.legoshi.lccore.player.PlayerRecord;

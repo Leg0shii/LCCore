@@ -2,7 +2,6 @@ package de.legoshi.lccore;
 
 import com.comphenix.protocol.ProtocolLibrary;
 import com.comphenix.protocol.ProtocolManager;
-import com.comphenix.protocol.events.PacketContainer;
 import de.legoshi.lccore.inject.LinkcraftModule;
 import de.legoshi.lccore.listener.ModIdListener;
 import de.legoshi.lccore.listener.events.MapChangeEvent;

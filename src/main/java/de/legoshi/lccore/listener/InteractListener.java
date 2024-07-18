@@ -1,11 +1,8 @@
 package de.legoshi.lccore.listener;
 
-import de.legoshi.lccore.Linkcraft;
 import de.legoshi.lccore.manager.CheckpointManager;
 import de.legoshi.lccore.manager.PracticeManager;
-import de.legoshi.lccore.player.practice.PracticeItem;
 import de.legoshi.lccore.util.ItemUtil;
-import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
@@ -15,8 +12,6 @@ import org.bukkit.event.block.Action;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.ItemStack;
 import team.unnamed.inject.Inject;
-
-import java.io.File;
 
 public class InteractListener implements Listener {
     @Inject private PracticeManager practiceManager;

@@ -1,8 +1,6 @@
 package de.legoshi.lccore.listener;
 
-import de.legoshi.lccore.manager.ConfigManager;
 import de.legoshi.lccore.util.ItemUtil;
-import org.bukkit.entity.Item;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerDropItemEvent;

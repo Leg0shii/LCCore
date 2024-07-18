@@ -20,7 +20,6 @@ import team.unnamed.inject.Inject;
 import javax.persistence.EntityManager;
 import javax.persistence.TypedQuery;
 import java.io.File;
-import java.util.ArrayList;
 import java.util.List;
 
 public class CheckpointManager {

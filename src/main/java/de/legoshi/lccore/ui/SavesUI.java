@@ -1,7 +1,6 @@
 package de.legoshi.lccore.ui;
 
 import de.legoshi.lccore.Linkcraft;
-import de.legoshi.lccore.listener.events.MapChangeEvent;
 import de.legoshi.lccore.util.ConfigAccessor;
 import de.legoshi.lccore.util.Constants;
 import de.legoshi.lccore.util.Utils;

@@ -7,7 +7,6 @@ import de.legoshi.lccore.util.Register;
 import de.legoshi.lccore.util.message.MessageUtil;
 import me.fixeddev.commandflow.annotated.CommandClass;
 import me.fixeddev.commandflow.annotated.annotation.Command;
-import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
 import team.unnamed.inject.Inject;
 
