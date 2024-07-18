@@ -65,6 +65,8 @@ public enum Message {
     LEAVE_POSITION("§a{0} left the game at position: {1}", MessageType.PLAYER),
     UPDATED_CP_MAP("§a{0}'s current checkpoint map has been set to: {1}", MessageType.PLAYER),
     DELETED_CP("§a{0}'s current checkpoint has been cleared", MessageType.PLAYER),
+    CHECKPOINT_PLAYER_CP_TP("§aTeleported to {0}'s checkpoint for {1}", MessageType.PLAYER),
+    PRACTICE_LOCATION_TP("§aTeleported to {0}'s practice location", MessageType.PLAYER_ERROR),
 
     // Player Error
     USAGE("§cUsage: /{0} {1}", MessageType.PLAYER_ERROR),
@@ -111,6 +113,10 @@ public enum Message {
     CHECKPOINT_GROUND("§cYou have to be on the ground to click this checkpoint!", MessageType.PLAYER_ERROR),
     CHECKPOINT_SAVING_ERROR("§cERROR: You do not have a current checkpoint map set. Please report this issue!", MessageType.PLAYER_ERROR),
     CHECKPOINT_NO_CP("§cYou do not have a checkpoint to go to!", MessageType.PLAYER_ERROR),
+    CHECKPOINT_NO_MAP("§cThe checkpoint map '{0}' does not exist or no player has a checkpoint for it!", MessageType.PLAYER_ERROR),
+    CHECKPOINT_PLAYER_NO_CP("§c{0} does not have a current checkpoint!", MessageType.PLAYER_ERROR),
+    CHECKPOINT_PLAYER_NO_CP_FOR("§c{0} does not have a current checkpoint for {1}!", MessageType.PLAYER_ERROR),
+    NO_PRACTICE_LOCATION("§c{0} does not have a current practice location!", MessageType.PLAYER_ERROR),
 
     // Practice
     PRAC_SUCCESS("§aYou are now in practice mode, do /unprac to stop.", MessageType.PRACTICE),

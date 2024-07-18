@@ -71,8 +71,12 @@ public class PracticeManager {
     }
 
     public Location getPracticeLocation(Player player) {
+        return getPracticeLocation(player.getUniqueId().toString());
+    }
+
+    public Location getPracticeLocation(String player) {
         FileConfiguration practiceData = Linkcraft.getPlugin().getPracticeData();
-        String result = practiceData.getString(player.getUniqueId().toString());
+        String result = practiceData.getString(player);
         return result != null ? LocationHelper.getLocationFromString(result) : null;
     }
 

@@ -108,6 +108,10 @@ public class CheckpointManager {
     }
 
     public PlayerCheckpoint getPlayerCheckpoint(Player player) {
+        return getPlayerCheckpoint(player.getUniqueId().toString());
+    }
+
+    public PlayerCheckpoint getPlayerCheckpoint(String player) {
         String currMap = getCurrentCheckpointMap(player);
 
         if(currMap == null) {
@@ -118,7 +122,11 @@ public class CheckpointManager {
     }
 
     public PlayerCheckpoint getPlayerCheckpointForMap(Player player, String map) {
-        return db.find(new PlayerCheckpointId(player.getUniqueId().toString(), map), PlayerCheckpoint.class);
+        return getPlayerCheckpointForMap(player.getUniqueId().toString(), map);
+    }
+
+    public PlayerCheckpoint getPlayerCheckpointForMap(String player, String map) {
+        return db.find(new PlayerCheckpointId(player, map), PlayerCheckpoint.class);
     }
 
     private boolean hasPreviousCheckpointDataForMap(Player player, String map) {
@@ -126,6 +134,10 @@ public class CheckpointManager {
     }
 
     private String getCurrentCheckpointMap(Player player) {
+        return getCurrentCheckpointMap(player.getUniqueId().toString());
+    }
+
+    private String getCurrentCheckpointMap(String player) {
         return playerManager.getPlayerDB(player).getCurrentCheckpointMap();
     }
 
