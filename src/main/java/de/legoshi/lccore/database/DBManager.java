@@ -51,7 +51,7 @@ public class DBManager {
         Properties props = new Properties();
         String base = "jdbc:mysql://" + ConfigManager.host + ":"
                 + ConfigManager.port + "/" + ConfigManager.database;
-        String options = "?useSSL=false&autoReconnect=true&connectTimeout=0&socketTimeout=0&characterEncoding=UTF-8&useUnicode=yes&useConfigs=maxPerformance";
+        String options = "?useSSL=false&autoReconnect=true&connectTimeout=0&socketTimeout=0&characterEncoding=UTF-8&useUnicode=yes&useConfigs=maxPerformance&allowPublicKeyRetrieval=true";
         String url = base + options;
 
         props.put(Environment.DRIVER, "com.mysql.cj.jdbc.Driver");
