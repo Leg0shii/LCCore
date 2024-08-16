@@ -21,7 +21,15 @@ public class ProjectInit {
             "https://files.meowception.net/s/PCwDRjHiyieCWpX/download/PlaceholderAPI-2.11.6.jar",
             "https://files.meowception.net/s/EdNYYsXHNzsQbQH/download/TAB%20v4.1.6.jar",
             "https://files.meowception.net/s/b4FQLmaaSnLDmXt/download/LuckPerms-Bukkit-5.4.137.jar",
-            "https://files.meowception.net/s/Zos5coR2KEa5tmM/download/DiscordSRV-Build-1.28.0.jar"
+            "https://files.meowception.net/s/Zos5coR2KEa5tmM/download/DiscordSRV-Build-1.28.0.jar",
+            "https://files.meowception.net/s/8L2AarzDrHXEYsb/download/EssentialsX-2.20.1.jar",
+            "https://files.meowception.net/s/5Tmyc87pWoMeBaN/download/EssentialsXChat-2.20.1.jar",
+            "https://files.meowception.net/s/pHi74N8JMYdKfgt/download/EssentialsXSpawn-2.20.1.jar",
+            "https://files.meowception.net/s/3r8BECJQCtywBdJ/download/EssentialsXProtect-2.20.1.jar",
+            "https://files.meowception.net/s/KtoHmd7mctWGHfL/download/ServerSigns-4.9.0.jar",
+            "https://files.meowception.net/s/S5BzrQ49YrbReW5/download/SuperVanish-6.2.20.jar",
+            "https://files.meowception.net/s/bsEYKsyP3CCdTwe/download/ProtocolLib.jar",
+            "https://files.meowception.net/s/pEceWB6no8d6ngr/download/Vault.jar"
     );
 
     public static void main(String[] args) {
