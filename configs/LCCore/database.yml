@@ -1,0 +1,5 @@
+host: localhost
+database: serverpro_db
+port: 3306
+username: root
+password: qwop

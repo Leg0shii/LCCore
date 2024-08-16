@@ -1,0 +1,88 @@
+ScoreboardTitle:
+  change-interval: 100
+  texts:
+    - "&4« &lLinkCraft &4»"
+    - "&4« &linkCraf &4»"
+    - "&4« &lnkCra &4»"
+    - "&4« &lkCr &4»"
+    - "&4« &lC &4»"
+    - "&4« »"
+    - "&4«»"
+    - "&4«»"
+    - "&4«»"
+    - "&4« »"
+    - "&4« &lC &4»"
+    - "&4« &lkCr &4»"
+    - "&4« &lnkCra &4»"
+    - "&4« &linkCraf &4»"
+    - "&4« &lLinkCraft &4»"
+    - "&4« &c&lLinkCraft &4»"
+    - "&4« &6&lLinkCraft &4»"
+    - "&4« &6&lLink&e&lCraft &4»"
+    - "&4« &6&lLink&e&lCraft &4»"
+    - "&4« &6&lLink&e&lCraft &4»"
+    - "&4« &6&lLink&e&lCraft &4»"
+    - "&4« &6&lLink&e&lCraft &4»"
+    - "&4« &6&lLink&e&lCraft &4»"
+    - "&4« &6&lLink&e&lCraft &4»"
+    - "&4« &6&lLink&e&lCraft &4»"
+    - "&4« &6&lLink&e&lCraft &4»"
+    - "&4« &6&lLink&e&lCraft &4»"
+    - "&4« &6&lLinkCraft &4»"
+ScoreboardDivider:
+  change-interval: 200
+  texts:
+    - "&4&m+|+----------+|+"
+    - "&4&m+|+----------+|+"
+    - "&4&m+|+----------+|+"
+    - "&c&m+|+----------+|+"
+    - "&6&m+|+----------+|+"
+    - "&e&m+|+----------+|+"
+    - "&e&m+|+----------+|+"
+    - "&e&m+|+----------+|+"
+    - "&6&m+|+----------+|+"
+    - "&c&m+|+----------+|+"
+ScoreboardPingJumpHeader:
+  change-interval: 5000
+  texts:
+    - "&a&lJumps:"
+    - "&a&lPing:"
+ScoreboardPingJumpValue:
+  change-interval: 5000
+  texts:
+    - "&l%lc_jumps%"
+    - "&l%lc_ping%"
+ScoreboardRankBonusHeader:
+  change-interval: 5000
+  texts:
+    - "&b&lRank:"
+    - "&b&lBonus:"
+ScoreboardRankBonusValue:
+  change-interval: 5000
+  texts:
+    - "%lc_rank%"
+    - "%lc_bonus%"
+ScoreboardServerName:
+  change-interval: 200
+  texts:
+    - "&4linkcraft.mcpro.io"
+    - "&4linkcraft.mcpro.io"
+    - "&4linkcraft.mcpro.io"
+    - "&clinkcraft.mcpro.io"
+    - "&6linkcraft.mcpro.io"
+    - "&elinkcraft.mcpro.io"
+    - "&elinkcraft.mcpro.io"
+    - "&elinkcraft.mcpro.io"
+    - "&6linkcraft.mcpro.io"
+    - "&clinkcraft.mcpro.io"
+TabPingTps:
+  change-interval: 5000
+  texts:
+    - "&4&lPing: &a&n%lc_ping%&r &ams"
+    - "&4&lServer TPS: &a%tps%"
+
+TabTime:
+  change-interval: 5000
+  texts:
+    - "&c>>> Time &b%time% &c<<<"
+    - "&c>>> Date &b%date% &c<<<"
