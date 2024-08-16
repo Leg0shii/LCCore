@@ -291,6 +291,7 @@ public class TagHolder extends GUIScrollablePane {
     }
 
     private StaticGuiElement addTag(TagDTO tagData) {
+        boolean hasTagOverride = holder.hasPermission("linkcraft.tags.override." + tagData.getTag().getId());
         String tagId = tagData.getTag().getId();
         String example = chatManager.globalChatTagExample(holder, "msg", tagData.getTag());
         GUIDescriptionBuilder base = GUIUtil.getFullTagDisplayBuilder(tagData, example, tagData.getUnlocked() != null, editTags);
@@ -311,7 +312,7 @@ public class TagHolder extends GUIScrollablePane {
         ItemStack tagItem = new ItemStack(Material.NAME_TAG, 1);
 
         // If the tag is collected, add enchantment glow
-        if(tagData.getUnlocked() != null) {
+        if(tagData.getUnlocked() != null || hasTagOverride) {
             ItemUtil.addGlow(tagItem);
         }
 
@@ -343,7 +344,7 @@ public class TagHolder extends GUIScrollablePane {
             else if(click.getType().isRightClick()) {
                 injector.getInstance(TagLeaderboard.class).openGui(holder, current, tagId, leaderboardDisplay, tagData.getTag().getDisplay());
             } else {
-                if (ignoreOwnershipRequirement || tagManager.hasTag(holder, tagId)) {
+                if (ignoreOwnershipRequirement || tagManager.hasTag(holder, tagId) || hasTagOverride) {
                     try {
                         tagManager.setTag(holder, tagId);
                         MessageUtil.send(Message.TAGS_SELECT, holder, tagData.getTag().getDisplay());
