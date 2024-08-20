@@ -42,6 +42,19 @@ ScoreboardDivider:
     - "&e&m+|+----------+|+"
     - "&6&m+|+----------+|+"
     - "&c&m+|+----------+|+"
+ScoreboardDividerDate:
+  change-interval: 200
+  texts:
+    - "&4&m+|+&4%date%&4&m+|+"
+    - "&4&m+|+&4%date%&4&m+|+"
+    - "&4&m+|+&4%date%&4&m+|+"
+    - "&c&m+|+&c%date%&c&m+|+"
+    - "&6&m+|+&6%date%&6&m+|+"
+    - "&e&m+|+&e%date%&e&m+|+"
+    - "&e&m+|+&e%date%&e&m+|+"
+    - "&e&m+|+&e%date%&e&m+|+"
+    - "&6&m+|+&6%date%&6&m+|+"
+    - "&c&m+|+&c%date%&c&m+|+"
 ScoreboardPingJumpHeader:
   change-interval: 5000
   texts:

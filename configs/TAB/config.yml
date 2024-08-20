@@ -2,31 +2,31 @@
 header-footer:
   enabled: true
   header:
-  - '&eLinkCraft'
-  - '&4&lRank: &a%lc_rank%'
-  - '&4&lPP: &a%vault_eco_balance_fixed%'
-  - '%animation:TabPingTps%'
-  - ''
-  - '&3---------------'
+    - '&eLinkCraft'
+    - '&4&lRank: &a%lc_rank%'
+    - '&4&lPP: &a%vault_eco_balance_fixed%'
+    - '%animation:TabPingTps%'
+    - ''
+    - '&3---------------'
   footer:
-  - '&3---------------'
-  - ''
-  - '%animation:TabTime%'
+    - '&3---------------'
+    - ''
+    - '%animation:TabTime%'
   disable-condition: '%world%=disabledworld'
   per-world:
     world1:
       header:
-      - an example of world with custom
+        - an example of world with custom
       footer:
-      - header/footer and prefix/suffix
+        - header/footer and prefix/suffix
     world2;world3:
       header:
-      - This is a shared header for
-      - world2 and world3
+        - This is a shared header for
+        - world2 and world3
   per-server:
     server1:
       header:
-      - an example of server with custom header
+        - an example of server with custom header
 tablist-name-formatting:
   enabled: true
   anti-override: true
@@ -37,8 +37,8 @@ scoreboard-teams:
   invisible-nametags: false
   anti-override: true
   sorting-types:
-  - GROUPS:owner,admin,staff,staf,builder,default,I,II,III,IV,V,VI,VII,VIII,IX,X,XI,XII,XIII,XIV,XV,XVI,XVII,XVIII,XIX,XX
-  - PLACEHOLDER_A_TO_Z:%player%
+    - GROUPS:owner,admin,staff,staf,builder,default,I,II,III,IV,V,VI,VII,VIII,IX,X,XI,XII,XIII,XIV,XV,XVI,XVII,XVIII,XIX,XX
+    - PLACEHOLDER_A_TO_Z:%player%
   case-sensitive-sorting: true
   can-see-friendly-invisibles: false
   disable-condition: '%world%=disabledworld'
@@ -47,10 +47,10 @@ scoreboard-teams:
     disable-on-boats: true
     disable-condition: '%world%=disabledworld'
     dynamic-lines:
-    - abovename
-    - nametag
-    - belowname
-    - another
+      - abovename
+      - nametag
+      - belowname
+      - another
     static-lines:
       myCustomLine: 0.66
 belowname-objective:
@@ -86,21 +86,21 @@ scoreboard:
     scoreboard1:
       title: '%animation:ScoreboardTitle%'
       lines:
-      - '%animation:ScoreboardDivider%'
-      - '&e&lUsername:'
-      - '&l%lc_name%'
-      - ''
-      - '%animation:ScoreboardPingJumpHeader%'
-      - '%animation:ScoreboardPingJumpValue%'
-      - ''
-      - '&b&lRank:'
-      - Long|%lc_rank%
-      - ''
-      - '&4&lPoints:'
-      - '&c&l%vault_eco_balance_fixed%pp %lc_star%'
-      - ''
-      - '%animation:ScoreboardServerName%'
-      - '%animation:ScoreboardDivider%'
+        - '%animation:ScoreboardDividerDate%'
+        - '&e&lUsername:'
+        - '&l%lc_name%'
+        - ''
+        - '%animation:ScoreboardPingJumpHeader%'
+        - '%animation:ScoreboardPingJumpValue%'
+        - ''
+        - '&b&lRank:'
+        - Long|%lc_rank%
+        - ''
+        - '&4&lPoints:'
+        - '&c&l%vault_eco_balance_fixed%pp %lc_star%'
+        - ''
+        - '%animation:ScoreboardServerName%'
+        - '%animation:ScoreboardDivider%'
 layout:
   enabled: false
   direction: COLUMNS
@@ -111,35 +111,36 @@ layout:
   layouts:
     default:
       fixed-slots:
-      - '1|&3Website&f:'
-      - 2|&bmyserver.net
-      - '3|&8&m                       '
-      - '4|&3Name&f:'
-      - 5|&b%player%
-      - '7|&3Rank&f:'
-      - '8|Rank: %group%'
-      - '10|&3World&f:'
-      - 11|&b%world%
-      - '13|&3Time&f:'
-      - 14|&b%time%
-      - '21|&3Teamspeak&f:'
-      - 22|&bts.myserver.net
-      - '23|&8&m                       '
-      - '41|&3Store&f:'
-      - 42|&bshop.myserver.net
-      - '43|&8&m                       '
+        - '1|&3Website&f:'
+        - 2|&bmyserver.net
+        - '3|&8&m                       '
+        - '4|&3Name&f:'
+        - 5|&b%player%
+        - '7|&3Rank&f:'
+        - '8|Rank: %group%'
+        - '10|&3World&f:'
+        - 11|&b%world%
+        - '13|&3Time&f:'
+        - 14|&b%time%
+        - '21|&3Teamspeak&f:'
+        - 22|&bts.myserver.net
+        - '23|&8&m                       '
+        - '41|&3Store&f:'
+        - 42|&bshop.myserver.net
+        - '43|&8&m                       '
       groups:
         staff:
           condition: permission:tab.staff
           slots:
-          - 24-40
+            - 24-40
         players:
           slots:
-          - 44-80
+            - 44-80
 placeholders:
-  date-format: dd.MM.yyyy
+  date-format: yyyy-MM-dd
   time-format: '[HH:mm:ss / h:mm a]'
   time-offset: 0
+  register-tab-expansion: true
 placeholder-output-replacements:
   '%essentials_vanished%':
     'yes': '&7| Vanished'
@@ -149,7 +150,7 @@ placeholder-output-replacements:
 conditions:
   nick:
     conditions:
-    - '%player%=%essentials_nickname%'
+      - '%player%=%essentials_nickname%'
     true: '%player%'
     false: ~%essentials_nickname%
 placeholderapi-refresh-intervals:
@@ -163,11 +164,11 @@ placeholderapi-refresh-intervals:
   '%rel_factionsuuid_relation_color%': 1000
 assign-groups-by-permissions: false
 primary-group-finding-list:
-- Owner
-- Admin
-- Mod
-- Helper
-- default
+  - Owner
+  - Admin
+  - Mod
+  - Helper
+  - default
 debug: false
 mysql:
   enabled: false
@@ -180,30 +181,30 @@ per-world-playerlist:
   enabled: false
   allow-bypass-permission: false
   ignore-effect-in-worlds:
-  - ignoredworld
-  - build
+    - ignoredworld
+    - build
   shared-playerlist-world-groups:
     lobby:
-    - lobby1
-    - lobby2
+      - lobby1
+      - lobby2
     minigames:
-    - paintball
-    - bedwars
+      - paintball
+      - bedwars
 global-playerlist:
   enabled: false
   display-others-as-spectators: false
   display-vanished-players-as-spectators: true
   isolate-unlisted-servers: false
   spy-servers:
-  - spyserver1
-  - spyserver2
+    - spyserver1
+    - spyserver2
   server-groups:
     lobbies:
-    - lobby1
-    - lobby2
+      - lobby1
+      - lobby2
     group2:
-    - server1
-    - server2
+      - server1
+      - server2
 use-bukkit-permissions-manager: false
 use-online-uuid-in-tablist: true
 playerlist-objective:
@@ -213,3 +214,4 @@ playerlist-objective:
   fancy-value: '&7Ping: %ping%'
 ping-spoof:
   enabled: false
+permission-refresh-interval: 1000
