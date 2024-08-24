@@ -51,9 +51,6 @@ public class TagsUnlockCommand implements CommandClass {
                 return;
             }
 
-
-            boolean isVictor = tag.getType().equals(TagType.VICTOR);
-
             if(tagManager.hasTag(uuid, tag.getId())) {
                 if(toReceive != null) {
                     MessageUtil.send(Message.TAGS_ALREADY_HAVE, toReceive, tag.getDisplay());
@@ -76,25 +73,7 @@ public class TagsUnlockCommand implements CommandClass {
                 MessageUtil.send(Message.TAGS_UNLOCKED_TAG, toReceive, tag.getDisplay());
             }
 
-            if(toReceive != null && !isVictor) {
-                switch (tag.getRarity()) {
-                    case COMMON:
-                        LCSound.COMMON.playLater(toReceive);
-                        break;
-                    case UNCOMMON:
-                        LCSound.UNCOMMON.playLater(toReceive);
-                        break;
-                    case RARE:
-                        LCSound.RARE.playLater(toReceive);
-                        break;
-                    case EPIC:
-                        LCSound.EPIC.playLater(toReceive);
-                        break;
-                    case LEGENDARY:
-                        LCSound.LEGENDARY.playLater(toReceive);
-                        break;
-                }
-            }
+            tagManager.playTagAudio(toReceive, tag);
         });
     }
 }

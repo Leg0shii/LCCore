@@ -203,6 +203,7 @@ public enum Message {
     TAGS_UNSET_NONE("§cYou have no tag equipped!", MessageType.TAGS_ERROR),
     TAGS_ADD_ERROR("§cCouldn't add tag.", MessageType.TAGS_ERROR),
     TAGS_NO_TAG("§cThe tag with id or name {0} doesn't exist.", MessageType.TAGS_ERROR),
+    TAGS_NO_TAG_PLAYER("§cThe tag with id or name {0} doesn't exist. Please report this issue!", MessageType.TAGS_ERROR),
     TAGS_MUST_BE_SIGN("§cYou must look at a sign to create a tag sign!", MessageType.TAGS_ERROR),
     TAGS_CANT_BE_IN_PRAC("§cYou cant unlock tags in practice mode!", MessageType.TAGS_ERROR),
     TAGS_ALREADY_EXISTS("§cThere is already a tag with the name: {0}", MessageType.TAGS_ERROR),

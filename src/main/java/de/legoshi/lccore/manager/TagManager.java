@@ -8,7 +8,9 @@ import de.legoshi.lccore.database.models.Tag;
 import de.legoshi.lccore.tag.*;
 import de.legoshi.lccore.util.CommandException;
 import de.legoshi.lccore.util.ItemUtil;
+import de.legoshi.lccore.util.LCSound;
 import de.legoshi.lccore.util.message.Message;
+import de.legoshi.lccore.util.message.MessageUtil;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import team.unnamed.inject.Inject;
@@ -418,6 +420,52 @@ public class TagManager {
 
         em.close();
         return results;
+    }
+
+    public void playTagAudio(Player player, Tag tag) {
+        boolean isVictor = tag.getType().equals(TagType.VICTOR);
+
+        if(player != null && !isVictor) {
+            switch (tag.getRarity()) {
+                case COMMON:
+                    LCSound.COMMON.playLater(player);
+                    break;
+                case UNCOMMON:
+                    LCSound.UNCOMMON.playLater(player);
+                    break;
+                case RARE:
+                    LCSound.RARE.playLater(player);
+                    break;
+                case EPIC:
+                    LCSound.EPIC.playLater(player);
+                    break;
+                case LEGENDARY:
+                    LCSound.LEGENDARY.playLater(player);
+                    break;
+            }
+        }
+    }
+
+    public void unlockTagReward(Player player, String tagId) {
+        Tag tag = getTag(tagId);
+        String uuid = player.getUniqueId().toString();
+
+        if(tag == null) {
+            MessageUtil.send(Message.TAGS_NO_TAG_PLAYER, player, tagId);
+            return;
+        }
+
+
+        if(hasTag(player, tag.getId())) {
+            MessageUtil.send(Message.TAGS_ALREADY_HAVE, player, tag.getDisplay());
+            return;
+        }
+
+        LCPlayerDB lcPlayerDB = playerManager.getPlayerDB(uuid);
+        db.persist(new PlayerTag(tag, lcPlayerDB), lcPlayerDB, tag);
+        MessageUtil.log(Message.TAGS_GAVE_TAG, true, player.getName(), tag.getDisplay(), tag.getId());
+        MessageUtil.send(Message.TAGS_UNLOCKED_TAG, player, tag.getDisplay());
+        playTagAudio(player, tag);
     }
 
     public void removeTagFrom(String uuid, String tag) throws CommandException {
