@@ -17,7 +17,7 @@ import de.legoshi.lccore.command.staff.LockdownCommand;
 import de.legoshi.lccore.command.staff.SetLockdownMessageCommand;
 import team.unnamed.inject.Injector;
 
-// REFACTORED
+// TODO: refactor old commands to use command flow
 public class OldCommandManager {
 
     private final Linkcraft plugin;
@@ -29,8 +29,6 @@ public class OldCommandManager {
     }
 
     public void registerCommands() {
-//        plugin.getCommand("practice").setExecutor(new PracticeCommandOld(plugin));
-//        plugin.getCommand("unpractice").setExecutor(new UnpracticeCommandOld(plugin));
         plugin.getCommand("checksaves").setExecutor(new CheckSavesCommand());
         plugin.getCommand("saves").setExecutor(new SavesCommand());
         plugin.getCommand("save").setExecutor(new SaveCommand(plugin));
@@ -41,11 +39,6 @@ public class OldCommandManager {
         plugin.getCommand("hideall").setExecutor(injector.getInstance(HideAll.class));
         plugin.getCommand("show").setExecutor(injector.getInstance(Show.class));
         plugin.getCommand("showall").setExecutor(injector.getInstance(ShowAll.class));
-        //plugin.getCommand("checkpoint").setExecutor(new CheckpointCommandOld(plugin));
-//        plugin.getCommand("sendtomap").setExecutor(new SendToMapCommand(plugin.getPluginFolder().getAbsolutePath()));
-//        plugin.getCommand("sendtomapworld").setExecutor(new SendToMapWorldCommand(plugin.getPluginFolder().getAbsolutePath()));
-        //plugin.getCommand("checkpointdelete").setExecutor(new CheckpointDeleteCommandOld(plugin));
-//        plugin.getCommand("savecheckpoint").setExecutor(new SaveCheckpointCommand(plugin));
         plugin.getCommand("ld").setExecutor(injector.getInstance(LockdownCommand.class));
         plugin.getCommand("ldmsg").setExecutor(injector.getInstance(SetLockdownMessageCommand.class));
         plugin.getCommand("nv").setExecutor(new NightVisionCommand());
