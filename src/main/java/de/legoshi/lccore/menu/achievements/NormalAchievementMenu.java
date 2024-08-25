@@ -45,17 +45,8 @@ public class NormalAchievementMenu extends GUIPane {
 
         List<Achievement> achievements = achievementManager.getAllAchievements();
 
-        if (achievements == null) {
-            System.out.println("getAllAchievements() returned null.");
-        } else if (achievements.isEmpty()) {
-            System.out.println("getAllAchievements() returned an empty list.");
-        } else {
-            System.out.println("getAllAchievements() returned " + achievements.size() + " achievements.");
-        }
-
         assert achievements != null;
         for (Achievement achievement : achievements) {
-            System.out.println("DEBUG DEBUG DEBUG DEBUG DEBUG DEBUG");
             group.addElement(createAchievementItem(achievement));
         }
         this.current.addElement(group);
@@ -71,7 +62,7 @@ public class NormalAchievementMenu extends GUIPane {
                 .setLore(ChatColor.GRAY + achievement.getDescription(), "", ChatColor.DARK_GRAY + "Achievement Points: " + ChatColor.RED + achievement.getPoints(), "", String.valueOf(achievement.getDifficulty().getAchievementDifficulty()))
                 .build();
 
-        return new StaticGuiElement('g', achievementItem);
+        return new StaticGuiElement('-', achievementItem);
     }
 
 }
