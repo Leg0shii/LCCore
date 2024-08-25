@@ -5,6 +5,7 @@ import com.comphenix.protocol.ProtocolManager;
 import de.legoshi.lccore.inject.LinkcraftModule;
 import de.legoshi.lccore.listener.ModIdListener;
 import de.legoshi.lccore.listener.events.MapChangeEvent;
+import de.legoshi.lccore.manager.AchievementManager;
 import de.legoshi.lccore.manager.OldCommandManager;
 import de.legoshi.lccore.manager.PlayerManager;
 import de.legoshi.lccore.service.Service;
@@ -102,6 +103,9 @@ public class Linkcraft extends JavaPlugin {
             Bukkit.getConsoleSender().sendMessage("Couldn't load LuckPerms API! Shutting down Practice Plugin");
             Bukkit.shutdown();
         }
+
+        AchievementManager achievementManager = AchievementManager.getInstance();
+        achievementManager.loadConfig(this);
     }
 
     public void onDisable() {

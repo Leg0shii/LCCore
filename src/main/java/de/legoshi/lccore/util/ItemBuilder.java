@@ -54,6 +54,11 @@ public class ItemBuilder {
         return this;
     }
 
+    public ItemBuilder setDurability(int durability) {
+        this.item.setDurability((short) durability);
+        return this;
+    }
+
     public ItemStack build() {
         this.item.setItemMeta(this.meta);
         return this.item;
