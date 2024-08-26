@@ -1,4 +1,4 @@
-package de.legoshi.lccore.achievement.reward;
+package de.legoshi.lccore.achievements.reward;
 
 import java.util.Arrays;
 import java.util.List;

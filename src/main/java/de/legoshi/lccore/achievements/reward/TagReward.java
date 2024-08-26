@@ -1,4 +1,4 @@
-package de.legoshi.lccore.achievement.reward;
+package de.legoshi.lccore.achievements.reward;
 
 import de.legoshi.lccore.manager.TagManager;
 import org.bukkit.entity.Player;

@@ -1,13 +1,13 @@
 package de.legoshi.lccore.manager;
 
 import de.legoshi.lccore.Linkcraft;
-import de.legoshi.lccore.achievement.Achievement;
-import de.legoshi.lccore.achievement.AchievementDifficulty;
-import de.legoshi.lccore.achievement.AchievementType;
-import de.legoshi.lccore.achievement.requirement.UnlockRequirement;
-import de.legoshi.lccore.achievement.requirement.UnlockRequirementType;
-import de.legoshi.lccore.achievement.reward.Reward;
-import de.legoshi.lccore.achievement.reward.RewardType;
+import de.legoshi.lccore.achievements.Achievement;
+import de.legoshi.lccore.achievements.AchievementDifficulty;
+import de.legoshi.lccore.achievements.AchievementType;
+import de.legoshi.lccore.achievements.requirement.UnlockRequirement;
+import de.legoshi.lccore.achievements.requirement.UnlockRequirementType;
+import de.legoshi.lccore.achievements.reward.Reward;
+import de.legoshi.lccore.achievements.reward.RewardType;
 import de.legoshi.lccore.util.ConfigAccessor;
 import de.legoshi.lccore.util.message.Message;
 import de.legoshi.lccore.util.message.MessageUtil;

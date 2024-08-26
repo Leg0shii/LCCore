@@ -1,4 +1,4 @@
-package de.legoshi.lccore.achievement.progress;
+package de.legoshi.lccore.achievements.progress;
 
 public class NumericProgress implements Progress {
     private int current;

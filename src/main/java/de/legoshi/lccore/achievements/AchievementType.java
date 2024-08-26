@@ -1,4 +1,4 @@
-package de.legoshi.lccore.achievement;
+package de.legoshi.lccore.achievements;
 
 public enum AchievementType {
     NORMAL,

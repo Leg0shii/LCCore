@@ -1,7 +1,7 @@
-package de.legoshi.lccore.achievement.requirement;
+package de.legoshi.lccore.achievements.requirement;
 
-import de.legoshi.lccore.achievement.progress.NumericProgress;
-import de.legoshi.lccore.achievement.progress.Progress;
+import de.legoshi.lccore.achievements.progress.NumericProgress;
+import de.legoshi.lccore.achievements.progress.Progress;
 import de.legoshi.lccore.manager.TagManager;
 import org.bukkit.entity.Player;
 import team.unnamed.inject.Inject;

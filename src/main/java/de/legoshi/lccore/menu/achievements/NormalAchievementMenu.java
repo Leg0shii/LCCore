@@ -1,7 +1,7 @@
 package de.legoshi.lccore.menu.achievements;
 
 import de.legoshi.lccore.Linkcraft;
-import de.legoshi.lccore.achievement.Achievement;
+import de.legoshi.lccore.achievements.Achievement;
 import de.legoshi.lccore.manager.AchievementManager;
 import de.legoshi.lccore.menu.GUIPane;
 import de.legoshi.lccore.util.Dye;

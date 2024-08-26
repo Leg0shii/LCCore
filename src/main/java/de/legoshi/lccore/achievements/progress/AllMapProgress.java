@@ -1,4 +1,4 @@
-package de.legoshi.lccore.achievement.progress;
+package de.legoshi.lccore.achievements.progress;
 
 import java.util.List;
 

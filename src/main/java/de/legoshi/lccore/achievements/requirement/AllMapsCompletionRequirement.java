@@ -1,6 +1,6 @@
-package de.legoshi.lccore.achievement.requirement;
+package de.legoshi.lccore.achievements.requirement;
 
-import de.legoshi.lccore.achievement.progress.Progress;
+import de.legoshi.lccore.achievements.progress.Progress;
 import de.legoshi.lccore.database.models.PlayerCompletion;
 import de.legoshi.lccore.manager.MapManager;
 import org.bukkit.entity.Player;

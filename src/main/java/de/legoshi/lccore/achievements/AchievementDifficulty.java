@@ -1,4 +1,4 @@
-package de.legoshi.lccore.achievement;
+package de.legoshi.lccore.achievements;
 
 import lombok.Getter;
 import org.bukkit.ChatColor;

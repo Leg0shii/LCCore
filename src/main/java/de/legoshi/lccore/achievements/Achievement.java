@@ -1,49 +1,47 @@
 package de.legoshi.lccore.achievements;
 
-import de.legoshi.lccore.achievement.AchievementDifficulty;
-import de.legoshi.lccore.achievement.AchievementType;
+import de.legoshi.lccore.achievements.progress.Progress;
+import de.legoshi.lccore.achievements.requirement.UnlockRequirement;
+import de.legoshi.lccore.achievements.reward.Reward;
+import lombok.Getter;
+import lombok.Setter;
+import org.bukkit.entity.Player;
 
+import java.util.ArrayList;
+import java.util.List;
+
+@Getter
+@Setter
 public class Achievement {
-    private final AchievementType type;
-    private final String id;
-    private final String name;
-    private final String description;
-    private final int points;
-    private final AchievementDifficulty difficulty;
+    private String name;
+    private String id;
+    private AchievementType type;
+    private AchievementDifficulty difficulty;
+    private int points;
+    private List<UnlockRequirement> requirements;
+    private List<Reward> rewards;
+    private String description;
 
-    public Achievement(AchievementType type, String id, String name, String description, int points, AchievementDifficulty difficulty) {
-        this.type = type;
-        this.id = id;
-        this.name = name;
-        this.description = description;
-        this.points = points;
-        this.difficulty = difficulty;
+    public List<Progress> getProgress(Player player) {
+        List<Progress> progressList = new ArrayList<>();
+        for(UnlockRequirement requirement : requirements) {
+            progressList.add(requirement.getProgress(player));
+        }
+        return progressList;
     }
 
-    // Getters for each field
-    public AchievementType getType() {
-        return type;
+    public boolean isUnlocked(Player player) {
+        for(UnlockRequirement requirement : requirements) {
+            if(!requirement.isSatisfied(player)) {
+                return false;
+            }
+        }
+        return true;
     }
 
-    public String getId() {
-        return id;
+    public void giveReward(Player player) {
+        for(Reward reward : rewards) {
+            reward.give(player);
+        }
     }
-
-    public String getName() {
-        return name;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
-    public int getPoints() {
-        return points;
-    }
-
-    public AchievementDifficulty getDifficulty() {
-        return difficulty;
-    }
-
 }
-

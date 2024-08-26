@@ -1,4 +1,4 @@
-package de.legoshi.lccore.achievement.requirement;
+package de.legoshi.lccore.achievements.requirement;
 
 import java.util.Arrays;
 import java.util.List;
