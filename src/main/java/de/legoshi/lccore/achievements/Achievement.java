@@ -22,7 +22,7 @@ public class Achievement {
     private List<Reward> rewards;
     private String description;
 
-    public List<Progress> getProgress(Player player) {
+    public List<Progress> getProgress(String player) {
         List<Progress> progressList = new ArrayList<>();
         for(UnlockRequirement requirement : requirements) {
             progressList.add(requirement.getProgress(player));
@@ -30,7 +30,7 @@ public class Achievement {
         return progressList;
     }
 
-    public boolean isUnlocked(Player player) {
+    public boolean isUnlocked(String player) {
         for(UnlockRequirement requirement : requirements) {
             if(!requirement.isSatisfied(player)) {
                 return false;

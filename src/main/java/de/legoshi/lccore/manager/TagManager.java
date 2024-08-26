@@ -232,6 +232,10 @@ public class TagManager {
     }
 
     public HashMap<TagType, Integer> tagCountPlayer(Player player) {
+        return tagCountPlayer(player.getUniqueId().toString());
+    }
+
+    public HashMap<TagType, Integer> tagCountPlayer(String player) {
         String hql = "SELECT t.type, COUNT(t) FROM PlayerTag p JOIN p.tag t WHERE p.player = :player " +
                 "GROUP BY t.type";
 

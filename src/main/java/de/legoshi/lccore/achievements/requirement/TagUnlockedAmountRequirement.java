@@ -19,13 +19,13 @@ public class TagUnlockedAmountRequirement implements UnlockRequirement {
     }
 
     @Override
-    public boolean isSatisfied(Player player) {
+    public boolean isSatisfied(String player) {
         int currentTagCount = tagManager.tagCountPlayer(player).values().stream().mapToInt(Integer::intValue).sum();
         return  currentTagCount >= requiredTagCount;
     }
 
     @Override
-    public Progress getProgress(Player player) {
+    public Progress getProgress(String player) {
         int currentTagCount = tagManager.tagCountPlayer(player).values().stream().mapToInt(Integer::intValue).sum();
         return new NumericProgress(currentTagCount, requiredTagCount);
     }

@@ -6,7 +6,7 @@ import org.bukkit.entity.Player;
 import java.util.Map;
 
 public interface UnlockRequirement {
-    boolean isSatisfied(Player player);
-    Progress getProgress(Player player);
+    boolean isSatisfied(String player);
+    Progress getProgress(String player);
     void init(Map<?, ?> data);
 }
