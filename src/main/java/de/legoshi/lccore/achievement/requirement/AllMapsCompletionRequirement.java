@@ -3,7 +3,6 @@ package de.legoshi.lccore.achievement.requirement;
 import de.legoshi.lccore.achievement.progress.Progress;
 import de.legoshi.lccore.database.models.PlayerCompletion;
 import de.legoshi.lccore.manager.MapManager;
-import de.legoshi.lccore.menu.maps.LCMap;
 import org.bukkit.entity.Player;
 import team.unnamed.inject.Inject;
 
@@ -16,8 +15,8 @@ public class AllMapsCompletionRequirement implements UnlockRequirement {
     @Inject private MapManager mapManager;
     private List<String> requiredMaps;
 
-    public void init(List<String> requiredMaps) {
-        this.requiredMaps = requiredMaps;
+    public void init(Map<?, ?> data) {
+        this.requiredMaps = (List<String>)data.get("requiredMaps");
     }
 
     @Override

@@ -1,5 +1,8 @@
 package de.legoshi.lccore.achievements;
 
+import de.legoshi.lccore.achievement.AchievementDifficulty;
+import de.legoshi.lccore.achievement.AchievementType;
+
 public class Achievement {
     private final AchievementType type;
     private final String id;

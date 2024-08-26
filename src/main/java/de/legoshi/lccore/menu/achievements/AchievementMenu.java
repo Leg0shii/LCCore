@@ -1,11 +1,9 @@
 package de.legoshi.lccore.menu.achievements;
 
 import de.legoshi.lccore.Linkcraft;
-import de.legoshi.lccore.manager.AchievementManager;
 import de.legoshi.lccore.menu.GUIPane;
 import de.legoshi.lccore.util.Dye;
 import de.legoshi.lccore.util.GUIDescriptionBuilder;
-import de.legoshi.lccore.util.ItemBuilder;
 import de.themoep.inventorygui.InventoryGui;
 import de.themoep.inventorygui.StaticGuiElement;
 import org.bukkit.Material;
@@ -16,12 +14,9 @@ import team.unnamed.inject.Injector;
 
 public class AchievementMenu extends GUIPane {
 
-    Player player;
-    Player target;
-
-    @Inject
-    private Injector injector;
-    AchievementManager achievementManager = AchievementManager.getInstance();
+    @Inject private Injector injector;
+    private Player player;
+    private Player target;
 
     private final String[] guiSetup = {
             "ddmmcmmdd",
@@ -39,7 +34,7 @@ public class AchievementMenu extends GUIPane {
 
         String title = target.getName() + "'s Achievements";
 
-        if (player.getName() == target.getName()) {
+        if (player.getName().equals(target.getName())) {
             title = "Achievements";
         }
 

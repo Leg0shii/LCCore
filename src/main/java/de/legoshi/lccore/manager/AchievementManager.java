@@ -1,91 +1,77 @@
 package de.legoshi.lccore.manager;
 
-import de.legoshi.lccore.achievements.Achievement;
-import de.legoshi.lccore.achievements.AchievementDifficulty;
-import de.legoshi.lccore.achievements.AchievementType;
+import de.legoshi.lccore.Linkcraft;
+import de.legoshi.lccore.achievement.Achievement;
+import de.legoshi.lccore.achievement.AchievementDifficulty;
+import de.legoshi.lccore.achievement.AchievementType;
+import de.legoshi.lccore.achievement.requirement.UnlockRequirement;
+import de.legoshi.lccore.achievement.requirement.UnlockRequirementType;
+import de.legoshi.lccore.achievement.reward.Reward;
+import de.legoshi.lccore.achievement.reward.RewardType;
+import de.legoshi.lccore.util.ConfigAccessor;
+import de.legoshi.lccore.util.message.Message;
+import de.legoshi.lccore.util.message.MessageUtil;
+import lombok.Getter;
 import org.bukkit.configuration.file.FileConfiguration;
-import org.bukkit.configuration.file.YamlConfiguration;
-import org.bukkit.plugin.java.JavaPlugin;
+import team.unnamed.inject.Inject;
+import team.unnamed.inject.Injector;
 
-import java.io.File;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 public class AchievementManager {
+    @Inject private Injector injector;
+    @Getter private List<Achievement> achievements = new ArrayList<>();
 
-    private static AchievementManager instance;
-    private FileConfiguration config;
-    private final Map<String, Achievement> achievementMap = new HashMap<>();
-
-    public AchievementManager() { }
-
-    public static AchievementManager getInstance() {
-        if (instance == null) {
-            instance = new AchievementManager();
-        }
-        return instance;
-    }
-
-    public void loadConfig(JavaPlugin plugin) {
-        File configFile = new File(plugin.getDataFolder(), "achievements.yml");
-
-        if (!configFile.exists()) {
-            plugin.saveResource("achievements.yml", false);
-        }
-
-        this.config = YamlConfiguration.loadConfiguration(configFile);
-        loadAchievements();
-    }
-
-    @SuppressWarnings("unchecked")
     public void loadAchievements() {
-        List<?> rawAchievements = config.getList("achievements");
+        achievements.clear();
+        FileConfiguration data = new ConfigAccessor(Linkcraft.getPlugin(), "achievements.yml").getConfig();
+        List<Map<?, ?>> achievementsData = data.getMapList("achievements");
 
-        if (rawAchievements == null) {
-            System.out.println("No achievements found in the configuration file.");
+        if (achievementsData == null || achievementsData.isEmpty()) {
+            MessageUtil.log(Message.CONFIG_LOADING_ERR, true, "Achievements Configuration File");
             return;
         }
 
-        for (Object item : rawAchievements) {
-            if (item instanceof Map) {
-                Map<?, ?> rawMap = (Map<?, ?>) item;
-                Map<String, Object> achievementData = new HashMap<>();
 
-                for (Map.Entry<?, ?> entry : rawMap.entrySet()) {
-                    if (entry.getKey() instanceof String) {
-                        achievementData.put((String) entry.getKey(), entry.getValue());
-                    }
-                }
+        for (Map<?, ?> achievementData : achievementsData) {
+            Achievement achievement = new Achievement();
 
-                try {
-                    String id = (String) achievementData.get("id");
-                    String name = (String) achievementData.get("name");
-                    String description = (String) achievementData.get("description");
-                    int points = (int) achievementData.get("points");
-                    String typeString = (String) achievementData.get("type");
-                    AchievementType type = AchievementType.valueOf(typeString);
-                    String diffString = (String) achievementData.get("difficulty");
-                    AchievementDifficulty difficulty = AchievementDifficulty.valueOf(diffString);
+            String name = (String)achievementData.get("name");
+            String id = name.replace(" ", "");
+            int points = (Integer)achievementData.get("points");
+            String description = (String)achievementData.get("description");
+            AchievementType achievementType = AchievementType.valueOf((String)achievementData.get("type"));
+            List<UnlockRequirement> requirements = new ArrayList<>();
+            List<Reward> rewards = new ArrayList<>();
 
-                    Achievement achievement = new Achievement(type, id, name, description, points, difficulty);
-                    achievementMap.put(id, achievement);
-                    System.out.println("Achievement loaded: " + id);
-                } catch (IllegalArgumentException e) {
-                    System.out.println("Error parsing achievement data: " + e.getMessage());
-                }
-            } else {
-                System.out.println("Unexpected data format in achievements list.");
+            achievement.setName(name);
+            achievement.setId(id);
+            achievement.setPoints(points);
+            achievement.setType(achievementType);
+            achievement.setDifficulty(AchievementDifficulty.byPoints(points));
+            achievement.setDescription(description);
+
+            List<Map<?, ?>> requirementsData = (List<Map<?,?>>)achievementData.get("requirements");
+            List<Map<?, ?>> rewardsData = (List<Map<?,?>>)achievementData.get("rewards");
+
+            for(Map<?, ?> requirementData : requirementsData) {
+                UnlockRequirementType type = UnlockRequirementType.valueOf((String)requirementData.get("type"));
+                UnlockRequirement req = injector.getInstance(type.mappedClazz);
+                req.init(requirementData);
+                requirements.add(req);
             }
+
+            for(Map<?, ?> rewardData : rewardsData) {
+                RewardType type = RewardType.valueOf((String)rewardData.get("type"));
+                Reward reward = injector.getInstance(type.mappedClazz);
+                reward.init(rewardData);
+                rewards.add(reward);
+            }
+            achievement.setRequirements(requirements);
+            achievement.setRewards(rewards);
+            achievements.add(achievement);
         }
-
-        System.out.println("Total achievements loaded: " + achievementMap.size());
-    }
-
-    public List<Achievement> getAllAchievements() {
-        List<Achievement> achievements = new ArrayList<>(achievementMap.values());
-        System.out.println("Achievements retrieved: " + achievements.size());
-        return achievements;
     }
 }

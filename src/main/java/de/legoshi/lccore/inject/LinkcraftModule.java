@@ -35,6 +35,7 @@ public class LinkcraftModule extends AbstractModule {
         bind(EssentialsManager.class).singleton();
         bind(PracticeManager.class).singleton();
         bind(CheckpointManager.class).singleton();
+        bind(AchievementManager.class).singleton();
 
         // Database
         install(new DBModule(plugin));

@@ -40,6 +40,7 @@ public class ConfigManager {
     public static int port;
     public static String database;
     @Inject private MapManager mapManager;
+    @Inject private AchievementManager achievementManager;
 
     public void init() {
         loadConfigs(true);
@@ -54,6 +55,7 @@ public class ConfigManager {
         plugin.rankConfig.saveDefaultConfig();
         plugin.dbConfig.saveDefaultConfig();
         plugin.modBlacklist.saveDefaultConfig();
+        plugin.achievementConfig.saveDefaultConfig();
 
         File playerData = new File(plugin.getDataFolder(), "playerdata");
         if (!playerData.exists()) playerData.mkdir();
@@ -74,6 +76,8 @@ public class ConfigManager {
         } catch (Exception e) {
             e.printStackTrace();
         }
+
+        achievementManager.loadAchievements();
 
         loadMessages();
         if(!first) {

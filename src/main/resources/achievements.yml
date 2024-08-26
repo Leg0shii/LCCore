@@ -1,0 +1,16 @@
+# Test
+
+achievements:
+  - name: Tag Hunter I
+    points: 5
+    description: Unlock 50 tags and complete ranks I-XV
+    requirements:
+      - type: MAP_LIST_COMPLETION
+        requiredMaps: [i, ii, iii, iv, v, vi, vii, viii, ix, x, xi, xii, xiii, xiv, xv]
+      - type: TAG_UNLOCKED_AMOUNT
+        requiredTagCount: 50
+    rewards:
+      - type: TAG
+        tagId: someTag
+      - type: TAG
+        tagId: someTag

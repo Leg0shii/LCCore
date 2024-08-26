@@ -6,13 +6,16 @@ import de.legoshi.lccore.manager.TagManager;
 import org.bukkit.entity.Player;
 import team.unnamed.inject.Inject;
 
+import java.util.Map;
+
 public class TagUnlockedAmountRequirement implements UnlockRequirement {
 
     @Inject private TagManager tagManager;
     private int requiredTagCount;
 
-    public void init(int requiredTagCount) {
-        this.requiredTagCount = requiredTagCount;
+    public void init(Map<?, ?> data) {
+
+        this.requiredTagCount = (Integer)data.get("requiredTagCount");
     }
 
     @Override

@@ -5,7 +5,6 @@ import com.comphenix.protocol.ProtocolManager;
 import de.legoshi.lccore.inject.LinkcraftModule;
 import de.legoshi.lccore.listener.ModIdListener;
 import de.legoshi.lccore.listener.events.MapChangeEvent;
-import de.legoshi.lccore.manager.AchievementManager;
 import de.legoshi.lccore.manager.OldCommandManager;
 import de.legoshi.lccore.manager.PlayerManager;
 import de.legoshi.lccore.service.Service;
@@ -54,6 +53,7 @@ public class Linkcraft extends JavaPlugin {
     public final ConfigAccessor rankConfig = new ConfigAccessor(this, "lcdata.yml");
     public final ConfigAccessor dbConfig = new ConfigAccessor(this, "database.yml");
     public final ConfigAccessor modBlacklist = new ConfigAccessor(this, "blacklisted-forge-mods.yml");
+    public final ConfigAccessor achievementConfig = new ConfigAccessor(this, "achievements.yml");
     public InventoryManager im;
     private final FileConfiguration config = getConfig();
     public ProtocolManager protocolManager;
@@ -104,8 +104,8 @@ public class Linkcraft extends JavaPlugin {
             Bukkit.shutdown();
         }
 
-        AchievementManager achievementManager = AchievementManager.getInstance();
-        achievementManager.loadConfig(this);
+//        AchievementManagerO achievementManager = AchievementManagerO.getInstance();
+//        achievementManager.loadConfig(this);
     }
 
     public void onDisable() {
