@@ -57,7 +57,7 @@ public class AchievementMenu extends GUIPane {
         ItemStack normalAchItem = new ItemStack(Material.DOUBLE_PLANT);
 
         StaticGuiElement normalAchElement = new StaticGuiElement('x', normalAchItem, click -> {
-            injector.getInstance(NormalAchievementMenu.class).openGui(player, target, null);
+            injector.getInstance(NormalAchievementMenu.class).openGui(player, target, this.current);
             return true;
         }, normalBuilder.build());
 
@@ -68,7 +68,7 @@ public class AchievementMenu extends GUIPane {
         ItemStack grindAchItem = new ItemStack(Material.DIAMOND_BLOCK);
 
         StaticGuiElement grindAchElement = new StaticGuiElement('y', grindAchItem, click -> {
-            injector.getInstance(NormalAchievementMenu.class).openGui(player, target, null);
+            injector.getInstance(AchievementMenu.class).openGui(player, target, this.current);
             return true;
         }, grindBuilder.build());
 
@@ -79,7 +79,7 @@ public class AchievementMenu extends GUIPane {
         ItemStack secretAchItem = new ItemStack(Material.MAP);
 
         StaticGuiElement secretAchElement = new StaticGuiElement('z', secretAchItem, click -> {
-            injector.getInstance(NormalAchievementMenu.class).openGui(player, target, null);
+            injector.getInstance(AchievementMenu.class).openGui(player, target, this.current);
             return true;
         }, secretBuilder.build());
 

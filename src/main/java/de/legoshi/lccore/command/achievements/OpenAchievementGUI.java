@@ -18,7 +18,7 @@ import team.unnamed.inject.Injector;
 
 
 @Register
-@Command(names = "ach", desc = "")
+@Command(names = "ach")
 public class OpenAchievementGUI implements CommandClass {
 
     @Inject
