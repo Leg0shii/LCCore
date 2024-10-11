@@ -82,7 +82,11 @@ public class NormalAchievementMenu extends GUIScrollablePane {
             this.current.addElement(group);
         } else { for (Achievement achievement : paginatedList) {
             createGrindAchievementItemGroup(achievement);
-        } }
+        }
+            slotChar = '1';
+            t1Char = 'e';
+            t2Char = 'E';
+        }
     }
 
     private final BiConsumer<GuiElement.Click, NormalAchievementMenu.AchievementOrder> achOrderSetter = (click, orderOption) -> {
