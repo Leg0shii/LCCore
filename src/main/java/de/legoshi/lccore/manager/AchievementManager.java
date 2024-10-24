@@ -19,10 +19,17 @@ import team.unnamed.inject.Injector;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 public class AchievementManager {
     @Inject private Injector injector;
     @Getter private List<Achievement> achievements = new ArrayList<>();
+
+    public List<Achievement> getAchievementsByType(AchievementType type) {
+        return achievements.stream()
+                .filter(achievement -> achievement.getType() == type)
+                .collect(Collectors.toList());
+    }
 
     public void loadAchievements() {
         achievements.clear();

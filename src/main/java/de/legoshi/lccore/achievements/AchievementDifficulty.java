@@ -21,7 +21,19 @@ public enum AchievementDifficulty {
     }
 
     public static AchievementDifficulty byPoints(int points) {
-        return EASY;
+        switch (points) {
+            case 5:
+                return EASY;
+            case 10:
+                return MEDIUM;
+            case 15:
+                return HARD;
+            case 20:
+                return EXTREME;
+            case 25:
+                return INSANE;
+        }
+        return null;
     }
 
 }

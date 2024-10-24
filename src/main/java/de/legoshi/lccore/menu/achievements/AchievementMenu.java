@@ -1,6 +1,7 @@
 package de.legoshi.lccore.menu.achievements;
 
 import de.legoshi.lccore.Linkcraft;
+import de.legoshi.lccore.achievements.AchievementType;
 import de.legoshi.lccore.menu.GUIPane;
 import de.legoshi.lccore.util.Dye;
 import de.legoshi.lccore.util.GUIDescriptionBuilder;
@@ -34,7 +35,7 @@ public class AchievementMenu extends GUIPane {
 
         String title = target.getName() + "'s Achievements";
 
-        if (player.getName().equals(target.getName())) {
+        if (player.equals(target)) {
             title = "Achievements";
         }
 
@@ -57,7 +58,7 @@ public class AchievementMenu extends GUIPane {
         ItemStack normalAchItem = new ItemStack(Material.DOUBLE_PLANT);
 
         StaticGuiElement normalAchElement = new StaticGuiElement('x', normalAchItem, click -> {
-            injector.getInstance(NormalAchievementMenu.class).openGui(player, target, null);
+            injector.getInstance(NormalAchievementMenu.class).openGui(player, target, AchievementType.NORMAL, this.current);
             return true;
         }, normalBuilder.build());
 
@@ -68,7 +69,7 @@ public class AchievementMenu extends GUIPane {
         ItemStack grindAchItem = new ItemStack(Material.DIAMOND_BLOCK);
 
         StaticGuiElement grindAchElement = new StaticGuiElement('y', grindAchItem, click -> {
-            injector.getInstance(NormalAchievementMenu.class).openGui(player, target, null);
+            injector.getInstance(NormalAchievementMenu.class).openGui(player, target, AchievementType.GRIND, this.current);
             return true;
         }, grindBuilder.build());
 
@@ -79,7 +80,7 @@ public class AchievementMenu extends GUIPane {
         ItemStack secretAchItem = new ItemStack(Material.MAP);
 
         StaticGuiElement secretAchElement = new StaticGuiElement('z', secretAchItem, click -> {
-            injector.getInstance(NormalAchievementMenu.class).openGui(player, target, null);
+            injector.getInstance(NormalAchievementMenu.class).openGui(player, target, AchievementType.SECRET, this.current);
             return true;
         }, secretBuilder.build());
 
