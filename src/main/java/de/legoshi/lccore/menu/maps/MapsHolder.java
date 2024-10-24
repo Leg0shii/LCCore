@@ -38,14 +38,15 @@ public class MapsHolder extends GUIScrollablePane {
 
     private boolean canEditCompletions = false;
     private boolean isOtherPlayer = false;
-    private MapType mapType = MapType.SIDE;
+    private MapType mapType;
     private List<LCMap> guiMaps;
     private List<LCMap> maps;
     private Map<String, PlayerCompletion> playerMapData;
     private PlayerRecord record = null;
 
-    public void openGui(Player player, InventoryGui parent) {
+    public void openGui(Player player, InventoryGui parent, MapType type) {
         super.openGui(player, parent);
+        this.mapType = type;
         this.current = new InventoryGui(Linkcraft.getPlugin(), player, formattedName() + " Courses", guiSetup);
         setColours(Dye.BLUE, Dye.CYAN, Dye.LIGHT_BLUE);
         fullCloseOnEsc();
@@ -55,8 +56,9 @@ public class MapsHolder extends GUIScrollablePane {
         current.show(holder);
     }
 
-    public void openGui(Player player, InventoryGui parent, PlayerRecord record) {
+    public void openGui(Player player, InventoryGui parent, PlayerRecord record, MapType type) {
         super.openGui(player, parent);
+        this.mapType = type;
         isOtherPlayer = true;
         this.record = record;
         this.current = new InventoryGui(Linkcraft.getPlugin(), player, record.getName() + "'s " + formattedName() + " Courses", guiSetup);
@@ -88,9 +90,12 @@ public class MapsHolder extends GUIScrollablePane {
             base.raw("§c§lNo Practice");
         }
 
-        base.raw("§e§lStars§r§e: " + mapData.getStar())
-            .raw("§d§lPP§r§d: " + GUIUtil.removeTrailingZeros(mapData.getPp()))
-            .raw("§c§lLength§r§c: " + mapData.getLength())
+        if(!mapType.equals(MapType.LEGACY)) {
+            base.raw("§e§lStars§r§e: " + mapData.getStar())
+                    .raw("§d§lPP§r§d: " + GUIUtil.removeTrailingZeros(mapData.getPp()));
+        }
+
+        base.raw("§c§lLength§r§c: " + mapData.getLength())
             .raw("§a§lCreator§r§a: " + mapData.getCreator());
 
 
@@ -118,7 +123,7 @@ public class MapsHolder extends GUIScrollablePane {
             ItemUtil.addGlow(mapItem);
         }
 
-        StaticGuiElement mapGuiElement = new StaticGuiElement('g', mapItem, click -> {
+        return new StaticGuiElement('g', mapItem, click -> {
             if(click.getType().isLeftClick()) {
                 if(isOtherPlayer && canEditCompletions) {
                     holder.performCommand("complete " + mapData.getId() + " " + record.getName() + " nd");
@@ -134,8 +139,6 @@ public class MapsHolder extends GUIScrollablePane {
             }
             return true;
         }, base.build());
-
-        return mapGuiElement;
     }
 
     private List<LCMap> getGuiMaps() {
@@ -183,6 +186,9 @@ public class MapsHolder extends GUIScrollablePane {
 
         GuiElementGroup group = new GuiElementGroup('g');
         for (LCMap map : paginatedList) {
+            if(!holder.hasPermission("essentials.warps." + map.getId())) {
+                continue;
+            }
             group.addElement(addMap(map));
         }
 

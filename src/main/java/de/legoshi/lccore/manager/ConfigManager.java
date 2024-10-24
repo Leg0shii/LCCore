@@ -77,6 +77,7 @@ public class ConfigManager {
             e.printStackTrace();
         }
 
+        // TODO: comment this for deployment
         achievementManager.loadAchievements();
 
         loadMessages();

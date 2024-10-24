@@ -504,6 +504,7 @@ public class MapManager {
                 }
                 break;
             case MISC:
+            case LEGACY:
                 if(map.getBroadcasts() == null) {
                     return;
                 }

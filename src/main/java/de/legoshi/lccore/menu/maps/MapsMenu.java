@@ -4,6 +4,7 @@ import de.legoshi.lccore.Linkcraft;
 import de.legoshi.lccore.menu.GUIPane;
 import de.legoshi.lccore.menu.util.CommandConfirmationMenu;
 import de.legoshi.lccore.util.Dye;
+import de.legoshi.lccore.util.MapType;
 import de.themoep.inventorygui.InventoryGui;
 import de.themoep.inventorygui.StaticGuiElement;
 import org.bukkit.Material;
@@ -18,9 +19,9 @@ public class MapsMenu extends GUIPane {
 
     private final String[] guiSetup = {
             "ddmmcmmdd",
-            "s v   w s",
-            "s   z   s",
-            "s x   y s",
+            "sy     ws",
+            "s v z u s",
+            "sx     as",
             "ddmmcmmdd",
     };
 
@@ -42,7 +43,7 @@ public class MapsMenu extends GUIPane {
         }, "§e§lBonus Rankups");
 
         StaticGuiElement side = new StaticGuiElement('w', new ItemStack(Material.IRON_INGOT), click -> {
-            injector.getInstance(MapsHolder.class).openGui(holder, current);
+            injector.getInstance(MapsHolder.class).openGui(holder, current, MapType.SIDE);
             return true;
         }, "§f§lSide Courses");
 
@@ -61,6 +62,17 @@ public class MapsMenu extends GUIPane {
             return true;
         }, "§c§lMaze Rankups");
 
-        current.addElements(bonus, side, main, segmented, maze);
+        StaticGuiElement wolf = new StaticGuiElement('u', new ItemStack(Material.BONE), click -> {
+            injector.getInstance(CommandConfirmationMenu.class).openGui(holder, current, "warp wolfrankup", "§aWarp to wolf lobby!");
+            return true;
+        }, "§7§lWolf Rankups");
+
+        StaticGuiElement archived = new StaticGuiElement('a', new ItemStack(Material.BOOK), click -> {
+            injector.getInstance(MapsHolder.class).openGui(holder, current, MapType.LEGACY);
+            return true;
+        }, "§8§lLegacy Courses");
+
+
+        current.addElements(bonus, side, main, segmented, maze, wolf, archived);
     }
 }

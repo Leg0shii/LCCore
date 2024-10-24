@@ -5,6 +5,7 @@ import de.legoshi.lccore.command.flow.annotated.annotation.ReflectiveTabComplete
 import de.legoshi.lccore.manager.PlayerManager;
 import de.legoshi.lccore.menu.maps.MapsHolder;
 import de.legoshi.lccore.player.PlayerRecord;
+import de.legoshi.lccore.util.MapType;
 import de.legoshi.lccore.util.Register;
 import de.legoshi.lccore.util.message.Message;
 import de.legoshi.lccore.util.message.MessageUtil;
@@ -40,7 +41,7 @@ public class CheckCompletionsCommand implements CommandClass {
             }
 
             Player playerSender = (Player)sender;
-            injector.getInstance(MapsHolder.class).openGui(playerSender, null, record);
+            injector.getInstance(MapsHolder.class).openGui(playerSender, null, record, MapType.SIDE);
         });
     }
 }

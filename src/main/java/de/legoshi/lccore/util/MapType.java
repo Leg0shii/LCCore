@@ -7,7 +7,8 @@ public enum MapType {
     WOLF("&1&lWolf's &9&lRankup &f&m-"),
     CHALLENGE("&4«&fCHALLENGE&4»&e"),
     MAZE("&d«&lMAZE&d»"),
-    MISC("&6«&lPARKOUR&6»");
+    MISC("&6«&lPARKOUR&6»"),
+    LEGACY("&8«&7&lLEGACY&8»");
 
 
     public final String prefix;
