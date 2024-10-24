@@ -51,7 +51,7 @@ public class AchievementProgressionMenu extends GUIScrollablePane {
         int personalAchievementPoints = 0;
         for (Achievement achievement : achievementManager.getAchievements()) {
             maxAchievementPoints = maxAchievementPoints + achievement.getPoints();
-            if (achievement.isUnlocked(target)) {
+            if (achievement.isUnlocked(target.getUniqueId().toString())) {
                 personalAchievementPoints = personalAchievementPoints + achievement.getPoints();
             }
         }

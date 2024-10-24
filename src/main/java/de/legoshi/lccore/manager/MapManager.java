@@ -505,8 +505,8 @@ public class MapManager {
                 break;
             case MISC:
             case LEGACY:
-                if(map.getBroadcasts() == null) {
-                    return;
+                if(map.getBroadcasts() == null || map.getBroadcasts().isEmpty()) {
+                    legacyMapDefaultBroadcast(player, map);
                 }
 
                 for(String bcast : map.getBroadcasts()) {
@@ -529,6 +529,14 @@ public class MapManager {
             MessageUtil.broadcast(broadcastMessage);
         }
 
+        MessageUtil.log(broadcastMessage, false);
+    }
+
+    private void legacyMapDefaultBroadcast(Player player, LCMap map) {
+        String mapDisplay = map.getDisplay() != null ? map.getDisplay() : map.getName();
+        String broadcastMessage = GUIUtil.colorize(map.getMapType().prefix + ChatColor.RESET + " &4&l" + player.getName() + "&7 has finished &r" + mapDisplay + "!");
+        String selfMessage = GUIUtil.colorize(map.getMapType().prefix + ChatColor.RESET + " &7You have just completed &r" + mapDisplay + "!");
+        player.sendMessage(selfMessage);
         MessageUtil.log(broadcastMessage, false);
     }
 

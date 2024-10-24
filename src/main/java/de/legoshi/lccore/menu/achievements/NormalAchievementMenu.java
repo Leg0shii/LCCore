@@ -119,7 +119,7 @@ public class NormalAchievementMenu extends GUIScrollablePane {
                 ArrayList<Achievement> lockedAchievements = new ArrayList<>();
 
                 for (Achievement achievement : achievements) {
-                    if (achievement.isUnlocked(target)) unlockedAchievements.add(achievement);
+                    if (achievement.isUnlocked(target.getUniqueId().toString())) unlockedAchievements.add(achievement);
                     else lockedAchievements.add(achievement);
                 }
                 achievements.clear();
@@ -237,13 +237,13 @@ public class NormalAchievementMenu extends GUIScrollablePane {
         switch (achievementType) {
             case NORMAL:
                 description = achievement.getDescription();
-                if (achievement.isUnlocked(target)) {
+                if (achievement.isUnlocked(target.getUniqueId().toString())) {
                     dye = Dye.PURPLE;
                 }
                 break;
             case SECRET:
                 description = "???";
-                if (achievement.isUnlocked(target)) {
+                if (achievement.isUnlocked(target.getUniqueId().toString())) {
                     dye = Dye.LIME;
                 }
                 break;
@@ -265,7 +265,7 @@ public class NormalAchievementMenu extends GUIScrollablePane {
         ItemStack topOfAchievementItem = new ItemStack(Material.STAINED_GLASS, 1, (short) 3);
         ItemStack bottomOfAchievementItem = new ItemStack(Material.INK_SACK, 1, (short) 12);
 
-        if (achievement.isUnlocked(holder)) {
+        if (achievement.isUnlocked(holder.getUniqueId().toString())) {
             topOfAchievementItem.setType(Material.DIAMOND_BLOCK);
             bottomOfAchievementItem.setType(Material.DIAMOND);
             topOfAchievementItem.setDurability((short) 0);
