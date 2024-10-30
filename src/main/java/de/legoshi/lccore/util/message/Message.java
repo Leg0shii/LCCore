@@ -236,6 +236,7 @@ public enum Message {
     MAP_FIRST_COMPLETION("§aAdded first completion of {0} for {1}", MessageType.MAPS),
     MAP_NEW_COMPLETION("§aAdded new completion of {0} for {1}", MessageType.MAPS),
     MAP_REMOVE_COMPLETION("§aRemoved all completions of {0} for {1}", MessageType.MAPS),
+    MAP_REMOVE_COMPLETION_LOG("§a{0} removed {1}'s completion(s) of {2}", MessageType.MAPS),
     MAP_BYPASS_BAN("§aBypassing ban requirement, map already completed!", MessageType.MAPS),
 
     // Maps Errors

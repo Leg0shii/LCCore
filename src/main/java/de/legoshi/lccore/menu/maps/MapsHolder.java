@@ -17,6 +17,7 @@ import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import team.unnamed.inject.Inject;
+import team.unnamed.inject.Injector;
 
 import java.util.Comparator;
 import java.util.List;
@@ -26,6 +27,7 @@ import java.util.stream.Collectors;
 public class MapsHolder extends GUIScrollablePane {
     @Inject private MapManager mapManager;
     @Inject private DBManager db;
+    @Inject private Injector injector;
 
     private final String[] guiSetup = {
             "ddmmcmmdd",
@@ -98,7 +100,7 @@ public class MapsHolder extends GUIScrollablePane {
         base.raw("§c§lLength§r§c: " + mapData.getLength())
             .raw("§a§lCreator§r§a: " + mapData.getCreator());
 
-
+        String leaderboardDisplay = base.build();
 
         if(completion != null && completion.getCompletions() > 0) {
             String first = completion.getFirst() != null ? GUIUtil.ISOString(completion.getFirst()) : "N/A";
@@ -115,6 +117,7 @@ public class MapsHolder extends GUIScrollablePane {
             base.action(GUIAction.RIGHT_CLICK, "Remove All Completions");
         } else {
             base.action(GUIAction.LEFT_CLICK, "Teleport");
+            base.action(GUIAction.RIGHT_CLICK, "View Completions");
         }
 
         ItemStack mapItem = mapData.getItem().clone();
@@ -135,7 +138,10 @@ public class MapsHolder extends GUIScrollablePane {
             } else if(click.getType().isRightClick() && isOtherPlayer && canEditCompletions && playerMapData.get(mapData.getId()) != null) {
                 db.delete(db.find(new PlayerCompletionId(record.getUuid(), mapData.getId()), PlayerCompletion.class));
                 MessageUtil.send(Message.MAP_REMOVE_COMPLETION, holder, mapData.getId(), record.getName());
+                MessageUtil.log(Message.MAP_REMOVE_COMPLETION_LOG, true, holder.getName(), record.getName(), mapData.getId());
                 current.close();
+            } else if(click.getType().isRightClick() && !isOtherPlayer) {
+                injector.getInstance(MapLeaderboard.class).openGui(holder, current, mapData.getId(), leaderboardDisplay, mapData.getItem(), mapData.getName());
             }
             return true;
         }, base.build());

@@ -655,4 +655,27 @@ public class MapManager {
         }
         return foundMaps;
     }
+
+
+    public List<MapCompletedDTO> getMapLBData(String mapId) {
+        String hql = "SELECT pc.player.id, pc.player.name, ps.skull, pc.first, pc.completions FROM PlayerCompletion pc " +
+                "LEFT JOIN PlayerSkull ps ON ps.id=pc.player.id " +
+                "WHERE pc.map = :map " +
+                "ORDER BY pc.first ASC NULLS LAST, pc.completions DESC NULLS LAST";
+
+        EntityManager em = db.getEntityManager();
+        TypedQuery<Object[]> query = em.createQuery(hql, Object[].class);
+        query.setParameter("map", mapId);
+
+        List<MapCompletedDTO> results = new ArrayList<>();
+        List<Object[]> queryResult = query.getResultList();
+        for(Object[] completedMap : queryResult) {
+            String skullBase64 = (String)completedMap[2];
+            ItemStack skull = skullBase64 != null ? ItemUtil.fromBase64(skullBase64) : null;
+            results.add(new MapCompletedDTO((String)completedMap[0], (String)completedMap[1], (Integer)completedMap[4], skull, (Date)completedMap[3]));
+        }
+
+        em.close();
+        return results;
+    }
 }
