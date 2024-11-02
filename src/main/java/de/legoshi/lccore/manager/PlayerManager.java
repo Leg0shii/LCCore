@@ -56,6 +56,10 @@ public class PlayerManager {
         updateName(player);
         updateSkull(player);
         players.put(player.getUniqueId().toString(), loadPlayer(player));
+
+        if(isStaff(player))
+            staffJoin(player);
+
         player.setDisplayName(chatManager.rankNickStar(player));
         updateTabPosition(player);
 
@@ -70,13 +74,31 @@ public class PlayerManager {
         forgeHandshake(player);
     }
 
-    public void updateTabPosition(Player player) {
-        if(!isStaff(player)) {
-            TabAPI.getInstance().getInstance().getPlayer(player.getUniqueId()).setTemporaryGroup(getPlayer(player).getRank().getKey());
+    public void staffJoin(Player player) {
+        initDbStaffData(player);
+        StaffPreferences prefs = getStaffPrefs(player);
+        visibilityManager.setVanishState(player, prefs.isVanishOnJoin());
+        if(prefs.isDisableFlyOnJoin()) {
+            setFlying(player, false);
         }
     }
 
+    private void setFlying(Player player, boolean flying) {
+        Linkcraft.sync(() -> {
+            if(!flying) {
+                if (player.getGameMode().equals(GameMode.ADVENTURE) || player.getGameMode().equals(GameMode.SURVIVAL)) {
+                    player.setFlying(false);
+                    player.setAllowFlight(false);
+                }
+            }
+        });
+    }
 
+    public void updateTabPosition(Player player) {
+        if(!isStaff(player)) {
+            TabAPI.getInstance().getPlayer(player.getUniqueId()).setTemporaryGroup(getPlayer(player).getRank().getKey());
+        }
+    }
 
     public void forgeHandshake(Player player) {
         Linkcraft.asyncLater(() -> {
@@ -112,6 +134,15 @@ public class PlayerManager {
         PlayerPreferences prefs = getPlayerPrefs(player);
         if(prefs == null) {
             db.persist(new PlayerPreferences(player));
+        }
+    }
+
+    private void initDbStaffData(Player player) {
+        if(isStaff(player)) {
+            StaffPreferences prefs = getStaffPrefs(player);
+            if(prefs == null) {
+                db.persist(new StaffPreferences(player));
+            }
         }
     }
 
@@ -181,6 +212,19 @@ public class PlayerManager {
         lcPlayer.setManualChatFormats(chatManager.determineManualChatFormats(player));
         lcPlayer.setPunishments(punishmentManager.getCurrentPunishments(player));
         return lcPlayer;
+    }
+
+    public StaffPreferences getStaffPrefs(Player player) {
+        return getStaffPrefs(player.getUniqueId().toString());
+    }
+
+    public StaffPreferences getStaffPrefs(String player) {
+        StaffPreferences staffPreferences = db.find(player, StaffPreferences.class);
+        if(staffPreferences == null) {
+            db.persist(new StaffPreferences(player));
+            staffPreferences = db.find(player, StaffPreferences.class);
+        }
+        return staffPreferences;
     }
 
     public PlayerPreferences getPlayerPrefs(Player player) {
