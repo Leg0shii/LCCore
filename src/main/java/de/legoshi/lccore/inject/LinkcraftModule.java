@@ -36,6 +36,7 @@ public class LinkcraftModule extends AbstractModule {
         bind(PracticeManager.class).singleton();
         bind(CheckpointManager.class).singleton();
         bind(AchievementManager.class).singleton();
+        bind(CosmeticManager.class).singleton();
 
         // Database
         install(new DBModule(plugin));
@@ -61,6 +62,8 @@ public class LinkcraftModule extends AbstractModule {
         bind(SpawnLocationListener.class).singleton();
         bind(InteractListener.class).singleton();
         bind(ItemDropListener.class).singleton();
+        bind(AchievementListeners.class).singleton();
+
 
         // Services
         install(new ServiceModule());

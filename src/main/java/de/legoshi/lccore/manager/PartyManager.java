@@ -1,6 +1,7 @@
 package de.legoshi.lccore.manager;
 
 import de.legoshi.lccore.Linkcraft;
+import de.legoshi.lccore.listener.AchievementListeners;
 import de.legoshi.lccore.player.PlayerPartyResult;
 import de.legoshi.lccore.player.chat.PartyMember;
 import de.legoshi.lccore.player.chat.PartyRole;
@@ -340,6 +341,8 @@ public class PartyManager {
         return inviteList != null && inviteList.contains(invitee.getUniqueId().toString());
     }
 
+    @Inject
+    AchievementListeners achievementListeners;
     public void createParty(Player player) {
         String uuid = player.getUniqueId().toString();
         String partyId = generatePartyId();
@@ -347,6 +350,8 @@ public class PartyManager {
         partyMembers.put(uuid, new PartyMember(uuid, PartyRole.OWNER));
         playersToParty.put(uuid, partyId);
         partyToPlayers.put(partyId, partyMembers);
+
+        // achievementListeners.createPartyAchievement(player);
     }
 
     public String generatePartyId() {
