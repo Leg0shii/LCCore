@@ -11,6 +11,7 @@ import de.legoshi.lccore.database.models.*;
 import de.legoshi.lccore.player.PlayerRecord;
 import de.legoshi.lccore.player.display.ChatColorDTO;
 import de.legoshi.lccore.player.display.LCPlayer;
+import de.legoshi.lccore.player.display.StaffDTO;
 import de.legoshi.lccore.player.display.StarDTO;
 import de.legoshi.lccore.util.ConfigAccessor;
 import de.legoshi.lccore.util.HeadUtil;
@@ -241,6 +242,24 @@ public class PlayerManager {
     }
 
     public boolean isStaff(Player player) {
+        LCPlayer lcPlayer = getPlayer(player);
+        if(lcPlayer.getStaff() == null) {
+            return false;
+        }
+
+        StaffDTO staff = ConfigManager.staffDisplay.get("group.staf");
+        if(staff == null) {
+            ConfigManager.staffDisplay.get("group.staff");
+        }
+        if(staff == null) {
+            return false;
+        }
+
+        return lcPlayer.getStaff().getPosition() >= staff.getPosition();
+    }
+
+    public boolean hasStaffDisplay(Player player) {
+
         return getPlayer(player).getStaff() != null;
     }
 
