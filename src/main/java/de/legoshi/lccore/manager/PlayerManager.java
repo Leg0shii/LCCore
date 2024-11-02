@@ -163,10 +163,10 @@ public class PlayerManager {
         return db.find(player, LCPlayerDB.class);
     }
 
-    public void playerLeave(Player player) {
+    public void playerLeave(Player player, boolean kick) {
         players.remove(player.getUniqueId().toString());
         visibilityManager.onLeave(player);
-        chatManager.onLeave(player);
+        chatManager.onLeave(player, kick);
         saveConfigDataTemp(player);
         logPosition(player);
         achievementManager.updatePoints(player);

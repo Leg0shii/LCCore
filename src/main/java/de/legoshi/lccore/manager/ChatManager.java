@@ -147,10 +147,12 @@ public class ChatManager {
         lastMessaged.remove(player.getUniqueId().toString());
     }
 
-    public void onLeave(Player player) {
+    public void onLeave(Player player, boolean kick) {
         //decacheDirectChannel(player);
         decacheLastMessaged(player);
-        announceLeave(player);
+        if(!kick) {
+            announceLeave(player);
+        }
     }
 
     public void setLastMessaged(Player p1, Player p2) {

@@ -108,7 +108,7 @@ public class Linkcraft extends JavaPlugin {
     public void onDisable() {
         PlayerManager playerManager = injector.getInstance(PlayerManager.class);
         for(Player p : Bukkit.getOnlinePlayers()) {
-            playerManager.playerLeave(p);
+            playerManager.playerLeave(p, false);
         }
 
         this.playerConfig.saveConfig();

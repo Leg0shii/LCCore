@@ -11,8 +11,9 @@ public class PlayerKickListener implements Listener {
 
     @Inject private PlayerManager playerManager;
 
+    // Perhaps this is redundant? It seems like PlayerQuitEvent gets called when a player gets kicked anyway?
     @EventHandler
     public void onPlayerKick(PlayerKickEvent event) {
-        Linkcraft.async(() -> playerManager.playerLeave(event.getPlayer()));
+        Linkcraft.async(() -> playerManager.playerLeave(event.getPlayer(), true));
     }
 }
