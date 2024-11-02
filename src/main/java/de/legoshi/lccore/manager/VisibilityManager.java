@@ -1,6 +1,7 @@
 package de.legoshi.lccore.manager;
 
 import de.legoshi.lccore.Linkcraft;
+import de.legoshi.lccore.util.message.MessageUtil;
 import de.myzelyam.api.vanish.VanishAPI;
 import net.minecraft.server.v1_8_R3.PacketPlayOutPlayerInfo;
 import org.bukkit.Bukkit;
@@ -16,13 +17,21 @@ public class VisibilityManager {
     private final HashMap<String, HashSet<String>> hiddenPlayers = new HashMap<>();
 
     private void addToTabList(Player player, Player toAdd) {
-        PacketPlayOutPlayerInfo packet = new PacketPlayOutPlayerInfo(PacketPlayOutPlayerInfo.EnumPlayerInfoAction.ADD_PLAYER, ((CraftPlayer)toAdd).getHandle());
-        ((CraftPlayer)player).getHandle().playerConnection.sendPacket(packet);
+        try {
+            PacketPlayOutPlayerInfo packet = new PacketPlayOutPlayerInfo(PacketPlayOutPlayerInfo.EnumPlayerInfoAction.ADD_PLAYER, ((CraftPlayer) toAdd).getHandle());
+            ((CraftPlayer) player).getHandle().playerConnection.sendPacket(packet);
+        } catch (Exception e) {
+            MessageUtil.log("Exception while adding from tab list", true);
+        }
     }
 
     public void removeFromTabList(Player player, Player toRemove) {
-        PacketPlayOutPlayerInfo packet = new PacketPlayOutPlayerInfo(PacketPlayOutPlayerInfo.EnumPlayerInfoAction.REMOVE_PLAYER, ((CraftPlayer)toRemove).getHandle());
-        ((CraftPlayer)player).getHandle().playerConnection.sendPacket(packet);
+        try {
+            PacketPlayOutPlayerInfo packet = new PacketPlayOutPlayerInfo(PacketPlayOutPlayerInfo.EnumPlayerInfoAction.REMOVE_PLAYER, ((CraftPlayer) toRemove).getHandle());
+            ((CraftPlayer) player).getHandle().playerConnection.sendPacket(packet);
+        } catch (Exception e) {
+            MessageUtil.log("Exception while removing from tab list", true);
+        }
     }
 
     public void onLeave(Player player) {
@@ -101,6 +110,16 @@ public class VisibilityManager {
         }
 
         return isHiding;
+    }
+
+    public void setVanishState(Player player, boolean vanished) {
+        Linkcraft.sync(() -> {
+            if(vanished && !VanishAPI.isInvisible(player)) {
+                VanishAPI.hidePlayer(player);
+            } else if(!vanished && VanishAPI.isInvisible(player)) {
+                VanishAPI.showPlayer(player);
+            }
+        });
     }
 
     public void hideIfHiding(Player toHide) {

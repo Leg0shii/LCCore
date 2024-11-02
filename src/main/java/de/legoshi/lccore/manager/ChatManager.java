@@ -11,6 +11,7 @@ import de.legoshi.lccore.util.LCSound;
 import de.legoshi.lccore.util.PlayerDisplayBuilder;
 import de.legoshi.lccore.util.message.Message;
 import de.legoshi.lccore.util.message.MessageUtil;
+import de.myzelyam.api.vanish.VanishAPI;
 import lombok.Getter;
 import lombok.Setter;
 import org.bukkit.Bukkit;
@@ -107,6 +108,27 @@ public class ChatManager {
     public void onJoin(Player player) {
         loadChannel(player);
         loadIgnores(player);
+        announceJoin(player);
+    }
+
+    private void announceJoin(Player player) {
+        MessageUtil.log(Message.PLAYER_JOIN, false, player.getName());
+        if(VanishAPI.isInvisible(player)) {
+            Linkcraft.syncLater(() -> {
+                if(!VanishAPI.isInvisible(player)) {
+                    MessageUtil.broadcast(Message.PLAYER_JOIN, false, player.getName());
+                }
+            }, 5L);
+        } else {
+            MessageUtil.broadcast(Message.PLAYER_JOIN, false, player.getName());
+        }
+    }
+
+    private void announceLeave(Player player) {
+        MessageUtil.log(Message.PLAYER_LEAVE, false, player.getName());
+        if(!VanishAPI.isInvisible(player)) {
+            MessageUtil.broadcast(Message.PLAYER_LEAVE, false, player.getName());
+        }
     }
 
     private void loadIgnores(Player player) {
@@ -128,6 +150,7 @@ public class ChatManager {
     public void onLeave(Player player) {
         //decacheDirectChannel(player);
         decacheLastMessaged(player);
+        announceLeave(player);
     }
 
     public void setLastMessaged(Player p1, Player p2) {

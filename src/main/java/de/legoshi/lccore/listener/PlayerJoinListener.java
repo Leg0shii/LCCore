@@ -29,6 +29,7 @@ public class PlayerJoinListener implements Listener {
 //        }
 
         // NEW
+        event.setJoinMessage("");
         Linkcraft.async(() -> playerManager.playerJoin(p));
     }
 }

@@ -1,6 +1,7 @@
 package de.legoshi.lccore.menu.settings;
 
 import de.legoshi.lccore.Linkcraft;
+import de.legoshi.lccore.manager.PlayerManager;
 import de.legoshi.lccore.menu.GUIPane;
 import de.legoshi.lccore.util.Dye;
 import de.legoshi.lccore.util.GUIDescriptionBuilder;
@@ -16,6 +17,7 @@ import team.unnamed.inject.Injector;
 public class SettingsMenu extends GUIPane {
 
     @Inject private Injector injector;
+    @Inject private PlayerManager playerManager;
 
     private final String[] guiSetup = {
             "dmmmmmmmd",
@@ -23,10 +25,18 @@ public class SettingsMenu extends GUIPane {
             "dmmmmmmmd",
     };
 
+    private final String[] guiStaffSetup = {
+            "dmmmmmmmd",
+            "mg c p sm",
+            "dmmmmmmmd",
+    };
+
     @Override
     public void openGui(Player player, InventoryGui parent) {
         super.openGui(player, parent);
-        this.current = new InventoryGui(Linkcraft.getPlugin(), player, "Settings", guiSetup);
+
+        String[] setup = playerManager.isStaff(player) ? guiStaffSetup : guiSetup;
+        this.current = new InventoryGui(Linkcraft.getPlugin(), player, "Settings", setup);
         setColours(Dye.WHITE, Dye.GRAY, Dye.BLACK);
         registerGuiElements();
         fullCloseOnEsc();
@@ -52,6 +62,13 @@ public class SettingsMenu extends GUIPane {
                 .coloured("UNDER CONSTRUCTION", ChatColor.RED)
                 .build());
 
-        current.addElements(generalSettingsMenu, cosmeticSettingsMenu, practiceSettingsMenu);
+        StaticGuiElement staffSettingsMenu = new StaticGuiElement('s', new ItemStack(Material.REDSTONE), click -> {
+            injector.getInstance(StaffSettingsMenu.class).openGui(holder, current);
+            return true;
+        }, new GUIDescriptionBuilder().raw(ChatColor.YELLOW + "" + ChatColor.BOLD + "Staff Settings")
+                .coloured("UNDER CONSTRUCTION", ChatColor.RED)
+                .build());
+
+        current.addElements(generalSettingsMenu, cosmeticSettingsMenu, practiceSettingsMenu, staffSettingsMenu);
     }
 }

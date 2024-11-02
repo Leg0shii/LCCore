@@ -13,6 +13,7 @@ public class PlayerLeaveListener implements Listener {
 
     @EventHandler
     public void onPlayerQuit(PlayerQuitEvent event) {
+        event.setQuitMessage("");
         Linkcraft.async(() -> playerManager.playerLeave(event.getPlayer()));
     }
 }
