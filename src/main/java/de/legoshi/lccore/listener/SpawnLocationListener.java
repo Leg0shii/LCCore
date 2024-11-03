@@ -1,5 +1,6 @@
 package de.legoshi.lccore.listener;
 
+import de.legoshi.lccore.Linkcraft;
 import de.legoshi.lccore.manager.PlayerManager;
 import org.bukkit.Location;
 import org.bukkit.event.EventHandler;
@@ -17,10 +18,18 @@ public class SpawnLocationListener implements Listener {
     public void onSpawn(PlayerSpawnLocationEvent e) {
         try {
             String uuid = e.getPlayer().getUniqueId().toString();
+            Location loginLoc = e.getSpawnLocation();
             Location l = playerManager.getOTPLocation(uuid);
             playerManager.deleteCurrentOTPLocation(uuid);
             if(l != null) {
                 e.setSpawnLocation(l);
+            } else {
+                // Done to reduce instances of players getting stuck in the floor
+                Linkcraft.syncLater(() -> {
+                    if(e.getPlayer().isOnline()) {
+                        e.getPlayer().teleport(loginLoc);
+                    }
+                }, 10L);
             }
         } catch (IOException ignored) {}
     }
