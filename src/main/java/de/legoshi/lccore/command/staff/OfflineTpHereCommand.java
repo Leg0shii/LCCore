@@ -17,6 +17,8 @@ import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 import team.unnamed.inject.Inject;
 
+import java.io.IOException;
+
 @Register
 @Command(names = {"otphere"}, permission = "otphere", desc = "<player>")
 public class OfflineTpHereCommand implements CommandClass {
@@ -57,8 +59,15 @@ public class OfflineTpHereCommand implements CommandClass {
             }
 
             Location curr = player.getLocation();
-            playerManager.saveOTPLocation(curr, record.getUuid(), player);
-            player.sendMessage(ChatColor.GREEN + "Updated " + record.getName() + "'s location to: " + Utils.getStringFromLocation(curr));
+            // Unneeded database field
+            //playerManager.saveOTPLocation(curr, record.getUuid(), player);
+
+            try {
+                playerManager.setOfflinePlayerLocationNBT(record.getUuid(), curr);
+                player.sendMessage(ChatColor.GREEN + "Updated " + record.getName() + "'s location to: " + Utils.getStringFromLocation(curr));
+            } catch (IOException ignored) {
+                MessageUtil.send(Message.PLAYER_DATA_FILE_ERR, sender, record.getUuid());
+            }
         });
     }
 }

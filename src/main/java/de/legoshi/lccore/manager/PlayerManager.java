@@ -8,6 +8,7 @@ import de.legoshi.lccore.database.DBManager;
 import de.legoshi.lccore.database.composite.PlayerChatColorId;
 import de.legoshi.lccore.database.composite.PlayerStarId;
 import de.legoshi.lccore.database.models.*;
+import de.legoshi.lccore.player.PlayerClipboard;
 import de.legoshi.lccore.player.PlayerRecord;
 import de.legoshi.lccore.player.display.ChatColorDTO;
 import de.legoshi.lccore.player.display.LCPlayer;
@@ -50,6 +51,7 @@ public class PlayerManager {
     @Inject private DBManager db;
 
     private final HashMap<String, LCPlayer> players = new HashMap<>();
+    private final HashMap<String, PlayerClipboard> playerClipboards = new HashMap<>();
     private final Set<String> clearEffectsOnTps = new HashSet<>();
 
     public void playerJoin(Player player) {
@@ -147,6 +149,32 @@ public class PlayerManager {
         }
     }
 
+    public void initClipboardIfNotExists(Player player) {
+        if(getClipboard(player) == null) {
+            playerClipboards.put(player.getUniqueId().toString(), new PlayerClipboard());
+        }
+    }
+
+    public void clearClipboard(Player player) {
+        playerClipboards.remove(player.getUniqueId().toString());
+    }
+
+    public PlayerClipboard getClipboard(Player player) {
+        return playerClipboards.get(player.getUniqueId().toString());
+    }
+
+    public void setClipboardPos1(Player player, Location location) {
+        initClipboardIfNotExists(player);
+        PlayerClipboard clipboard = getClipboard(player);
+        clipboard.setPos1(location);
+    }
+
+    public void setClipboardPos2(Player player, Location location) {
+        initClipboardIfNotExists(player);
+        PlayerClipboard clipboard = getClipboard(player);
+        clipboard.setPos2(location);
+    }
+
     private void initDbData(String player) {
         LCPlayerDB lcPlayerDB = getPlayerDB(player);
         if(lcPlayerDB == null) {
@@ -166,6 +194,7 @@ public class PlayerManager {
 
     public void playerLeave(Player player, boolean kick) {
         players.remove(player.getUniqueId().toString());
+        playerClipboards.remove(player.getUniqueId().toString());
         visibilityManager.onLeave(player);
         chatManager.onLeave(player, kick);
         saveConfigDataTemp(player);
@@ -489,9 +518,17 @@ public class PlayerManager {
         NBTFile file = new NBTFile(getPlayerDataFile(uuid));
         NBTList<Double> position = file.getDoubleList("Pos");
         NBTList<Float> rotation = file.getFloatList("Rotation");
-        int dim = file.getInteger("Dimension");
 
-        World world = getSpigotWorldFromDimId(dim);
+        // Dimension key is inconsistent and does not ensure OTP goes to the correct world
+        //int dim = file.getInteger("Dimension");
+        long worldUUIDMost = file.getLong("WorldUUIDMost");
+        long worldUUIDLeast = file.getLong("WorldUUIDLeast");
+        UUID worldUUID = new UUID(worldUUIDMost, worldUUIDLeast);
+
+        World world = Bukkit.getWorlds().stream()
+                .filter(w -> w.getUID().equals(worldUUID))
+                .findFirst()
+                .orElse(null);
 
         if(world == null) {
             return null;
@@ -504,6 +541,33 @@ public class PlayerManager {
         float pitch = rotation.get(1);
 
         return new Location(world, x, y, z, yaw, pitch);
+    }
+
+    public void setOfflinePlayerLocationNBT(String uuid, Location location) throws IOException {
+        NBTFile file = new NBTFile(getPlayerDataFile(uuid));
+        long worldUUIDMost = location.getWorld().getUID().getMostSignificantBits();
+        long worldUUIDLeast = location.getWorld().getUID().getLeastSignificantBits();
+        double x = location.getX();
+        double y = location.getY();
+        double z = location.getZ();
+        float yaw = location.getYaw();
+        float pitch = location.getPitch();
+
+        NBTList<Double> position = file.getDoubleList("Pos");
+        position.clear();
+        position.add(x);
+        position.add(y);
+        position.add(z);
+
+        NBTList<Float> rotation = file.getFloatList("Rotation");
+        rotation.clear();
+        rotation.add(yaw);
+        rotation.add(pitch);
+
+        file.setLong("WorldUUIDMost", worldUUIDMost);
+        file.setLong("WorldUUIDLeast", worldUUIDLeast);
+
+        file.save();
     }
 
     public Location getOTPLocation(String uuid) throws IOException {
