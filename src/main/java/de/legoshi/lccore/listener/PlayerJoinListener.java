@@ -18,17 +18,8 @@ public class PlayerJoinListener implements Listener {
         Player p = event.getPlayer();
         ConfigAccessor playerData = new ConfigAccessor(Linkcraft.getPlugin(), Linkcraft.getPlugin().getPlayerdataFolder(), p.getUniqueId() + ".yml");
         playerData.getConfig();
-//
-//        if (playerDataConfig.getString("lastlocation") != null) {
-//            final Location loc = Utils.getLocationFromString(playerDataConfig.getString("lastlocation"));
-//            (new BukkitRunnable() {
-//                public void run() {
-//                    p.teleport(loc);
-//                }
-//            }).runTaskLater(Linkcraft.getPlugin(), 10L);
-//        }
 
-        // NEW
+
         event.setJoinMessage("");
         Linkcraft.async(() -> playerManager.playerJoin(p));
     }
