@@ -1,6 +1,7 @@
 package de.legoshi.lccore.listener;
 
 import de.legoshi.lccore.manager.CheckpointManager;
+import de.legoshi.lccore.manager.PlayerManager;
 import de.legoshi.lccore.manager.PracticeManager;
 import de.legoshi.lccore.util.ItemUtil;
 import org.bukkit.Material;
@@ -15,6 +16,7 @@ import team.unnamed.inject.Inject;
 
 public class InteractListener implements Listener {
     @Inject private PracticeManager practiceManager;
+    @Inject private PlayerManager playerManager;
     @Inject private CheckpointManager checkpointManager;
 
     @EventHandler
@@ -36,6 +38,10 @@ public class InteractListener implements Listener {
         if(held != null && !held.getType().equals(Material.AIR)) {
             onItemUsage(e, held);
         }
+
+        if(block != null && held != null && !held.getType().equals(Material.AIR)) {
+            onItemUsageOnBlock(e, held, block);
+        }
     }
 
     private void onBlockClick(PlayerInteractEvent e, Block b) {
@@ -51,6 +57,13 @@ public class InteractListener implements Listener {
     private void onItemUsage(PlayerInteractEvent e, ItemStack held) {
         if(ItemUtil.hasNbtId(held, "practice")) {
             practiceAction(e);
+        }
+    }
+
+    private void onItemUsageOnBlock(PlayerInteractEvent e, ItemStack held, Block b) {
+        Player p = e.getPlayer();
+        if(ItemUtil.hasNbtId(held, "lcwand")) {
+            playerManager.setClipboardPos2(p, b.getLocation());
         }
     }
 

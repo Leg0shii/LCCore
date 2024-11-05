@@ -56,6 +56,11 @@ public class PracticeManager {
         return practiceData.get(player.getUniqueId().toString()) != null;
     }
 
+    public boolean isInPractice(String player) {
+        FileConfiguration practiceData = Linkcraft.getPlugin().getPracticeData();
+        return practiceData.get(player) != null;
+    }
+
     public void updatePracticeLocation(Player player, Location location) {
         FileConfiguration practiceData = Linkcraft.getPlugin().getPracticeData();
         practiceData.set(player.getUniqueId().toString(), LocationHelper.getStringFromLocation(location));

@@ -14,9 +14,12 @@ import org.bukkit.inventory.meta.ItemMeta;
 
 import java.io.FileReader;
 import java.io.IOException;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Random;
 import java.util.stream.IntStream;
@@ -272,6 +275,13 @@ public class Utils {
         }
     }
 
+    public static String removeYMLExtension(String file) {
+        if(file != null && file.endsWith(".yml")) {
+            return file.substring(0, file.length() - 4);
+        }
+        return file;
+    }
+
 
 
     public static String hoursToHoursAndMinutes(float hours) {
@@ -307,5 +317,15 @@ public class Utils {
             }
         }
         return sb.toString();
+    }
+
+    public static Date parseSaveDate(String dateStr) {
+        SimpleDateFormat format = new SimpleDateFormat("dd-MM-yyyy");
+        format.setLenient(false);
+        try {
+            return format.parse(dateStr);
+        } catch (ParseException e) {
+            return null;
+        }
     }
 }

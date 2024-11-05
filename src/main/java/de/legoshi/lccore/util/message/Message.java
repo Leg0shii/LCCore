@@ -117,6 +117,8 @@ public enum Message {
     CHECKPOINT_PLAYER_NO_CP("§c{0} does not have a current checkpoint!", MessageType.PLAYER_ERROR),
     CHECKPOINT_PLAYER_NO_CP_FOR("§c{0} does not have a current checkpoint for {1}!", MessageType.PLAYER_ERROR),
     NO_PRACTICE_LOCATION("§c{0} does not have a current practice location!", MessageType.PLAYER_ERROR),
+    NO_CLIPBOARD("§cYou do not have a current clipboard! Use /lcwand to set it!", MessageType.PLAYER_ERROR),
+    CLIPBOARD_POS_UNSET("§cClipboard position {0} is unset! Use /lcwand to set it", MessageType.PLAYER_ERROR),
     NO_ITEM_IN_HAND("§cYou're not holding an item!", MessageType.PLAYER_ERROR),
 
     // Practice

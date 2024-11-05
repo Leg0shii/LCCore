@@ -10,6 +10,7 @@ import de.legoshi.lccore.database.composite.PlayerStarId;
 import de.legoshi.lccore.database.models.*;
 import de.legoshi.lccore.player.PlayerClipboard;
 import de.legoshi.lccore.player.PlayerRecord;
+import de.legoshi.lccore.player.PlayerSave;
 import de.legoshi.lccore.player.display.ChatColorDTO;
 import de.legoshi.lccore.player.display.LCPlayer;
 import de.legoshi.lccore.player.display.StaffDTO;
@@ -167,12 +168,14 @@ public class PlayerManager {
         initClipboardIfNotExists(player);
         PlayerClipboard clipboard = getClipboard(player);
         clipboard.setPos1(location);
+        MessageUtil.send("pos1 set to ("+ location.getX() + ", " + location.getY() + ", " + location.getZ() + ")", player);
     }
 
     public void setClipboardPos2(Player player, Location location) {
         initClipboardIfNotExists(player);
         PlayerClipboard clipboard = getClipboard(player);
         clipboard.setPos2(location);
+        MessageUtil.send("pos2 set to ("+ location.getX() + ", " + location.getY() + ", " + location.getZ() + ")", player);
     }
 
     private void initDbData(String player) {
@@ -476,6 +479,11 @@ public class PlayerManager {
         return player != null ? new PlayerRecord(player.getUniqueId().toString(), player.getName()) : uuidByName(name);
     }
 
+    public PlayerRecord recordForUuid(String player) {
+        OfflinePlayer op = Bukkit.getOfflinePlayer(UUID.fromString(player));
+        return new PlayerRecord(op.getUniqueId().toString(), op.getName());
+    }
+
     public PlayerRecord uuidByName(String name) {
         OfflinePlayer player = Bukkit.getOfflinePlayer(name);
         if(player != null && player.hasPlayedBefore()) {
@@ -586,6 +594,44 @@ public class PlayerManager {
         }
 
         return NBTLocationToSpigotLocation(uuid);
+    }
+
+    public List<PlayerSave> getSavesFor(String player) {
+        List<PlayerSave> saves = new ArrayList<>();
+        File dataFolder = Linkcraft.getPlugin().getPlayerdataFolder();
+        ConfigAccessor data = new ConfigAccessor(Linkcraft.getPlugin(), dataFolder, Utils.removeYMLExtension(player) + ".yml");
+        FileConfiguration config = data.getConfig();
+
+        if (!config.isConfigurationSection("Saves")) {
+            return saves;
+        }
+
+        for(String s : config.getConfigurationSection("Saves").getKeys(false)) {
+            PlayerSave save = new PlayerSave();
+            String locationStr = config.getString("Saves." + s + ".location");
+            String[] block = config.getString("Saves." + s + ".block").split(":");
+            String dateStr = config.getString("Saves." + s + ".date");
+            String name = config.getString("Saves." + s + ".name");
+
+            ItemStack item = new ItemStack(Integer.parseInt(block[0]), 1, Short.parseShort(block[1]));
+            Location location = Utils.getLocationFromString(locationStr);
+            Date date = Utils.parseSaveDate(dateStr);
+            save.setKey(s);
+            save.setDate(date);
+            save.setName(name);
+            save.setLocation(location);
+            save.setItem(item);
+            saves.add(save);
+        }
+        return saves;
+    }
+
+    public List<PlayerRecord> playersToRecords(List<Player> players) {
+        List<PlayerRecord> records = new ArrayList<>();
+        for(Player p : players) {
+            records.add(new PlayerRecord(p.getUniqueId().toString(), p.getName()));
+        }
+        return records;
     }
 
     public void saveOTPLocation(Location l, String uuid, Player teleportedBy) {
