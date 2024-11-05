@@ -1,4 +1,4 @@
-package de.legoshi.lccore.command.staff;
+package de.legoshi.lccore.command.staff.location;
 
 import de.legoshi.lccore.Linkcraft;
 import de.legoshi.lccore.manager.PlayerManager;
@@ -12,20 +12,20 @@ import org.bukkit.entity.Player;
 import team.unnamed.inject.Inject;
 
 @Register
-@Command(names = {"lcpos2"}, permission = "lcpos", desc = "")
-public class LCPos2Command implements CommandClass {
+@Command(names = {"lcpos1"}, permission = "lcpos", desc = "")
+public class LCPos1Command implements CommandClass {
 
     @Inject private PlayerManager playerManager;
 
     @Command(names = "")
-    public void lcPos2(CommandSender sender) {
+    public void lcPos1(CommandSender sender) {
         Linkcraft.async(() -> {
             if (!(sender instanceof Player)) {
                 MessageUtil.send(Message.NOT_A_PLAYER, sender);
                 return;
             }
             Player player = (Player)sender;
-            playerManager.setClipboardPos2(player, player.getLocation());
+            playerManager.setClipboardPos1(player, player.getLocation());
         });
     }
 }

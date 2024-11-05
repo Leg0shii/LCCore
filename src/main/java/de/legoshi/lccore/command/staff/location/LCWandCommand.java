@@ -1,4 +1,4 @@
-package de.legoshi.lccore.command.staff;
+package de.legoshi.lccore.command.staff.location;
 
 import de.legoshi.lccore.manager.PlayerManager;
 import de.legoshi.lccore.util.GUIDescriptionBuilder;

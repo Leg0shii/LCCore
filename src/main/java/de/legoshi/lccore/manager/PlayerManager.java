@@ -15,6 +15,7 @@ import de.legoshi.lccore.player.display.ChatColorDTO;
 import de.legoshi.lccore.player.display.LCPlayer;
 import de.legoshi.lccore.player.display.StaffDTO;
 import de.legoshi.lccore.player.display.StarDTO;
+import de.legoshi.lccore.ui.AdminUI;
 import de.legoshi.lccore.util.ConfigAccessor;
 import de.legoshi.lccore.util.HeadUtil;
 import de.legoshi.lccore.util.ItemUtil;
@@ -99,7 +100,7 @@ public class PlayerManager {
     }
 
     public void updateTabPosition(Player player) {
-        if(!isStaff(player)) {
+        if(!hasStaffDisplay(player)) {
             TabAPI.getInstance().getPlayer(player.getUniqueId()).setTemporaryGroup(getPlayer(player).getRank().getKey());
         }
     }
@@ -279,9 +280,9 @@ public class PlayerManager {
             return false;
         }
 
-        StaffDTO staff = ConfigManager.staffDisplay.get("group.staf");
+        StaffDTO staff = ConfigManager.staffDisplay.get("staf");
         if(staff == null) {
-            ConfigManager.staffDisplay.get("group.staff");
+            ConfigManager.staffDisplay.get("staff");
         }
         if(staff == null) {
             return false;
@@ -607,21 +608,28 @@ public class PlayerManager {
         }
 
         for(String s : config.getConfigurationSection("Saves").getKeys(false)) {
-            PlayerSave save = new PlayerSave();
-            String locationStr = config.getString("Saves." + s + ".location");
-            String[] block = config.getString("Saves." + s + ".block").split(":");
-            String dateStr = config.getString("Saves." + s + ".date");
-            String name = config.getString("Saves." + s + ".name");
+            try {
+                PlayerSave save = new PlayerSave();
+                String locationStr = config.getString("Saves." + s + ".location");
+                String[] block = config.getString("Saves." + s + ".block").split(":");
+                String dateStr = config.getString("Saves." + s + ".date");
+                String name = config.getString("Saves." + s + ".name");
 
-            ItemStack item = new ItemStack(Integer.parseInt(block[0]), 1, Short.parseShort(block[1]));
-            Location location = Utils.getLocationFromString(locationStr);
-            Date date = Utils.parseSaveDate(dateStr);
-            save.setKey(s);
-            save.setDate(date);
-            save.setName(name);
-            save.setLocation(location);
-            save.setItem(item);
-            saves.add(save);
+                ItemStack item = new ItemStack(Integer.parseInt(block[0]), 1, Short.parseShort(block[1]));
+                Location location = Utils.getLocationFromString(locationStr);
+                if(location == null || location.getWorld() == null) {
+                    continue;
+                }
+                Date date = Utils.parseSaveDate(dateStr);
+                save.setKey(s);
+                save.setDate(date);
+                save.setName(name);
+                save.setLocation(location);
+                save.setItem(item);
+                saves.add(save);
+            } catch (Exception e) {
+                MessageUtil.log(player + ": " + e.getMessage(), true);
+            }
         }
         return saves;
     }
@@ -845,6 +853,18 @@ public class PlayerManager {
         packet.getChatComponents().write(0, WrappedChatComponent.fromText(""));
         packet.getBytes().write(0, (byte) 2);
         Linkcraft.getPlugin().protocolManager.sendServerPacket(player, packet);
+    }
+
+    public boolean deleteSave(String player, String key) {
+        ConfigAccessor playerData = new ConfigAccessor(Linkcraft.getPlugin(), Linkcraft.getPlugin().getPlayerdataFolder(), player + ".yml");
+        FileConfiguration playerDataConfig = playerData.getConfig();
+        Set<String> keys = playerDataConfig.getConfigurationSection("Saves").getKeys(false);
+        if(keys.contains(key)) {
+            playerDataConfig.set("Saves." + key, null);
+            playerData.saveConfig();
+            return true;
+        }
+        return false;
     }
 
     @SuppressWarnings("unused")

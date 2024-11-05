@@ -56,6 +56,9 @@ public enum Message {
     IGNORE_PLAYER("§aYou are now ignoring {0}", MessageType.PLAYER),
     UNIGNORE_PLAYER("§aYou are no longer ignoring {0}", MessageType.PLAYER),
     IGNORE_LIST("§dIgnored: §f{0}", MessageType.PLAYER),
+    SENDING_TO_SPAWN("§aSending {0} to spawn...", MessageType.PLAYER),
+    UNPRACTICE_FOR("§aUnpracticed for {0}", MessageType.PLAYER),
+    DELETING_SAVE("§aDeleting save {0} ({1}) from {2}...", MessageType.PLAYER),
 
     CHAT_TOGGLED_OFF("§aGlobal chat has been toggled off for you!", MessageType.PLAYER),
     CHAT_TOGGLED_ON("§aGlobal chat is no longer toggled off for you!", MessageType.PLAYER),
@@ -119,6 +122,8 @@ public enum Message {
     NO_PRACTICE_LOCATION("§c{0} does not have a current practice location!", MessageType.PLAYER_ERROR),
     NO_CLIPBOARD("§cYou do not have a current clipboard! Use /lcwand to set it!", MessageType.PLAYER_ERROR),
     CLIPBOARD_POS_UNSET("§cClipboard position {0} is unset! Use /lcwand to set it", MessageType.PLAYER_ERROR),
+    PLAYER_NO_LONGER_PRAC("§c{0} is no longer in practice mode!", MessageType.PLAYER_ERROR),
+    ERR_DELETING_SAVE("§aCould not delete save from {0}!", MessageType.PLAYER),
     NO_ITEM_IN_HAND("§cYou're not holding an item!", MessageType.PLAYER_ERROR),
 
     // Practice

@@ -225,6 +225,10 @@ public class ChatManager {
         return injector.getInstance(PlayerDisplayBuilder.class).setPlayer(player).rank().nick().build();
     }
 
+    public String rankName(String player) {
+        return injector.getInstance(PlayerDisplayBuilder.class).setPlayer(player).rank().name().build();
+    }
+
     public String rankNickStar(String player) {
         return injector.getInstance(PlayerDisplayBuilder.class).setPlayer(player).rank().nick().star().build();
     }

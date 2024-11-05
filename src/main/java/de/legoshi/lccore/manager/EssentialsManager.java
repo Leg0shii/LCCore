@@ -2,7 +2,10 @@ package de.legoshi.lccore.manager;
 
 import com.earth2me.essentials.Essentials;
 import com.earth2me.essentials.User;
+import com.earth2me.essentials.commands.WarpNotFoundException;
+import net.ess3.api.InvalidWorldException;
 import org.bukkit.Bukkit;
+import org.bukkit.Location;
 import org.bukkit.entity.Player;
 
 import java.util.ArrayList;
@@ -35,6 +38,15 @@ public class EssentialsManager {
             }
         }
         return false;
+    }
+
+    public Location getWarpLocation(String warpName)  {
+        Essentials ess = getEssentials();
+        try {
+            return ess.getWarps().getWarp(warpName);
+        } catch (Exception e) {
+            return null;
+        }
     }
 
     public boolean canWarpTo(Player player, String warpName) {
