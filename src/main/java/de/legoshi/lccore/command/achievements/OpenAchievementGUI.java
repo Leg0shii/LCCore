@@ -1,7 +1,6 @@
 package de.legoshi.lccore.command.achievements;
 
 import de.legoshi.lccore.Linkcraft;
-import de.legoshi.lccore.command.cosmetic.UnlockCosmeticCommand;
 import de.legoshi.lccore.command.flow.annotated.annotation.ReflectiveTabComplete;
 import de.legoshi.lccore.manager.PlayerManager;
 import de.legoshi.lccore.menu.achievements.AchievementMenu;
@@ -22,16 +21,14 @@ import team.unnamed.inject.Injector;
 @Register
 @Command(names = {"ach", "achievements"})
 @SubCommandClasses({
-    OpenAchievementProgressGUI.class,
-    UnlockAchievementCommand.class,
-    RemoveAchievementCommand.class
+    OpenAchievementProgressGUI.class
 })
 public class OpenAchievementGUI implements CommandClass {
 
     @Inject
     private Injector injector;
 
-    @Command(names = "")
+    @Command(names = "")//
     public void achievements(CommandSender sender) {
         // , @ReflectiveTabComplete(clazz = PlayerManager.class, method = "getPlayers", player = true) @OptArg String name
         Linkcraft.async(() -> {

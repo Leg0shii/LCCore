@@ -103,6 +103,9 @@ public class Linkcraft extends JavaPlugin {
             Bukkit.getConsoleSender().sendMessage("Couldn't load LuckPerms API! Shutting down Practice Plugin");
             Bukkit.shutdown();
         }
+
+//        AchievementManagerO achievementManager = AchievementManagerO.getInstance();
+//        achievementManager.loadConfig(this);
     }
 
     public void onDisable() {

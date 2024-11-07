@@ -48,8 +48,6 @@ public class PlayerManager {
     @Inject private ChatManager chatManager;
     @Inject private VisibilityManager visibilityManager;
     @Inject private PunishmentManager punishmentManager;
-    @Inject private CosmeticManager cosmeticManager;
-    @Inject private AchievementManager achievementManager;
     @Inject private DBManager db;
 
     private final HashMap<String, LCPlayer> players = new HashMap<>();
@@ -67,12 +65,6 @@ public class PlayerManager {
 
         player.setDisplayName(chatManager.rankNickStar(player));
         updateTabPosition(player);
-
-        System.out.println("Hey Dkay! I added Cosmetics to the plugin however to enable them you need to remove the // in the PlayerManager at cosmeticManager.loadPlayerCosmetics(player); in the playerJoin Method.");
-        System.out.println("IMPORTANT: Before adding this version of the plugin to the actual server make sure to add the // again. Not doing that will result in everyones armor getting completely wiped.");
-
-        // cosmeticManager.loadPlayerCosmetics(player);
-        achievementManager.loadPlayerAchievements(player);
         visibilityManager.hideIfHiding(player);
         chatManager.onJoin(player);
         clearTitle(player);
@@ -203,7 +195,6 @@ public class PlayerManager {
         chatManager.onLeave(player, kick);
         saveConfigDataTemp(player);
         logPosition(player);
-        achievementManager.updatePoints(player);
     }
 
     private void logPosition(Player player) {

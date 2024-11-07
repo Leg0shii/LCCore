@@ -20,8 +20,8 @@ public class AllMapsCompletionRequirement implements UnlockRequirement {
     }
 
     @Override
-    public boolean isSatisfied(Player player) {
-        Map<String, PlayerCompletion> mapData = mapManager.getPlayerMapData(player.getUniqueId().toString());
+    public boolean isSatisfied(String player) {
+        Map<String, PlayerCompletion> mapData = mapManager.getPlayerMapData(player);
         for(String mapId : requiredMaps) {
             PlayerCompletion completion = mapData.get(mapId);
             if(completion == null || completion.getCompletions() < 1) {
@@ -34,8 +34,8 @@ public class AllMapsCompletionRequirement implements UnlockRequirement {
     // TODO: perhaps think of a method to not have to call the same method (mapManager.getPlayerMapData()) maybe
     // we could do something like initPlayer(player) and that inits the player related data for the unlock requirement?
     @Override
-    public Progress getProgress(Player player) {
-        Map<String, PlayerCompletion> mapData = mapManager.getPlayerMapData(player.getUniqueId().toString());
+    public Progress getProgress(String player) {
+        Map<String, PlayerCompletion> mapData = mapManager.getPlayerMapData(player);
         List<String> incomplete = new ArrayList<>();
         List<String> complete = new ArrayList<>();
 

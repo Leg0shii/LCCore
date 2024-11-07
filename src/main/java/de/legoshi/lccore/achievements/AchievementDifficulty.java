@@ -10,8 +10,7 @@ public enum AchievementDifficulty {
     MEDIUM("&6✫ &e&lMEDIUM &6✫", ChatColor.GOLD),
     HARD("&4✳ &c&lHARD &4✳", ChatColor.RED),
     EXTREME("&d❈ &5&lEX&d&lTRE&5&lME &d❈", ChatColor.DARK_PURPLE),
-    DIVINE("&4&k█ &4&lDI&c&lVI&4&lNE&4&k █", ChatColor.DARK_RED),
-    SECRET("&d✫ &5&lSE&d&lCR&5&lET &d✫", ChatColor.DARK_PURPLE);
+    INSANE("&4&k█ &4&lIN&c&lSA&4&lNE&4&k █", ChatColor.DARK_RED);
 
     final String achievementDifficulty;
     final ChatColor color;
@@ -21,14 +20,7 @@ public enum AchievementDifficulty {
         this.color = color;
     }
 
-    public static AchievementDifficulty byPoints(Achievement achievement) {
-
-        if (achievement.getType() == AchievementType.SECRET) {
-            return SECRET;
-        }
-
-        int points = achievement.getPoints();
-
+    public static AchievementDifficulty byPoints(int points) {
         switch (points) {
             case 5:
                 return EASY;
@@ -39,7 +31,7 @@ public enum AchievementDifficulty {
             case 20:
                 return EXTREME;
             case 25:
-                return DIVINE;
+                return INSANE;
         }
         return null;
     }

@@ -3,13 +3,11 @@ package de.legoshi.lccore.command.achievements;
 import de.legoshi.lccore.Linkcraft;
 import de.legoshi.lccore.command.flow.annotated.annotation.ReflectiveTabComplete;
 import de.legoshi.lccore.manager.PlayerManager;
-import de.legoshi.lccore.menu.achievements.AchievementProgressMenu;
 import de.legoshi.lccore.menu.achievements.AchievementProgressionMenu;
 import de.legoshi.lccore.util.message.Message;
 import de.legoshi.lccore.util.message.MessageUtil;
 import me.fixeddev.commandflow.annotated.CommandClass;
 import me.fixeddev.commandflow.annotated.annotation.Command;
-import me.fixeddev.commandflow.annotated.annotation.OptArg;
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
@@ -23,7 +21,7 @@ public class OpenAchievementProgressGUI implements CommandClass {
     private Injector injector;
 
     @Command(names = "")
-    public void progress(CommandSender sender, @ReflectiveTabComplete(clazz = PlayerManager.class, method = "getPossibleNames", player = true) @OptArg String name) {
+    public void progress(CommandSender sender, @ReflectiveTabComplete(clazz = PlayerManager.class, method = "getPossibleNames", player = true) String name) {
         Linkcraft.async(() -> {
             if (!(sender instanceof Player)) {
                 MessageUtil.send(Message.NOT_A_PLAYER, sender);
@@ -39,7 +37,7 @@ public class OpenAchievementProgressGUI implements CommandClass {
             }
 
 
-            injector.getInstance(AchievementProgressMenu.class).openGui(player, target, null);
+            injector.getInstance(AchievementProgressionMenu.class).openGui(player, target, null);
         });
     }
 }
