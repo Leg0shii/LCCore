@@ -1,6 +1,8 @@
 package de.legoshi.lccore.listener;
 
 import org.bukkit.Material;
+import org.bukkit.entity.Entity;
+import org.bukkit.entity.ItemFrame;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -11,8 +13,13 @@ public class InteractEntityListener implements Listener {
     @EventHandler
     public void onEntityInteract(PlayerInteractEntityEvent event) {
         Player player = event.getPlayer();
+        Entity interactedWith = event.getRightClicked();
         ItemStack item = player.getItemInHand();
         if(!player.hasPermission("lc.banneditems") && (item.getType().equals(Material.MONSTER_EGG) || item.getType().equals(Material.MONSTER_EGGS))) {
+            event.setCancelled(true);
+        }
+
+        if(!player.hasPermission("linkcraft.builder") && interactedWith instanceof ItemFrame) {
             event.setCancelled(true);
         }
     }

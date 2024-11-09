@@ -61,6 +61,9 @@ public class LinkcraftModule extends AbstractModule {
         bind(SpawnLocationListener.class).singleton();
         bind(InteractListener.class).singleton();
         bind(ItemDropListener.class).singleton();
+        bind(HangingBreakByEntityListener.class).singleton();
+        bind(EntityDamageByEntityListener.class).singleton();
+        bind(PlayerInteractAtEntityListener.class).singleton();
 
         // Services
         install(new ServiceModule());
