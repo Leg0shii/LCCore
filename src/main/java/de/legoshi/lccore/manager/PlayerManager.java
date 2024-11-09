@@ -15,7 +15,6 @@ import de.legoshi.lccore.player.display.ChatColorDTO;
 import de.legoshi.lccore.player.display.LCPlayer;
 import de.legoshi.lccore.player.display.StaffDTO;
 import de.legoshi.lccore.player.display.StarDTO;
-import de.legoshi.lccore.ui.AdminUI;
 import de.legoshi.lccore.util.ConfigAccessor;
 import de.legoshi.lccore.util.HeadUtil;
 import de.legoshi.lccore.util.ItemUtil;
@@ -837,6 +836,14 @@ public class PlayerManager {
 
     public void giveItem(Player player, ItemStack item) {
         player.getInventory().addItem(item);
+    }
+
+    public void giveItem(Player player, ItemStack item, Integer position) {
+        if(position == null || player.getInventory().getItem(position) != null) {
+            giveItem(player, item);
+        } else {
+            player.getInventory().setItem(position, item);
+        }
     }
 
     public void clearActionBar(Player player) {

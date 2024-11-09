@@ -57,16 +57,16 @@ public class SettingsMenu extends GUIPane {
         }, new GUIDescriptionBuilder().raw(ChatColor.LIGHT_PURPLE + "" + ChatColor.BOLD + "Cosmetic Settings").build());
 
         StaticGuiElement practiceSettingsMenu = new StaticGuiElement('p', new ItemStack(Material.SLIME_BALL), click -> {
+            injector.getInstance(PracticeSettingsMenu.class).openGui(holder, current);
+
             return true;
         }, new GUIDescriptionBuilder().raw(ChatColor.GREEN + "" + ChatColor.BOLD + "Practice Settings")
-                .coloured("UNDER CONSTRUCTION", ChatColor.RED)
                 .build());
 
         StaticGuiElement staffSettingsMenu = new StaticGuiElement('s', new ItemStack(Material.REDSTONE), click -> {
             injector.getInstance(StaffSettingsMenu.class).openGui(holder, current);
             return true;
         }, new GUIDescriptionBuilder().raw(ChatColor.YELLOW + "" + ChatColor.BOLD + "Staff Settings")
-                .coloured("UNDER CONSTRUCTION", ChatColor.RED)
                 .build());
 
         current.addElements(generalSettingsMenu, cosmeticSettingsMenu, practiceSettingsMenu, staffSettingsMenu);

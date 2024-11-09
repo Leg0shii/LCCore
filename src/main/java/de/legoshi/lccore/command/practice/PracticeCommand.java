@@ -1,6 +1,7 @@
 package de.legoshi.lccore.command.practice;
 
 import de.legoshi.lccore.Linkcraft;
+import de.legoshi.lccore.database.models.PlayerPreferences;
 import de.legoshi.lccore.manager.PlayerManager;
 import de.legoshi.lccore.manager.PracticeManager;
 import de.legoshi.lccore.player.practice.PracticeItem;
@@ -49,21 +50,23 @@ public class PracticeCommand implements CommandClass {
             return;
         }
 
+        PlayerPreferences prefs = playerManager.getPlayerPrefs(player);
+
         Location pracLocation = player.getLocation();
         practiceManager.updatePracticeLocation(player, pracLocation);
-        playerManager.giveItem(player, practiceItem.getItem());
+        playerManager.giveItem(player, practiceItem.getItem(), prefs.getPracticeHotbarPosition());
         practiceManager.addToPracticeActionBarQueue(player);
         practiceManager.givePracticeGroup(player);
 
         MessageUtil.sendMessageIfNotNull(player, practiceItem.getPracticeMessage());
         MessageUtil.sendAudioIfNotNull(player, practiceItem.getPracticeAudio());
 
-        // TODO: add a config toggle to let players modify this
-        // Teleports player back to their practice location to prevent practice glitch
-        Linkcraft.syncLater(() -> {
-            if(player.isOnline()) {
-                player.teleport(pracLocation);
-            }
-        }, 3L);
+        if(!prefs.isOldPractice()) {
+            Linkcraft.syncLater(() -> {
+                if (player.isOnline()) {
+                    player.teleport(pracLocation);
+                }
+            }, 3L);
+        }
     }
 }

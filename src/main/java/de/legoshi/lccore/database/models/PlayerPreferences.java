@@ -65,6 +65,12 @@ public class PlayerPreferences implements Identifiable<String> {
     @Column(name = "italic_name_format")
     private boolean italicNameFormat = false;
 
+    @Column(name = "practice_hotbar_position")
+    private Integer practiceHotbarPosition = null;
+
+    @Column(name = "old_practice")
+    private boolean oldPractice = false;
+
     public PlayerPreferences(Player player) {
         this.id = player.getUniqueId().toString();
     }
