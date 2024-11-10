@@ -113,13 +113,11 @@ public class ChatManager {
 
     private void announceJoin(Player player) {
         MessageUtil.log(Message.PLAYER_JOIN, false, player.getName());
-        if(VanishAPI.isInvisible(player)) {
-            Linkcraft.syncLater(() -> {
-                if(!VanishAPI.isInvisible(player)) {
-                    MessageUtil.broadcast(Message.PLAYER_JOIN, false, player.getName());
-                }
-            }, 5L);
-        } else {
+        boolean isStaff = playerManager.isStaff(player);
+
+        if(!VanishAPI.isInvisible(player) && !isStaff) {
+            MessageUtil.broadcast(Message.PLAYER_JOIN, false, player.getName());
+        } else if(isStaff && !playerManager.getStaffPrefs(player).isVanishOnJoin()) {
             MessageUtil.broadcast(Message.PLAYER_JOIN, false, player.getName());
         }
     }
