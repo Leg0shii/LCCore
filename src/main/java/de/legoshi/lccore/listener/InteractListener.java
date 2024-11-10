@@ -88,15 +88,16 @@ public class InteractListener implements Listener {
 
     public boolean isBlockFaceSolid(Block block, BlockFace face) {
         Material material = block.getType();
-        List<Material> solidMats = Arrays.asList(Material.STONE, Material.GRASS, Material.DIRT, Material.COBBLESTONE, Material.WOOD, Material.SAPLING, Material.BEDROCK,
+        List<Material> solidMats = Arrays.asList(Material.STONE, Material.GRASS, Material.DIRT, Material.COBBLESTONE, Material.WOOD, Material.BEDROCK,
                 Material.SAND, Material.GRAVEL, Material.GOLD_ORE, Material.IRON_ORE, Material.COAL_ORE, Material.LOG, Material.SPONGE, Material.LAPIS_ORE, Material.LAPIS_BLOCK,
                 Material.DISPENSER, Material.SANDSTONE, Material.NOTE_BLOCK, Material.WOOL, Material.GOLD_BLOCK, Material.IRON_BLOCK, Material.DOUBLE_STEP, Material.BRICK,
                 Material.BOOKSHELF, Material.MOSSY_COBBLESTONE, Material.OBSIDIAN, Material.MOB_SPAWNER, Material.DIAMOND_ORE, Material.DIAMOND_BLOCK, Material.WORKBENCH,
-                Material.FURNACE, Material.BURNING_FURNACE, Material.REDSTONE_ORE, Material.GLOWING_REDSTONE_ORE, Material.SNOW_BLOCK, Material.CLAY, Material.JUKEBOX,
-                Material.NETHERRACK, Material.SOUL_SAND, Material.GLOWSTONE, Material.SMOOTH_BRICK, Material.HUGE_MUSHROOM_1, Material.HUGE_MUSHROOM_2, Material.MELON_BLOCK,
+                Material.FURNACE, Material.BURNING_FURNACE, Material.REDSTONE_ORE, Material.GLOWING_REDSTONE_ORE, Material.SNOW_BLOCK, Material.CLAY, Material.JUKEBOX, Material.PUMPKIN, Material.JACK_O_LANTERN,
+                Material.NETHERRACK, Material.SOUL_SAND, Material.GLOWSTONE, Material.SMOOTH_BRICK, Material.HUGE_MUSHROOM_1, Material.HUGE_MUSHROOM_2, Material.MELON_BLOCK, Material.MYCEL,
                 Material.ENDER_PORTAL_FRAME, Material.ENDER_STONE, Material.REDSTONE_LAMP_ON, Material.REDSTONE_LAMP_OFF, Material.WOOD_DOUBLE_STEP,
-                Material.EMERALD_ORE, Material.EMERALD_BLOCK, Material.COMMAND, Material.REDSTONE_BLOCK, Material.QUARTZ_ORE, Material.QUARTZ_BLOCK, Material.STAINED_CLAY, Material.LOG_2,
-                Material.SLIME_BLOCK, Material.BARRIER, Material.PRISMARINE, Material.HAY_BLOCK, Material.HARD_CLAY, Material.COAL_BLOCK, Material.RED_SANDSTONE, Material.DOUBLE_STONE_SLAB2);
+                Material.EMERALD_ORE, Material.EMERALD_BLOCK, Material.COMMAND, Material.REDSTONE_BLOCK, Material.QUARTZ_ORE, Material.QUARTZ_BLOCK, Material.DROPPER, Material.STAINED_CLAY, Material.LOG_2,
+                Material.SLIME_BLOCK, Material.BARRIER, Material.PRISMARINE, Material.HAY_BLOCK, Material.HARD_CLAY, Material.PACKED_ICE, Material.COAL_BLOCK, Material.RED_SANDSTONE, Material.DOUBLE_STONE_SLAB2,
+                Material.NETHER_BRICK);
 
         if(solidMats.contains(material)) {
             return true;
