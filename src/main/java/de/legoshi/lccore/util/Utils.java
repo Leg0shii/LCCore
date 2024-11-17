@@ -5,12 +5,17 @@ import de.legoshi.lccore.Linkcraft;
 import github.scarsz.discordsrv.DiscordSRV;
 import me.fixeddev.commandflow.stack.ArgumentStack;
 import org.bukkit.*;
+import org.bukkit.block.Block;
+import org.bukkit.block.BlockFace;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
+import org.bukkit.material.Stairs;
+import org.bukkit.material.Step;
+import org.bukkit.material.WoodenStep;
 
 import java.io.FileReader;
 import java.io.IOException;
@@ -18,14 +23,76 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.Random;
+import java.util.*;
 import java.util.stream.IntStream;
 
 // PARTLY REFACTORED
 public class Utils {
+
+    public static boolean isPressurePlate(Block b) {
+        return b != null && (b.getType().equals(Material.WOOD_PLATE) || b.getType().equals(Material.STONE_PLATE) ||
+                b.getType().equals(Material.IRON_PLATE) || b.getType().equals(Material.GOLD_PLATE));
+    }
+
+    public static boolean isBlockFaceSolid(Block block, BlockFace face) {
+        Material material = block.getType();
+        List<Material> solidMats = Arrays.asList(Material.STONE, Material.GRASS, Material.DIRT, Material.COBBLESTONE, Material.WOOD, Material.BEDROCK,
+                Material.SAND, Material.GRAVEL, Material.GOLD_ORE, Material.IRON_ORE, Material.COAL_ORE, Material.LOG, Material.SPONGE, Material.LAPIS_ORE, Material.LAPIS_BLOCK,
+                Material.DISPENSER, Material.SANDSTONE, Material.NOTE_BLOCK, Material.WOOL, Material.GOLD_BLOCK, Material.IRON_BLOCK, Material.DOUBLE_STEP, Material.BRICK,
+                Material.BOOKSHELF, Material.MOSSY_COBBLESTONE, Material.OBSIDIAN, Material.MOB_SPAWNER, Material.DIAMOND_ORE, Material.DIAMOND_BLOCK, Material.WORKBENCH,
+                Material.FURNACE, Material.BURNING_FURNACE, Material.REDSTONE_ORE, Material.GLOWING_REDSTONE_ORE, Material.SNOW_BLOCK, Material.CLAY, Material.JUKEBOX, Material.PUMPKIN, Material.JACK_O_LANTERN,
+                Material.NETHERRACK, Material.SOUL_SAND, Material.GLOWSTONE, Material.SMOOTH_BRICK, Material.HUGE_MUSHROOM_1, Material.HUGE_MUSHROOM_2, Material.MELON_BLOCK, Material.MYCEL,
+                Material.ENDER_PORTAL_FRAME, Material.ENDER_STONE, Material.REDSTONE_LAMP_ON, Material.REDSTONE_LAMP_OFF, Material.WOOD_DOUBLE_STEP,
+                Material.EMERALD_ORE, Material.EMERALD_BLOCK, Material.COMMAND, Material.REDSTONE_BLOCK, Material.QUARTZ_ORE, Material.QUARTZ_BLOCK, Material.DROPPER, Material.STAINED_CLAY, Material.LOG_2,
+                Material.SLIME_BLOCK, Material.BARRIER, Material.PRISMARINE, Material.HAY_BLOCK, Material.HARD_CLAY, Material.PACKED_ICE, Material.COAL_BLOCK, Material.RED_SANDSTONE, Material.DOUBLE_STONE_SLAB2,
+                Material.NETHER_BRICK);
+
+        if(solidMats.contains(material)) {
+            return true;
+        }
+
+        if(material.equals(Material.SOIL)) {
+            return face.equals(BlockFace.NORTH) || face.equals(BlockFace.EAST) || face.equals(BlockFace.SOUTH) || face.equals(BlockFace.WEST);
+        }
+
+        if(material.equals(Material.HOPPER)) {
+            return face.equals(BlockFace.UP);
+        }
+
+        if(material.equals(Material.STEP)) {
+            Step step = (Step)block.getState().getData();
+            if(step.isInverted()) {
+                return face.equals(BlockFace.UP);
+            } else {
+                return face.equals(BlockFace.DOWN);
+            }
+        }
+
+        if(material.equals(Material.WOOD_STEP)) {
+            WoodenStep step = (WoodenStep)block.getState().getData();
+            if(step.isInverted()) {
+                return face.equals(BlockFace.UP);
+            } else {
+                return face.equals(BlockFace.DOWN);
+            }
+        }
+
+        if(material.name().toUpperCase().contains("STAIRS")) {
+            Stairs stairs = (Stairs)block.getState().getData();
+            if(stairs.isInverted()) {
+                return face.equals(BlockFace.UP);
+            }
+
+            // Below is how vanilla minecraft works but for some reason Spigot or MC server does not allow buttons any face but UP
+//            if(stairs.isInverted()) {
+//                return face.equals(BlockFace.UP) || face.equals(stairs.getAscendingDirection());
+//            } else {
+//                return face.equals(BlockFace.UP) || face.equals(stairs.getAscendingDirection());
+//            }
+        }
+
+        return false;
+    }
 
     public static String stringToISO(String dateStr) {
         DateTimeFormatter inputFormatter = DateTimeFormatter.ofPattern("EEE MMM dd HH:mm:ss z yyyy");
