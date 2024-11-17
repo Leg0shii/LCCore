@@ -143,12 +143,16 @@ public interface MessageUtil {
             return;
         }
 
-        Linkcraft.async(() -> DiscordSRV.getPlugin().processChatMessage(
-                player,
-                message,
-                DiscordSRV.getPlugin().getOptionalChannel("global"),
-                false
-        ));
+        try {
+            Linkcraft.async(() -> DiscordSRV.getPlugin().processChatMessage(
+                    player,
+                    message,
+                    DiscordSRV.getPlugin().getOptionalChannel("global"),
+                    false
+            ));
+        } catch (NoClassDefFoundError ignored) {
+
+        }
     }
 
     static void discord(String message, String channel) {
