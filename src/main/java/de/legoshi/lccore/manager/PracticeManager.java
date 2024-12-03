@@ -8,7 +8,6 @@ import de.legoshi.lccore.player.practice.PracticeItem;
 import de.legoshi.lccore.util.LocationHelper;
 import de.legoshi.lccore.util.message.MessageUtil;
 import lombok.Setter;
-import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
@@ -67,11 +66,17 @@ public class PracticeManager {
         practiceData.set(player.getUniqueId().toString(), LocationHelper.getStringFromLocation(location));
     }
 
+    public void updatePracticeLocation(String player, Location location) {
+        FileConfiguration practiceData = Linkcraft.getPlugin().getPracticeData();
+        practiceData.set(player, LocationHelper.getStringFromLocation(location));
+    }
+
     public boolean forceUnpractice(String player) {
         FileConfiguration pracConfig = Linkcraft.getPlugin().playerConfig.getConfig();
         String saved = pracConfig.getString(player);
 
         if(saved != null) {
+            lpManager.removeGroup(player, "practice");
             pracConfig.set(player, null);
             return true;
         }
@@ -101,7 +106,15 @@ public class PracticeManager {
         lpManager.giveGroup(player, "practice");
     }
 
+    public void givePracticeGroup(String player) {
+        lpManager.giveGroup(player, "practice");
+    }
+
     public void removePracticeGroup(Player player) {
+        lpManager.removeGroup(player, "practice");
+    }
+
+    public void removePracticeGroup(String player) {
         lpManager.removeGroup(player, "practice");
     }
 

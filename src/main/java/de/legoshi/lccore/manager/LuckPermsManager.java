@@ -59,6 +59,12 @@ public class LuckPermsManager {
         getLP().getUserManager().saveUser(user);
     }
 
+    public void givePermission(String player, String permission) {
+        User user = getUserForPlayer(player);
+        user.data().add(Node.builder(permission).build());
+        getLP().getUserManager().saveUser(user);
+    }
+
     public void giveNegativePermission(Player player, String permission) {
         User user = getUserForPlayer(player);
         user.data().add(Node.builder(permission).value(false).build());
@@ -81,6 +87,12 @@ public class LuckPermsManager {
         getLP().getUserManager().saveUser(user);
     }
 
+    public void removePermission(String player, String permission) {
+        User user = getUserForPlayer(player);
+        user.data().remove(Node.builder(permission).build());
+        getLP().getUserManager().saveUser(user);
+    }
+
     public boolean doesGroupExist(String group) {
         return getLP().getGroupManager().getGroup(group) != null;
     }
@@ -95,7 +107,19 @@ public class LuckPermsManager {
         }
     }
 
+    public void giveGroup(String player, String group) {
+        if(!hasGroup(player, group)) {
+            givePermission(player, "group." + group);
+        }
+    }
+
     public void removeGroup(Player player, String group) {
+        if(hasGroup(player, group)) {
+            removePermission(player, "group." + group);
+        }
+    }
+
+    public void removeGroup(String player, String group) {
         if(hasGroup(player, group)) {
             removePermission(player, "group." + group);
         }

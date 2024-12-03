@@ -21,8 +21,11 @@ import de.legoshi.lccore.util.ItemUtil;
 import de.legoshi.lccore.util.Utils;
 import de.legoshi.lccore.util.message.Message;
 import de.legoshi.lccore.util.message.MessageUtil;
+import de.tr7zw.changeme.nbtapi.NBTCompoundList;
 import de.tr7zw.changeme.nbtapi.NBTFile;
 import de.tr7zw.changeme.nbtapi.NBTList;
+import de.tr7zw.changeme.nbtapi.iface.ReadWriteNBT;
+import de.tr7zw.changeme.nbtapi.iface.ReadWriteNBTCompoundList;
 import me.neznamy.tab.api.TabAPI;
 import net.minecraft.server.v1_8_R3.ChatMessage;
 import net.minecraft.server.v1_8_R3.PacketPlayOutTitle;
@@ -38,9 +41,11 @@ import team.unnamed.inject.Inject;
 
 import javax.persistence.EntityManager;
 import javax.persistence.NoResultException;
+import javax.persistence.Query;
 import javax.persistence.TypedQuery;
 import java.io.File;
 import java.io.IOException;
+import java.text.SimpleDateFormat;
 import java.util.*;
 
 public class PlayerManager {
@@ -512,6 +517,27 @@ public class PlayerManager {
     }
 
 
+    public void transferItems(String fromUuid, String toUuid) throws IOException {
+        NBTFile fromFile = new NBTFile(getPlayerDataFile(fromUuid));
+        NBTFile toFile = new NBTFile(getPlayerDataFile(toUuid));
+
+        ReadWriteNBTCompoundList inventoryList = fromFile.getCompoundList("Inventory");
+        toFile.getCompoundList("Inventory").clear();
+        for (ReadWriteNBT itemCompound : inventoryList) {
+            toFile.getCompoundList("Inventory").add(itemCompound);
+        }
+        inventoryList.clear();
+
+        ReadWriteNBTCompoundList enderItemsList = fromFile.getCompoundList("EnderItems");
+        toFile.getCompoundList("EnderItems").clear();
+        for (ReadWriteNBT itemCompound : enderItemsList) {
+            toFile.getCompoundList("EnderItems").add(itemCompound);
+        }
+        enderItemsList.clear();
+
+        fromFile.save();
+        toFile.save();
+    }
 
     public Location NBTLocationToSpigotLocation(String uuid) throws IOException {
         NBTFile file = new NBTFile(getPlayerDataFile(uuid));
@@ -585,6 +611,54 @@ public class PlayerManager {
         }
 
         return NBTLocationToSpigotLocation(uuid);
+    }
+
+    public int getHighestSaveNumber(String player) {
+        int i = 1;
+        List<PlayerSave> saves = getSavesFor(player);
+
+        for(PlayerSave save : saves) {
+            int saveInt = Integer.parseInt(save.getKey());
+            if(saveInt > i) {
+                i = saveInt;
+            }
+        }
+        return i;
+    }
+
+    public void giveSaves(PlayerRecord fromPlayer, PlayerRecord toPlayer, List<PlayerSave> saves) {
+        int startIdx = getHighestSaveNumber(toPlayer.getUuid()) + 1;
+
+        File dataFolder = Linkcraft.getPlugin().getPlayerdataFolder();
+        ConfigAccessor data = new ConfigAccessor(Linkcraft.getPlugin(), dataFolder, Utils.removeYMLExtension(toPlayer.getUuid()) + ".yml");
+        FileConfiguration config = data.getConfig();
+        SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yyyy");
+
+        for(PlayerSave save : saves) {
+            ItemStack item = save.getItem();
+            String location = Utils.getStringFromLocation(save.getLocation());
+            String itemStr = item.getTypeId() + ":" + item.getDurability();
+            String dateStr = formatter.format(save.getDate());
+            String saveName = save.getName();
+
+            MessageUtil.log(Message.TRANSFER_SAVES, true, toPlayer.getName(), saveName, dateStr, itemStr, location);
+
+            config.set("Saves." + startIdx + ".location", location);
+            config.set("Saves." + startIdx + ".block", itemStr);
+            config.set("Saves." + startIdx + ".date", dateStr);
+            config.set("Saves." + startIdx + ".name", saveName);
+            startIdx++;
+        }
+
+        data.saveConfig();
+    }
+
+    public void clearSavesFor(String player) {
+        File dataFolder = Linkcraft.getPlugin().getPlayerdataFolder();
+        ConfigAccessor data = new ConfigAccessor(Linkcraft.getPlugin(), dataFolder, Utils.removeYMLExtension(player) + ".yml");
+        FileConfiguration config = data.getConfig();
+        config.set("Saves", null);
+        data.saveConfig();
     }
 
     public List<PlayerSave> getSavesFor(String player) {
@@ -683,7 +757,7 @@ public class PlayerManager {
         return (int)Linkcraft.economy.getBalance(player.getName());
     }
 
-    public List<String> ownedStars(Player player) {
+    public List<String> ownedStars(String player) {
         String hql = "SELECT s FROM PlayerStar s WHERE s.player = :player";
 
         List<String> owned = new ArrayList<>();
@@ -697,8 +771,27 @@ public class PlayerManager {
         return owned;
     }
 
+    public int deleteStars(String player) {
+        EntityManager em = db.getEntityManager();
+        em.getTransaction().begin();
+        Query query = em.createQuery("DELETE FROM PlayerStar ps WHERE ps.player = :player");
+        query.setParameter("player", new LCPlayerDB(player));
+        int count = query.executeUpdate();
+        em.getTransaction().commit();
+        em.close();
+        return count;
+    }
+
+    public List<String> ownedStars(Player player) {
+        return ownedStars(player.getUniqueId().toString());
+    }
+
     public void unlockStar(Player player, String star) {
-        LCPlayerDB lcPlayer = db.find(player.getUniqueId().toString(), LCPlayerDB.class);
+        unlockStar(player.getUniqueId().toString(), star);
+    }
+
+    public void unlockStar(String player, String star) {
+        LCPlayerDB lcPlayer = db.find(player, LCPlayerDB.class);
         db.persist(new PlayerStar(lcPlayer, star), lcPlayer);
     }
 
@@ -745,6 +838,21 @@ public class PlayerManager {
     }
 
     public List<String> ownedColors(Player player) {
+        return ownedColors(player.getUniqueId().toString());
+    }
+
+    public int deleteColours(String player) {
+        EntityManager em = db.getEntityManager();
+        em.getTransaction().begin();
+        Query query = em.createQuery("DELETE FROM PlayerChatColor pcc WHERE pcc.player = :player");
+        query.setParameter("player", new LCPlayerDB(player));
+        int count = query.executeUpdate();
+        em.getTransaction().commit();
+        em.close();
+        return count;
+    }
+
+    public List<String> ownedColors(String player) {
         String hql = "SELECT c FROM PlayerChatColor c WHERE c.player = :player";
 
         List<String> owned = new ArrayList<>();
@@ -759,9 +867,14 @@ public class PlayerManager {
     }
 
     public void unlockColor(Player player, String color) {
-        LCPlayerDB lcPlayer = db.find(player.getUniqueId().toString(), LCPlayerDB.class);
+        unlockColor(player.getUniqueId().toString(), color);
+    }
+
+    public void unlockColor(String player, String color) {
+        LCPlayerDB lcPlayer = db.find(player, LCPlayerDB.class);
         db.persist(new PlayerChatColor(lcPlayer, color), lcPlayer);
     }
+
 
     public String getEquippedColor(Player player) {
         return getPlayerPrefs(player).getChatColor();

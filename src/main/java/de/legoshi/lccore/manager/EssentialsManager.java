@@ -2,12 +2,11 @@ package de.legoshi.lccore.manager;
 
 import com.earth2me.essentials.Essentials;
 import com.earth2me.essentials.User;
-import com.earth2me.essentials.commands.WarpNotFoundException;
-import net.ess3.api.InvalidWorldException;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -28,6 +27,22 @@ public class EssentialsManager {
                 .map(Object::toString)
                 .collect(Collectors.toList())
                 : new ArrayList<>(ess.getWarps().getList().stream().map(Object::toString).collect(Collectors.toList()));
+    }
+
+    public double getPp(String username) {
+        Essentials ess = getEssentials();
+        User user = ess.getOfflineUser(username);
+        return user.getMoney().longValue();
+    }
+
+    public void setPp(String username, double pp) {
+        Essentials ess = getEssentials();
+        User user = ess.getOfflineUser(username);
+        try {
+            user.setMoney(BigDecimal.valueOf(pp));
+        } catch (Exception ignored) {
+
+        }
     }
 
     public boolean isValidWarp(String warpName) {

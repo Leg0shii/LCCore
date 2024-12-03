@@ -31,4 +31,5 @@ public enum MessageType {
     SHOP_ERROR,
     SETTINGS,
     SETTINGS_ERROR,
+    TRANSFER
 }

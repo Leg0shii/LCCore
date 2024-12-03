@@ -3,7 +3,9 @@ package de.legoshi.lccore.manager;
 import de.legoshi.lccore.Linkcraft;
 import de.legoshi.lccore.database.DBManager;
 import de.legoshi.lccore.database.composite.PlayerCompletionId;
+import de.legoshi.lccore.database.models.LCLocation;
 import de.legoshi.lccore.database.models.LCPlayerDB;
+import de.legoshi.lccore.database.models.PlayerCheckpoint;
 import de.legoshi.lccore.database.models.PlayerCompletion;
 import de.legoshi.lccore.menu.maps.LCMap;
 import de.legoshi.lccore.player.PlayerRecord;
@@ -23,6 +25,7 @@ import org.yaml.snakeyaml.Yaml;
 import team.unnamed.inject.Inject;
 
 import javax.persistence.EntityManager;
+import javax.persistence.Query;
 import javax.persistence.TypedQuery;
 import java.io.File;
 import java.io.FileWriter;
@@ -655,6 +658,70 @@ public class MapManager {
         }
         return foundMaps;
     }
+
+    public int clearCompletionData(String uuid) {
+        EntityManager em = db.getEntityManager();
+        em.getTransaction().begin();
+        Query query = em.createQuery("DELETE FROM PlayerCompletion pc WHERE pc.player = :player");
+        query.setParameter("player", new LCPlayerDB(uuid));
+        int count = query.executeUpdate();
+        em.getTransaction().commit();
+        em.close();
+        return count;
+    }
+
+    public void deletePlayerCheckpoints(String uuid) {
+        List<PlayerCheckpoint> checkpoints = getPlayerCheckpoints(uuid);
+        for(PlayerCheckpoint checkpoint : checkpoints) {
+            deleteCheckpoint(checkpoint);
+        }
+    }
+
+    public void deleteCheckpoint(PlayerCheckpoint checkpoint) {
+        LCLocation lcLocation = checkpoint.getLocation();
+        checkpoint.setLocation(null);
+        db.update(checkpoint);
+        db.delete(lcLocation);
+        db.delete(checkpoint);
+    }
+
+    public List<PlayerCheckpoint> getPlayerCheckpoints(String uuid) {
+        EntityManager em = db.getEntityManager();
+        em.getTransaction().begin();
+
+        String hql = "SELECT p FROM PlayerCheckpoint p " +
+                "WHERE p.player = :player";
+        TypedQuery<PlayerCheckpoint> query = em.createQuery(hql, PlayerCheckpoint.class);
+
+        List<PlayerCheckpoint> playerCheckpoints;
+        query.setParameter("player", new LCPlayerDB(uuid));
+        playerCheckpoints = query.getResultList();
+        em.close();
+
+        return playerCheckpoints;
+    }
+
+    public Map<String, PlayerCheckpoint> getPlayerCheckpointMap(String uuid) {
+        EntityManager em = db.getEntityManager();
+        em.getTransaction().begin();
+
+        String hql = "SELECT p FROM PlayerCheckpoint p " +
+                "WHERE p.player = :player";
+        TypedQuery<PlayerCheckpoint> query = em.createQuery(hql, PlayerCheckpoint.class);
+
+        Map<String, PlayerCheckpoint> playerCheckpointMap = new HashMap<>();
+        List<PlayerCheckpoint> playerCheckpoints;
+        query.setParameter("player", new LCPlayerDB(uuid));
+        playerCheckpoints = query.getResultList();
+
+        for(PlayerCheckpoint playerCheckpoint : playerCheckpoints) {
+            playerCheckpointMap.put(playerCheckpoint.getCheckpointMap(), playerCheckpoint);
+        }
+        em.close();
+
+        return playerCheckpointMap;
+    }
+
 
 
     public List<MapCompletedDTO> getMapLBData(String mapId) {

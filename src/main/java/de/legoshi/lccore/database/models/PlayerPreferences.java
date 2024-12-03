@@ -79,6 +79,27 @@ public class PlayerPreferences implements Identifiable<String> {
         this.id = player;
     }
 
+    public PlayerPreferences(PlayerPreferences other) {
+        this.id = other.id;
+        this.tag = other.tag;
+        this.star = other.star;
+        this.chatColor = other.chatColor;
+        this.mazeDisplay = other.mazeDisplay;
+        this.wolfDisplay = other.wolfDisplay;
+        this.bonusDisplay = other.bonusDisplay;
+        this.magicChatFormat = other.magicChatFormat;
+        this.boldChatFormat = other.boldChatFormat;
+        this.strikeChatFormat = other.strikeChatFormat;
+        this.underlineChatFormat = other.underlineChatFormat;
+        this.italicChatFormat = other.italicChatFormat;
+        this.boldNameFormat = other.boldNameFormat;
+        this.strikeNameFormat = other.strikeNameFormat;
+        this.underlineNameFormat = other.underlineNameFormat;
+        this.italicNameFormat = other.italicNameFormat;
+        this.practiceHotbarPosition = other.practiceHotbarPosition;
+        this.oldPractice = other.oldPractice;
+    }
+
     public String getChatFormats() {
         StringBuilder sb = new StringBuilder();
 

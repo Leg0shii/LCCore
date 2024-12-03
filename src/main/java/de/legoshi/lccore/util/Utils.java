@@ -1,7 +1,12 @@
 package de.legoshi.lccore.util;
 
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import de.legoshi.lccore.Linkcraft;
+import de.legoshi.lccore.player.PlayerRecord;
+import de.legoshi.lccore.util.message.Message;
+import de.legoshi.lccore.util.message.MessageUtil;
 import github.scarsz.discordsrv.DiscordSRV;
 import me.fixeddev.commandflow.stack.ArgumentStack;
 import org.bukkit.*;
@@ -18,6 +23,7 @@ import org.bukkit.material.Step;
 import org.bukkit.material.WoodenStep;
 
 import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -326,6 +332,88 @@ public class Utils {
         }
 
         return message;
+    }
+
+    public static void mergeStatistics(PlayerRecord from, PlayerRecord to) {
+        String world = Linkcraft.getPlugin().getConfig().getString(Constants.DEFAULT_WORLD);
+        if(world == null) {
+            return;
+        }
+        Map<String, Integer> fromMap = new HashMap<>();
+        Map<String, Integer> toMap = new HashMap<>();
+        Map<String, Integer> resultMap = new HashMap<>();
+
+        try(FileReader reader = new FileReader(world + "/stats/" + from.getUuid() + ".json")) {
+            JsonParser parser = new JsonParser();
+            JsonObject fromJson = parser.parse(reader).getAsJsonObject();
+
+            for(Map.Entry<String, JsonElement> fromEntry : fromJson.entrySet()) {
+                JsonElement element = fromEntry.getValue();
+                if (element != null && element.isJsonPrimitive() && element.getAsJsonPrimitive().isNumber()) {
+                    fromMap.put(fromEntry.getKey(), element.getAsInt());
+                }
+            }
+        } catch (IOException e) {
+            return;
+        }
+
+        try(FileReader reader = new FileReader(world + "/stats/" + to.getUuid() + ".json")) {
+            JsonParser parser = new JsonParser();
+            JsonObject toJson = parser.parse(reader).getAsJsonObject();
+
+            for(Map.Entry<String, JsonElement> toEntry : toJson.entrySet()) {
+                JsonElement element = toEntry.getValue();
+                if (element != null && element.isJsonPrimitive() && element.getAsJsonPrimitive().isNumber()) {
+                    toMap.put(toEntry.getKey(), element.getAsInt());
+                }
+            }
+        } catch (IOException e) {
+            return;
+        }
+
+        for(Map.Entry<String, Integer> fromEntry : fromMap.entrySet()) {
+            Integer val = toMap.get(fromEntry.getKey());
+            Integer displayVal = val != null ? val : 0;
+            Integer fromVal = fromEntry.getValue();
+            Integer result = fromVal;
+
+            if(val != null) {
+                result += val;
+            }
+
+            MessageUtil.log(Message.TRANSFER_STAT, true, fromEntry.getKey(), from.getName(), fromVal, to.getName(), displayVal, result);
+            resultMap.put(fromEntry.getKey(), result);
+        }
+
+        try(FileReader reader = new FileReader(world + "/stats/" + to.getUuid() + ".json")) {
+            JsonParser parser = new JsonParser();
+            JsonObject resultJson = parser.parse(reader).getAsJsonObject();
+
+            for(Map.Entry<String, Integer> resultEntry : resultMap.entrySet()) {
+                resultJson.addProperty(resultEntry.getKey(), resultEntry.getValue());
+            }
+
+            try (FileWriter writer = new FileWriter(world + "/stats/" + to.getUuid() + ".json")) {
+                writer.write(resultJson.toString());
+            }
+        } catch (IOException e) {
+            return;
+        }
+
+        try(FileReader reader = new FileReader(world + "/stats/" + from.getUuid() + ".json")) {
+            JsonParser parser = new JsonParser();
+            JsonObject fromJson = parser.parse(reader).getAsJsonObject();
+
+            for(Map.Entry<String, Integer> fromEntry : fromMap.entrySet()) {
+                MessageUtil.log(Message.DELETE_STAT, true, from.getName(), fromEntry.getKey());
+                fromJson.addProperty(fromEntry.getKey(), 0);
+            }
+
+            try (FileWriter writer = new FileWriter(world + "/stats/" + from.getUuid() + ".json")) {
+                writer.write(fromJson.toString());
+            }
+        } catch (IOException e) {
+        }
     }
 
     public static int getStatistic(OfflinePlayer player, String key) {
