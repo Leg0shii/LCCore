@@ -19,6 +19,7 @@ import org.bukkit.ChatColor;
 import org.bukkit.Sound;
 import org.bukkit.Statistic;
 import org.bukkit.entity.Player;
+import org.bukkit.scheduler.BukkitTask;
 import team.unnamed.inject.Inject;
 import team.unnamed.inject.Injector;
 
@@ -43,6 +44,7 @@ public class ChatManager {
     private final Map<String, List<String>> ignores = new HashMap<>();
     private final Map<String, GuiMessage> captureGuiMessages = new HashMap<>();
     @Getter @Setter private boolean globalChatMuted = false;
+    private final Map<String, BukkitTask> removeGuiMessageAfterDelayTasks = new HashMap<>();
 
 
     public void initPapiMap() {
@@ -657,13 +659,22 @@ public class ChatManager {
     }
 
     public void removeGuiMessageListenerAfterDelay(Player player, int seconds) {
-        Bukkit.getScheduler().runTaskLater(Linkcraft.getPlugin(), () -> {
-            if(isNextMessageGuiMessage(player)) {
-                captureGuiMessages.remove(player.getUniqueId().toString());
+        String playerId = player.getUniqueId().toString();
+
+        if (removeGuiMessageAfterDelayTasks.containsKey(playerId)) {
+            BukkitTask oldTask = removeGuiMessageAfterDelayTasks.get(playerId);
+            oldTask.cancel();
+        }
+
+        BukkitTask newTask = Bukkit.getScheduler().runTaskLater(Linkcraft.getPlugin(), () -> {
+            if (isNextMessageGuiMessage(player)) {
+                captureGuiMessages.remove(playerId);
                 if (player.isOnline()) {
                     MessageUtil.send(Message.CAPTURE_TIMED_OUT, player);
                 }
             }
         }, seconds * 20L);
+
+        removeGuiMessageAfterDelayTasks.put(playerId, newTask);
     }
 }
