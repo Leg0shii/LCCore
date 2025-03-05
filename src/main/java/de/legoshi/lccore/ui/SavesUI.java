@@ -104,6 +104,7 @@ public class SavesUI {
             }
 
             String locationString = playerDataConfig.getString("Saves." + keys.toArray()[slot + (page - 1) * 36] + ".location");
+            MessageUtil.log(p.getName() + " used their save from: : " + Utils.getStringFromLocation(p.getLocation()), true);
             MessageUtil.log(p.getName() + " used their save to teleport to: " + locationString, true);
             final Location loc = Utils.getLocationFromString(locationString);
             loc.setY(loc.getY());

@@ -4,6 +4,7 @@ import de.legoshi.lccore.Linkcraft;
 import de.legoshi.lccore.command.flow.annotated.annotation.ReflectiveTabComplete;
 import de.legoshi.lccore.manager.EssentialsManager;
 import de.legoshi.lccore.util.Register;
+import de.legoshi.lccore.util.Utils;
 import de.legoshi.lccore.util.message.Message;
 import de.legoshi.lccore.util.message.MessageUtil;
 import me.fixeddev.commandflow.annotated.CommandClass;
@@ -23,15 +24,6 @@ public class WarpCommand implements CommandClass {
 
     @Command(names = "")
     public void warp(CommandSender sender, @ReflectiveTabComplete(clazz = EssentialsManager.class, method = "getWarpsFor", player = true) String warpName, @OptArg String playerName, @OptArg Boolean skipMapChange) {
-
-//        if(warpName == null) {
-//            if(sender instanceof Player) {
-//                Player p = (Player)sender;
-//                Bukkit.dispatchCommand()
-//            }
-//            return;
-//        }
-
         if(!essentialsManager.isValidWarp(warpName)) {
             MessageUtil.send(Message.INVALID_WARP, sender);
             return;
@@ -68,12 +60,14 @@ public class WarpCommand implements CommandClass {
                     if(skipMapChange == null || !skipMapChange) {
                         Linkcraft.fireMapChangeEvent(toTp);
                     }
+                    MessageUtil.log(toTp.getName() + " warped to " + warpName + " from: " + Utils.getStringFromLocation(toTp.getLocation()), true);
                     Linkcraft.consoleCommand("essentials:warp " + warpName + " " + toTp.getName());
                 } else {
                     MessageUtil.send(Message.IS_OFFLINE, playerSender, playerName);
                 }
             } else {
                 Linkcraft.fireMapChangeEvent(playerSender);
+                MessageUtil.log(playerSender.getName() + " warped to " + warpName + " from: " + Utils.getStringFromLocation(playerSender.getLocation()), true);
                 Linkcraft.consoleCommand("essentials:warp " + warpName + " " + playerSender.getName());
             }
         }
