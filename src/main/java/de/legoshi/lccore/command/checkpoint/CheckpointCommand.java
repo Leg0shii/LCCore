@@ -3,6 +3,7 @@ package de.legoshi.lccore.command.checkpoint;
 import de.legoshi.lccore.database.models.PlayerCheckpoint;
 import de.legoshi.lccore.manager.CheckpointManager;
 import de.legoshi.lccore.util.Register;
+import de.legoshi.lccore.util.Utils;
 import de.legoshi.lccore.util.message.Message;
 import de.legoshi.lccore.util.message.MessageUtil;
 import me.fixeddev.commandflow.annotated.CommandClass;
@@ -31,6 +32,7 @@ public class CheckpointCommand implements CommandClass {
             return;
         }
 
+        MessageUtil.log(player.getName() + " used checkpoint to " + Utils.getStringFromLocation(playerCheckpoint.getLocation().toSpigot()) + " from: " + Utils.getStringFromLocation(player.getLocation()), true);
         player.teleport(playerCheckpoint.getLocation().toSpigot());
     }
 }

@@ -4,6 +4,8 @@ import de.legoshi.lccore.Linkcraft;
 import de.legoshi.lccore.menu.GUIPane;
 import de.legoshi.lccore.menu.util.CommandConfirmationMenu;
 import de.legoshi.lccore.util.Dye;
+import de.legoshi.lccore.util.GUIAction;
+import de.legoshi.lccore.util.GUIDescriptionBuilder;
 import de.legoshi.lccore.util.MapType;
 import de.themoep.inventorygui.InventoryGui;
 import de.themoep.inventorygui.StaticGuiElement;
@@ -38,39 +40,84 @@ public class MapsMenu extends GUIPane {
     @Override
     protected void registerGuiElements() {
         StaticGuiElement bonus = new StaticGuiElement('v', new ItemStack(Material.GOLD_INGOT), click -> {
-            injector.getInstance(BonusConfirmationMenu.class).openGui(holder, current);
+            if(click.getType().isLeftClick()) {
+                injector.getInstance(BonusMapsConfirmationMenu.class).openGui(holder, current);
+            } else if(click.getType().isRightClick()) {
+                injector.getInstance(BonusConfirmationMenu.class).openGui(holder, current);
+            }
+
             return true;
-        }, "§e§lBonus Rankups");
+        }, new GUIDescriptionBuilder().raw("§e§lBonus Rankups")
+                .action(GUIAction.LEFT_CLICK, "Open Menu")
+                .action(GUIAction.RIGHT_CLICK, "Warp To Lobby")
+                .build());
 
         StaticGuiElement side = new StaticGuiElement('w', new ItemStack(Material.IRON_INGOT), click -> {
-            injector.getInstance(MapsHolder.class).openGui(holder, current, MapType.SIDE);
+            if(click.getType().isLeftClick()) {
+                injector.getInstance(MapsHolder.class).openGui(holder, current, MapType.SIDE);
+            } else if(click.getType().isRightClick()) {
+                injector.getInstance(CommandConfirmationMenu.class).openGui(holder, current, "warp parkour", "§aWarp to parkour lobby!");
+            }
             return true;
-        }, "§f§lSide Courses");
+        }, new GUIDescriptionBuilder().raw("§f§lSide Courses")
+                .action(GUIAction.LEFT_CLICK, "Open Menu")
+                .action(GUIAction.RIGHT_CLICK, "Warp To Lobby")
+                .build());
 
         StaticGuiElement main = new StaticGuiElement('z', new ItemStack(Material.DIAMOND), click -> {
-            injector.getInstance(CommandConfirmationMenu.class).openGui(holder, current, "warp rankup", "§aWarp to rankup lobby!");
+            if(click.getType().isLeftClick()) {
+                injector.getInstance(MapsHolder.class).openGui(holder, current, MapType.RANKUP);
+            } else if(click.getType().isRightClick()) {
+                injector.getInstance(CommandConfirmationMenu.class).openGui(holder, current, "warp rankup", "§aWarp to rankup lobby!");
+            }
             return true;
-        }, "§b§lMain Rankups");
+        }, new GUIDescriptionBuilder().raw("§b§lMain Rankups")
+                .action(GUIAction.LEFT_CLICK, "Open Menu")
+                .action(GUIAction.RIGHT_CLICK, "Warp To Lobby")
+                .build());
 
         StaticGuiElement segmented = new StaticGuiElement('x', new ItemStack(Material.EMERALD), click -> {
-            injector.getInstance(CommandConfirmationMenu.class).openGui(holder, current, "warp challenge", "§aWarp to challenge lobby!");
+            if (click.getType().isLeftClick()) {
+                injector.getInstance(MapsHolder.class).openGui(holder, current, MapType.CHALLENGE);
+            } else if (click.getType().isRightClick()) {
+                injector.getInstance(CommandConfirmationMenu.class).openGui(holder, current, "warp challenge", "§aWarp to challenge lobby!");
+            }
             return true;
-        }, "§a§lSegmented Challenges");
+        }, new GUIDescriptionBuilder().raw("§a§lSegmented Challenges")
+                .action(GUIAction.LEFT_CLICK, "Open Menu")
+                .action(GUIAction.RIGHT_CLICK, "Warp To Lobby")
+                .build());
 
         StaticGuiElement maze = new StaticGuiElement('y', new ItemStack(Material.REDSTONE), click -> {
-            injector.getInstance(CommandConfirmationMenu.class).openGui(holder, current, "warp maze", "§aWarp to maze lobby!");
+            if (click.getType().isLeftClick()) {
+                injector.getInstance(MapsHolder.class).openGui(holder, current, MapType.MAZE);
+            } else if (click.getType().isRightClick()) {
+                injector.getInstance(CommandConfirmationMenu.class).openGui(holder, current, "warp maze", "§aWarp to maze lobby!");
+            }
             return true;
-        }, "§c§lMaze Rankups");
+        }, new GUIDescriptionBuilder().raw("§c§lMaze Rankups")
+                .action(GUIAction.LEFT_CLICK, "Open Menu")
+                .action(GUIAction.RIGHT_CLICK, "Warp To Lobby")
+                .build());
 
         StaticGuiElement wolf = new StaticGuiElement('u', new ItemStack(Material.BONE), click -> {
-            injector.getInstance(CommandConfirmationMenu.class).openGui(holder, current, "warp wolfrankup", "§aWarp to wolf lobby!");
+            if (click.getType().isLeftClick()) {
+                injector.getInstance(MapsHolder.class).openGui(holder, current, MapType.WOLF);
+            } else if (click.getType().isRightClick()) {
+                injector.getInstance(CommandConfirmationMenu.class).openGui(holder, current, "warp wolfrankup", "§aWarp to wolf lobby!");
+            }
             return true;
-        }, "§7§lWolf Rankups");
+        }, new GUIDescriptionBuilder().raw("§7§lWolf Rankups")
+                .action(GUIAction.LEFT_CLICK, "Open Menu")
+                .action(GUIAction.RIGHT_CLICK, "Warp To Lobby")
+                .build());
 
         StaticGuiElement archived = new StaticGuiElement('a', new ItemStack(Material.BOOK), click -> {
             injector.getInstance(MapsHolder.class).openGui(holder, current, MapType.LEGACY);
             return true;
-        }, "§8§lLegacy Courses");
+        }, new GUIDescriptionBuilder().raw("§8§lLegacy Courses")
+                .action(GUIAction.LEFT_CLICK, "Open Menu")
+                .build());
 
 
         current.addElements(bonus, side, main, segmented, maze, wolf, archived);

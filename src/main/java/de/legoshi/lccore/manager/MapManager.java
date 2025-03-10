@@ -33,6 +33,7 @@ import java.io.IOException;
 import java.security.GeneralSecurityException;
 import java.util.*;
 import java.util.function.Consumer;
+import java.util.stream.Collectors;
 
 public class MapManager {
     private final static String sheetId = "1IRRRxXs0998rA2H-CF1vD6oFRAe-n-ewSF0dLOzTups";
@@ -333,6 +334,11 @@ public class MapManager {
         return new ArrayList<>(mapMap.keySet());
     }
 
+
+    public List<String> getMapTypes() {
+        return Arrays.stream(MapType.values()).map(Enum::name).collect(Collectors.toList());
+    }
+
     public Map<String, PlayerCompletion> getPlayerMapData(String uuid) {
         String hql = "SELECT c FROM PlayerCompletion c " +
                 "WHERE c.player = :player";
@@ -475,6 +481,7 @@ public class MapManager {
             case WOLF:
             case MAZE:
             case BONUS:
+            case BONUS_PRO:
             case CHALLENGE:
                 if(map.getBroadcasts() == null || map.getBroadcasts().isEmpty()) {
                     return;
@@ -581,7 +588,12 @@ public class MapManager {
             case WOLF:
                 return ConfigManager.wolfDisplay.get(map.getRank()).getDisplay();
             case BONUS:
-                return ConfigManager.bonusDisplay.get(map.getRank()).getDisplay();
+            case BONUS_PRO:
+                if(map.getRank() != null) {
+                    return ConfigManager.bonusDisplay.get(map.getRank()).getDisplay();
+                } else {
+                    return "";
+                }
             default:
                 return map.getRank() != null ? map.getRank() : "ERROR";
         }
@@ -641,6 +653,7 @@ public class MapManager {
                 break;
             case MAZE:
             case BONUS:
+            case BONUS_PRO:
             case CHALLENGE:
                 lpManager.givePermission(player, map.getRank());
                 break;

@@ -4,9 +4,12 @@ import de.legoshi.lccore.Linkcraft;
 import de.legoshi.lccore.database.DBManager;
 import de.legoshi.lccore.database.composite.PlayerCompletionId;
 import de.legoshi.lccore.database.models.PlayerCompletion;
+import de.legoshi.lccore.manager.LuckPermsManager;
 import de.legoshi.lccore.manager.MapManager;
+import de.legoshi.lccore.manager.PlayerManager;
 import de.legoshi.lccore.menu.GUIScrollablePane;
 import de.legoshi.lccore.player.PlayerRecord;
+import de.legoshi.lccore.player.display.MazeDTO;
 import de.legoshi.lccore.util.*;
 import de.legoshi.lccore.util.message.Message;
 import de.legoshi.lccore.util.message.MessageUtil;
@@ -26,6 +29,8 @@ import java.util.stream.Collectors;
 
 public class MapsHolder extends GUIScrollablePane {
     @Inject private MapManager mapManager;
+    @Inject private PlayerManager playerManager;
+    @Inject private LuckPermsManager lpManager;
     @Inject private DBManager db;
     @Inject private Injector injector;
 
@@ -83,7 +88,11 @@ public class MapsHolder extends GUIScrollablePane {
 
     private StaticGuiElement addMap(LCMap mapData) {
         String warpCommand = "warp " + mapData.getId();
+        String consoleWarpCommand = "warp " + mapData.getId() + " " + holder.getName();
+        String consoleWarpBonusCommand = "warp " + mapData.getId() + " " + holder.getName() + " true";
         PlayerCompletion completion = playerMapData.get(mapData.getId());
+        boolean isCurrentMazeRank = playerManager.getPlayer(holder).getMaze().getKey().replace(".", "").equalsIgnoreCase(mapData.getId());
+        boolean isCheckpointMap = mapData.getMapType().equals(MapType.BONUS);
         GUIDescriptionBuilder base = new GUIDescriptionBuilder().coloured(mapData.getName(), ChatColor.BOLD)
                 .header("Map Info");
                // .coloured("/" + warpCommand, ChatColor.GRAY);
@@ -92,7 +101,11 @@ public class MapsHolder extends GUIScrollablePane {
             base.raw("§c§lNo Practice");
         }
 
-        if(!mapType.equals(MapType.LEGACY)) {
+        if(mapData.getMapType().equals(MapType.MAZE) && !isCurrentMazeRank) {
+            base.raw("§c§lLocked");
+        }
+
+        if(!mapData.getMapType().equals(MapType.LEGACY) && !mapData.getMapType().equals(MapType.MAZE)) {
             base.raw("§e§lStars§r§e: " + mapData.getStar())
                     .raw("§d§lPP§r§d: " + GUIUtil.removeTrailingZeros(mapData.getPp()));
         }
@@ -132,7 +145,17 @@ public class MapsHolder extends GUIScrollablePane {
                     holder.performCommand("complete " + mapData.getId() + " " + record.getName() + " nd");
                     current.close();
                 } else {
-                    holder.performCommand(warpCommand);
+                    // TODO: move this logic to warp command???????
+                    if(isCheckpointMap) {
+                        lpManager.giveGroup(holder, "checkpoint");
+                        Linkcraft.consoleCommand("setcpmap " + mapData.getId() + " " + holder.getName());
+                        Linkcraft.consoleCommand(consoleWarpBonusCommand);
+                    }
+                    else if(isCurrentMazeRank) {
+                        Linkcraft.consoleCommand(consoleWarpCommand);
+                    } else {
+                        holder.performCommand(warpCommand);
+                    }
                     current.close();
                 }
             } else if(click.getType().isRightClick() && isOtherPlayer && canEditCompletions && playerMapData.get(mapData.getId()) != null) {
@@ -165,7 +188,7 @@ public class MapsHolder extends GUIScrollablePane {
 
     private List<LCMap> filterByType(List<LCMap> maps) {
         if(mapType == null) {
-            return maps;
+            return maps.stream().filter(map -> !map.getMapType().equals(MapType.MISC)).collect(Collectors.toList());
         }
         return maps.stream().filter(map -> map.getMapType().equals(mapType)).collect(Collectors.toList());
     }
@@ -173,6 +196,8 @@ public class MapsHolder extends GUIScrollablePane {
     private String formattedName() {
         if(mapType == null) {
             return "All";
+        } else if(mapType.equals(MapType.BONUS_PRO)) {
+            return "Bonus Pro";
         }
         return CommonUtil.capatalize(mapType.name().toLowerCase());
     }
@@ -192,7 +217,8 @@ public class MapsHolder extends GUIScrollablePane {
 
         GuiElementGroup group = new GuiElementGroup('g');
         for (LCMap map : paginatedList) {
-            if(!holder.hasPermission("essentials.warps." + map.getId())) {
+            boolean isMazeOrBonus = map.getMapType() != null && (map.getMapType().equals(MapType.MAZE) || map.getMapType().equals(MapType.BONUS));
+            if(!isMazeOrBonus && !holder.hasPermission("essentials.warps." + map.getId())) {
                 continue;
             }
             group.addElement(addMap(map));

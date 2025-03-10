@@ -2,6 +2,7 @@ package de.legoshi.lccore.command;
 
 import de.legoshi.lccore.Linkcraft;
 import de.legoshi.lccore.util.Register;
+import de.legoshi.lccore.util.Utils;
 import de.legoshi.lccore.util.message.MessageUtil;
 import me.fixeddev.commandflow.annotated.CommandClass;
 import me.fixeddev.commandflow.annotated.annotation.Command;
@@ -35,10 +36,12 @@ public class SpawnCommand implements CommandClass {
                 Player toTp = Bukkit.getPlayer(playerName);
                 if(toTp != null) {
                     Linkcraft.fireMapChangeEvent(toTp);
+                    MessageUtil.log(toTp.getName() + " warped to spawn from: " + Utils.getStringFromLocation(toTp.getLocation()), true);
                     Linkcraft.consoleCommand("essentialsspawn:spawn " + toTp.getName());
                 }
             } else {
                 Linkcraft.fireMapChangeEvent(playerSender);
+                MessageUtil.log(playerSender.getName() + " warped to spawn from: " + Utils.getStringFromLocation(playerSender.getLocation()), true);
                 Linkcraft.consoleCommand("essentialsspawn:spawn " + playerSender.getName());
             }
         }

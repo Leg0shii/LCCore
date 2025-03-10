@@ -46,8 +46,12 @@ public class CoordinatesCommand implements CommandClass {
         MessageUtil.send("§6X: §f" + trimTrailingZeros(x, finalPrecision), player, false);
         MessageUtil.send("§6Y: §f" + trimTrailingZeros(y, finalPrecision), player, false);
         MessageUtil.send("§6Z: §f" + trimTrailingZeros(z, finalPrecision), player, false);
-        MessageUtil.send("§6F: §f" + trimTrailingZeros(f, finalPrecision), player, false);
+        MessageUtil.send("§6F: §f" + trimTrailingZeros(normalizeAngle(f), finalPrecision), player, false);
 
+    }
+
+    public float normalizeAngle(float reported) {
+        return ((reported + 180) % 360 + 360) % 360 - 180;
     }
 
     private String trimTrailingZeros(double value, int precision) {

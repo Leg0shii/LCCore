@@ -2,6 +2,7 @@ package de.legoshi.lccore.command.maps;
 
 import de.legoshi.lccore.Linkcraft;
 import de.legoshi.lccore.command.flow.annotated.annotation.ReflectiveTabComplete;
+import de.legoshi.lccore.manager.MapManager;
 import de.legoshi.lccore.manager.PlayerManager;
 import de.legoshi.lccore.menu.maps.MapsHolder;
 import de.legoshi.lccore.player.PlayerRecord;
@@ -11,6 +12,7 @@ import de.legoshi.lccore.util.message.Message;
 import de.legoshi.lccore.util.message.MessageUtil;
 import me.fixeddev.commandflow.annotated.CommandClass;
 import me.fixeddev.commandflow.annotated.annotation.Command;
+import me.fixeddev.commandflow.annotated.annotation.OptArg;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import team.unnamed.inject.Inject;
@@ -21,11 +23,13 @@ import team.unnamed.inject.Injector;
 public class CheckCompletionsCommand implements CommandClass {
 
     @Inject private PlayerManager playerManager;
+    @Inject private MapManager mapManager;
     @Inject private Injector injector;
 
     @Command(names = "")
     public void checkCompletions(CommandSender sender,
-                                 @ReflectiveTabComplete(clazz = PlayerManager.class, method = "getPossibleNames", player = true) String player) {
+                                 @ReflectiveTabComplete(clazz = PlayerManager.class, method = "getPossibleNames", player = true) String player,
+                                 @OptArg @ReflectiveTabComplete(clazz = MapManager.class, method = "getMapTypes") String type) {
 
         if (!(sender instanceof Player)) {
             MessageUtil.send(Message.NOT_A_PLAYER, sender);
@@ -34,6 +38,11 @@ public class CheckCompletionsCommand implements CommandClass {
 
         Player victor = playerManager.playerByName(player);
         Linkcraft.async(() -> {
+            MapType mapType = null;
+            try {
+                mapType = MapType.valueOf(type);
+            } catch (Exception ignored) {}
+
             PlayerRecord record = playerManager.getPlayerRecord(victor, player);
             if(record == null) {
                 MessageUtil.send(Message.NEVER_JOINED, sender, player);
@@ -41,7 +50,7 @@ public class CheckCompletionsCommand implements CommandClass {
             }
 
             Player playerSender = (Player)sender;
-            injector.getInstance(MapsHolder.class).openGui(playerSender, null, record, MapType.SIDE);
+            injector.getInstance(MapsHolder.class).openGui(playerSender, null, record, mapType);
         });
     }
 }
