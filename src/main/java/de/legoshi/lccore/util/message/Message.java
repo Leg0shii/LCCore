@@ -72,6 +72,7 @@ public enum Message {
     PRACTICE_LOCATION_TP("§aTeleported to {0}'s practice location", MessageType.PLAYER_ERROR),
     CURRENT_LOC("§6{0}: §f{1}", MessageType.PLAYER),
     CURRENT_LOC_NOT_IN_RAGE("§cPrecision must be between 0 and 20!", MessageType.PLAYER_ERROR),
+    DEPTH_STRIDER("§cDepth strider boots are banned!", MessageType.PLAYER_ERROR),
 
     // Player Error
     USAGE("§cUsage: /{0} {1}", MessageType.PLAYER_ERROR),
