@@ -475,3 +475,5 @@ staff:
   admin:
     display: §3[§bStaff§3]
     position: 3
+general:
+  discord-minimum-star-ping: 4

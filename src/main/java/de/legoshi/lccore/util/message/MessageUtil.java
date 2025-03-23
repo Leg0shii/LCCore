@@ -2,10 +2,14 @@ package de.legoshi.lccore.util.message;
 
 import de.legoshi.lccore.Linkcraft;
 import de.legoshi.lccore.manager.ConfigManager;
+import de.legoshi.lccore.menu.maps.LCMap;
+import de.legoshi.lccore.player.PlayerRecord;
 import de.legoshi.lccore.util.Audio;
 import de.legoshi.lccore.util.CommonUtil;
 import de.legoshi.lccore.util.GUIUtil;
+import de.legoshi.lccore.util.MapType;
 import github.scarsz.discordsrv.DiscordSRV;
+import github.scarsz.discordsrv.dependencies.jda.api.entities.MessageEmbed;
 import github.scarsz.discordsrv.dependencies.jda.api.entities.TextChannel;
 import github.scarsz.discordsrv.dependencies.jda.api.requests.restaction.MessageAction;
 import net.kyori.text.Component;
@@ -18,7 +22,11 @@ import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
+import org.jetbrains.annotations.NotNull;
 
+import java.math.BigDecimal;
+import java.time.OffsetDateTime;
+import java.time.ZoneOffset;
 import java.util.Collection;
 import java.util.logging.Level;
 
@@ -167,6 +175,74 @@ public interface MessageUtil {
                 action.submit();
             }
         });
+    }
+
+    static void discordMapCompletion(PlayerRecord record, LCMap map, String channel, long completionCount) {
+        if(Linkcraft.getPlugin().getServer().getPluginManager().getPlugin("DiscordSRV") == null) {
+            return;
+        }
+
+        Linkcraft.async(() -> {
+            int mapDifficultyColor = 1;
+
+            if(map.getStar() < 3) {
+                mapDifficultyColor = 5635925;
+            } else if(map.getStar() < 5) {
+                mapDifficultyColor = 16755200;
+            } else if(map.getStar() < 7) {
+                mapDifficultyColor = 16733525;
+            } else if(map.getStar() < 9) {
+                mapDifficultyColor = 11141120;
+            } else {
+                mapDifficultyColor = 11141290;
+            }
+
+            TextChannel textChannel = DiscordSRV.getPlugin().getOptionalTextChannel(channel);
+            if(textChannel != null) {
+                MessageEmbed test = new MessageEmbed(null,
+                        record.getName() + " completed " + map.getName() + " (#" + completionCount + ")",
+                        getMapDescription(map),
+                        null,
+                        OffsetDateTime.now(ZoneOffset.UTC),
+                        mapDifficultyColor,
+                        null,
+                        null,
+                        null,
+                        null,
+                        null,
+                        null,
+                        null
+                        );
+
+                MessageAction message = textChannel.sendMessageEmbeds(test);
+                message.submit();
+            }
+            Double minimumPingStar = ConfigManager.getGeneralDouble("discord-minimum-star-ping");
+            if(!map.getMapType().equals(MapType.LEGACY) && map.getStar() >= (minimumPingStar != null ? minimumPingStar : 4)) {
+                TextChannel textChannel2 = DiscordSRV.getPlugin().getOptionalTextChannel(channel);
+                if (textChannel != null) {
+                    // @completions Discord Role
+                    MessageAction action = textChannel2.sendMessage("<@&1352800315358838794>");
+                    action.submit();
+                }
+            }
+        });
+    }
+
+    static String getMapDescription(LCMap map) {
+        String description = "";
+        if(map.getNoPrac() != null && map.getNoPrac()) {
+            description += "No Practice\n";
+        }
+
+        if(!map.getMapType().equals(MapType.LEGACY) && !map.getMapType().equals(MapType.MAZE)) {
+            description += "Stars: " + BigDecimal.valueOf(map.getStar()).stripTrailingZeros().toPlainString() + "\n";
+            description += "PP: " + BigDecimal.valueOf(map.getPp()).stripTrailingZeros().toPlainString() + "\n";
+        }
+
+        description += "Length: " + map.getLength() + "\n";
+        description += "Creator: " + map.getCreator() + "\n";
+        return description;
     }
 
     static String processMessage(Object send) {

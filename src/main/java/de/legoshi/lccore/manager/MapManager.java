@@ -25,6 +25,7 @@ import org.yaml.snakeyaml.Yaml;
 import team.unnamed.inject.Inject;
 
 import javax.persistence.EntityManager;
+import javax.persistence.NoResultException;
 import javax.persistence.Query;
 import javax.persistence.TypedQuery;
 import java.io.File;
@@ -337,6 +338,30 @@ public class MapManager {
 
     public List<String> getMapTypes() {
         return Arrays.stream(MapType.values()).map(Enum::name).collect(Collectors.toList());
+    }
+
+    public long getMapCompletionCount(LCMap map) {
+        String hql = "SELECT SUM(c.completions) FROM PlayerCompletion c " +
+                "WHERE c.map = :map";
+
+
+        EntityManager em = db.getEntityManager();
+        TypedQuery<Long> query = em.createQuery(hql, Long.class);
+        query.setParameter("map", map.getId());
+
+        Long result;
+
+        try {
+            result = query.getSingleResult();
+            if(result == null) {
+                result = 0L;
+            }
+        } catch (NoResultException e) {
+            result = 0L;
+        }
+
+        em.close();
+        return result;
     }
 
     public Map<String, PlayerCompletion> getPlayerMapData(String uuid) {

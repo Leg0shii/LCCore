@@ -32,6 +32,7 @@ public class ConfigManager {
     public static Map<String, CommandShopDTO> commandShopMap = new HashMap<>();
     public static Map<String, String> modIdBlacklist = new HashMap<>();
     public static Map<String, PracticeItem> practiceItems = new HashMap<>();
+    public static Map<String, String> general = new HashMap<>();
     public static final Map<Message, String> messages = new HashMap<>();
     public static final HashSet<String> keys = new HashSet<>();
     public static String host;
@@ -41,6 +42,18 @@ public class ConfigManager {
     public static String database;
     @Inject private MapManager mapManager;
     @Inject private AchievementManager achievementManager;
+
+    public static Double getGeneralDouble(String key) {
+        try {
+            return Double.parseDouble(general.get(key));
+        } catch (Exception e) {
+            return null;
+        }
+    }
+
+    public static String getGeneralString(String key) {
+        return general.get(key);
+    }
 
     public void init() {
         loadConfigs(true);
@@ -166,6 +179,7 @@ public class ConfigManager {
         staffDisplay = new HashMap<>();
         chatColorsMap = new HashMap<>();
         commandShopMap = new HashMap<>();
+        general = new HashMap<>();
         FileConfiguration lcData = new ConfigAccessor(Linkcraft.getPlugin(), "lcdata.yml").getConfig();
         loadRankSection(lcData.getConfigurationSection("ranks"));
         loadBonusSection(lcData.getConfigurationSection("bonus"));
@@ -176,6 +190,7 @@ public class ConfigManager {
         loadChatColorSection(lcData.getConfigurationSection("chatcolor"));
         loadCommandShopSection(lcData.getConfigurationSection("commands"));
         loadPracticeItems();
+        loadGeneralSection(lcData.getConfigurationSection("general"));
 
 
         addToSet(ranksDisplay, "group.");
@@ -369,5 +384,13 @@ public class ConfigManager {
         practiceItems.put("default", defaultPracticeItem);
         practiceItems.put("hpk", hpkPracticeItem);
         practiceItems.put("pku", pkuPracticeItem);
+    }
+
+    private void loadGeneralSection(ConfigurationSection generalSection) {
+        if(generalSection != null) {
+            for(String key : generalSection.getKeys(false)) {
+                general.put(key, generalSection.getString(key));
+            }
+        }
     }
 }

@@ -77,7 +77,7 @@ public class CompleteCommand implements CommandClass {
                 db.persist(completion, lcPlayerDB);
             }
             Linkcraft.consoleCommand("ban " + victor.getName() + " -s " + "§4You beat a hard map! §7Notify staff on §9Discord§r");
-            MessageUtil.discord(record.getName() + " received a ban for completing: " + map, "completions");
+            MessageUtil.discord(record.getName() + " received a ban for completing: " + map, "completion-bans");
             return;
         }
 
@@ -108,7 +108,8 @@ public class CompleteCommand implements CommandClass {
             db.update(playerCompletion);
             MessageUtil.send(Message.MAP_NEW_COMPLETION, sender, map, record.getName());
         }
-        MessageUtil.discord(record.getName() + " completed: " + map, "completions");
+
+        MessageUtil.discordMapCompletion(record, lcMap, "completions", mapManager.getMapCompletionCount(lcMap));
 
         mapManager.giveRewards(victor, lcMap);
     }
