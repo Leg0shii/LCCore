@@ -477,3 +477,133 @@ staff:
     position: 3
 general:
   discord-minimum-star-ping: 4
+help:
+  commands:
+    - name: /practice
+      description: "&9Gives you an item that allows you to return to the location where you ran the command. Use /unpractice to get out of practice mode"
+      aliases: /prac
+    - name: /unpractice
+      description: "&9Takes you out of practice mode and returns you to your original location where you used /practice"
+      aliases: /unprac
+    - name: /save [name]
+      description: "&9Opens a menu that allows you to save your current location in a map. Useful for being able to go play something else. Use /saves to access created saves"
+    - name: /saves
+      description: "&9Opens a menu that teleports you to previously created save locations"
+    - name: /pp [player]
+      description: "&9This allows you to check your own or another player's performance point balance."
+    - name: /warp <map>
+      description: "&9Warp you to a map of your choice. Use tab completion for suggestions!"
+    - name: /chal
+      description: "&9This command opens the challenge warp menu."
+    - name: /maze
+      description: "&9This command opens the maze warp menu."
+    - name: /bonus
+      description: "&9This command opens the bonus warp menu."
+    - name: /pptop
+      description: "&9Displays a server-wide performance point leaderboard."
+    - name: /enderchest
+      description: "&9Opens a portable enderchest used for storing items."
+      aliases: /echest
+    - name: /hat
+      description: "&9Puts your currently held item into the helmet armor slot. Renderable blocks will be visible on your character model."
+    - name: /mail [read|clear|send]
+      description: "&9Allows you to read, clear, and send offline messages to other players. Unlock the ability to use /mail send in /shop!"
+    - name: /hideall
+      description: "&9Hides all players from your view, allowing you to play on the same map as other players without having them block your vision."
+    - name: /showall
+      description: "&9Shows all players in your view, making them visible again if you had previously used /hideall or /hide."
+    - name: /hide <player>
+      description: "&9Hides a specific player from your view. Yes, this command works on yourself but won't do anything. Don't blame me."
+    - name: /show <player>
+      description: "&9Shows a specific player in your view if they had previously been hidden with /hideall or /hide."
+    - name: /chatcolor
+      description: "&9Opens a menu allowing you to set your default text color for your messages in chat. Unlock colors in /shop!"
+    - name: /checkcompletions <player> [mode]
+      description: "&9Allows you to check what maps a player has completed with an optional filter for gamemode. Valid modes are RANKUP, SIDE, BONUS, BONUS_PRO, WOLF, CHALLENGE, MAZE, MISC, LEGACY. Sorry, this is not very user-friendly; I forgot players had access to this command when adding the mode feature. Just use tab complete!!!"
+    - name: /commands
+      description: "&9Opens this menu. This description was quite unnecessary..."
+    - name: /help
+      description: "&9Opens the general help menu. You likely used this to get here."
+    - name: /chat <channel>
+      description: "&9Switches where your messages are sent to. Channel options are all, staff, party. Each of these options may also be respectively replaced with their first character a, s, or p."
+      aliases: /ch
+    - name: /maps
+      description: "&9Opens a menu that allows you to view all playable maps on the server as well as your completion status and map information."
+    - name: /allchat <message>
+      description: "&9Sends a message directly to the all chat channel regardless of your current chat channel."
+      aliases: /ac
+    - name: /partychat <message>
+      description: "&9Sends a message directly to the party chat channel regardless of your current chat channel."
+      aliases: /pc
+    - name: /staffchat <message>
+      description: "&9Sends a message directly to the staff chat channel regardless of your current chat channel."
+      aliases: /sc
+    - name: /coordinates [precision]
+      description: "&9Your current position with up to 16-digit precision. Useful for players that require precise setups on Vanilla or clients like Lunar that lack precise coordinates."
+      aliases: /coords
+    - name: /eggs
+      description: "&9Prints &6&lE&e&lG&6&lg&e&lS &9to chat. Has a cooldown"
+    - name: /gg
+      description: "&9Prints &6&lG&e&lG &9to chat. Has a cooldown"
+    - name: /fail
+      description: "&9Prints &f&lFAIL &9to chat. Has a cooldown"
+    - name: /gl
+      description: "&9Prints &2&lG&a&lL ☺ &9to chat. Has a cooldown"
+    - name: /ham
+      description: "&9Prints &d&lha &c&lm &9to chat. Has a cooldown"
+    - name: /rip
+      description: "&9Prints &0&lR&8&lI&f&lP ☹ &9to chat. Has a cooldown"
+    - name: /ignore [player]
+      description: "&9Hides the selected players' messages for you and prevents them from messaging you. Use command without a player name to check your currently ignored player list"
+    - name: /message <player> [msg]
+      description: "&9Sends a private message to the selected player. Yes, admins can read these messages via the console if they really want to."
+      aliases: /msg, /w, /tell, /whisper
+    - name: /reply [msg]
+      description: "&9Sends a message to the player that last messaged you. Use command without without a message to opens a chat channel with them."
+      aliases: /r
+    - name: /party <player>
+      description: "&9Creates a party and invites a player of your choice. Parties are used for private group messaging. I'm not going to explain each sub-command use tab complete with the party command to test stuff out!"
+      aliases: /p
+    - name: /realname <player>
+      description: "&9Displays a player's actual username if they are using a nickname"
+    - name: /selfmsg [msg]
+      description: "&9Sends an example message to all chat that is only visible to you (prefixed with *)"
+      aliases: /sm
+    - name: /settings
+      description: "&9Opens a menu that allows you to configure settings... what did you expect"
+    - name: /shop
+      description: "&9Opens a menu where you can buy various things with your PP rewarded by completing maps. No, it does not decrease your PP if you buy something from the shop"
+      aliases: /get, /buy
+    - name: /star
+      description: "&9Shortcut to open the star selection menu. Normally accessed via /settings. Stars can be unlocked in /shop"
+      aliases: /stars
+    - name: /stats [player]
+      description: "&9Displays various statistics for yourself or a given player. Try out the command to see what it shows!"
+    - name: /tags
+      description: "&9Opens a menu that displays tags and allows you to select a tag that you have unlocked. Pro tip: use /tags search [tagId/display] to find tags quickly!"
+    - name: /tagstop [hidden/victor/...]
+      description: "&9Displays a server-wide tag leaderboard."
+    - name: /togglechat
+      description: "&9Toggles global chat"
+    - name: /ptime
+      description: "&9Allows you to adjust minecraft's daylight cycle for yourself. Unlocked by completing III"
+    - name: /pweather
+      description: "&9Allows you to adjust minecraft's current weather condition for yourself. Unlocked by completing III"
+    - name: /disguise <type>
+      description: "&9Changes your player model. You unlock your first disguises Zombie and Skeleton by completing IV"
+      aliases: /dis
+    - name: /undisguise
+      description: "&9Returns your player model to its original state if you were disguised"
+      aliases: /ud
+    - name: /nick <name>
+      description: "&9Changes your display name to a name of your choice. Unlocked by completing VII"
+    - name: /bold
+      description: "&9Makes your display name have the bold text format. Unlocked by completing X"
+    - name: /italics
+      description: "&9Makes your display name have the italics text format. Unlocked by completing X"
+    - name: /strike
+      description: "&9Makes your display name have the strikethrough text format. Unlocked by completing X"
+    - name: /underline
+      description: "&9Makes your display name have the underline text format. Unlocked by completing X"
+    - name: /chatformat
+      description: "&9Allows you to adjust the text formats applied to your messages in global chat. Unlocked by completing XV"

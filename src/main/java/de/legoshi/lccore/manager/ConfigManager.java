@@ -1,6 +1,7 @@
 package de.legoshi.lccore.manager;
 
 import de.legoshi.lccore.Linkcraft;
+import de.legoshi.lccore.menu.help.CommandHelpDTO;
 import de.legoshi.lccore.player.display.*;
 import de.legoshi.lccore.player.practice.PracticeItem;
 import de.legoshi.lccore.util.*;
@@ -33,6 +34,7 @@ public class ConfigManager {
     public static Map<String, String> modIdBlacklist = new HashMap<>();
     public static Map<String, PracticeItem> practiceItems = new HashMap<>();
     public static Map<String, String> general = new HashMap<>();
+    public static Map<String, CommandHelpDTO> commandHelp = new HashMap<>();
     public static final Map<Message, String> messages = new HashMap<>();
     public static final HashSet<String> keys = new HashSet<>();
     public static String host;
@@ -180,6 +182,7 @@ public class ConfigManager {
         chatColorsMap = new HashMap<>();
         commandShopMap = new HashMap<>();
         general = new HashMap<>();
+        commandHelp = new HashMap<>();
         FileConfiguration lcData = new ConfigAccessor(Linkcraft.getPlugin(), "lcdata.yml").getConfig();
         loadRankSection(lcData.getConfigurationSection("ranks"));
         loadBonusSection(lcData.getConfigurationSection("bonus"));
@@ -191,6 +194,7 @@ public class ConfigManager {
         loadCommandShopSection(lcData.getConfigurationSection("commands"));
         loadPracticeItems();
         loadGeneralSection(lcData.getConfigurationSection("general"));
+        loadHelpSection(lcData.getConfigurationSection("help"));
 
 
         addToSet(ranksDisplay, "group.");
@@ -390,6 +394,24 @@ public class ConfigManager {
         if(generalSection != null) {
             for(String key : generalSection.getKeys(false)) {
                 general.put(key, generalSection.getString(key));
+            }
+        }
+    }
+
+    private void loadHelpSection(ConfigurationSection helpSection) {
+        if(helpSection != null) {
+            loadCommandHelpSection(helpSection.getMapList("commands"));
+        }
+    }
+
+    private void loadCommandHelpSection(List<Map<?, ?>> commandHelpList) {
+        if(commandHelpList != null) {
+            for(Map<?, ?> data : commandHelpList) {
+                String command = (String)data.get("name");
+                String description = (String)data.get("description");
+                String aliases = data.get("aliases") != null ? (String)data.get("aliases") : "";
+
+                commandHelp.put(command, new CommandHelpDTO(command, description, aliases));
             }
         }
     }

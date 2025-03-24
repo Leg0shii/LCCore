@@ -34,10 +34,18 @@ public class StarShopMenu extends GUIPane {
             "dmcmqmcmd",
     };
 
+    private final String[] noParentGuiSetup = {
+            "dmcmdmcmd",
+            "mgggggggm",
+            "cgggggggc",
+            "mgggggggm",
+            "dmcmdmcmd",
+    };
+
     @Override
     public void openGui(Player player, InventoryGui parent) {
         super.openGui(player, parent);
-        this.current = new InventoryGui(Linkcraft.getPlugin(), player, "Star Shop", guiSetup);
+        this.current = new InventoryGui(Linkcraft.getPlugin(), player, "Star Shop", parent != null ? guiSetup : noParentGuiSetup);
         setColours(Dye.ORANGE, Dye.YELLOW, Dye.WHITE);
         this.sortedStars = new ArrayList<>(ConfigManager.starDisplay.values());
         sortedStars.sort(Comparator.comparing(StarDTO::getCost));

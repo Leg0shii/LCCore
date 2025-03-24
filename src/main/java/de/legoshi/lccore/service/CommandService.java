@@ -34,7 +34,7 @@ public class CommandService implements Service {
                             "msg", "message", "r", "reply", "t", "tell",
                             "w", "whisper", "ignore", "togglechat", "p",
                             "tags", "mute", "unmute", "bonus", "spawn",
-                            "warp", "join", "coords", "coordinates"
+                            "warp", "join", "coords", "coordinates", "help"
                     };
 
     @Override
