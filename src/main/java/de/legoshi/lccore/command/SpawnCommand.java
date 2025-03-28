@@ -22,7 +22,7 @@ public class SpawnCommand implements CommandClass {
             if(playerName != null) {
                 Player toTp = Bukkit.getPlayer(playerName);
                 if(toTp != null) {
-                    Linkcraft.fireMapChangeEvent(toTp);
+                    Linkcraft.fireMapChangeEvent(toTp, null);
                     Linkcraft.consoleCommand("essentialsspawn:spawn " + playerName);
                 }
             }
@@ -35,12 +35,12 @@ public class SpawnCommand implements CommandClass {
             if(playerName != null && MessageUtil.hasPerm(playerSender, "linkcraft.spawn.others")) {
                 Player toTp = Bukkit.getPlayer(playerName);
                 if(toTp != null) {
-                    Linkcraft.fireMapChangeEvent(toTp);
+                    Linkcraft.fireMapChangeEvent(toTp, null);
                     MessageUtil.log(toTp.getName() + " warped to spawn from: " + Utils.getStringFromLocation(toTp.getLocation()), true);
                     Linkcraft.consoleCommand("essentialsspawn:spawn " + toTp.getName());
                 }
             } else {
-                Linkcraft.fireMapChangeEvent(playerSender);
+                Linkcraft.fireMapChangeEvent(playerSender, null);
                 MessageUtil.log(playerSender.getName() + " warped to spawn from: " + Utils.getStringFromLocation(playerSender.getLocation()), true);
                 Linkcraft.consoleCommand("essentialsspawn:spawn " + playerSender.getName());
             }

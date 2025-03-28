@@ -148,6 +148,16 @@ public class CheckpointManager {
         }
     }
 
+    public void setCheckpointMap(Player player, String map) {
+        setCheckpointMap(player.getUniqueId().toString(), map);
+    }
+
+    public void setCheckpointMap(String player, String map) {
+        LCPlayerDB lcPlayerDB = playerManager.getPlayerDB(player);
+        lcPlayerDB.setCurrentCheckpointMap(map);
+        db.update(lcPlayerDB);
+    }
+
     public void useCheckpoint(Player player, Block block) {
         if(!canUseCheckpoints(player)) {
             MessageUtil.send(Message.NO_CHECKPOINT_PERM, player, false);

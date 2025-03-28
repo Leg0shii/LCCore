@@ -82,11 +82,8 @@ public class CompleteCommand implements CommandClass {
         }
 
         String warp = lcMap.getVictoryWarp() == null ? "spawn" : lcMap.getVictoryWarp();
-        if(warp.equalsIgnoreCase("bonus")) {
-            Linkcraft.consoleCommand("warp " + warp + " " + victor.getName() + " " + "true");
-        } else {
-            Linkcraft.consoleCommand("warp " + warp + " " + victor.getName());
-        }
+        // Added 'bypass' option so that the player may access the victor warp regardless of their rank
+        Linkcraft.consoleCommand("warp " + warp + " " + victor.getName() + " bypass");
 
         if(firstCompletion) {
             playerCompletion = new PlayerCompletion();

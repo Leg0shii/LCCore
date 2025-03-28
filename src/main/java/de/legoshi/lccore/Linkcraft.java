@@ -7,6 +7,7 @@ import de.legoshi.lccore.listener.ModIdListener;
 import de.legoshi.lccore.listener.events.MapChangeEvent;
 import de.legoshi.lccore.manager.OldCommandManager;
 import de.legoshi.lccore.manager.PlayerManager;
+import de.legoshi.lccore.menu.maps.LCMap;
 import de.legoshi.lccore.service.Service;
 import de.legoshi.lccore.util.ConfigAccessor;
 import de.legoshi.lccore.util.Constants;
@@ -213,8 +214,8 @@ public class Linkcraft extends JavaPlugin {
         Bukkit.dispatchCommand(Bukkit.getConsoleSender(), command);
     }
 
-    public static void fireMapChangeEvent(Player player) {
-        Bukkit.getPluginManager().callEvent(new MapChangeEvent(player));
+    public static void fireMapChangeEvent(Player player, LCMap toMap) {
+        Bukkit.getPluginManager().callEvent(new MapChangeEvent(player, toMap));
     }
 }
 

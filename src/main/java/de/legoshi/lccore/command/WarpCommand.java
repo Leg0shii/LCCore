@@ -3,6 +3,7 @@ package de.legoshi.lccore.command;
 import de.legoshi.lccore.Linkcraft;
 import de.legoshi.lccore.command.flow.annotated.annotation.ReflectiveTabComplete;
 import de.legoshi.lccore.manager.EssentialsManager;
+import de.legoshi.lccore.manager.MapManager;
 import de.legoshi.lccore.util.Register;
 import de.legoshi.lccore.util.Utils;
 import de.legoshi.lccore.util.message.Message;
@@ -21,55 +22,71 @@ import team.unnamed.inject.Inject;
 public class WarpCommand implements CommandClass {
 
     @Inject private EssentialsManager essentialsManager;
+    @Inject private MapManager mapManager;
 
     @Command(names = "")
-    public void warp(CommandSender sender, @ReflectiveTabComplete(clazz = EssentialsManager.class, method = "getWarpsFor", player = true) String warpName, @OptArg String playerName, @OptArg Boolean skipMapChange) {
+    public void warp(CommandSender sender, @ReflectiveTabComplete(clazz = EssentialsManager.class, method = "getWarpsFor", player = true) String warpName, @OptArg String playerName, @OptArg String param) {
         if(!essentialsManager.isValidWarp(warpName)) {
             MessageUtil.send(Message.INVALID_WARP, sender);
             return;
         }
 
+        boolean skipMapChange = param != null && param.equalsIgnoreCase("true");
+        boolean bypass = param != null && param.equalsIgnoreCase("bypass");
+
         if(sender instanceof ConsoleCommandSender) {
-            if(playerName == null) {
-                return;
-            }
-
-            Player toTp = Bukkit.getPlayer(playerName);
-
-            if(toTp == null) {
-                return;
-            }
-
-            if(skipMapChange == null || !skipMapChange) {
-                Linkcraft.fireMapChangeEvent(toTp);
-            }
-            Linkcraft.consoleCommand("essentials:warp " + warpName + " " + playerName);
+            handleConsoleWarp(warpName, playerName, skipMapChange, bypass);
             return;
         }
 
-        if(sender instanceof Player) {
-            Player playerSender = (Player)sender;
-            if(!essentialsManager.canWarpTo(playerSender, warpName)) {
-                MessageUtil.send(Message.NO_PERM_WARP, playerSender);
-                return;
-            }
-
-            if(playerName != null && MessageUtil.hasPerm(playerSender, "linkcraft.warp.others")) {
-                Player toTp = Bukkit.getPlayer(playerName);
-                if(toTp != null) {
-                    if(skipMapChange == null || !skipMapChange) {
-                        Linkcraft.fireMapChangeEvent(toTp);
-                    }
-                    MessageUtil.log(toTp.getName() + " warped to " + warpName + " from: " + Utils.getStringFromLocation(toTp.getLocation()), true);
-                    Linkcraft.consoleCommand("essentials:warp " + warpName + " " + toTp.getName());
-                } else {
-                    MessageUtil.send(Message.IS_OFFLINE, playerSender, playerName);
-                }
-            } else {
-                Linkcraft.fireMapChangeEvent(playerSender);
-                MessageUtil.log(playerSender.getName() + " warped to " + warpName + " from: " + Utils.getStringFromLocation(playerSender.getLocation()), true);
-                Linkcraft.consoleCommand("essentials:warp " + warpName + " " + playerSender.getName());
-            }
+        if (playerName == null) {
+            handlePlayerWarp((Player) sender, warpName);
+        } else {
+            handleOtherPlayerWarp((Player) sender, warpName, playerName, skipMapChange, bypass);
         }
+    }
+
+    private void handleConsoleWarp(String warp, String playerName, boolean skipMapChange, boolean bypass) {
+        if(playerName == null) return;
+        Player player = Bukkit.getPlayer(playerName);
+        if(player == null) return;
+        warpPlayer(warp, player, skipMapChange, bypass);
+    }
+
+    private void handlePlayerWarp(Player player, String warp) {
+        if (!essentialsManager.canWarpTo(player, warp)) {
+            MessageUtil.send(Message.NO_PERM_WARP, player);
+            return;
+        }
+
+        warpPlayer(warp, player);
+    }
+
+    private void handleOtherPlayerWarp(Player player, String warp, String playerName, boolean skipMapChange, boolean bypass) {
+        Player toWarp = Bukkit.getPlayer(playerName);
+        if(toWarp == null) {
+            MessageUtil.send(Message.IS_OFFLINE, player, playerName);
+            return;
+        }
+
+        warpPlayer(warp, toWarp, skipMapChange, bypass);
+    }
+
+    private void warpPlayer(String warp, Player player, boolean skipEvent, boolean bypass) {
+        if(!bypass && !mapManager.canAccessWarp(player, warp)) {
+            MessageUtil.send(Message.NO_PERM_WARP, player);
+            return;
+        }
+
+        MessageUtil.log(player.getName() + " warped to " + warp + " from: " + Utils.getStringFromLocation(player.getLocation()), true);
+
+        if(!skipEvent)
+            Linkcraft.fireMapChangeEvent(player, mapManager.getMap(warp));
+
+        Linkcraft.consoleCommand("essentials:warp " + warp + " " + player.getName());
+    }
+
+    private void warpPlayer(String warp, Player player) {
+        warpPlayer(warp, player, false, false);
     }
 }

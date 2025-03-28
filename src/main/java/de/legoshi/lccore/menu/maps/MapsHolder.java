@@ -88,21 +88,21 @@ public class MapsHolder extends GUIScrollablePane {
 
     private StaticGuiElement addMap(LCMap mapData) {
         String warpCommand = "warp " + mapData.getId();
-        String consoleWarpCommand = "warp " + mapData.getId() + " " + holder.getName();
-        String consoleWarpBonusCommand = "warp " + mapData.getId() + " " + holder.getName() + " true";
         PlayerCompletion completion = playerMapData.get(mapData.getId());
-        boolean isCurrentMazeRank = playerManager.getPlayer(holder).getMaze().getKey().replace(".", "").equalsIgnoreCase(mapData.getId());
-        boolean isCheckpointMap = mapData.getMapType().equals(MapType.BONUS);
-        GUIDescriptionBuilder base = new GUIDescriptionBuilder().coloured(mapData.getName(), ChatColor.BOLD)
+        boolean canAccess = mapManager.canAccessWarp(holder, mapData.getId());
+        GUIDescriptionBuilder base = new GUIDescriptionBuilder().raw(canAccess ? ChatColor.BOLD + mapData.getName() : ChatColor.RED + "" + ChatColor.BOLD + mapData.getName())
                 .header("Map Info");
-               // .coloured("/" + warpCommand, ChatColor.GRAY);
 
         if(mapData.getNoPrac() != null && mapData.getNoPrac()) {
             base.raw("§c§lNo Practice");
         }
 
-        if(mapData.getMapType().equals(MapType.MAZE) && !isCurrentMazeRank) {
+        if(!canAccess) {
             base.raw("§c§lLocked");
+        }
+
+        if(mapData.getMapType().equals(MapType.BONUS)) {
+            base.raw("§a§lCheckpoints");
         }
 
         if(!mapData.getMapType().equals(MapType.LEGACY) && !mapData.getMapType().equals(MapType.MAZE)) {
@@ -145,17 +145,7 @@ public class MapsHolder extends GUIScrollablePane {
                     holder.performCommand("complete " + mapData.getId() + " " + record.getName() + " nd");
                     current.close();
                 } else {
-                    // TODO: move this logic to warp command???????
-                    if(isCheckpointMap) {
-                        lpManager.giveGroup(holder, "checkpoint");
-                        Linkcraft.consoleCommand("setcpmap " + mapData.getId() + " " + holder.getName());
-                        Linkcraft.consoleCommand(consoleWarpBonusCommand);
-                    }
-                    else if(isCurrentMazeRank) {
-                        Linkcraft.consoleCommand(consoleWarpCommand);
-                    } else {
-                        holder.performCommand(warpCommand);
-                    }
+                    holder.performCommand(warpCommand);
                     current.close();
                 }
             } else if(click.getType().isRightClick() && isOtherPlayer && canEditCompletions && playerMapData.get(mapData.getId()) != null) {

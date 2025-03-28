@@ -3,6 +3,7 @@ package de.legoshi.lccore.command.checkpoint;
 import de.legoshi.lccore.command.flow.annotated.annotation.ReflectiveTabComplete;
 import de.legoshi.lccore.database.DBManager;
 import de.legoshi.lccore.database.models.LCPlayerDB;
+import de.legoshi.lccore.manager.CheckpointManager;
 import de.legoshi.lccore.manager.PlayerManager;
 import de.legoshi.lccore.player.PlayerRecord;
 import de.legoshi.lccore.util.Register;
@@ -19,6 +20,7 @@ import team.unnamed.inject.Inject;
 public class SetCheckpointMapCommand implements CommandClass {
 
     @Inject private PlayerManager playerManager;
+    @Inject private CheckpointManager checkpointManager;
     @Inject private DBManager db;
 
     @Command(names = "")
@@ -33,9 +35,7 @@ public class SetCheckpointMapCommand implements CommandClass {
             return;
         }
 
-        LCPlayerDB lcPlayerDB = playerManager.getPlayerDB(record.getUuid());
-        lcPlayerDB.setCurrentCheckpointMap(map);
-        db.update(lcPlayerDB);
+        checkpointManager.setCheckpointMap(record.getUuid(), map);
         MessageUtil.send(Message.UPDATED_CP_MAP, sender, record.getName(), map);
     }
 }

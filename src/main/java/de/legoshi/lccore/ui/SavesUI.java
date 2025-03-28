@@ -116,7 +116,7 @@ public class SavesUI {
                 p.sendMessage(Utils.chat("&aTeleported you to your save!"));
                 p.closeInventory();
                 p.playSound(p.getLocation(), Sound.ENDERMAN_TELEPORT, 1.0F, 1.7F);
-                Linkcraft.fireMapChangeEvent(p);
+                Linkcraft.fireMapChangeEvent(p, null);
                 if(user != null) {
                     user.data().remove(PermissionNode.builder(Constants.SERVERSIGNS_USE_ALL).value(false).build());
                 }

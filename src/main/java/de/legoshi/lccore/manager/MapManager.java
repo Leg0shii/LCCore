@@ -9,6 +9,8 @@ import de.legoshi.lccore.database.models.PlayerCheckpoint;
 import de.legoshi.lccore.database.models.PlayerCompletion;
 import de.legoshi.lccore.menu.maps.LCMap;
 import de.legoshi.lccore.player.PlayerRecord;
+import de.legoshi.lccore.player.display.BonusDTO;
+import de.legoshi.lccore.player.display.LCPlayer;
 import de.legoshi.lccore.util.*;
 import de.legoshi.lccore.util.message.Message;
 import de.legoshi.lccore.util.message.MessageUtil;
@@ -721,6 +723,44 @@ public class MapManager {
         db.update(checkpoint);
         db.delete(lcLocation);
         db.delete(checkpoint);
+    }
+
+    public boolean canAccessWarp(Player player, String mapId) {
+        String loweredMapId = mapId.toLowerCase();
+        if(!mapExists(loweredMapId)) {
+            return true;
+        }
+        LCMap map = getMap(loweredMapId);
+        LCPlayer lcPlayer = playerManager.getPlayer(player);
+
+        // check entry requirements...
+        switch (map.getMapType()) {
+            case BONUS:
+            case BONUS_PRO:
+                if(map.getRank() != null) {
+                    int playerBonusPos = lcPlayer.getBonus().getPosition();
+                    int mapBonusPos = ConfigManager.bonusDisplay.get(map.getRank()).getPosition();
+                    int maxAccessiblePos = 2 * (playerBonusPos / 2) + 3;
+                    return mapBonusPos <= maxAccessiblePos;
+                } else {
+                    return true;
+                }
+            case MAZE:
+                int mapPos = ConfigManager.mazeDisplay.get(map.getRank()).getPosition();
+                int playerMazePos = lcPlayer.getMaze().getPosition();
+                return (mapPos - 1) == playerMazePos;
+            default:
+                return true;
+        }
+
+    }
+
+    public boolean isCheckpointMap(String mapId) {
+        String loweredMapId = mapId.toLowerCase();
+        if(!mapExists(loweredMapId)) {
+            return false;
+        }
+        return getMap(loweredMapId).getMapType().equals(MapType.BONUS);
     }
 
     public List<PlayerCheckpoint> getPlayerCheckpoints(String uuid) {
