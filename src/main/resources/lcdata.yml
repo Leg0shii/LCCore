@@ -75,7 +75,7 @@ ranks:
     colorCode: 7
     position: 14
   'XVI':
-    display: §b«§3««§a§lXVI§2»§3»§b»
+    display: §b«§3«§2«§a§lXVI§2»§3»§b»
     tabDisplay: '&b«XVI»'
     colorCode: b
     position: 15
@@ -99,6 +99,11 @@ ranks:
     tabDisplay: '&4«&r&lXX&r&4»'
     colorCode: 4
     position: 19
+  'mole':
+    display: '&6[Mole]'
+    tabDisplay: '&6[Mole]'
+    colorCode: 6
+    position: 999
 bonus:
   1:
     display: §e#1
@@ -172,6 +177,18 @@ bonus:
   12pro:
     display: §3§l✫12
     position: 23
+  13:
+    display: §5§l#13
+    position: 24
+  13pro:
+    display: §5§l✫13
+    position: 25
+  14:
+    display: §b§l#14
+    position: 26
+  14pro:
+    display: §b§l✫14
+    position: 27
 wolf:
   wolf_i:
     display: §a①
@@ -189,7 +206,7 @@ wolf:
     display: §d⑤
     position: 4
   wolf_vi:
-    display: §5⑥
+    display: §8⑥
     position: 5
   wolf_vii:
     display: §c⑦
@@ -207,10 +224,10 @@ wolf:
     display: §4&l⑪
     position: 10
   wolf_xii:
-    display: §f&l⑫
+    display: §3§l⑫
     position: 11
   wolf_xiii:
-    display: §3&l⑬
+    display: §5§l⑬
     position: 12
 maze:
   i:
@@ -258,6 +275,9 @@ maze:
   xv:
     tabDisplay: "§c§nXV"
     position: 14
+  xvi:
+    tabDisplay: "§f§l§nXVI"
+    position: 15
 star:
   bronze:
     display: §c§l⚝
@@ -426,57 +446,137 @@ commands:
     permission: essentials.mail.send
     cost: 35000
     position: 4
-  itemlore:
-    display: /itemlore
-    description: Allows you to modify the description of items
-    permission: essentials.itemlore
-    cost: 50000
-    position: 5
-  itemname:
-    display: /itemname
-    description: Allows you to modify the name of items. Includes chat colors.
-    permission: 'essentials.itemname:essentials.itemname.*'
-    cost: 80000
-    position: 6
   fix:
     display: /fix
     description: Repairs the currently held item, removing any durability damage done to it
     permission: essentials.repair
     cost: 100000
     position: 5
-  invsee:
-    display: /invsee [name]
-    description: Lets you check the contents of another online player's inventory
-    permission: essentials.invsee
-    cost: 200000
-    position: 6
-  echest:
-    display: /echest [name]
-    description: Lets you check the contents of another online player's ender chest
-    permission: essentials.invsee
-    cost: 250000
-    position: 6
   skull:
     display: /skull [name]
     description: Gives you the ability to give yourself any player head
     permission: 'essentials.skull:essentials.skull.spawn:essentials.skull.others'
     cost: 5000000
-    position: 7
+    position: 6
 staff:
   builder:
     display: §5[§dBuilder§5]
     position: 0
-  staf:
+  group.staf:
     display: §3[§bStaff§3]
     position: 1
-  staff:
+  staf:
     display: §3[§bStaff§3]
     position: 2
-  admin:
+  staff:
     display: §3[§bStaff§3]
     position: 3
+  admin:
+    display: §4[§cAdmin§4]
+    position: 4
+halloween:
+  'I':
+    display: §1«§fSquid§1»
+    tabDisplay: §1«Squid»
+    colorCode: 1
+    position: 0
+  'II':
+    display: §c«§fMooshroom§c»
+    tabDisplay: '&c«Mooshroom»'
+    colorCode: c
+    position: 1
+  'III':
+    display: §d«§fPig§d»
+    tabDisplay: '&d«Pig»'
+    colorCode: d
+    position: 2
+  'IV':
+    display: §e«§fBlaze§e»
+    tabDisplay: '&e«Blaze»'
+    colorCode: e
+    position: 3
+  'V':
+    display: §6«§fFox§6»
+    tabDisplay: '&6«Fox»'
+    colorCode: 6
+    position: 4
+  'VI':
+    display: §f«Ghast»
+    tabDisplay: '&f«Ghast»'
+    colorCode: f
+    position: 5
+  'VII':
+    display: §2«§fCreeper§2»
+    tabDisplay: '&2«Creeper»'
+    colorCode: 2
+    position: 6
+  'VIII':
+    display: §a«§fFrog§a»
+    tabDisplay: '&a«Frog»'
+    colorCode: a
+    position: 7
+  'IX':
+    display: §5«§fShulker§5»
+    tabDisplay: '&5«Shulker»'
+    colorCode: 5
+    position: 8
+  'X':
+    display: §0«§f§lBat§0»
+    tabDisplay: '&0«Bat»'
+    colorCode: 0
+    position: 9
+  'XI':
+    display: §4«§f§lStrider§4»
+    tabDisplay: '&4«Strider»'
+    colorCode: 4
+    position: 10
+  'XII':
+    display: §8«§7«§f§lSilverfish§7»§8»
+    tabDisplay: '&8«Silverfish»'
+    colorCode: 8
+    position: 11
+  'XIII':
+    display: §9«§3«§f§lAllay§3»§9»
+    tabDisplay: '&9«Allay»'
+    colorCode: 9
+    position: 12
+  'XIV':
+    display: §3«§b«§f§lGuardian§b»§3»
+    tabDisplay: '&3«Guardian»'
+    colorCode: 3
+    position: 13
+  'XV':
+    display: §7«§1«§f§lSkeleton§1»§7»
+    tabDisplay: '&7«Skeleton»'
+    colorCode: 7
+    position: 14
+  'XVI':
+    display: §b«§3«§2«§a§lZombie§2»§3»§b»
+    tabDisplay: '&b«Zombie»'
+    colorCode: b
+    position: 15
+  'XVII':
+    display: §0«§5«§d«§r§lXVII§d»§5»§0»§d
+    tabDisplay: '&d«XVII»'
+    colorCode: d
+    position: 16
+  'XVIII':
+    display: §9§l«§3§l«§a§l«§e§lXVIII§a§l»§3§l»§9§l»§9
+    tabDisplay: '&9«XVIII»'
+    colorCode: 9
+    position: 17
+  'XIX':
+    display: §e§l«§7§l«§3§l«§6§lXIX§3§l»§7§l»§e§l»§3
+    tabDisplay: '&3«XIX»'
+    colorCode: 3
+    position: 18
+  'XX':
+    display: §0§l«§8§l«§4§l«§f§l§mXX§4§l»§8§l»§0§l»§4
+    tabDisplay: '&4«&r&lXX&r&4»'
+    colorCode: 4
+    position: 19
 general:
-  discord-minimum-star-ping: 4
+  discord-minimum-star-ping: 6
 help:
   commands:
     - name: /practice
@@ -607,3 +707,6 @@ help:
       description: "&9Makes your display name have the underline text format. Unlocked by completing X"
     - name: /chatformat
       description: "&9Allows you to adjust the text formats applied to your messages in global chat. Unlocked by completing XV"
+    - name: /nightvision [clear]
+      description: "&9Gives you permanent night vision potion effect. Add 'clear' to remove your current night vision"
+      aliases: /nv, /vision
