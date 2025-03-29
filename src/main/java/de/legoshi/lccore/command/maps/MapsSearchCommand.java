@@ -1,29 +1,23 @@
 package de.legoshi.lccore.command.maps;
 
 import de.legoshi.lccore.Linkcraft;
-import de.legoshi.lccore.menu.maps.MapsMenu;
-import de.legoshi.lccore.util.Register;
+import de.legoshi.lccore.menu.maps.MapsHolder;
 import de.legoshi.lccore.util.message.Message;
 import de.legoshi.lccore.util.message.MessageUtil;
 import me.fixeddev.commandflow.annotated.CommandClass;
 import me.fixeddev.commandflow.annotated.annotation.Command;
-import me.fixeddev.commandflow.annotated.annotation.SubCommandClasses;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import team.unnamed.inject.Inject;
 import team.unnamed.inject.Injector;
 
-@Register
-@Command(names = {"maps", "menu"}, permission = "maps", desc = "")
-@SubCommandClasses({
-        MapsSearchCommand.class,
-})
-public class MapsCommand implements CommandClass {
+@Command(names = {"search"}, permission = "maps.search", desc = "<query>")
+public class MapsSearchCommand implements CommandClass {
 
     @Inject private Injector injector;
 
     @Command(names = "")
-    public void maps(CommandSender sender) {
+    public void search(CommandSender sender, String search) {
         Linkcraft.async(() -> {
             if (!(sender instanceof Player)) {
                 MessageUtil.send(Message.NOT_A_PLAYER, sender);
@@ -31,7 +25,8 @@ public class MapsCommand implements CommandClass {
             }
 
             Player player = (Player)sender;
-            injector.getInstance(MapsMenu.class).openGui(player, null);
+            injector.getInstance(MapsHolder.class).openGui(player, null, null, search);
+
         });
     }
 }

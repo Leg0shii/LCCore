@@ -2,7 +2,7 @@ package de.legoshi.lccore.menu.maps;
 
 import java.util.Comparator;
 
-public class MapComparator implements Comparator<LCMap> {
+public class MapPPComparator implements Comparator<LCMap> {
 
     @Override
     public int compare(LCMap lcMap1, LCMap lcMap2) {

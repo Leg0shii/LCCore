@@ -4,32 +4,33 @@ import de.legoshi.lccore.Linkcraft;
 import de.legoshi.lccore.database.DBManager;
 import de.legoshi.lccore.database.composite.PlayerCompletionId;
 import de.legoshi.lccore.database.models.PlayerCompletion;
+import de.legoshi.lccore.manager.ChatManager;
 import de.legoshi.lccore.manager.LuckPermsManager;
 import de.legoshi.lccore.manager.MapManager;
 import de.legoshi.lccore.manager.PlayerManager;
 import de.legoshi.lccore.menu.GUIScrollablePane;
+import de.legoshi.lccore.menu.GuiMessage;
 import de.legoshi.lccore.player.PlayerRecord;
-import de.legoshi.lccore.player.display.MazeDTO;
 import de.legoshi.lccore.util.*;
 import de.legoshi.lccore.util.message.Message;
 import de.legoshi.lccore.util.message.MessageUtil;
-import de.themoep.inventorygui.GuiElementGroup;
-import de.themoep.inventorygui.InventoryGui;
-import de.themoep.inventorygui.StaticGuiElement;
+import de.themoep.inventorygui.*;
+import net.wesjd.anvilgui.AnvilGUI;
 import org.bukkit.ChatColor;
+import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import team.unnamed.inject.Inject;
 import team.unnamed.inject.Injector;
 
-import java.util.Comparator;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
+import java.util.function.BiConsumer;
 import java.util.stream.Collectors;
 
 public class MapsHolder extends GUIScrollablePane {
     @Inject private MapManager mapManager;
     @Inject private PlayerManager playerManager;
+    @Inject private ChatManager chatManager;
     @Inject private LuckPermsManager lpManager;
     @Inject private DBManager db;
     @Inject private Injector injector;
@@ -40,8 +41,16 @@ public class MapsHolder extends GUIScrollablePane {
             "sgggggggs",
             "sgggggggs",
             "ddmmcmmdd",
-            "l---q---r",
+            "lox-q-pfr",
     };
+
+    public enum MapSort { PP, LENGTH }
+    public enum MapOrder { DESCENDING, ASCENDING }
+    public enum MapFilter { ALL, COMPLETED, UNCOMPLETED, NO_PRACTICE }
+
+    private MapsHolder.MapSort mapSort = MapSort.PP;
+    private MapsHolder.MapOrder mapOrder = MapOrder.ASCENDING;
+    private MapsHolder.MapFilter mapFilter = MapFilter.ALL;
 
     private boolean canEditCompletions = false;
     private boolean isOtherPlayer = false;
@@ -50,32 +59,60 @@ public class MapsHolder extends GUIScrollablePane {
     private List<LCMap> maps;
     private Map<String, PlayerCompletion> playerMapData;
     private PlayerRecord record = null;
+    private String mapSearch = "";
+
+    private final BiConsumer<GuiElement.Click, MapsHolder.MapSort> mapSortSetter = (click, sortOption) -> {
+        this.mapSort = sortOption;
+        changeOption('g', click);
+    };
+
+    private final BiConsumer<GuiElement.Click, MapsHolder.MapOrder> mapOrderSetter = (click, orderOption) -> {
+        this.mapOrder = orderOption;
+        changeOption('g', click);
+    };
+
+    private final BiConsumer<GuiElement.Click, MapsHolder.MapFilter> mapFilterSetter = (click, filterOption) -> {
+        this.mapFilter = filterOption;
+        changeOption('g', click);
+    };
 
     public void openGui(Player player, InventoryGui parent, MapType type) {
+        openGui(player, parent, type, "", null);
+    }
+
+    public void openGui(Player player, InventoryGui parent, MapType type, String search) {
+        openGui(player, parent, type, search, null);
+    }
+
+    public void openGui(Player player, InventoryGui parent, PlayerRecord record, MapType type) {
+        this.isOtherPlayer = true;
+        this.record = record;
+        this.canEditCompletions = player.hasPermission("lc.complete");
+        openGui(player, parent, type, "", record);
+    }
+
+    private void openGui(Player player, InventoryGui parent, MapType type, String search, PlayerRecord record) {
         super.openGui(player, parent);
         this.mapType = type;
-        this.current = new InventoryGui(Linkcraft.getPlugin(), player, formattedName() + " Courses", guiSetup);
+        this.mapSearch = search;
+
+        String title = (record != null) ? record.getName() + "'s " + formattedName() + " Courses" : formattedName() + " Courses";
+        this.current = new InventoryGui(Linkcraft.getPlugin(), player, title, guiSetup);
+
         setColours(Dye.BLUE, Dye.CYAN, Dye.LIGHT_BLUE);
         fullCloseOnEsc();
+
         this.maps = mapManager.getMaps();
-        this.playerMapData = mapManager.getPlayerMapData(player.getUniqueId().toString());
+        this.playerMapData = (record != null) ? mapManager.getPlayerMapData(record.getUuid()) : mapManager.getPlayerMapData(player.getUniqueId().toString());
+
         registerGuiElements();
         current.show(holder);
     }
 
-    public void openGui(Player player, InventoryGui parent, PlayerRecord record, MapType type) {
-        super.openGui(player, parent);
-        this.mapType = type;
-        isOtherPlayer = true;
-        this.record = record;
-        this.current = new InventoryGui(Linkcraft.getPlugin(), player, record.getName() + "'s " + formattedName() + " Courses", guiSetup);
-        setColours(Dye.BLUE, Dye.CYAN, Dye.LIGHT_BLUE);
-        canEditCompletions = player.hasPermission("lc.complete");
-        fullCloseOnEsc();
-        this.maps = mapManager.getMaps();
-        this.playerMapData = mapManager.getPlayerMapData(record.getUuid());
-        registerGuiElements();
-        current.show(holder);
+    @Override
+    protected void changeOption(char slotToRemove, GuiElement.Click click) {
+        this.guiMaps = getGuiMaps();
+        super.changeOption(slotToRemove, click);
     }
 
     @Override
@@ -83,7 +120,64 @@ public class MapsHolder extends GUIScrollablePane {
         this.guiMaps = getGuiMaps();
         getPage();
 
-        this.current.addElements(pageLeft, pageRight, returnToParent);
+        GuiStateElement filterMaps = new GuiStateElement('f',
+                GUIUtil.createSelectionMenu(MapsHolder.MapFilter.class, new ItemStack(Material.HOPPER), "Filter by", mapFilterSetter, false)
+        );
+
+        GuiStateElement sortMaps = new GuiStateElement('o',
+                GUIUtil.createSelectionMenu(MapsHolder.MapSort.class, new ItemStack(Material.REDSTONE_COMPARATOR), "Sort by", mapSortSetter, false)
+        );
+
+        GuiStateElement orderMaps = new GuiStateElement('x',
+                GUIUtil.createSelectionMenu(MapsHolder.MapOrder.class, new ItemStack(Material.DETECTOR_RAIL), "Order by", mapOrderSetter, false)
+        );
+
+        orderMaps.setState(mapOrder.name());
+
+        GUIDescriptionBuilder searchMapsDesc = new GUIDescriptionBuilder().raw("Search")
+                .pair("Current", mapSearch)
+                .action(GUIAction.LEFT_CLICK, "Edit Search (Anvil)")
+                .action(GUIAction.RIGHT_CLICK, "Edit Search (Chat)")
+                .action(GUIAction.SHIFT_RIGHT_CLICK, "Clear Search");
+
+        StaticGuiElement searchMaps = new StaticGuiElement('p', new ItemStack(Material.COMPASS), click -> true, searchMapsDesc.build());
+
+        searchMaps.setAction(click -> {
+            if(click.getType().isShiftClick() && click.getType().isRightClick()) {
+                mapSearch = "";
+                searchMaps.setText(searchMapsDesc.pair("Current", mapSearch, 1).build());
+                changeOption('g', click);
+            }
+            else if(click.getType().isLeftClick()) {
+                new AnvilGUI.Builder().onComplete((completion) -> {
+                            mapSearch = completion.getText();
+
+                            searchMaps.setText(searchMapsDesc.pair("Current", mapSearch, 1).build());
+                            changeOption('g', click);
+                            LCSound.SUCCESS.playLater(holder);
+
+                            return Collections.singletonList(AnvilGUI.ResponseAction.run(() -> {
+                                current.show(holder);
+                            }));
+                        })
+                        .onClose(close -> current.show(holder))
+                        .title("Map Search")
+                        .itemLeft(ItemUtil.setItemText(new ItemStack(Material.PAPER), mapSearch))
+                        .plugin(Linkcraft.getPlugin())
+                        .open(holder);
+            } else if(click.getType().isRightClick()) {
+                current.close();
+                chatManager.listenForGuiMessage(holder, new GuiMessage(this, (response) -> {
+                    mapSearch = response;
+                    searchMaps.setText(searchMapsDesc.pair("Current", mapSearch, 1).build());
+                    changeOption('g', click);
+                    current.show(holder);
+                }));
+            }
+            return true;
+        });
+
+        this.current.addElements(pageLeft, pageRight, returnToParent, searchMaps, filterMaps, orderMaps, sortMaps);
     }
 
     private StaticGuiElement addMap(LCMap mapData) {
@@ -163,22 +257,61 @@ public class MapsHolder extends GUIScrollablePane {
     private List<LCMap> getGuiMaps() {
         List<LCMap> filterMaps = filterMaps();
         sortMaps(filterMaps);
+        if(mapOrder.equals(MapOrder.DESCENDING)) {
+            Collections.reverse(filterMaps);
+        }
         maxPages = (int) Math.ceil((double) filterMaps.size() / pageVolume) - 1;
         return filterMaps;
     }
 
     private List<LCMap> filterMaps() {
-        return filterByType(maps);
+        List<LCMap> filtered = new ArrayList<>();
+
+        switch (mapFilter) {
+            case ALL:
+                filtered.addAll(maps);
+                break;
+            case COMPLETED:
+                filtered.addAll(maps.stream().filter(map -> {
+                    PlayerCompletion completion = playerMapData.get(map.getId());
+                    return completion != null && completion.getCompletions() > 0;
+                }).collect(Collectors.toList()));
+                break;
+            case UNCOMPLETED:
+                filtered.addAll(maps.stream().filter(map -> {
+                    PlayerCompletion completion = playerMapData.get(map.getId());
+                    return completion == null || completion.getCompletions() == 0;
+                }).collect(Collectors.toList()));
+                break;
+            case NO_PRACTICE:
+                filtered.addAll(maps.stream().filter(map -> map.getNoPrac() != null && map.getNoPrac()).collect(Collectors.toList()));
+                break;
+        }
+
+        filtered = filterByType(filtered);
+        filtered = filterBySearch(filtered);
+
+
+        return filtered;
     }
 
     private void sortMaps(List<LCMap> maps) {
-        Comparator<LCMap> mapSortingMethod = new MapComparator();
+        Comparator<LCMap> mapSortingMethod = null;
+
+        switch (mapSort) {
+            case PP:
+                mapSortingMethod = new MapPPComparator();
+                break;
+            case LENGTH:
+                mapSortingMethod = new MapLengthComparator();
+                break;
+        }
         maps.sort(mapSortingMethod);
     }
 
     private List<LCMap> filterByType(List<LCMap> maps) {
         if(mapType == null) {
-            return maps.stream().filter(map -> !map.getMapType().equals(MapType.MISC)).collect(Collectors.toList());
+            return maps.stream().filter(map -> !map.getMapType().equals(MapType.MISC) && !map.getMapType().equals(MapType.LEGACY)).collect(Collectors.toList());
         }
         return maps.stream().filter(map -> map.getMapType().equals(mapType)).collect(Collectors.toList());
     }
@@ -192,10 +325,23 @@ public class MapsHolder extends GUIScrollablePane {
         return CommonUtil.capatalize(mapType.name().toLowerCase());
     }
 
+    private boolean matchesSearch(LCMap map) {
+        String mapId = map.getId().toLowerCase();
+        String mapName = GUIUtil.decolorize(map.getName()).toLowerCase();
+        return mapId.contains(mapSearch.toLowerCase()) || mapName.contains(mapSearch.toLowerCase());
+    }
+
+    private List<LCMap> filterBySearch(List<LCMap> maps) {
+        if(mapSearch.isEmpty()) {
+            return maps;
+        }
+        return maps.stream().filter(this::matchesSearch).collect(Collectors.toList());
+    }
+
     @Override
     protected void getPage() {
         if(isPageEmpty()) {
-            noDataItem('g', "No tags found");
+            noDataItem('g', "No maps found");
             return;
         }
 
