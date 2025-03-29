@@ -5,12 +5,14 @@ import com.comphenix.protocol.events.PacketContainer;
 import com.comphenix.protocol.wrappers.WrappedChatComponent;
 import de.legoshi.lccore.Linkcraft;
 import de.legoshi.lccore.player.practice.PracticeItem;
+import de.legoshi.lccore.util.ItemUtil;
 import de.legoshi.lccore.util.LocationHelper;
 import de.legoshi.lccore.util.message.MessageUtil;
 import lombok.Setter;
 import org.bukkit.Location;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.ItemStack;
 import team.unnamed.inject.Inject;
 
 import java.util.HashSet;
@@ -19,6 +21,7 @@ import java.util.Set;
 public class PracticeManager {
 
     @Inject private LuckPermsManager lpManager;
+    @Inject private PlayerManager playerManager;
     private final Set<Player> practicingPlayers = new HashSet<>();
     @Setter private String globalPracticeItem = "default";
 
@@ -69,6 +72,33 @@ public class PracticeManager {
     public void updatePracticeLocation(String player, Location location) {
         FileConfiguration practiceData = Linkcraft.getPlugin().getPracticeData();
         practiceData.set(player, LocationHelper.getStringFromLocation(location));
+    }
+
+    public void unpractice(Player player) {
+        PracticeItem practiceItem = getPracticeItemFor(player);
+
+        if (!isInPractice(player)) {
+            MessageUtil.sendMessageIfNotNull(player, practiceItem.getNotInPracticeMessage());
+            MessageUtil.sendAudioIfNotNull(player, practiceItem.getNotInPracticeAudio());
+            return;
+        }
+
+        Location pracLocation = getPracticeLocation(player);
+        removePracticeLocation(player);
+
+        for (ItemStack item : player.getInventory().getContents()) {
+            if (ItemUtil.hasNbtId(item, "practice")) {
+                player.getInventory().removeItem(item);
+            }
+        }
+
+        removeFromPracticeActionBarQueue(player);
+        playerManager.clearActionBar(player);
+        removePracticeGroup(player);
+        player.teleport(pracLocation);
+
+        MessageUtil.sendMessageIfNotNull(player, practiceItem.getUnpracticeMessage());
+        MessageUtil.sendAudioIfNotNull(player, practiceItem.getUnpracticeAudio());
     }
 
     public boolean forceUnpractice(String player) {

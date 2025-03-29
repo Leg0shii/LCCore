@@ -20,7 +20,6 @@ import team.unnamed.inject.Inject;
 public class UnpracticeCommand implements CommandClass {
 
     @Inject private PracticeManager practiceManager;
-    @Inject private PlayerManager playerManager;
 
     @Command(names = "")
     public void unpractice(CommandSender sender) {
@@ -29,32 +28,6 @@ public class UnpracticeCommand implements CommandClass {
             return;
         }
 
-        Player player = (Player)sender;
-        PracticeItem practiceItem = practiceManager.getPracticeItemFor(player);
-
-        if(!practiceManager.isInPractice(player)) {
-            MessageUtil.sendMessageIfNotNull(player, practiceItem.getNotInPracticeMessage());
-            MessageUtil.sendAudioIfNotNull(player, practiceItem.getNotInPracticeAudio());
-            return;
-        }
-
-        Location pracLocation = practiceManager.getPracticeLocation(player);
-        practiceManager.removePracticeLocation(player);
-
-
-        for(ItemStack item : player.getInventory().getContents()) {
-            if(ItemUtil.hasNbtId(item, "practice")) {
-                player.getInventory().removeItem(item);
-            }
-        }
-
-        practiceManager.removeFromPracticeActionBarQueue(player);
-        playerManager.clearActionBar(player);
-        practiceManager.removePracticeGroup(player);
-        player.teleport(pracLocation);
-        MessageUtil.sendMessageIfNotNull(player, practiceItem.getUnpracticeMessage());
-        MessageUtil.sendAudioIfNotNull(player, practiceItem.getUnpracticeAudio());
-
-
+        practiceManager.unpractice((Player)sender);
     }
 }

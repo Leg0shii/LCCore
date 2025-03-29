@@ -1,6 +1,7 @@
 package de.legoshi.lccore.database.models;
 
 import de.legoshi.lccore.database.Identifiable;
+import de.legoshi.lccore.player.practice.QuickUnpracticeMode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -70,6 +71,10 @@ public class PlayerPreferences implements Identifiable<String> {
 
     @Column(name = "old_practice")
     private boolean oldPractice = false;
+
+    @Enumerated(EnumType.STRING)
+    @Column(name = "quick_unpractice", length = 15)
+    private QuickUnpracticeMode quickUnpractice = QuickUnpracticeMode.OFF;
 
     public PlayerPreferences(Player player) {
         this.id = player.getUniqueId().toString();

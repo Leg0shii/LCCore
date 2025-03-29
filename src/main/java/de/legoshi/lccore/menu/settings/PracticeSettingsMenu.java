@@ -7,9 +7,15 @@ import de.legoshi.lccore.manager.ChatManager;
 import de.legoshi.lccore.manager.PlayerManager;
 import de.legoshi.lccore.menu.GUIPane;
 import de.legoshi.lccore.menu.GuiToggleElement;
+import de.legoshi.lccore.menu.maps.MapsHolder;
+import de.legoshi.lccore.player.practice.QuickUnpracticeMode;
+import de.legoshi.lccore.tag.TagType;
 import de.legoshi.lccore.util.Dye;
 import de.legoshi.lccore.util.GUIAction;
 import de.legoshi.lccore.util.GUIDescriptionBuilder;
+import de.legoshi.lccore.util.GUIUtil;
+import de.themoep.inventorygui.GuiElement;
+import de.themoep.inventorygui.GuiStateElement;
 import de.themoep.inventorygui.InventoryGui;
 import de.themoep.inventorygui.StaticGuiElement;
 import org.bukkit.ChatColor;
@@ -19,6 +25,7 @@ import org.bukkit.inventory.ItemStack;
 import team.unnamed.inject.Inject;
 import team.unnamed.inject.Injector;
 
+import java.util.function.BiConsumer;
 import java.util.function.Consumer;
 
 public class PracticeSettingsMenu extends GUIPane {
@@ -30,8 +37,14 @@ public class PracticeSettingsMenu extends GUIPane {
 
     private final String[] guiSetup = {
             "dmmmmmmmd",
-            "m  123  m",
+            "m 12 34 m",
             "dmmmqmmmd",
+    };
+
+    private final BiConsumer<GuiElement.Click, QuickUnpracticeMode> quickUnpracticeModeSetter = (click, mode) -> {
+        prefs.setQuickUnpractice(mode);
+        db.update(prefs);
+        click.getGui().playClickSound();
     };
 
     @Override
@@ -71,8 +84,13 @@ public class PracticeSettingsMenu extends GUIPane {
                 .build());
 
 
+        GuiStateElement quickUnpracticeMode = new GuiStateElement('4',
+                GUIUtil.createSelectionMenu(QuickUnpracticeMode.class, new ItemStack(Material.FEATHER), new GUIDescriptionBuilder().raw("Quick Unpractice Mode").build(), quickUnpracticeModeSetter, false)
+        );
 
-        current.addElements(practiceHotbarSettings, oldPracticeToggle.build(), practiceItemSettings, returnToParent);
+        quickUnpracticeMode.setState(prefs.getQuickUnpractice().name());
+
+        current.addElements(practiceHotbarSettings, oldPracticeToggle.build(), practiceItemSettings, returnToParent, quickUnpracticeMode);
     }
 
     GuiToggleElement createToggleElement(char key, Consumer<Boolean> toggleAction, boolean initialState, GUIDescriptionBuilder desc) {
