@@ -1,18 +1,13 @@
 package de.legoshi.lccore.command.practice;
 
-import de.legoshi.lccore.manager.PlayerManager;
 import de.legoshi.lccore.manager.PracticeManager;
-import de.legoshi.lccore.player.practice.PracticeItem;
-import de.legoshi.lccore.util.ItemUtil;
 import de.legoshi.lccore.util.Register;
 import de.legoshi.lccore.util.message.Message;
 import de.legoshi.lccore.util.message.MessageUtil;
 import me.fixeddev.commandflow.annotated.CommandClass;
 import me.fixeddev.commandflow.annotated.annotation.Command;
-import org.bukkit.Location;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
-import org.bukkit.inventory.ItemStack;
 import team.unnamed.inject.Inject;
 
 @Register

@@ -2,7 +2,6 @@ package de.legoshi.lccore.command;
 
 import de.legoshi.lccore.Linkcraft;
 import de.legoshi.lccore.menu.help.HelpMenu;
-import de.legoshi.lccore.menu.maps.BonusConfirmationMenu;
 import de.legoshi.lccore.util.Register;
 import de.legoshi.lccore.util.message.Message;
 import de.legoshi.lccore.util.message.MessageUtil;

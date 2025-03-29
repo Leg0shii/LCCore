@@ -9,7 +9,6 @@ import de.legoshi.lccore.database.models.PlayerCheckpoint;
 import de.legoshi.lccore.database.models.PlayerCompletion;
 import de.legoshi.lccore.menu.maps.LCMap;
 import de.legoshi.lccore.player.PlayerRecord;
-import de.legoshi.lccore.player.display.BonusDTO;
 import de.legoshi.lccore.player.display.LCPlayer;
 import de.legoshi.lccore.util.*;
 import de.legoshi.lccore.util.message.Message;

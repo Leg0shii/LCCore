@@ -2,7 +2,6 @@ package de.legoshi.lccore.command.checkpoint;
 
 import de.legoshi.lccore.command.flow.annotated.annotation.ReflectiveTabComplete;
 import de.legoshi.lccore.database.DBManager;
-import de.legoshi.lccore.database.models.LCPlayerDB;
 import de.legoshi.lccore.manager.CheckpointManager;
 import de.legoshi.lccore.manager.PlayerManager;
 import de.legoshi.lccore.player.PlayerRecord;

@@ -6,24 +6,22 @@ import de.legoshi.lccore.achievements.AchievementType;
 import de.legoshi.lccore.achievements.comparators.DifficultyComparator;
 import de.legoshi.lccore.manager.AchievementManager;
 import de.legoshi.lccore.menu.GUIScrollablePane;
-import de.legoshi.lccore.util.*;
+import de.legoshi.lccore.util.Dye;
+import de.legoshi.lccore.util.GUIDescriptionBuilder;
+import de.legoshi.lccore.util.GUIUtil;
+import de.legoshi.lccore.util.ItemUtil;
 import de.themoep.inventorygui.*;
-import fr.minuskube.inv.content.SlotPos;
-import me.fixeddev.commandflow.annotated.annotation.OptArg;
-import net.milkbowl.vault.chat.Chat;
 import net.wesjd.anvilgui.AnvilGUI;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.meta.ItemMeta;
 import team.unnamed.inject.Inject;
 import team.unnamed.inject.Injector;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Comparator;
 import java.util.List;
 import java.util.function.BiConsumer;
 

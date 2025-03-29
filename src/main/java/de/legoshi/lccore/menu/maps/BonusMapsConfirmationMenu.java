@@ -1,8 +1,6 @@
 package de.legoshi.lccore.menu.maps;
 
 import de.legoshi.lccore.Linkcraft;
-import de.legoshi.lccore.manager.CheckpointManager;
-import de.legoshi.lccore.manager.LuckPermsManager;
 import de.legoshi.lccore.menu.GUIPane;
 import de.legoshi.lccore.util.MapType;
 import de.themoep.inventorygui.InventoryGui;

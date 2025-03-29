@@ -1,12 +1,7 @@
 package de.legoshi.lccore.menu.help;
 
 import de.legoshi.lccore.Linkcraft;
-import de.legoshi.lccore.manager.PlayerManager;
 import de.legoshi.lccore.menu.GUIPane;
-import de.legoshi.lccore.menu.maps.MapLeaderboard;
-import de.legoshi.lccore.menu.settings.CosmeticSettingsMenu;
-import de.legoshi.lccore.menu.settings.PracticeSettingsMenu;
-import de.legoshi.lccore.menu.settings.StaffSettingsMenu;
 import de.legoshi.lccore.util.Dye;
 import de.legoshi.lccore.util.GUIDescriptionBuilder;
 import de.themoep.inventorygui.InventoryGui;

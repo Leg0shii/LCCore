@@ -24,7 +24,6 @@ import org.bukkit.entity.Player;
 import team.unnamed.inject.Inject;
 import team.unnamed.inject.Injector;
 
-import java.io.IOException;
 import java.util.List;
 
 public class LocationManageHolder extends GUIScrollablePane {

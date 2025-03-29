@@ -3,7 +3,6 @@ package de.legoshi.lccore.achievements.requirement;
 import de.legoshi.lccore.achievements.progress.Progress;
 import de.legoshi.lccore.database.models.PlayerCompletion;
 import de.legoshi.lccore.manager.MapManager;
-import org.bukkit.entity.Player;
 import team.unnamed.inject.Inject;
 
 import java.util.ArrayList;

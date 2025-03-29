@@ -2,7 +2,10 @@ package de.legoshi.lccore.command.staff.location;
 
 import de.legoshi.lccore.Linkcraft;
 import de.legoshi.lccore.command.flow.annotated.annotation.TabComplete;
-import de.legoshi.lccore.command.staff.location.types.*;
+import de.legoshi.lccore.command.staff.location.types.LocationManageRecord;
+import de.legoshi.lccore.command.staff.location.types.OfflinePlayerRecord;
+import de.legoshi.lccore.command.staff.location.types.OnlinePlayerRecord;
+import de.legoshi.lccore.command.staff.location.types.SaveLocationRecord;
 import de.legoshi.lccore.manager.PlayerManager;
 import de.legoshi.lccore.manager.PracticeManager;
 import de.legoshi.lccore.menu.staff.LocationManageHolder;

@@ -2,7 +2,6 @@ package de.legoshi.lccore.command.staff.location.types;
 
 import de.legoshi.lccore.manager.PlayerManager;
 import de.legoshi.lccore.manager.PracticeManager;
-import lombok.AllArgsConstructor;
 import lombok.Data;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;

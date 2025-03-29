@@ -1,15 +1,11 @@
 package de.legoshi.lccore.menu.help;
 
 import de.legoshi.lccore.Linkcraft;
-import de.legoshi.lccore.database.composite.PlayerCompletionId;
-import de.legoshi.lccore.database.models.PlayerCompletion;
 import de.legoshi.lccore.manager.ConfigManager;
 import de.legoshi.lccore.menu.GUIScrollablePane;
-import de.legoshi.lccore.menu.maps.LCMap;
-import de.legoshi.lccore.menu.maps.MapLeaderboard;
-import de.legoshi.lccore.util.*;
-import de.legoshi.lccore.util.message.Message;
-import de.legoshi.lccore.util.message.MessageUtil;
+import de.legoshi.lccore.util.Dye;
+import de.legoshi.lccore.util.GUIDescriptionBuilder;
+import de.legoshi.lccore.util.GUIUtil;
 import de.themoep.inventorygui.GuiElementGroup;
 import de.themoep.inventorygui.InventoryGui;
 import de.themoep.inventorygui.StaticGuiElement;
