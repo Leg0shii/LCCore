@@ -27,6 +27,7 @@ import de.tr7zw.changeme.nbtapi.NBTList;
 import de.tr7zw.changeme.nbtapi.iface.ReadWriteNBT;
 import de.tr7zw.changeme.nbtapi.iface.ReadWriteNBTCompoundList;
 import me.neznamy.tab.api.TabAPI;
+import net.md_5.bungee.api.chat.TextComponent;
 import net.minecraft.server.v1_8_R3.ChatMessage;
 import net.minecraft.server.v1_8_R3.PacketPlayOutTitle;
 import net.minecraft.server.v1_8_R3.PlayerConnection;
@@ -126,9 +127,16 @@ public class PlayerManager {
         }
     }
 
+    private void firstJoin(Player player) {
+        MessageUtil.send(Message.FIRST_JOIN, player, player.getName());
+        TextComponent comp = MessageUtil.createClickable(ChatColor.YELLOW + "Click here to begin your rankup journey!", "/warp i", "/warp i");
+        player.spigot().sendMessage(comp);
+    }
+
     private void initDbData(Player player) {
         LCPlayerDB lcPlayerDB = getPlayerDB(player);
         if(lcPlayerDB == null) {
+            firstJoin(player);
             db.persist(new LCPlayerDB(player.getUniqueId().toString(), player.getName()));
         }
 

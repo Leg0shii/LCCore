@@ -59,6 +59,7 @@ public enum Message {
     SENDING_TO_SPAWN("§aSending {0} to spawn...", MessageType.PLAYER),
     UNPRACTICE_FOR("§aUnpracticed for {0}", MessageType.PLAYER),
     DELETING_SAVE("§aDeleting save {0} ({1}) from {2}...", MessageType.PLAYER),
+    FIRST_JOIN("§aHi {0}! Welcome to §b§lLinkCraft", MessageType.PLAYER),
 
     CHAT_TOGGLED_OFF("§aGlobal chat has been toggled off for you!", MessageType.PLAYER),
     CHAT_TOGGLED_ON("§aGlobal chat is no longer toggled off for you!", MessageType.PLAYER),
