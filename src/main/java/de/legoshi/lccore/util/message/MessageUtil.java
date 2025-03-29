@@ -146,6 +146,14 @@ public interface MessageUtil {
         return getMessageTranslated(Message.PREFIX);
     }
 
+     static String escapeDiscordMarkdown(String message) {
+        return message.replace("\\", "\\\\")
+                .replace("*", "\\*")
+                .replace("_", "\\_")
+                .replace("~", "\\~")
+                .replace("|", "\\|");
+    }
+
     static void discord(Player player, String message) {
         if(Linkcraft.getPlugin().getServer().getPluginManager().getPlugin("DiscordSRV") == null) {
             return;
@@ -154,7 +162,7 @@ public interface MessageUtil {
         try {
             Linkcraft.async(() -> DiscordSRV.getPlugin().processChatMessage(
                     player,
-                    message,
+                    escapeDiscordMarkdown(message),
                     DiscordSRV.getPlugin().getOptionalChannel("global"),
                     false
             ));
@@ -171,7 +179,7 @@ public interface MessageUtil {
         Linkcraft.async(() -> {
             TextChannel textChannel = DiscordSRV.getPlugin().getOptionalTextChannel(channel);
             if(textChannel != null) {
-                MessageAction action = textChannel.sendMessage(message);
+                MessageAction action = textChannel.sendMessage(escapeDiscordMarkdown(message));
                 action.submit();
             }
         });
@@ -200,8 +208,8 @@ public interface MessageUtil {
             TextChannel textChannel = DiscordSRV.getPlugin().getOptionalTextChannel(channel);
             if(textChannel != null) {
                 MessageEmbed test = new MessageEmbed(null,
-                        record.getName() + " completed " + map.getName() + " (#" + completionCount + ")",
-                        getMapDescription(map),
+                        escapeDiscordMarkdown(record.getName() + " completed " + map.getName() + " (#" + completionCount + ")"),
+                        escapeDiscordMarkdown(getMapDescription(map)),
                         null,
                         OffsetDateTime.now(ZoneOffset.UTC),
                         mapDifficultyColor,
