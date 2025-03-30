@@ -5,6 +5,7 @@ import com.comphenix.protocol.events.PacketContainer;
 import com.comphenix.protocol.wrappers.WrappedChatComponent;
 import de.legoshi.lccore.Linkcraft;
 import de.legoshi.lccore.player.practice.PracticeItem;
+import de.legoshi.lccore.player.practice.UnpracticeItem;
 import de.legoshi.lccore.util.ItemUtil;
 import de.legoshi.lccore.util.LocationHelper;
 import de.legoshi.lccore.util.message.MessageUtil;
@@ -24,6 +25,7 @@ public class PracticeManager {
     @Inject private PlayerManager playerManager;
     private final Set<Player> practicingPlayers = new HashSet<>();
     @Setter private String globalPracticeItem = "default";
+    @Setter private String globalUnpracticeItem = "default";
 
     public void sendPracticeActionBarPacket(Player player) {
         PacketContainer packet = new PacketContainer(PacketType.Play.Server.CHAT);
@@ -87,7 +89,7 @@ public class PracticeManager {
         removePracticeLocation(player);
 
         for (ItemStack item : player.getInventory().getContents()) {
-            if (ItemUtil.hasNbtId(item, "practice")) {
+            if (ItemUtil.hasNbtId(item, "practice") || ItemUtil.hasNbtId(item, "unpractice")) {
                 player.getInventory().removeItem(item);
             }
         }
@@ -130,6 +132,10 @@ public class PracticeManager {
 
     public PracticeItem getPracticeItemFor(Player player) {
         return ConfigManager.practiceItems.get(globalPracticeItem);
+    }
+
+    public UnpracticeItem getUnpracticeItemFor(Player player) {
+        return ConfigManager.unpracticeItems.get(globalUnpracticeItem);
     }
 
     public void givePracticeGroup(Player player) {

@@ -190,6 +190,10 @@ public class InteractListener implements Listener {
         if(ItemUtil.hasNbtId(held, "practice")) {
             practiceAction(e);
         }
+
+        if(ItemUtil.hasNbtId(held, "unpractice")) {
+            unpracticeAction(e);
+        }
     }
 
     private void onItemUsageOnBlock(PlayerInteractEvent e, ItemStack held, Block b) {
@@ -202,6 +206,12 @@ public class InteractListener implements Listener {
     private void practiceAction(PlayerInteractEvent e) {
         Player player = e.getPlayer();
         practiceManager.usePracticeItem(player);
+        e.setCancelled(true);
+    }
+
+    private void unpracticeAction(PlayerInteractEvent e) {
+        Player player = e.getPlayer();
+        practiceManager.unpractice(player);
         e.setCancelled(true);
     }
 }

@@ -4,6 +4,7 @@ import de.legoshi.lccore.Linkcraft;
 import de.legoshi.lccore.menu.help.CommandHelpDTO;
 import de.legoshi.lccore.player.display.*;
 import de.legoshi.lccore.player.practice.PracticeItem;
+import de.legoshi.lccore.player.practice.UnpracticeItem;
 import de.legoshi.lccore.util.*;
 import de.legoshi.lccore.util.message.Message;
 import de.legoshi.lccore.util.message.MessageType;
@@ -33,6 +34,7 @@ public class ConfigManager {
     public static Map<String, CommandShopDTO> commandShopMap = new HashMap<>();
     public static Map<String, String> modIdBlacklist = new HashMap<>();
     public static Map<String, PracticeItem> practiceItems = new HashMap<>();
+    public static Map<String, UnpracticeItem> unpracticeItems = new HashMap<>();
     public static Map<String, String> general = new HashMap<>();
     public static Map<String, CommandHelpDTO> commandHelp = new HashMap<>();
     public static final Map<Message, String> messages = new HashMap<>();
@@ -193,6 +195,7 @@ public class ConfigManager {
         loadChatColorSection(lcData.getConfigurationSection("chatcolor"));
         loadCommandShopSection(lcData.getConfigurationSection("commands"));
         loadPracticeItems();
+        loadUnpracticeItems();
         loadGeneralSection(lcData.getConfigurationSection("general"));
         loadHelpSection(lcData.getConfigurationSection("help"));
 
@@ -342,6 +345,16 @@ public class ConfigManager {
         }
     }
 
+    private void loadUnpracticeItems() {
+        UnpracticeItem defaultUnpracticeItem = new UnpracticeItem();
+        defaultUnpracticeItem.setItemText(new GUIDescriptionBuilder().raw("§3§l【§b§lLC§3§l】- §4Unpractice"));
+        defaultUnpracticeItem.setItemMat(Material.MAGMA_CREAM);
+        defaultUnpracticeItem.setFullInventoryMessage("§3§l【§b§lLinkCraft§3§l】- §4Inventory full, cannot give unpractice item!");
+        defaultUnpracticeItem.build();
+
+        unpracticeItems.put("default", defaultUnpracticeItem);
+    }
+
     private void loadPracticeItems() {
         PracticeItem defaultPracticeItem = new PracticeItem();
         defaultPracticeItem.setItemText(new GUIDescriptionBuilder().raw("§3§l【§b§lLC§3§l】-§4Return"));
@@ -352,6 +365,7 @@ public class ConfigManager {
         defaultPracticeItem.setNotInPracticeMessage("§3§l【§b§lLinkCraft§3§l】- §4You are not in a practice mode.");
         defaultPracticeItem.setActionBarMessage("§b§lYou are practicing!");
         defaultPracticeItem.setNotOnBlockMessage("§3§l【§b§lLinkCraft§3§l】- §4You must be on a block to use the practice system!");
+        defaultPracticeItem.setFullInventoryMessage("§3§l【§b§lLinkCraft§3§l】- §4Inventory full, cannot enter practice mode!");
         defaultPracticeItem.build();
 
         PracticeItem hpkPracticeItem = new PracticeItem();

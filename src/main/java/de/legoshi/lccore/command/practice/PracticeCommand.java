@@ -5,6 +5,8 @@ import de.legoshi.lccore.database.models.PlayerPreferences;
 import de.legoshi.lccore.manager.PlayerManager;
 import de.legoshi.lccore.manager.PracticeManager;
 import de.legoshi.lccore.player.practice.PracticeItem;
+import de.legoshi.lccore.player.practice.QuickUnpracticeMode;
+import de.legoshi.lccore.player.practice.UnpracticeItem;
 import de.legoshi.lccore.util.Register;
 import de.legoshi.lccore.util.message.Message;
 import de.legoshi.lccore.util.message.MessageUtil;
@@ -67,6 +69,17 @@ public class PracticeCommand implements CommandClass {
                     player.teleport(pracLocation);
                 }
             }, 3L);
+        }
+
+        if(prefs.getQuickUnpractice().equals(QuickUnpracticeMode.ITEM)) {
+            UnpracticeItem unpracticeItem = practiceManager.getUnpracticeItemFor(player);
+            if(playerManager.isInventoryFull(player)) {
+                MessageUtil.sendMessageIfNotNull(player, unpracticeItem.getFullInventoryMessage());
+                MessageUtil.sendAudioIfNotNull(player, unpracticeItem.getFullInventoryAudio());
+                return;
+            }
+
+            playerManager.giveItem(player, unpracticeItem.getItem());
         }
     }
 }

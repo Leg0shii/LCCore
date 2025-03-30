@@ -48,6 +48,8 @@ public class ItemDropListener implements Listener {
                     break;
             }
             e.setCancelled(true);
+        } else if(ItemUtil.hasNbtId(i, "unpractice")) {
+            e.setCancelled(true);
         }
     }
 }
