@@ -230,8 +230,14 @@ public interface GUIUtil {
 
         List<String> names = new ArrayList<>();
 
-        for(Enum<?> value : e.getEnumConstants()) {
-            names.add(formatEnum(value.name()));
+        for (Enum<?> value : e.getEnumConstants()) {
+            if(!(value instanceof NamedEnum)) {
+                names.add(formatEnum(value.name()));
+            } else {
+                NamedEnum named = (NamedEnum)value;
+                String forcedName = named.getName();
+                names.add(forcedName != null ? forcedName : formatEnum(value.name()));
+            }
         }
 
         return names;
