@@ -412,6 +412,11 @@ public class ChatManager {
         MessageUtil.discord(player, globalMessage);
     }
 
+    public void receiveDiscordMessage(String message) {
+        MessageUtil.broadcast(getNonChatToggledPlayers(), message, false);
+        MessageUtil.log(message, false);
+    }
+
     public boolean chatToggled(Player player) {
         return toggleChats.contains(player.getUniqueId().toString());
     }
@@ -441,6 +446,16 @@ public class ChatManager {
     public List<Player> getGlobalChatFromRecipients(Player player) {
         List<Player> list = new ArrayList<>();
         for(Player p : getNonIgnoringPlayers(Bukkit.getOnlinePlayers(), player)) {
+            if(!chatToggled(p)) {
+                list.add(p);
+            }
+        }
+        return list;
+    }
+
+    public List<Player> getNonChatToggledPlayers() {
+        List<Player> list = new ArrayList<>();
+        for(Player p : Bukkit.getOnlinePlayers()) {
             if(!chatToggled(p)) {
                 list.add(p);
             }
