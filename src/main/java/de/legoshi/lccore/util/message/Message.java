@@ -117,6 +117,7 @@ public enum Message {
     IGNORE_TOO_MANY("§cYou may not ignore more than 200 players!", MessageType.PLAYER_ERROR),
     INVALID_WARP("§cThat warp does not exist!", MessageType.PLAYER_ERROR),
     NO_PERM_WARP("§cYou do not have permission to warp there!", MessageType.PLAYER_ERROR),
+    NO_PERM_WARP_OTHERS("§cYou do not have permission to warp other players!", MessageType.PLAYER_ERROR),
     NO_CHECKPOINT_PERM("§cYou do not have the permission to click this sign!", MessageType.PLAYER_ERROR),
     CHECKPOINT_GROUND("§cYou have to be on the ground to click this checkpoint!", MessageType.PLAYER_ERROR),
     CHECKPOINT_SAVING_ERROR("§cERROR: You do not have a current checkpoint map set. Please report this issue!", MessageType.PLAYER_ERROR),

@@ -69,6 +69,10 @@ public class WarpCommand implements CommandClass {
             return;
         }
 
+        if(!MessageUtil.hasPerm(player, "linkcraft.warp.other")) {
+            return;
+        }
+
         warpPlayer(warp, toWarp, skipMapChange, bypass);
     }
 
